@@ -1,0 +1,51 @@
+# Docker Compose Override Example
+# Copy this file to docker-compose.override.yml to customize your local setup
+# docker-compose.override.yml is automatically loaded and gitignored
+
+version: '3.8'
+
+services:
+  api:
+    # Override command for development with auto-reload
+    command: python manage.py runserver 0.0.0.0:8000
+    
+    # Mount source code for live editing
+    volumes:
+      - .:/app
+    
+    # Override environment variables
+    environment:
+      - DEBUG=True
+      - LOG_LEVEL=DEBUG
+    
+    # Expose additional ports if needed
+    # ports:
+    #   - "8001:8000"
+
+  db:
+    # Expose database port for external access
+    ports:
+      - "5432:5432"
+    
+    # Override database credentials
+    # environment:
+    #   - POSTGRES_PASSWORD=custom_password
+
+  redis:
+    # Expose Redis port for external access
+    ports:
+      - "6379:6379"
+
+  # Disable optional services in development
+  # celery:
+  #   profiles:
+  #     - production
+
+  # celery-beat:
+  #   profiles:
+  #     - production
+
+  # nginx:
+  #   profiles:
+  #     - production
+

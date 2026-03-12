@@ -1,0 +1,233 @@
+.dashboard-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.welcome-banner {
+  margin-bottom: 24px;
+}
+
+.welcome-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+
+  .wave {
+    display: inline-block;
+    animation: wave 2s infinite;
+  }
+}
+
+@keyframes wave {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(20deg); }
+  75% { transform: rotate(-20deg); }
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.upgrade-banner {
+  background: linear-gradient(135deg, #a78bfa 0%, #c084fc 100%);
+  color: white;
+  padding: 16px 24px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+
+  .upgrade-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+
+    i {
+      font-size: 24px;
+    }
+  }
+}
+
+.section {
+  margin-bottom: 32px;
+
+  .section-header {
+    margin-bottom: 16px;
+
+    h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+  }
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  &.stat-card-primary {
+    border-color: #dbeafe;
+    .stat-icon { background: #dbeafe; color: #3b82f6; }
+  }
+
+  &.stat-card-success {
+    border-color: #d1fae5;
+    .stat-icon { background: #d1fae5; color: #10b981; }
+  }
+
+  &.stat-card-warning {
+    border-color: #fef3c7;
+    .stat-icon { background: #fef3c7; color: #f59e0b; }
+  }
+
+  &.stat-card-danger {
+    border-color: #fee2e2;
+    .stat-icon { background: #fee2e2; color: #ef4444; }
+  }
+
+  .stat-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+
+    i {
+      font-size: 28px;
+    }
+  }
+
+  .stat-content {
+    flex: 1;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+
+  .stat-count {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .stat-arrow {
+    color: var(--text-secondary);
+    font-size: 20px;
+  }
+}
+
+.card {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  .card-header {
+    background: white;
+    border-bottom: 1px solid var(--border-color);
+    padding: 20px;
+
+    h4 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+  }
+
+  .card-body {
+    padding: 20px;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+
+  i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.pocket-item {
+  padding: 16px;
+  background: var(--light-bg);
+  border-radius: 8px;
+  margin-bottom: 12px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.pocket-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.pocket-icon {
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+
+  i {
+    font-size: 20px;
+    color: var(--primary-color);
+  }
+}
+
+.pocket-name {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.pocket-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  .badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+  }
+}
+

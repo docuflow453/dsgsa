@@ -1,0 +1,119 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="logo">
+        <i class="bi bi-trophy-fill text-primary"></i>
+        <h1>DSRiding</h1>
+      </div>
+      <h2>Create Account</h2>
+      <p>Join the dressage competition platform</p>
+    </div>
+
+    @if (error) {
+      <div class="alert alert-danger" role="alert">
+        <i class="bi bi-exclamation-circle"></i>
+        {{ error }}
+      </div>
+    }
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="first_name" class="form-label">First Name</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="first_name" 
+            formControlName="first_name"
+            placeholder="First name"
+            [class.is-invalid]="first_name?.invalid && first_name?.touched">
+          @if (first_name?.invalid && first_name?.touched) {
+            <div class="invalid-feedback">First name is required</div>
+          }
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="last_name" class="form-label">Last Name</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="last_name" 
+            formControlName="last_name"
+            placeholder="Last name"
+            [class.is-invalid]="last_name?.invalid && last_name?.touched">
+          @if (last_name?.invalid && last_name?.touched) {
+            <div class="invalid-feedback">Last name is required</div>
+          }
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Email Address</label>
+        <input 
+          type="email" 
+          class="form-control" 
+          id="email" 
+          formControlName="email"
+          placeholder="Enter your email"
+          [class.is-invalid]="email?.invalid && email?.touched">
+        @if (email?.invalid && email?.touched) {
+          <div class="invalid-feedback">
+            @if (email?.errors?.['required']) { Email is required }
+            @if (email?.errors?.['email']) { Please enter a valid email }
+          </div>
+        }
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input 
+          type="password" 
+          class="form-control" 
+          id="password" 
+          formControlName="password"
+          placeholder="Create a password"
+          [class.is-invalid]="password?.invalid && password?.touched">
+        @if (password?.invalid && password?.touched) {
+          <div class="invalid-feedback">
+            @if (password?.errors?.['required']) { Password is required }
+            @if (password?.errors?.['minlength']) { Password must be at least 6 characters }
+          </div>
+        }
+      </div>
+
+      <div class="mb-3">
+        <label for="confirmPassword" class="form-label">Confirm Password</label>
+        <input 
+          type="password" 
+          class="form-control" 
+          id="confirmPassword" 
+          formControlName="confirmPassword"
+          placeholder="Confirm your password"
+          [class.is-invalid]="confirmPassword?.invalid && confirmPassword?.touched">
+        @if (confirmPassword?.invalid && confirmPassword?.touched) {
+          <div class="invalid-feedback">
+            @if (confirmPassword?.errors?.['required']) { Please confirm your password }
+            @if (confirmPassword?.errors?.['passwordMismatch']) { Passwords do not match }
+          </div>
+        }
+      </div>
+
+      <button 
+        type="submit" 
+        class="btn btn-primary w-100"
+        [disabled]="loading || registerForm.invalid">
+        @if (loading) {
+          <span class="spinner-border spinner-border-sm me-2"></span>
+          Creating account...
+        } @else {
+          Create Account
+        }
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      <p>Already have an account? <a routerLink="/auth/login">Sign in</a></p>
+    </div>
+  </div>
+</div>
+

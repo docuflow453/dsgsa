@@ -1,0 +1,104 @@
+.page-header {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  padding: 80px 0 60px;
+  text-align: center;
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  p {
+    font-size: 1.25rem;
+    opacity: 0.95;
+  }
+}
+
+.province-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  height: 100%;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color);
+  }
+
+  .province-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+
+    .province-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      i {
+        font-size: 28px;
+        color: white;
+      }
+    }
+
+    .province-info {
+      flex: 1;
+
+      .province-name {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+        color: var(--text-primary);
+      }
+
+      .province-code {
+        display: inline-block;
+        padding: 2px 8px;
+        background: var(--light-bg);
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+      }
+    }
+  }
+
+  .province-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+
+      i {
+        color: var(--primary-color);
+        font-size: 18px;
+      }
+    }
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+}
+

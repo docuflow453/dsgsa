@@ -1,0 +1,114 @@
+<nav class="public-navbar">
+  <div class="container">
+    <div class="navbar-content">
+      <!-- Logo -->
+      <a routerLink="/" class="navbar-brand">
+        <i class="bi bi-trophy-fill"></i>
+        <span class="brand-text">DSRiding</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <ul class="nav-menu desktop-menu">
+        @for (item of navItems; track item.label) {
+          <li class="nav-item" [class.has-dropdown]="item.children">
+            @if (item.children) {
+              <button 
+                class="nav-link dropdown-toggle"
+                (click)="toggleDropdown(item.label)"
+                (blur)="closeDropdown()">
+                {{ item.label }}
+                <i class="bi bi-chevron-down"></i>
+              </button>
+              @if (activeDropdown() === item.label) {
+                <ul class="dropdown-menu">
+                  @for (child of item.children; track child.label) {
+                    <li>
+                      <a 
+                        [routerLink]="child.route" 
+                        routerLinkActive="active"
+                        class="dropdown-item"
+                        (click)="closeDropdown()">
+                        {{ child.label }}
+                      </a>
+                    </li>
+                  }
+                </ul>
+              }
+            } @else {
+              <a 
+                [routerLink]="item.route" 
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: item.route === '/'}"
+                class="nav-link">
+                {{ item.label }}
+              </a>
+            }
+          </li>
+        }
+      </ul>
+
+      <!-- Login Button -->
+      <div class="navbar-actions">
+        <a routerLink="/auth/login" class="btn btn-primary">
+          <i class="bi bi-box-arrow-in-right"></i>
+          Login
+        </a>
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="mobile-menu-toggle" (click)="toggleMobileMenu()">
+        <i class="bi" [class.bi-list]="!mobileMenuOpen()" [class.bi-x]="mobileMenuOpen()"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    @if (mobileMenuOpen()) {
+      <div class="mobile-menu">
+        <ul class="nav-menu-mobile">
+          @for (item of navItems; track item.label) {
+            <li class="nav-item-mobile">
+              @if (item.children) {
+                <button 
+                  class="nav-link-mobile"
+                  (click)="toggleDropdown(item.label)">
+                  {{ item.label }}
+                  <i class="bi bi-chevron-down"></i>
+                </button>
+                @if (activeDropdown() === item.label) {
+                  <ul class="dropdown-menu-mobile">
+                    @for (child of item.children; track child.label) {
+                      <li>
+                        <a 
+                          [routerLink]="child.route" 
+                          class="dropdown-item-mobile"
+                          (click)="closeMobileMenu()">
+                          {{ child.label }}
+                        </a>
+                      </li>
+                    }
+                  </ul>
+                }
+              } @else {
+                <a 
+                  [routerLink]="item.route" 
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{exact: item.route === '/'}"
+                  class="nav-link-mobile"
+                  (click)="closeMobileMenu()">
+                  {{ item.label }}
+                </a>
+              }
+            </li>
+          }
+          <li class="nav-item-mobile">
+            <a routerLink="/auth/login" class="btn btn-primary w-100" (click)="closeMobileMenu()">
+              <i class="bi bi-box-arrow-in-right"></i>
+              Login
+            </a>
+          </li>
+        </ul>
+      </div>
+    }
+  </div>
+</nav>
+

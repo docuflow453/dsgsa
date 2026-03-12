@@ -1,0 +1,54 @@
+<div class="page-container">
+  <div class="page-header">
+    <div class="container">
+      <h1>News & Updates</h1>
+      <p>Latest news from the South African dressage community</p>
+    </div>
+  </div>
+
+  <div class="container py-5">
+    <div class="row mb-4">
+      <div class="col-lg-8 mx-auto">
+        <div class="filter-bar">
+          <select class="form-select">
+            <option selected>All Categories</option>
+            <option>Competitions</option>
+            <option>Announcements</option>
+            <option>Results</option>
+            <option>Training</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        @for (article of articles; track article.id) {
+          <article class="news-card">
+            <div class="news-image">
+              <div class="image-placeholder">
+                <i class="bi bi-newspaper"></i>
+              </div>
+            </div>
+            <div class="news-content">
+              <div class="news-meta">
+                <span class="news-category">{{ article.category }}</span>
+                <span class="news-date">
+                  <i class="bi bi-calendar"></i>
+                  {{ formatDate(article.date) }}
+                </span>
+              </div>
+              <h2 class="news-title">{{ article.title }}</h2>
+              <p class="news-excerpt">{{ article.excerpt }}</p>
+              <a href="#" class="read-more">
+                Read More
+                <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </article>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+

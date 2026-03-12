@@ -1,0 +1,161 @@
+<div class="documents-container">
+  <!-- Tabs -->
+  <div class="tabs-container">
+    <ul class="nav nav-tabs">
+      @for (tab of tabs; track tab.id) {
+        <li class="nav-item">
+          <button 
+            class="nav-link" 
+            [class.active]="activeTab === tab.id"
+            (click)="activeTab = tab.id">
+            {{ tab.label }}
+            @if (tab.badge) {
+              <span class="badge bg-warning ms-2">{{ tab.badge }}</span>
+            } @else if (tab.count !== undefined) {
+              <span class="badge bg-secondary ms-2">{{ tab.count }}</span>
+            }
+          </button>
+        </li>
+      }
+    </ul>
+  </div>
+
+  <!-- Search and Filter -->
+  <div class="toolbar">
+    <div class="search-filter">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Search document name"
+          [(ngModel)]="searchQuery">
+      </div>
+      <button class="btn btn-outline-secondary">
+        <i class="bi bi-funnel"></i>
+        Filter by
+      </button>
+    </div>
+  </div>
+
+  <!-- Documents Table -->
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th><input type="checkbox" class="form-check-input"></th>
+            <th>Name</th>
+            <th>Pocket</th>
+            <th>Type</th>
+            <th>Tags</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (documents().length === 0) {
+            <tr>
+              <td colspan="7" class="text-center py-5">
+                <div class="empty-state">
+                  <i class="bi bi-file-earmark-text"></i>
+                  <p>All your uploaded documents will appear here.</p>
+                  <button class="btn btn-primary" (click)="openUploadModal()">
+                    <i class="bi bi-upload"></i>
+                    Upload Document
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container">
+      <div class="pagination-info">
+        <span>Items per page:</span>
+        <select class="form-select form-select-sm" [(ngModel)]="itemsPerPage">
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+        </select>
+        <span class="ms-3">0-0 of 0</span>
+      </div>
+      <div class="pagination-controls">
+        <button class="btn btn-sm btn-outline-secondary" disabled>
+          <i class="bi bi-chevron-double-left"></i>
+        </button>
+        <button class="btn btn-sm btn-outline-secondary" disabled>
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <button class="btn btn-sm btn-outline-secondary" disabled>
+          <i class="bi bi-chevron-right"></i>
+        </button>
+        <button class="btn btn-sm btn-outline-secondary" disabled>
+          <i class="bi bi-chevron-double-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Upload Modal -->
+@if (showUploadModal()) {
+  <div class="modal-backdrop" (click)="closeUploadModal()"></div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Document Upload</h5>
+        <button type="button" class="btn-close" (click)="closeUploadModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="upload-tip">
+          <i class="bi bi-info-circle"></i>
+          <span>Pro Tip: You can upload documents by capturing them with your mobile device on the app.</span>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Pocket</label>
+            <select class="form-select">
+              <option>Select pocket</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Type</label>
+            <select class="form-select">
+              <option>Select type</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" placeholder="Document name">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Tag (Optional)</label>
+            <select class="form-select">
+              <option>Select tag</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="upload-area">
+          <i class="bi bi-cloud-upload"></i>
+          <p>Drag and drop files here or <a href="#" (click)="$event.preventDefault()">browse</a></p>
+          <small>Accepted file types are pdf, image/*, doc, and xlsx.<br>20 MB maximum file size.</small>
+          <input type="file" class="d-none" (change)="onFileSelected($event)" multiple>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeUploadModal()">Cancel</button>
+        <button type="button" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+}
+

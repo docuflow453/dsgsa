@@ -1,0 +1,90 @@
+<div class="page-container">
+  <div class="page-header">
+    <div class="container">
+      <h1>National Calendar</h1>
+      <p>Upcoming dressage competitions across South Africa</p>
+    </div>
+  </div>
+
+  <div class="container py-5">
+    <div class="row mb-4">
+      <div class="col-lg-8 mx-auto">
+        <div class="filter-bar">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <select class="form-select">
+                <option selected>All Provinces</option>
+                <option>Gauteng</option>
+                <option>Western Cape</option>
+                <option>KwaZulu-Natal</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <select class="form-select">
+                <option selected>All Statuses</option>
+                <option>Open for Entry</option>
+                <option>Upcoming</option>
+                <option>Closed</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" placeholder="Search competitions...">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        @for (competition of competitions; track competition.id) {
+          <div class="competition-card">
+            <div class="competition-header">
+              <div class="competition-date">
+                <div class="date-day">{{ formatDate(competition.date).split(' ')[0] }}</div>
+                <div class="date-month">{{ formatDate(competition.date).split(' ')[1] }}</div>
+              </div>
+              <div class="competition-info">
+                <h3 class="competition-name">{{ competition.name }}</h3>
+                <div class="competition-meta">
+                  <span class="meta-item">
+                    <i class="bi bi-geo-alt"></i>
+                    {{ competition.location }}
+                  </span>
+                  <span class="meta-item">
+                    <i class="bi bi-map"></i>
+                    {{ competition.province }}
+                  </span>
+                </div>
+                <div class="competition-details">
+                  <span class="detail-item">
+                    <i class="bi bi-calendar-x"></i>
+                    Entry closes: {{ formatDate(competition.entryClose) }}
+                  </span>
+                </div>
+              </div>
+              <div class="competition-status">
+                <span [class]="getStatusBadgeClass(competition.status)">
+                  {{ competition.status | titlecase }}
+                </span>
+              </div>
+            </div>
+            <div class="competition-actions">
+              <button class="btn btn-outline-primary">
+                <i class="bi bi-info-circle"></i>
+                View Details
+              </button>
+              @if (competition.status === 'open') {
+                <button class="btn btn-primary">
+                  <i class="bi bi-pencil-square"></i>
+                  Enter Competition
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+

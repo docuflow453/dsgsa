@@ -1,0 +1,67 @@
+<header class="header">
+  <div class="header-left">
+    <h1 class="page-title">Documents</h1>
+  </div>
+
+  <div class="header-right">
+    <div class="header-actions">
+      <button class="btn btn-outline-primary btn-sm me-2">
+        <i class="bi bi-lightning-charge"></i>
+        Upgrade
+      </button>
+      
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input 
+          type="text" 
+          class="form-control form-control-sm" 
+          placeholder="Search document name">
+      </div>
+
+      <button class="btn btn-primary btn-sm ms-2">
+        <i class="bi bi-upload"></i>
+        Upload
+      </button>
+
+      <div class="user-menu-wrapper ms-3">
+        <button 
+          class="user-menu-trigger" 
+          (click)="toggleUserMenu()">
+          @if (authService.currentUser(); as user) {
+            <div class="user-avatar-sm">
+              {{ user.first_name.charAt(0) }}{{ user.last_name.charAt(0) }}
+            </div>
+          }
+        </button>
+
+        @if (showUserMenu) {
+          <div class="user-dropdown">
+            <div class="dropdown-header">
+              @if (authService.currentUser(); as user) {
+                <div class="user-info-dropdown">
+                  <div class="user-name">{{ user.full_name }}</div>
+                  <div class="user-email">{{ user.email }}</div>
+                </div>
+              }
+            </div>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item" (click)="navigateToProfile()">
+              <i class="bi bi-person"></i>
+              Profile
+            </button>
+            <button class="dropdown-item" (click)="navigateToSettings()">
+              <i class="bi bi-gear"></i>
+              Settings
+            </button>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item text-danger" (click)="logout()">
+              <i class="bi bi-box-arrow-right"></i>
+              Logout
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</header>
+

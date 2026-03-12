@@ -1,0 +1,91 @@
+<div class="page-container">
+  <div class="page-header">
+    <div class="container">
+      <h1>Officials</h1>
+      <p>Registered judges, technical delegates, and course designers</p>
+    </div>
+  </div>
+
+  <div class="container py-5">
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="filter-bar">
+          <div class="row g-3">
+            <div class="col-md-3">
+              <select class="form-select">
+                <option selected>All Roles</option>
+                <option>Judge</option>
+                <option>Technical Delegate</option>
+                <option>Course Designer</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select">
+                <option selected>All Levels</option>
+                <option>Level 1</option>
+                <option>Level 2</option>
+                <option>Level 3</option>
+                <option>Level 4</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select">
+                <option selected>All Provinces</option>
+                <option>Gauteng</option>
+                <option>Western Cape</option>
+                <option>KwaZulu-Natal</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <input type="text" class="form-control" placeholder="Search...">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-10 mx-auto">
+        <div class="table-responsive">
+          <table class="table officials-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Level</th>
+                <th>Province</th>
+                <th>Contact</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (official of officials; track official.id) {
+                <tr>
+                  <td>
+                    <div class="official-name">
+                      <div class="official-avatar">
+                        {{ official.name.split(' ')[0].charAt(0) }}{{ official.name.split(' ')[1].charAt(0) }}
+                      </div>
+                      <span>{{ official.name }}</span>
+                    </div>
+                  </td>
+                  <td>{{ official.role }}</td>
+                  <td>
+                    <span class="badge bg-primary">{{ official.level }}</span>
+                  </td>
+                  <td>{{ official.province }}</td>
+                  <td>
+                    <a [href]="'mailto:' + official.email" class="email-link">
+                      <i class="bi bi-envelope"></i>
+                      Contact
+                    </a>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

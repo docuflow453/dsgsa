@@ -1,0 +1,115 @@
+.page-header {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  padding: 80px 0 60px;
+  text-align: center;
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  p {
+    font-size: 1.25rem;
+    opacity: 0.95;
+  }
+}
+
+.filter-bar {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.news-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  transition: all 0.3s;
+
+  &:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+  }
+
+  .news-image {
+    .image-placeholder {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      i {
+        font-size: 80px;
+        color: white;
+        opacity: 0.3;
+      }
+    }
+  }
+
+  .news-content {
+    padding: 24px;
+
+    .news-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+
+      .news-category {
+        display: inline-block;
+        padding: 4px 12px;
+        background: #eef2ff;
+        color: var(--primary-color);
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 600;
+      }
+
+      .news-date {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+
+        i {
+          color: var(--primary-color);
+        }
+      }
+    }
+
+    .news-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .news-excerpt {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+      transition: gap 0.2s;
+
+      &:hover {
+        gap: 10px;
+      }
+    }
+  }
+}
+

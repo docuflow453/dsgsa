@@ -1,0 +1,43 @@
+<div class="page-container">
+  <div class="page-header">
+    <div class="container">
+      <h1>Provinces</h1>
+      <p>Dressage clubs and competitions across South Africa</p>
+    </div>
+  </div>
+
+  <div class="container py-5">
+    <div class="row">
+      @for (province of provinces; track province.code) {
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="province-card">
+            <div class="province-header">
+              <div class="province-icon">
+                <i class="bi {{ province.icon }}"></i>
+              </div>
+              <div class="province-info">
+                <h3 class="province-name">{{ province.name }}</h3>
+                <span class="province-code">{{ province.code }}</span>
+              </div>
+            </div>
+            <div class="province-stats">
+              <div class="stat">
+                <i class="bi bi-building"></i>
+                <span>{{ province.clubs }} Clubs</span>
+              </div>
+              <div class="stat">
+                <i class="bi bi-calendar-event"></i>
+                <span>{{ province.competitions }} Competitions</span>
+              </div>
+            </div>
+            <button class="btn btn-outline-primary w-100">
+              View Details
+              <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
