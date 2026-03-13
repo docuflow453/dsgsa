@@ -56,7 +56,8 @@ class Rider(models.Model):
     city = models.CharField(max_length=255, blank=True)
     postal_code = models.CharField(max_length=20, blank=True)
     country = models.CharField(max_length=100, default='South Africa')
-    
+
+
     # Banking details
     account_type = models.CharField(max_length=50, choices=ACCOUNT_TYPE_CHOICES, blank=True)
     account_name = models.CharField(max_length=255, blank=True)
@@ -65,7 +66,6 @@ class Rider(models.Model):
     bank_name = models.CharField(max_length=255, blank=True)
     
     is_active = models.BooleanField(default=True)
-    is_international = models.BooleanField(default=False)
     is_test = models.BooleanField(default=False)
     
     created_at = models.DateTimeField(auto_now_add=True)
@@ -114,3 +114,70 @@ class SaefMembership(models.Model):
 
 
 
+# Affiliations
+class RiderClub(models.Model):
+
+    club_id = models.ForeignKey(
+        'clubs.Club',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='riders'
+    )
+    rider_id = models.ForeignKey(
+        Rider,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='clubs'
+    )
+    year = models.ForeignKey(
+        'authentication.Year',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='rider_clubs'
+    )
+    is_primary = models.BooleanField(default=False)
+    activate_at = models.DateTimeField(null=True, blank=True)
+    activated_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='activated_rider_clubs'
+    )
+
+
+class RiderShowHoldingBody(models.Model):
+
+    show_holding_body_id = models.ForeignKey(
+        'clubs.ShowHoldingBody',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='riders'
+    )
+    rider_id = models.ForeignKey(
+        Rider,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='show_holding_bodies'
+    )
+    year = models.ForeignKey(
+        'authentication.Year',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='rider_show_holding_bodies'
+    )
+    is_primary = models.BooleanField(default=False)
+    activate_at = models.DateTimeField(null=True, blank=True)
+    activated_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='activated_rider_clubs'
+    )

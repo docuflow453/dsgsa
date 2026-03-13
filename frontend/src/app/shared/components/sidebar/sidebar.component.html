@@ -1,20 +1,20 @@
-<aside class="sidebar">
-  <div class="sidebar-header">
+<nav>
+  <div class="app-logo">
     <div class="logo">
-      <i class="bi bi-trophy-fill text-primary"></i>
-      <span class="logo-text">DSRiding</span>
+      <i class="bi bi-trophy-fill" style="font-size: 28px; color: rgba(var(--primary), 1); margin-right: 10px;"></i>
+      <span style="font-size: 20px; font-weight: 700; color: var(--font-title-color);">DSRiding</span>
     </div>
   </div>
 
-  <nav class="sidebar-nav">
-    <ul class="nav-list">
+  <div class="app-nav">
+    <ul class="main-nav">
       @for (item of navItems; track item.route) {
         @if (shouldShowItem(item)) {
-          <li class="nav-item">
-            <a 
-              [routerLink]="item.route" 
+          <li class="no-sub">
+            <a
+              [routerLink]="item.route"
               routerLinkActive="active"
-              class="nav-link">
+              [routerLinkActiveOptions]="{exact: false}">
               <i class="bi {{ item.icon }}"></i>
               <span>{{ item.label }}</span>
             </a>
@@ -22,20 +22,6 @@
         }
       }
     </ul>
-  </nav>
-
-  <div class="sidebar-footer">
-    <div class="user-info">
-      @if (authService.currentUser(); as user) {
-        <div class="user-avatar">
-          {{ user.first_name.charAt(0) }}{{ user.last_name.charAt(0) }}
-        </div>
-        <div class="user-details">
-          <div class="user-name">{{ user.full_name }}</div>
-          <div class="user-email">{{ user.email }}</div>
-        </div>
-      }
-    </div>
   </div>
-</aside>
+</nav>
 

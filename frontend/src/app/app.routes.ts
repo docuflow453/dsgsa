@@ -18,8 +18,15 @@ export const routes: Routes = [
     loadChildren: () => import('./features/dashboard/dashboard.routes').then(m => m.DASHBOARD_ROUTES),
     canActivate: [authGuard]
   },
+  // Rider-specific dashboard (new layout)
   {
     path: 'my',
+    loadChildren: () => import('./features/rider/rider-module.routes').then(m => m.RIDER_MODULE_ROUTES),
+    canActivate: [authGuard]
+  },
+  // Legacy rider routes (using general layout)
+  {
+    path: 'riders',
     loadChildren: () => import('./features/rider/rider.routes').then(m => m.RIDER_ROUTES),
     canActivate: [authGuard]
   },

@@ -1,0 +1,102 @@
+<div class="rider-dashboard">
+  <!-- Welcome Banner -->
+  <div class="welcome-banner">
+    <div class="welcome-content">
+      @if (authService.currentUser(); as user) {
+        <h1 class="welcome-title">Welcome back, {{ user.first_name }}!</h1>
+        <p class="welcome-subtitle">
+          You have <span class="highlight">{{ upcomingEntriesCount }} upcoming entries</span> 
+          and your next event is in <span class="highlight">{{ nextEventDays }} days</span>.
+        </p>
+      }
+    </div>
+    <div class="welcome-image">
+      <img src="assets/images/horse-rider.jpg" alt="Horse and Rider" />
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    @for (stat of stats; track stat.label) {
+      <div class="stat-card stat-{{ stat.color }}">
+        <div class="stat-icon">
+          <i class="bi {{ stat.icon }}"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value">{{ stat.value }}</div>
+          <div class="stat-label">{{ stat.label }}</div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="content-grid">
+    <!-- Upcoming Entries -->
+    <div class="content-section">
+      <div class="section-header">
+        <div class="section-title">
+          <i class="bi bi-calendar-check"></i>
+          <h2>Upcoming Entries</h2>
+        </div>
+        <a [routerLink]="['/rider/entries']" class="view-all-link">View all</a>
+      </div>
+
+      <div class="entries-table">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Event</th>
+              <th>Date</th>
+              <th>Horse</th>
+              <th>Class</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (entry of upcomingEntries; track entry.event) {
+              <tr>
+                <td class="event-name">{{ entry.event }}</td>
+                <td>{{ entry.date }}</td>
+                <td>{{ entry.horse }}</td>
+                <td>{{ entry.class }}</td>
+                <td>
+                  <span class="status-badge status-{{ entry.status.toLowerCase() }}">
+                    {{ entry.status }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Recent Results -->
+    <div class="content-section">
+      <div class="section-header">
+        <div class="section-title">
+          <i class="bi bi-trophy"></i>
+          <h2>Recent Results</h2>
+        </div>
+        <a [routerLink]="['/rider/results']" class="view-all-link">View all</a>
+      </div>
+
+      <div class="results-list">
+        @for (result of recentResults; track result.event) {
+          <div class="result-item">
+            <div class="position-badge position-{{ getPositionClass(result.position) }}">
+              {{ result.position }}{{ getPositionSuffix(result.position) }}
+            </div>
+            <div class="result-content">
+              <h3 class="result-event">{{ result.event }}</h3>
+              <p class="result-details">{{ result.details }}</p>
+            </div>
+            <div class="result-date">{{ result.date }}</div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+

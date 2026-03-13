@@ -134,7 +134,6 @@ Capabilities:
 ### Models
 
 * `User`
-* `UserProfile`
 * `Role`
 * `Permission`
 
@@ -162,6 +161,7 @@ DELETE /api/users/{id}/
 ### Models
 
 * `Club`
+* `ShowHoldingBody`
 * `PaymentMethod`
 * `Levy`
 * `Extra`
@@ -190,6 +190,9 @@ GET /api/levies/
 * `Horse`
 * `HorseBreed`
 * `HorseColour`
+* `HorseVaccination`
+* `HorseDocument`
+* `HorseOwner`
 * `BreedType`
 * `StudFarm`
 
@@ -230,6 +233,9 @@ GET /api/stud-farms/
 ### Models
 
 * `Rider`
+* `SaefMembership`
+* `RiderClub`
+* `RiderShowHoldingBody`
 * `Classification`
 
 ### API Endpoints
@@ -314,10 +320,11 @@ GET /api/discipline-classes/
 
 ### Models
 
+* `Transaction`
 * `Entry`
 * `EntryClass`
-* `Transaction`
-* `TransactionExtra`
+* `EntryExtra`
+* `EntryLevy`
 * `RidingOrder`
 
 ### API
@@ -739,6 +746,38 @@ SaefMembership
 - updated_at
 ```
 
+---
+
+### Judge
+
+```
+Judge
+- id
+- user_id
+- name
+- cell_number
+- province_id
+- panel
+- promotion_date
+- is_active
+- created_at
+- updated_at
+```
+---
+
+
+```
+School
+- id
+- name
+- contact_person
+- conteact_number
+- province_id
+- is_active
+- created_at
+- updated_at
+```
+---
 
 ---
 

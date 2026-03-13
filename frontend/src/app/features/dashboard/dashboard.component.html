@@ -1,100 +1,81 @@
-<div class="dashboard-container">
-  <!-- Welcome Banner -->
-  <div class="welcome-banner">
-    <div class="welcome-content">
-      @if (authService.currentUser(); as user) {
-        <h1 class="welcome-title">
-          <span class="wave">👋</span> Welcome, {{ user.first_name }}
-        </h1>
-      }
-      <h2 class="page-title">Dashboard</h2>
-    </div>
-  </div>
+<div class="page-title mb-4">
+  @if (authService.currentUser(); as user) {
+    <h4>
+      <span class="wave">👋</span> Welcome, {{ user.first_name }}
+    </h4>
+  }
+</div>
 
-  <!-- Upgrade Banner -->
-  <div class="upgrade-banner">
-    <div class="upgrade-content">
-      <i class="bi bi-lightning-charge-fill"></i>
-      <span>Upgrade now and take advantage of our annual discount (Up to 15% off)</span>
-    </div>
-    <button class="btn btn-light btn-sm">
-      <i class="bi bi-lightning-charge"></i>
-      Upgrade
-    </button>
-  </div>
-
-  <!-- Document Overview -->
-  <div class="section">
-    <div class="section-header">
-      <h3>Document Overview</h3>
-    </div>
-
-    <div class="row g-3">
-      @for (stat of documentStats; track stat.label) {
-        <div class="col-md-6 col-lg-3">
-          <a [routerLink]="stat.route" class="stat-card stat-card-{{ stat.color }}">
+<!-- Stats Cards Row -->
+<div class="row g-3 mb-4">
+  @for (stat of documentStats; track stat.label) {
+    <div class="col-md-6 col-lg-3">
+      <div class="card stat-card-{{ stat.color }}">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="text-muted mb-2">{{ stat.label }}</h6>
+              <h3 class="mb-0">{{ stat.count }}</h3>
+            </div>
             <div class="stat-icon">
               <i class="bi {{ stat.icon }}"></i>
             </div>
-            <div class="stat-content">
-              <div class="stat-label">{{ stat.label }}</div>
-              <div class="stat-count">{{ stat.count }}</div>
-            </div>
-            <i class="bi bi-chevron-right stat-arrow"></i>
-          </a>
-        </div>
-      }
-    </div>
-  </div>
-
-  <!-- Reminders and Pockets Row -->
-  <div class="row g-4">
-    <!-- Reminders -->
-    <div class="col-lg-6">
-      <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h4 class="mb-0">
-            Reminders
-            <span class="badge bg-warning ms-2">0</span>
-          </h4>
-          <a href="#" class="text-primary text-decoration-none">View all</a>
-        </div>
-        <div class="card-body">
-          <div class="empty-state">
-            <i class="bi bi-bell"></i>
-            <p>You have no reminders.</p>
           </div>
         </div>
       </div>
     </div>
+  }
+</div>
 
-    <!-- My Pockets -->
-    <div class="col-lg-6">
-      <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h4 class="mb-0">My Pockets</h4>
-          <a href="#" class="btn btn-outline-primary btn-sm">Manage pockets</a>
+<!-- Reminders and Pockets Row -->
+<div class="row g-4">
+  <!-- Reminders -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+          Reminders
+          <span class="badge bg-warning ms-2">0</span>
+        </h5>
+        <a href="#" class="text-primary text-decoration-none">View all</a>
+      </div>
+      <div class="card-body">
+        <div class="empty-state text-center py-4">
+          <i class="bi bi-bell fs-1 text-muted mb-3"></i>
+          <p class="text-muted">You have no reminders.</p>
         </div>
-        <div class="card-body">
-          @for (pocket of pockets; track pocket.id) {
-            <div class="pocket-item">
-              <div class="pocket-header">
-                <div class="pocket-icon">
+      </div>
+    </div>
+  </div>
+
+  <!-- My Pockets -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">My Pockets</h5>
+        <button class="btn btn-outline-primary btn-sm">Manage pockets</button>
+      </div>
+      <div class="card-body">
+        @for (pocket of pockets; track pocket.id) {
+          <div class="pocket-item mb-3 p-3 border rounded">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div class="d-flex align-items-center">
+                <div class="pocket-icon me-2">
                   <i class="bi {{ pocket.icon }}"></i>
                 </div>
-                <h5 class="pocket-name">{{ pocket.name }}</h5>
-                <button class="btn btn-sm btn-link">
-                  <i class="bi bi-heart"></i>
-                </button>
+                <h6 class="mb-0">{{ pocket.name }}</h6>
               </div>
-              <div class="pocket-tags">
-                @for (tag of pocket.tags; track tag) {
-                  <span class="badge bg-primary">{{ tag }}</span>
-                }
-              </div>
+              <button class="btn btn-sm btn-link p-0">
+                <i class="bi bi-heart"></i>
+              </button>
             </div>
-          }
-        </div>
+            <div class="pocket-tags">
+              @for (tag of pocket.tags; track tag) {
+                <span class="badge bg-primary me-1">{{ tag }}</span>
+              }
+            </div>
+          </div>
+        }
       </div>
     </div>
   </div>

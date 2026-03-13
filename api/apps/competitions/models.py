@@ -5,11 +5,16 @@ from django.utils.text import slugify
 
 class Grade(models.Model):
     """Grade model for competition classes."""
-    
+
+    class Level(models.IntegerChoices):
+        STANDARD = 1, 'Standard'
+        OPEN = 2, 'Open'
+
     name = models.CharField(max_length=255)
     code = models.CharField(max_length=50, unique=True)
     description = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
+    level = models.IntegerField(choices=Level.choices, default=Level.STANDARD)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
