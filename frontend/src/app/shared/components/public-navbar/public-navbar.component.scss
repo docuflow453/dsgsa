@@ -1,22 +1,24 @@
+// Public Navbar - Professional British Dressage Style
 .public-navbar {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: white;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   position: sticky;
   top: 0;
   z-index: 1000;
   padding: 0;
+  border-bottom: 3px solid #3b82f6;
 
   .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 24px;
   }
 
   .navbar-content {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 70px;
+    height: 80px;
   }
 
   .navbar-brand {
@@ -24,17 +26,23 @@
     align-items: center;
     gap: 12px;
     text-decoration: none;
-    color: white;
+    color: #1e3a8a;
     font-size: 24px;
-    font-weight: 700;
+    font-weight: 800;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #3b82f6;
+    }
 
     i {
       font-size: 32px;
+      color: #3b82f6;
     }
 
     .brand-text {
       @media (max-width: 768px) {
-        display: none;
+        font-size: 20px;
       }
     }
   }
@@ -44,7 +52,7 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    gap: 8px;
+    gap: 4px;
 
     @media (min-width: 992px) {
       display: flex;
@@ -64,26 +72,47 @@
   .nav-link {
     display: flex;
     align-items: center;
-    gap: 4px;
-    padding: 8px 16px;
-    color: rgba(255, 255, 255, 0.9);
+    gap: 6px;
+    padding: 10px 18px;
+    color: #1f2937;
     text-decoration: none;
     border-radius: 6px;
-    transition: all 0.2s;
+    transition: all 0.3s ease;
     background: none;
     border: none;
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 600;
     white-space: nowrap;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 3px;
+      background: #3b82f6;
+      transition: width 0.3s ease;
+    }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: white;
+      color: #3b82f6;
+      background: #f0f9ff;
+
+      &::after {
+        width: 80%;
+      }
     }
 
     &.active {
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
+      color: #3b82f6;
+      background: #f0f9ff;
+
+      &::after {
+        width: 80%;
+      }
     }
 
     i {
@@ -97,28 +126,34 @@
     left: 0;
     background: white;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    list-style: none;
-    margin: 8px 0 0 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    min-width: 220px;
     padding: 8px 0;
-    min-width: 180px;
+    margin-top: 12px;
+    list-style: none;
+    animation: slideDown 0.2s ease;
+    border: 1px solid #e5e7eb;
     z-index: 1001;
   }
 
   .dropdown-item {
     display: block;
-    padding: 10px 20px;
-    color: var(--text-primary);
+    padding: 12px 20px;
+    color: #1f2937;
     text-decoration: none;
-    transition: background 0.2s;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    font-weight: 500;
 
     &:hover {
-      background: var(--light-bg);
+      background: #f0f9ff;
+      color: #3b82f6;
+      padding-left: 24px;
     }
 
     &.active {
-      background: #eef2ff;
-      color: var(--primary-color);
+      background: #f0f9ff;
+      color: #3b82f6;
       font-weight: 600;
     }
   }
@@ -131,15 +166,22 @@
     }
 
     .btn-primary {
-      background: white;
-      color: var(--primary-color);
-      border: none;
-      padding: 8px 20px;
+      padding: 10px 28px;
       font-weight: 600;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #3b82f6;
+      color: white;
+      border: 2px solid #3b82f6;
+      transition: all 0.3s ease;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.9);
-        transform: translateY(-1px);
+        background: #2563eb;
+        border-color: #2563eb;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
       }
     }
   }
@@ -149,11 +191,19 @@
     align-items: center;
     justify-content: center;
     background: none;
-    border: none;
-    color: white;
-    font-size: 28px;
+    border: 1px solid #e5e7eb;
+    color: #1f2937;
+    font-size: 24px;
     cursor: pointer;
-    padding: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: #f9fafb;
+      border-color: #3b82f6;
+      color: #3b82f6;
+    }
 
     @media (min-width: 992px) {
       display: none;

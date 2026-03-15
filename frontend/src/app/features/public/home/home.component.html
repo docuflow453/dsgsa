@@ -1,42 +1,139 @@
-<!-- Hero Section -->
-<section class="hero-section">
-  <div class="hero-overlay"></div>
-  <div class="container">
-    <div class="hero-content">
-      <h1 class="hero-title">
-        Welcome to <span class="gradient-text">DSRiding</span>
-      </h1>
-      <p class="hero-subtitle">
-        South Africa's Premier Dressage Competition Management Platform
-      </p>
-      <p class="hero-description">
-        Connecting riders, horses, and competitions across the nation. 
-        Manage your entries, track results, and stay connected with the dressage community.
-      </p>
-      <div class="hero-actions">
-        <a routerLink="/auth/register" class="btn btn-primary btn-lg">
-          <i class="bi bi-person-plus"></i>
-          Get Started
-        </a>
-        <a routerLink="/calendar" class="btn btn-outline-light btn-lg">
-          <i class="bi bi-calendar-event"></i>
-          View Calendar
-        </a>
+<!-- Hero Carousel Section - British Dressage Style -->
+<section class="carousel-section">
+  <div class="carousel-wrapper">
+    <div class="carousel-item active">
+      <div class="carousel-image-wrapper">
+        <img src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=1920&h=540&fit=crop"
+             alt="Dressage Competition"
+             class="carousel-image" />
+      </div>
+      <div class="carousel-overlay"></div>
+      <div class="carousel-content-wrapper">
+        <div class="container">
+          <div class="carousel-content">
+            <h2 class="carousel-hero-title">Excellence in Dressage</h2>
+            <div class="carousel-text">
+              South Africa's premier platform for dressage competition management
+            </div>
+            <div class="carousel-button-wrapper">
+              <a routerLink="/auth/register" class="carousel-button">
+                REGISTER NOW
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Stats Section -->
-<section class="stats-section">
+<!-- Quick Links Section -->
+<section class="quick-links-section">
   <div class="container">
-    <div class="row">
-      @for (stat of stats; track stat.label) {
-        <div class="col-md-3 col-6 mb-4">
-          <div class="stat-card">
-            <i class="bi {{ stat.icon }} stat-icon"></i>
-            <h3 class="stat-value">{{ stat.value }}</h3>
-            <p class="stat-label">{{ stat.label }}</p>
+    <div class="row g-4">
+      @for (link of quickLinks; track link.title) {
+        <div class="col-lg-3 col-md-6">
+          <a [routerLink]="link.route" class="quick-link-card quick-link-{{ link.color }}">
+            <div class="quick-link-icon">
+              <i class="bi {{ link.icon }}"></i>
+            </div>
+            <h3 class="quick-link-title">{{ link.title }}</h3>
+            <p class="quick-link-description">{{ link.description }}</p>
+            <span class="quick-link-arrow">
+              <i class="bi bi-arrow-right"></i>
+            </span>
+          </a>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Latest News Section - British Dressage Style -->
+<section class="news-feed-section">
+  <div class="container">
+    <div class="news-feed-listing">
+      <h3 class="news-feed-listing__title">Latest news</h3>
+      <div class="default-listing__list news-feed-listing__list">
+        @for (article of newsArticles; track article.id) {
+          <div class="default-listing__list-item news-feed-listing__list-item">
+            <div class="default-listing-item news-feed-listing-item">
+              <a [routerLink]="article.link" class="default-listing-item__link news-feed-listing-item__link">
+                <div class="default-listing-item__image-container">
+                  <img [src]="article.image"
+                       [alt]="article.title"
+                       class="default-listing-item__image news-feed-listing-item__image" />
+                </div>
+                <div class="default-listing-item__content news-feed-listing-item__content">
+                  <div class="default-listing-item__title-wrapper news-feed-listing-item__title-wrapper">
+                    <h3 class="default-listing-item__title news-feed-listing-item__title">
+                      {{ article.title }}
+                    </h3>
+                  </div>
+                  <div class="default-listing-item__description news-feed-listing-item__description">
+                    {{ article.excerpt }}
+                  </div>
+                  <span class="default-listing-item__btn news-feed-listing-item__btn">
+                    READ MORE
+                  </span>
+                </div>
+              </a>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Upcoming Events Section -->
+<section class="events-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="row align-items-end">
+        <div class="col-md-8">
+          <h2 class="section-title">Upcoming Competitions</h2>
+          <p class="section-subtitle">Find and enter competitions across South Africa</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <a routerLink="/calendar" class="btn btn-outline-primary">
+            View Full Calendar
+            <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      @for (event of upcomingEvents; track event.id) {
+        <div class="col-lg-6">
+          <div class="event-card">
+            <div class="event-header">
+              <div class="event-date">
+                <div class="event-day">{{ event.date.split(' ')[1].split('-')[0] }}</div>
+                <div class="event-month">{{ event.date.split(' ')[0].substring(0, 3) }}</div>
+              </div>
+              <div class="event-info">
+                <h3 class="event-title">{{ event.title }}</h3>
+                <p class="event-location">
+                  <i class="bi bi-geo-alt"></i>
+                  {{ event.location }}
+                </p>
+              </div>
+              <span class="event-status status-{{ event.status.toLowerCase().replace(' ', '-') }}">
+                {{ event.status }}
+              </span>
+            </div>
+            <div class="event-footer">
+              <span class="event-type">
+                <i class="bi bi-tag"></i>
+                {{ event.type }}
+              </span>
+              <a routerLink="/calendar" class="event-link">
+                View Details
+                <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
           </div>
         </div>
       }
@@ -44,64 +141,20 @@
   </div>
 </section>
 
-<!-- About Section -->
-<section class="about-section" id="about">
+<!-- Stats Section -->
+<section class="stats-section">
   <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-6 mb-4 mb-lg-0">
-        <div class="about-image">
-          <div class="image-placeholder">
-            <i class="bi bi-trophy-fill"></i>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="about-content">
-          <h2 class="section-title">About DSRiding</h2>
-          <p class="section-description">
-            DSRiding is South Africa's leading platform for dressage competition management, 
-            designed to streamline the entire competition lifecycle from entry to results.
-          </p>
-          <p>
-            Our platform serves riders, clubs, show holding bodies, and officials across all 
-            nine provinces, providing a centralized system for managing competitions, entries, 
-            payments, and results.
-          </p>
-          <ul class="about-features">
-            <li><i class="bi bi-check-circle-fill"></i> Comprehensive competition management</li>
-            <li><i class="bi bi-check-circle-fill"></i> Secure online payment processing</li>
-            <li><i class="bi bi-check-circle-fill"></i> Real-time results and rankings</li>
-            <li><i class="bi bi-check-circle-fill"></i> Document management and reminders</li>
-          </ul>
-          <a routerLink="/about" class="btn btn-primary">
-            Learn More
-            <i class="bi bi-arrow-right"></i>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Features Section -->
-<section class="features-section">
-  <div class="container">
-    <div class="section-header text-center">
-      <h2 class="section-title">Platform Features</h2>
-      <p class="section-description">
-        Everything you need to manage your dressage competition journey
-      </p>
-    </div>
-
-    <div class="row">
-      @for (feature of features; track feature.title) {
-        <div class="col-lg-4 col-md-6 mb-4">
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="bi {{ feature.icon }}"></i>
+    <div class="row g-4">
+      @for (stat of stats; track stat.label) {
+        <div class="col-lg-3 col-md-6">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="bi {{ stat.icon }}"></i>
             </div>
-            <h3 class="feature-title">{{ feature.title }}</h3>
-            <p class="feature-description">{{ feature.description }}</p>
+            <div class="stat-content">
+              <h3 class="stat-value">{{ stat.value }}</h3>
+              <p class="stat-label">{{ stat.label }}</p>
+            </div>
           </div>
         </div>
       }
@@ -112,19 +165,17 @@
 <!-- CTA Section -->
 <section class="cta-section">
   <div class="container">
-    <div class="cta-content text-center">
-      <h2 class="cta-title">Ready to Get Started?</h2>
-      <p class="cta-description">
-        Join hundreds of riders and manage your competition entries with ease
-      </p>
-      <div class="cta-actions">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <h2 class="cta-title">Join South Africa's Leading Dressage Community</h2>
+        <p class="cta-description">
+          Register today and gain access to competitions, results, and resources across all provinces
+        </p>
+      </div>
+      <div class="col-lg-4 text-lg-end">
         <a routerLink="/auth/register" class="btn btn-light btn-lg">
           <i class="bi bi-person-plus"></i>
-          Create Account
-        </a>
-        <a routerLink="/contact" class="btn btn-outline-light btn-lg">
-          <i class="bi bi-envelope"></i>
-          Contact Us
+          Get Started
         </a>
       </div>
     </div>
