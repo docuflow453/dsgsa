@@ -1,0 +1,57 @@
+@import '../../../../../scss/uikit.scss';
+
+.pc-sidebar {
+  position: relative;
+  height: auto;
+
+  .navbar-content {
+    padding: 0px;
+  }
+
+  &.component-menu {
+    border-right: 1px solid #e6ebf1;
+    box-shadow: none;
+  }
+}
+
+.component-menubar {
+  width: 260px;
+  position: fixed;
+}
+
+.component-content {
+  padding-left: 24px;
+  position: relative;
+  margin-left: 260px;
+
+  .component-explore {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .pc-sidebar {
+    left: 0;
+  }
+  .component-menubar {
+    width: 0px;
+    margin-left: -390px;
+    top: 0;
+  }
+
+  .component-content {
+    margin-left: 0px;
+    padding-left: 0px;
+
+    .component-explore {
+      display: block;
+    }
+  }
+
+  .component-menubar.menu-open {
+    z-index: 2500;
+    width: 260px;
+    margin-left: 0px;
+    left: 0;
+  }
+}

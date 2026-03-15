@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-xxl-6">
+    <app-card cardTitle="Tooltip" blockClass="pc-component">
+      <button type="button" class="btn btn-danger me-2 mb-2" placement="top" ngbTooltip="Tooltip on top">Top</button>
+      <button type="button" class="btn btn-primary me-2 mb-2" placement="end" ngbTooltip="Tooltip on right">Right</button>
+      <button type="button" class="btn btn-success me-2 mb-2" placement="bottom" ngbTooltip="Tooltip on bottom">Bottom</button>
+      <button type="button" class="btn btn-warning me-2 mb-2" placement="start" ngbTooltip="Tooltip on left">Left</button>
+      <button type="button" class="btn btn-info mb-2" placement="top" ngbTooltip="Tooltip with HTML">Html Tooltip</button>
+    </app-card>
+  </div>
+  <div class="col-xxl-6">
+    <app-card cardTitle="Popover" blockClass="pc-component">
+      <button type="button" class="btn btn-danger me-2 mb-2" placement="top" ngbPopover="top by popover" popoverTitle="Popover on top">
+        Top
+      </button>
+      <button type="button" class="btn btn-primary me-2 mb-2" placement="left" ngbPopover="left by popover" popoverTitle="Popover on left">
+        Left
+      </button>
+      <button
+        type="button"
+        class="btn btn-success me-2 mb-2"
+        placement="right"
+        ngbPopover="Right by popover"
+        popoverTitle="Popover on Right"
+      >
+        Right
+      </button>
+      <button
+        type="button"
+        class="btn btn-warning me-2 mb-2"
+        placement="bottom"
+        ngbPopover="Bottom by popover"
+        popoverTitle="Popover on Bottom"
+      >
+        Bottom
+      </button>
+      <button type="button" class="btn btn-info mb-2" placement="top" ngbPopover="Popover by HTML" popoverTitle="Popover with HTML">
+        Html Popover
+      </button>
+    </app-card>
+  </div>
+</div>

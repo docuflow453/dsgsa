@@ -1,0 +1,280 @@
+@import '../../../../scss/settings/color-variables.scss';
+
+::ng-deep.chat-wrapper {
+  display: flex;
+
+  .nav-tabs {
+    border: none;
+    .nav-link.active {
+      border: none;
+    }
+  }
+
+  .chat-user_list {
+    width: 320px;
+    border-right: 1px solid var(--bs-border-color);
+
+    .form-search {
+      i {
+        font-size: 13px;
+        color: rgba(0, 0, 0, 0.54);
+        top: 12px;
+      }
+      .form-control {
+        padding-left: 35px;
+      }
+    }
+    .scroll-block {
+      height: calc(100vh - 500px);
+    }
+    .nav-tabs .nav-link:hover,
+    .nav-tabs .nav-link:focus {
+      border-color: var(--bs-primary);
+    }
+  }
+
+  .chat-user_info,
+  .chat-content {
+    .btn-link-secondary:hover {
+      i {
+        svg {
+          color: $gray-800;
+
+          ::ng-deep.mantis-dark & {
+            color: var(--bs-body-color);
+          }
+        }
+      }
+    }
+
+    .dropdown-menu .dropdown-item i {
+      ::ng-deep.mantis-rtl & {
+        margin-left: 10px;
+        margin-right: 0px;
+      }
+    }
+
+    .list-inline-item:not(:last-child) {
+      ::ng-deep.mantis-rtl & {
+        margin-left: 0.5rem;
+        margin-right: 0rem;
+      }
+    }
+  }
+  .chat-content {
+    flex: 1 1 auto;
+
+    .chat-avatar {
+      i {
+        position: absolute;
+        font-size: 12px;
+        left: 27px;
+        bottom: 29px;
+
+        svg {
+          border-radius: 50%;
+          background: $white;
+        }
+      }
+    }
+  }
+  .chat-user_info {
+    width: 305px;
+    border-left: 1px solid var(--bs-border-color);
+    .scroll-block {
+      height: calc(100vh - 435px);
+    }
+    .chat-avatar {
+      img {
+        border: 1px solid var(--bs-success);
+        padding: 3px;
+      }
+      .chat-badge {
+        bottom: 8px;
+        right: 8px;
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+  .chat-offcanvas {
+    --bs-offcanvas-width: 306px;
+    &.show {
+      .collapse:not(.show) {
+        display: block;
+      }
+      .chat-user_list {
+        margin-right: 0;
+        .scroll-block {
+          height: calc(100vh - 215px);
+        }
+      }
+      .chat-user_info {
+        margin-left: 0;
+        .scroll-block {
+          height: calc(100vh - 245px);
+        }
+      }
+    }
+  }
+
+  .user-all-details {
+    .form-switch .form-check-input {
+      ::ng-deep.mantis-rtl & {
+        margin-left: 0em;
+      }
+    }
+  }
+}
+::ng-deep.chat-badge {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  color: $white;
+  overflow: hidden;
+  &::before {
+    font-size: 21px;
+    line-height: 1;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+.chat-badge-status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  font-size: 16px;
+  display: inline-block;
+}
+
+::ng-deep.user-list {
+  padding: 8px 16px 8px 8px;
+  .chat-avatar {
+    .chat-user-status {
+      font-size: 12px;
+      position: absolute;
+      top: 10px;
+      left: 35px;
+
+      svg {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: $white;
+      }
+    }
+  }
+
+  .media-body {
+    margin: 6px 0px 6px 16px;
+    .unread {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+  }
+
+  &.list-group-item-action:hover,
+  &.list-group-item-action:focus {
+    background: rgba(0, 0, 0, 0.04);
+  }
+}
+
+::ng-deep.user-section {
+  .chat-avatar {
+    position: relative;
+
+    .user-status {
+      font-size: 12px;
+      position: absolute;
+      left: 28px;
+      bottom: 29px;
+
+      svg {
+        border-radius: 50%;
+        background: $white;
+      }
+    }
+  }
+  .dropdown-menu {
+    .dropdown-item {
+      padding: 10px 16px;
+
+      i {
+        font-size: 12px;
+        margin-right: 5px;
+
+        ::ng-deep.mantis-rtl & {
+          margin-left: 5px !important;
+          margin-right: 0px !important;
+        }
+      }
+
+      svg {
+        width: 12px;
+        height: 12px;
+        margin-right: 5px;
+
+        ::ng-deep.mantis-rtl & {
+          margin-left: 5px !important;
+          margin-right: 0px !important;
+        }
+      }
+    }
+  }
+}
+
+::ng-deep.chat-message {
+  background: $gray-100;
+  .msg-content {
+    padding: 8px;
+    border-radius: var(--bs-border-radius);
+    margin-bottom: 8px;
+
+    @media (max-width: 768px) {
+      max-width: 90%;
+    }
+  }
+  .message-out,
+  .message-in {
+    display: flex;
+    margin-bottom: 24px;
+    .d-flex {
+      max-width: 80%;
+    }
+  }
+  .message-out {
+    justify-content: flex-end;
+    p {
+      color: $white;
+    }
+    p:last-child {
+      text-align: right;
+    }
+  }
+  .message-in {
+    justify-content: flex-start;
+    .msg-content {
+      background: $white;
+    }
+  }
+
+  ::ng-deep.mantis-dark & {
+    background: var(--pc-sidebar-color);
+  }
+}
+
+::ng-deep {
+  app-chat .nav {
+    display: block;
+    .list-group-item.active {
+      background: transparent;
+      color: #222222;
+    }
+  }
+}

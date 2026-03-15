@@ -1,0 +1,383 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="position-relative h-100">
+              <div class="row carousel slide ecomm-prod-slider">
+                <div class="col-xl-9">
+                  <div class="carousel-inner rounded position-relative">
+                    <div class="form-check product-whitelist">
+                      <input type="checkbox" class="form-check-input" title="Add Whitelist" (change)="onLikeChange($event)" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="feather feather-heart prod-likes-icon"
+                      >
+                        <path
+                          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <div class="img-zoom">
+                      <a href="javascript:" class="avatar avatar-xs">
+                        <i
+                          antIcon
+                          type="zoom-in"
+                          theme="outline"
+                          class="f-20 {{ themeDark === true ? 'text-white' : 'text-muted' }} d-flex"
+                        ></i>
+                      </a>
+                      <a href="javascript:" class="avatar avatar-xs">
+                        <i
+                          antIcon
+                          type="zoom-out"
+                          theme="outline"
+                          class="f-20 {{ themeDark === true ? 'text-white' : 'text-muted' }} d-flex"
+                        ></i>
+                      </a>
+                      <a href="javascript:" class="avatar avatar-xs">
+                        <i
+                          antIcon
+                          type="redo"
+                          theme="outline"
+                          class="f-20 {{ themeDark === true ? 'text-white' : 'text-muted' }} d-flex"
+                        ></i>
+                      </a>
+                    </div>
+                    <img [src]="img" class="d-block" alt="product-images" />
+                  </div>
+                </div>
+                <div class="col-xl-3">
+                  <div class="d-flex h-100">
+                    <div class="carousel-indicators position-relative product-carousel-indicators my-sm-3 mx-0">
+                      @for (image of images; track image) {
+                        <div class="py-xl-2 m-xl-0 m-2">
+                          <div class="toggle-img">
+                            <img src="{{ image.src }}" class="d-block wid-50 rounded" alt="Product images" (click)="showImages($event)" />
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex align-items-center">
+              <ngb-rating [rate]="4" [max]="5">
+                <ng-template let-fill="fill" let-index="index">
+                  <i
+                    antIcon
+                    type="{{ fill === 100 ? 'star' : 'star' }}"
+                    theme="{{ fill === 100 ? 'fill' : 'outline' }}"
+                    class="{{ fill === 100 ? 'text-warning' : 'text-gray-400' }} f-24 d-flex"
+                  ></i>
+                </ng-template>
+              </ngb-rating>
+              <span class="text-muted ms-2">(4.0)</span>
+            </div>
+            <h3 class="mb-2 mt-1">Apple Series 4 GPS A38 MM Space</h3>
+            <span class="badge bg-light-success f-14">In stock</span>
+            <p class="text-muted mt-3">{{ description }}</p>
+            <div class="form-group row">
+              <label class="col-form-label col-lg-2 col-sm-12 text-muted">
+                Colors
+                <span class="text-danger">*</span>
+              </label>
+              <div class="col-lg-10 col-md-12 col-sm-12 d-flex align-items-center">
+                @for (color of colors; track color) {
+                  <div class="form-check form-check-inline color-checkbox mb-0">
+                    <input class="form-check-input" type="radio" name="prodColor" checked title="color filter" />
+                    <i class="fas fa-circle {{ color.type }}"></i>
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-form-label col-lg-2 col-sm-12 text-muted">
+                Quantity
+                <span class="text-danger">*</span>
+              </label>
+              <div class="col-lg-10 col-md-12 col-sm-12">
+                <div class="btn-group btn-group-sm mb-2 border" role="group">
+                  <button type="button" title="Decrease" (click)="minus()" class="btn btn-link-dark">
+                    <i antIcon type="minus" theme="outline"></i>
+                  </button>
+                  <input
+                    type="text"
+                    class="wid-35 text-center border-0 m-0 form-control rounded-0 shadow-none"
+                    [(ngModel)]="inputNumber"
+                    title="total add item"
+                  />
+                  <button type="button" title="Increase" (click)="plus()" class="btn btn-link-dark">
+                    <i antIcon type="plus" theme="outline"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <h3 class="mb-4">
+              <b>$275</b>
+              <span class="mx-2 f-16 text-muted f-w-400 text-decoration-line-through">$350</span>
+            </h3>
+            <div class="row">
+              <div class="col-6">
+                <div class="d-grid">
+                  <button type="button" class="btn btn-primary">Buy Now</button>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="d-grid">
+                  <button type="button" class="btn btn-outline-secondary">Add to cart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-7 col-xl-8">
+        <div class="card">
+          <div class="card-header pb-0">
+            <ul ngbNav aria-busy="true" #nav="ngbNav" class="nav-tabs profile-tabs mb-0">
+              <li [ngbNavItem]="1">
+                <a ngbNavLink>Features</a>
+                <ng-template ngbNavContent>
+                  <div class="table-responsive">
+                    <table class="table table-borderless mb-0">
+                      <tbody>
+                        @for (task of feature; track task) {
+                          <tr class="hei-40">
+                            <td class="text-muted py-1 px-0">{{ task.title }} :</td>
+                            <td class="py-1">{{ task.value }}</td>
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="2">
+                <a ngbNavLink>Specifications</a>
+                <ng-template ngbNavContent>
+                  <div class="row">
+                    @for (task of specifications; track task) {
+                      <div class="col-md-6">
+                        <h5>{{ task.main }}</h5>
+                        <hr class="my-3" />
+                        <div class="table-responsive">
+                          <table class="table table-borderless">
+                            <tbody>
+                              <tr class="hei-40">
+                                <td class="text-muted py-1 ps-0">{{ task.title }}</td>
+                                <td class="py-1">{{ task.text }}</td>
+                              </tr>
+                              <tr class="hei-40">
+                                <td class="text-muted py-1 ps-0">{{ task.title_1 }} :</td>
+                                <td class="py-1">{{ task.text_1 }}</td>
+                              </tr>
+                              <tr class="hei-40">
+                                <td class="text-muted py-1 ps-0">{{ task.title_2 }} :</td>
+                                <td class="py-1">{{ task.text_2 }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="3">
+                <a ngbNavLink>Overview</a>
+                <ng-template ngbNavContent>
+                  <div class="table-responsive">
+                    <p class="text-muted">
+                      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+                      standard dummy text ever since the 1500s,
+                      <strong>“When an unknown printer took a galley of type and scrambled it to make a type specimen book.”</strong>
+                      It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
+                      unchanged. It was popularized in the 1960s with the release of Lestrade sheets containing Lorem Ipsum passages, and
+                      more recently with desktop publishing software like PageMaker including versions of Lorem Ipsum.
+                    </p>
+                    <p class="text-muted mb-0">
+                      It was popularized in the 1960s with the release of Learjet sheets containing Lorem Ipsum passages, and more recently
+                      with desktop publishing software like PageMaker including versions of Lorem Ipsum.
+                    </p>
+                  </div>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="4">
+                <a ngbNavLink>
+                  Reviews
+                  <span class="badge bg-light-secondary rounded-pill px-2 ms-2">275</span>
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-sm-6 col-md-7">
+                          <h2 class="mb-2">
+                            <b>
+                              4
+                              <small class="text-muted f-20">/5</small>
+                            </b>
+                          </h2>
+                          <p class="mb-2 text-muted">Based on 275 reviews</p>
+                          <ngb-rating [rate]="3" [max]="5">
+                            <ng-template let-fill="fill" let-index="index">
+                              <i
+                                antIcon
+                                type="{{ fill === 100 ? 'star' : 'star' }}"
+                                theme="{{ fill === 100 ? 'fill' : 'outline' }}"
+                                class="text-warning f-24"
+                              ></i>
+                            </ng-template>
+                          </ngb-rating>
+                        </div>
+                        <div class="col-sm-6 col-md-5">
+                          <div class="d-flex align-items-center">
+                            <div class="w-100">
+                              @for (rating of ratings; track rating) {
+                                <div class="row align-items-center mb-2">
+                                  <div class="col">
+                                    <ngb-progressbar
+                                      type="progress-bar bg-warning"
+                                      height="6px"
+                                      value="{{ rating.value }}"
+                                    ></ngb-progressbar>
+                                  </div>
+                                  <div class="col-auto">
+                                    <p class="mb-0 text-muted">{{ rating.star }}</p>
+                                  </div>
+                                </div>
+                              }
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  @for (task of reviewer; track task) {
+                    <div class="card review-card">
+                      <div class="card-body">
+                        <div class="media align-items-start">
+                          <img class="img-radius img-fluid wid-40" src="{{ task.src }}" alt="User image" />
+                          <div class="media-body ms-3">
+                            <h6 class="mb-0">{{ task.name }}</h6>
+                            <p class="text-muted text-sm mb-0">15/04, 2024 10:15:29 AM</p>
+                            <ngb-rating [rate]="3" [max]="5">
+                              <ng-template let-fill="fill" let-index="index">
+                                <i
+                                  antIcon
+                                  type="{{ fill === 100 ? 'star' : 'star' }}"
+                                  theme="{{ fill === 100 ? 'fill' : 'outline' }}"
+                                  class="text-warning f-16 me-1"
+                                ></i>
+                              </ng-template>
+                            </ngb-rating>
+                            <p class="mb-0 text-muted text-sm mt-1">
+                              Akoin zojti jinuh ped uziwomuma iwi vese ow cu moaboow nadel puv te. Fi nevi uwboc hegucec aboejuapo ma net
+                              cujpab ulkoig guptuwe cekojti neoz niwi iwenipo.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  <div class="text-center my-3">
+                    <button class="btn btn-link-primary">View more comments</button>
+                  </div>
+                  <div class="new-comment">
+                    <div class="d-flex align-items-center w-100">
+                      <img class="img-radius img-fluid wid-40 me-1" src="assets/images/user/avatar-1.jpg" alt="User image" />
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Recipient's username"
+                          aria-label="Recipient's username"
+                          aria-describedby="button-addon2"
+                        />
+                        <button class="btn btn-primary" type="button" id="button-addon2">Send</button>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+            </ul>
+          </div>
+          <div class="card-body">
+            <div [ngbNavOutlet]="nav"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5 col-xl-4 position-relative">
+        <div class="card rel-prod-card">
+          <div class="card-header">
+            <h5>Related Products</h5>
+          </div>
+          <div class="card-body rel-prod-list p-0">
+            @for (list of related_product; track list; let first = $first) {
+              <div class="media align-items-start p-20 border-bottom">
+                <img class="border rounded img-fluid wid-60" src="{{ list.src }}" alt="User image" />
+                <div class="media-body mx-2">
+                  <h5 class="mb-1">Canon EOS 1500D 24.1 Digital SLR</h5>
+                  <p class="text-truncate text-muted text-sm mb-2">SLR Camera (Black) with</p>
+                  <h5 class="mb-1">
+                    <b>$275</b>
+                    <span class="mx-2 f-16 text-muted f-w-400 text-decoration-line-through">$350</span>
+                  </h5>
+                  <ngb-rating [rate]="3" [max]="5">
+                    <ng-template let-fill="fill" let-index="index">
+                      <i
+                        antIcon
+                        type="{{ fill === 100 ? 'star' : 'star' }}"
+                        theme="{{ fill === 100 ? 'fill' : 'outline' }}"
+                        class="text-warning f-16 me-1"
+                      ></i>
+                    </ng-template>
+                  </ngb-rating>
+                </div>
+                <div class="form-check prod-likes">
+                  <input type="checkbox" class="form-check-input" title="Add Whitelist" (change)="onLikeChange($event)" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-heart prod-likes-icon"
+                  >
+                    <path
+                      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ec-cart">
+    <a [routerLink]="['/e-commerce/checkout']" class="icon" title="cart">
+      <i antIcon theme="outline" type="shopping-cart" class="d-flex"></i>
+    </a>
+  </div>
+</div>

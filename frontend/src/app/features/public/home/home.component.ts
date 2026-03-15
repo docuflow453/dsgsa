@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -14,31 +14,9 @@ interface Stat {
   icon: string;
 }
 
-interface NewsArticle {
-  id: number;
-  title: string;
-  excerpt: string;
-  image: string;
-  category: string;
-  date: string;
-  link: string;
-}
-
-interface Event {
-  id: number;
-  title: string;
-  date: string;
-  location: string;
-  type: string;
-  status: 'Open' | 'Closing Soon' | 'Closed';
-}
-
-interface QuickLink {
-  title: string;
-  description: string;
-  icon: string;
-  route: string;
-  color: string;
+interface CountdownUnit {
+  label: string;
+  value: string;
 }
 
 @Component({
@@ -48,100 +26,37 @@ interface QuickLink {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
-  newsArticles: NewsArticle[] = [
+export class HomeComponent implements OnInit, OnDestroy {
+  features: Feature[] = [
     {
-      id: 1,
-      title: 'National Championships 2026 Dates Announced',
-      excerpt: 'The South African Dressage Championships will take place from 15-18 May 2026 at the Kyalami Equestrian Park...',
-      image: 'assets/images/news/championships.jpg',
-      category: 'Championships',
-      date: 'March 10, 2026',
-      link: '/news/1'
-    },
-    {
-      id: 2,
-      title: 'New Grading System Implementation',
-      excerpt: 'DSRiding announces the rollout of an updated grading system aligned with international FEI standards...',
-      image: 'assets/images/news/grading.jpg',
-      category: 'Updates',
-      date: 'March 8, 2026',
-      link: '/news/2'
-    },
-    {
-      id: 3,
-      title: 'Western Cape Regional Results',
-      excerpt: 'Congratulations to all riders who competed in the Western Cape Regional Championships last weekend...',
-      image: 'assets/images/news/results.jpg',
-      category: 'Results',
-      date: 'March 5, 2026',
-      link: '/news/3'
-    }
-  ];
-
-  upcomingEvents: Event[] = [
-    {
-      id: 1,
-      title: 'Spring Classic Dressage Show',
-      date: 'March 22-24, 2026',
-      location: 'Johannesburg Equestrian Centre',
-      type: 'Regional',
-      status: 'Open'
-    },
-    {
-      id: 2,
-      title: 'KZN Provincial Championships',
-      date: 'April 5-7, 2026',
-      location: 'Durban Dressage Arena',
-      type: 'Provincial',
-      status: 'Closing Soon'
-    },
-    {
-      id: 3,
-      title: 'Cape Town Dressage Festival',
-      date: 'April 12-14, 2026',
-      location: 'Cape Town Equestrian Park',
-      type: 'Festival',
-      status: 'Open'
-    },
-    {
-      id: 4,
-      title: 'Gauteng Open Competition',
-      date: 'April 19-21, 2026',
-      location: 'Pretoria Show Grounds',
-      type: 'Open',
-      status: 'Open'
-    }
-  ];
-
-  quickLinks: QuickLink[] = [
-    {
-      title: 'Find Competitions',
-      description: 'Browse upcoming competitions across all provinces',
       icon: 'bi-calendar-event',
-      route: '/calendar',
-      color: 'primary'
+      title: 'Competition Management',
+      description: 'Browse and enter competitions across South Africa with ease. View schedules, classes, and riding orders in real-time.'
     },
     {
-      title: 'View Results',
-      description: 'Access competition results and rankings',
       icon: 'bi-trophy',
-      route: '/results',
-      color: 'success'
+      title: 'Results & Rankings',
+      description: 'Access comprehensive competition results and national rankings. Track your progress and achievements throughout the season.'
     },
     {
-      title: 'Register Now',
-      description: 'Create your rider account and get started',
-      icon: 'bi-person-plus',
-      route: '/auth/register',
-      color: 'warning'
-    },
-    {
-      title: 'Find Officials',
-      description: 'Directory of judges and technical delegates',
       icon: 'bi-people',
-      route: '/officials',
-      color: 'info'
+      title: 'Rider & Horse Registration',
+      description: 'Manage your rider profile and register your horses. Keep all your documentation and memberships up to date.'
+    },
+    {
+      icon: 'bi-credit-card',
+      title: 'Online Payments',
+      description: 'Secure online payment processing for competition entries, memberships, and levies. Quick and convenient checkout.'
+    },
+    {
+      icon: 'bi-geo-alt',
+      title: 'Provincial Network',
+      description: 'Connect with clubs and show holding bodies across all provinces. Find competitions near you.'
+    },
+    {
+      icon: 'bi-file-earmark-text',
+      title: 'Document Management',
+      description: 'Store and manage all your equestrian documents in one place. Never miss an expiry date with automated reminders.'
     }
   ];
 
@@ -151,5 +66,42 @@ export class HomeComponent {
     { value: '50+', label: 'Annual Competitions', icon: 'bi-calendar-check' },
     { value: '9', label: 'Provinces', icon: 'bi-geo' }
   ];
+
+  countdown: CountdownUnit[] = [
+    { label: 'Days', value: '00' },
+    { label: 'Hours', value: '00' },
+    { label: 'Minutes', value: '00' },
+    { label: 'Seconds', value: '00' }
+  ];
+
+  private readonly launchDate = new Date(Date.now() + 120 * 24 * 60 * 60 * 1000);
+  private intervalId?: number;
+
+  ngOnInit(): void {
+    this.updateCountdown();
+    this.intervalId = window.setInterval(() => this.updateCountdown(), 1000);
+  }
+
+  ngOnDestroy(): void {
+    if (this.intervalId) {
+      window.clearInterval(this.intervalId);
+    }
+  }
+
+  private updateCountdown(): void {
+    const difference = Math.max(this.launchDate.getTime() - Date.now(), 0);
+    const totalSeconds = Math.floor(difference / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    this.countdown = [
+      { label: 'Days', value: String(days).padStart(2, '0') },
+      { label: 'Hours', value: String(hours).padStart(2, '0') },
+      { label: 'Minutes', value: String(minutes).padStart(2, '0') },
+      { label: 'Seconds', value: String(seconds).padStart(2, '0') }
+    ];
+  }
 }
 

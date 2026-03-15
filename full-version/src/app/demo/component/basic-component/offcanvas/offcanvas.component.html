@@ -1,0 +1,124 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-header">
+        <h5>Live demo</h5>
+      </div>
+      <div class="card-body btn-page">
+        <div class="bd-example-modal mb-4">
+          <div class="offcanvas offcanvas-start" tabindex="-1">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasLabel">Offcanvas</h5>
+              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              Content for the offcanvas goes here. You can place just about any Bootstrap component or custom elements here.
+            </div>
+          </div>
+        </div>
+        <div class="card-body btn-page pc-component">
+          <a class="btn btn-primary me-2" data-bs-toggle="offcanvas" href="javascript:" role="button" (click)="open(content)">
+            Link with href
+          </a>
+          <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" (click)="open(content)">
+            Button with data-bs-target
+          </button>
+        </div>
+        <ng-template #content let-offcanvas>
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+            <button
+              type="button"
+              class="btn-close text-reset"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+              (click)="offcanvas.close('Close click')"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <h4 class="mb-4">Main Title</h4>
+            <h6>Some Title</h6>
+            <p class="mb-4">
+              Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+            </p>
+            <h6>Some Title</h6>
+            <p class="mb-4">
+              Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+            </p>
+            <h6>Some Title</h6>
+            <p class="mb-4">
+              Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+            </p>
+            <div class="dropdown d-inline-block me-2" ngbDropdown>
+              <button class="btn btn-light-secondary btn-sm dropdown-toggle" type="button" ngbDropdownToggle>Dropdown button</button>
+              <ul class="dropdown-menu" ngbDropdownMenu>
+                <li><a class="dropdown-item" href="javascript:">Action</a></li>
+                <li><a class="dropdown-item" href="javascript:">Another action</a></li>
+                <li><a class="dropdown-item" href="javascript:">Something else here</a></li>
+              </ul>
+            </div>
+            <button class="btn btn-light-danger btn-sm" data-bs-dismiss="offcanvas">Close</button>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12">
+    <app-card cardTitle="Placement" blockClass="pc-component btn-page">
+      <button class="btn btn-light-secondary" type="button" data-bs-toggle="offcanvas" (click)="openTop(content1)">
+        Top offcanvas
+        <i data-feather="chevrons-up"></i>
+      </button>
+      <button class="btn btn-light-secondary me-2" type="button" data-bs-toggle="offcanvas" (click)="openEnd(content)">
+        Right offcanvas
+        <i data-feather="chevrons-right"></i>
+      </button>
+      <button class="btn btn-light-secondary" type="button" data-bs-toggle="offcanvas" (click)="openBottom(content1)">
+        Bottom offcanvas
+        <i data-feather="chevrons-down"></i>
+      </button>
+      <ng-template #content1 let-offcanvas>
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasBottomLabel">Offcanvas bottom</h5>
+          <button
+            type="button"
+            class="btn-close text-reset"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+            (click)="offcanvas.close('Close click')"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+          <h6>Some Title</h6>
+          <p class="mb-4">
+            Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+          </p>
+          <div class="dropdown d-inline-block me-2" ngbDropdown>
+            <button class="btn btn-light-secondary btn-sm dropdown-toggle" ngbDropdownToggle>Dropdown button</button>
+            <ul class="dropdown-menu" ngbDropdownMenu>
+              <li><a class="dropdown-item" href="javascript:">Action</a></li>
+              <li><a class="dropdown-item" href="javascript:">Another action</a></li>
+              <li>
+                <a class="dropdown-item" href="javascript:">Something else here</a>
+              </li>
+            </ul>
+          </div>
+          <button class="btn btn-light-danger btn-sm" data-bs-dismiss="offcanvas" (click)="offcanvas.close('Close click')">Close</button>
+        </div>
+      </ng-template>
+    </app-card>
+  </div>
+  <div class="col-sm-12">
+    <app-card cardTitle="Backdrop" blockClass="pc-component btn-page">
+      <button class="btn btn-light-secondary" type="button" data-bs-toggle="offcanvas" (click)="openScroll(content)">
+        Enable body scrolling
+      </button>
+      <button class="btn btn-light-secondary me-2" type="button" data-bs-toggle="offcanvas" (click)="openBackdrop(content)">
+        Enable backdrop (default)
+      </button>
+      <button class="btn btn-light-secondary" type="button" data-bs-toggle="offcanvas" (click)="openBothOptions(content)">
+        Enable both scrolling & backdrop
+      </button>
+    </app-card>
+  </div>
+</div>

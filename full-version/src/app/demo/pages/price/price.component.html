@@ -1,0 +1,63 @@
+<div class="row justify-content-center">
+  <div class="col-12">
+    <div class="alert-price-menu border rounded py-2 px-3 border-info d-flex mb-4">
+      <i class="text-info f-16" antIcon theme="outline" type="info-circle"></i>
+      <div class="ms-3">
+        <div class="f-w-500 text-info mb-1">Note</div>
+        <p class="mb-0">
+          The pricing provided is for demonstration purposes only. For actual product pricing, please refer to the official.
+          <a [href]="buy_now_link" target="_blank" class="text-info f-w-500">pricing page</a>
+        </p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-12 col-md-9 col-lg-7">
+            <div class="d-flex flex-column">
+              <div class="d-flex mb-3 align-items-center">
+                <h6 class="mb-0" [ngClass]="isChecked === true ? 'text-muted' : ''">Billed Yearly</h6>
+                <div class="form-check form-switch p-0 mx-2">
+                  <input class="form-check-input h5 m-0 p-0" type="checkbox" role="switch" id="price-switch" [(ngModel)]="isChecked" />
+                </div>
+                <h6 class="mb-0" [ngClass]="isChecked === false ? 'text-muted' : ''">Billed Monthly</h6>
+              </div>
+            </div>
+            <p class="mb-0 text-muted">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      @for (price of priceCard; track price) {
+        <div class="col-md-6 col-lg-4">
+          <div class="card price-card">
+            <div class="card-body">
+              <div class="price-icon">
+                <img src="{{ price.image }}" alt="img" class="img-fluid" />
+                <h4 class="mb-0">{{ price.price_type }}</h4>
+              </div>
+              <p class="mt-4">
+                Create one end product for a client, transfer that end product to your client, charge them for your services. The license is
+                then transferred to the client.
+              </p>
+              <div class="price-price my-4">
+                ${{ isChecked === true ? price.yearly : price.monthly }}
+                <span class="text-muted">Lifetime</span>
+              </div>
+              <div class="d-grid"><a class="btn {{ price.btn_type }}  mb-4" href="javascript:" role="button">Order Now</a></div>
+              <ul class="list-group list-group-flush product-list">
+                @for (list of price.includeItems; track list) {
+                  <li class="list-group-item" [ngClass]="list.available === true ? 'enable' : ''">{{ list.title }}</li>
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

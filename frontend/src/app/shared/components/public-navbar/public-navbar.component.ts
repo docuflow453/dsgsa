@@ -20,13 +20,12 @@ export class PublicNavbarComponent {
   activeDropdown = signal<string | null>(null);
 
   navItems: NavItem[] = [
-    { 
-      label: 'Home', 
+    {
+      label: 'Home',
       route: '/',
-      children: [
-        { label: 'About Us', route: '/about' }
-      ]
+      children: [{ label: 'About Us', route: '/about' }]
     },
+    { label: 'Login', route: '/auth/login' },
     { label: 'Provinces', route: '/provinces' },
     { label: 'National Calendar', route: '/calendar' },
     { label: 'Results', route: '/results' },
@@ -34,6 +33,10 @@ export class PublicNavbarComponent {
     { label: 'News', route: '/news' },
     { label: 'Contact Us', route: '/contact' }
   ];
+
+  openDropdown(label: string): void {
+    this.activeDropdown.set(label);
+  }
 
   toggleMobileMenu(): void {
     this.mobileMenuOpen.update(value => !value);
@@ -50,6 +53,10 @@ export class PublicNavbarComponent {
   closeMobileMenu(): void {
     this.mobileMenuOpen.set(false);
     this.activeDropdown.set(null);
+  }
+
+  isActionLink(item: NavItem): boolean {
+    return item.label === 'Login';
   }
 }
 

@@ -1,0 +1,169 @@
+<div class="row">
+  @for (card of static_card; track card) {
+    <div class="col-lg-3 col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <h4 class="mb-1">{{ card.earning }}</h4>
+              <p class="text-muted mb-0">{{ card.name }}</p>
+            </div>
+            <div class="col-4 text-end">
+              <i class="{{ card.color }} f-30" antIcon type="{{ card.icon }}" theme="outline"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+  @for (item of EcommerceMetrix; track item) {
+    <div class="col-md-6 col-xl-4">
+      <div class="card {{ item.color }} ecommerce-metrix-card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="icon-symbol">
+              <i antIcon type="{{ item.icons }}" theme="fill"></i>
+            </div>
+            <div class="text-end">
+              <h4 class="mb-0 text-white">{{ item.title }}</h4>
+              <h2 class="mb-0 text-white">{{ item.amount }}</h2>
+            </div>
+          </div>
+          <div class="d-flex align-items-center justify-content-end pt-3">
+            <h5 class="text-white">{{ item.description }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  @for (social of HoverSocialCard; track social) {
+    <div class="col-md-6 col-xl-3">
+      <div class="card hover-social-card {{ social.color }}">
+        <div class="card-body">
+          <h3 class="text-white m-0">{{ social.total }}</h3>
+          <span class="m-t-10">{{ social.name }}</span>
+          <i antIcon type="{{ social.icon }}" theme="outline"></i>
+        </div>
+      </div>
+    </div>
+  }
+
+  @for (rounded of RoundIconCard; track rounded) {
+    <div class="col-xl-4 col-md-12">
+      <div class="card rounded-icon-card">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col">
+              <h5>{{ rounded.name }}</h5>
+              <h3>{{ rounded.total }}</h3>
+              <p class="mb-0 f-12 f-w-500">{{ rounded.time }}</p>
+            </div>
+            <div class="col-auto">
+              <i class="{{ rounded.color }}" antIcon type="{{ rounded.icon }}" theme="outline"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  @for (analytic of AnalyticEcommerce; track analytic) {
+    <div class="col-md-6 col-xl-3">
+      <app-card [showHeader]="false" blockClass="dashboard-card">
+        <h6 class="mb-2 f-w-400 text-muted">{{ analytic.title }}</h6>
+        <h4 class="mb-3">
+          {{ analytic.amount }}
+          <span class="badge {{ analytic.background }} border {{ analytic.border }} ">
+            <i antIcon type="{{ analytic.icon }}" theme="outline"></i>
+            {{ analytic.percentage }}
+          </span>
+        </h4>
+        <p class="mb-0 text-muted text-sm">
+          You made an extra
+          <span class="{{ analytic.color }}">{{ analytic.number }}</span>
+          this year
+        </p>
+      </app-card>
+    </div>
+  }
+  @for (counter of userCounter; track counter) {
+    <div class="col-sm-4">
+      <div class="card position-relative text-white user-counter-card overflow-hidden {{ counter.background }}">
+        <div class="card-body">
+          <div class="icon-img">
+            <i class="contact-icon" antIcon type="{{ counter.icon }}" theme="outline"></i>
+          </div>
+          <div class="d-flex align-items-center flex-column">
+            <h3 class="text-white">{{ counter.value }}</h3>
+            <p class="mb-0">{{ counter.details }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="row g-0">
+        <div class="col-md-7">
+          <div class="card-body bg-primary position-relative h-100">
+            <h5 class="text-white">What would you want to learn today</h5>
+            <p class="text-white text-sm mb-4">Your learning capacity is 80% as daily analytics</p>
+            <h4 class="text-white pt-5">35% Completed</h4>
+            <div class="max-60 position-relative">
+              <ngb-progressbar type="success" height="6px" [value]="40"></ngb-progressbar>
+            </div>
+            <img src="assets/images/widget/reader.svg" alt="img" class="img-fluid img-reader" />
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="card-body">
+            <p class="mb-2">Get started with new basic skills</p>
+            <p class="text-muted mb-3">Last Date 5th Nov 2020</p>
+            <hr class="my-4" />
+            <div class="d-flex align-items-center justify-content-between mb-4">
+              <div class="user-group">
+                <img src="assets/images/user/avatar-1.jpg" alt="image" />
+                <img src="assets/images/user/avatar-2.jpg" alt="image" />
+                <img src="assets/images/user/avatar-3.jpg" alt="image" />
+              </div>
+              <a href="javascript:" class="avatar avatar-xs btn btn-primary" title="Add User">
+                <i antIcon type="plus" theme="outline"></i>
+              </a>
+            </div>
+            <p class="text-muted text-sm mb-0">Chrome fixed the bug several versions ago, thus rendering this...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-body">
+        @for (details of summaryIncome; track details) {
+          <div class="row align-items-center my-2">
+            <div class="col-5">
+              <p class="mb-0">{{ details.title }}</p>
+            </div>
+            <div class="col">
+              <ngb-progressbar class="{{ details.background }}" type="{{ details.color }}" value="{{ details.value }}" height="6px" />
+            </div>
+            <div class="col-auto ps-0">
+              <p class="mb-0 text-sm text-muted">{{ details.percentage }}</p>
+            </div>
+          </div>
+        }
+        <hr class="my-4" />
+        <div class="d-flex align-items-center">
+          <div class="flex-shrink-0">
+            <img src="assets/images/widget/target.svg" alt="img" class="img-fluid" />
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <span>Income Salaries & Budget</span>
+            <p class="text-muted mb-0 text-sm">All your income salaries and budget comes here, you can track them or manage them</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

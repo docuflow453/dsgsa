@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: '/api'
+  apiUrl: '/api',
+  landingBackgroundImageUrl: '/images/background/coming-soon-placeholder.svg'
 };
 

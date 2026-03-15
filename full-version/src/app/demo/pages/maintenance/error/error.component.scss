@@ -1,0 +1,28 @@
+.maintenance-block {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.error-card {
+  box-shadow: none;
+  text-align: center;
+  border: none;
+  overflow: hidden;
+  .error-image-block {
+    position: relative;
+    text-align: center;
+    display: inline-flex;
+    .img-twocone {
+      position: absolute;
+      bottom: -30%;
+      right: -50%;
+      @media (max-width: 575.98px) {
+        transform: scale(0.4);
+        bottom: -75%;
+        right: -43%;
+      }
+    }
+  }
+}

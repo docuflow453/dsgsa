@@ -1,0 +1,88 @@
+@import '../../../../scss/settings/color-variables.scss';
+
+.card {
+  .card-body.dashboard-card {
+    padding: 18px;
+    padding-bottom: 20px;
+  }
+}
+
+.user-group {
+  img {
+    position: relative;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    z-index: 2;
+    transition: all 0.1s ease-in-out;
+    border: 2px solid var(--bs-white);
+    + img {
+      margin-left: -14px;
+    }
+    &:hover {
+      z-index: 5;
+    }
+  }
+}
+
+.welcome-card {
+  margin-bottom: 36px;
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  overflow: hidden;
+  position: relative;
+  border: none var(--bs-border-color);
+  border-radius: 4px;
+  box-shadow: inherit;
+  background: linear-gradient(
+    250.38deg,
+    rgb(230, 244, 255) 2.39%,
+    rgb(105, 177, 255) 34.42%,
+    rgb(22, 119, 255) 60.95%,
+    rgb(9, 88, 217) 84.83%,
+    rgb(0, 44, 140) 104.37%
+  );
+
+  ::ng-deep.mantis-dark & {
+    background: linear-gradient(
+      250.38deg,
+      rgb(17, 26, 44) 2.39%,
+      rgb(21, 65, 126) 34.42%,
+      rgb(22, 104, 220) 60.95%,
+      rgb(60, 137, 232) 84.83%,
+      rgb(141, 197, 248) 104.37%
+    );
+  }
+
+  .body {
+    padding: 20px;
+
+    .info-section {
+      padding: 27.5px;
+      h2,
+      h6 {
+        color: $white;
+      }
+    }
+
+    .sub-img {
+      position: absolute;
+      bottom: 8px;
+      right: 7%;
+
+      ::ng-deep.mantis-rtl & {
+        right: auto !important;
+        left: 7%;
+      }
+    }
+  }
+}
+
+.max-60 {
+  max-width: 60%;
+}
+
+.img-reader {
+  position: absolute;
+  right: 0;
+  bottom: 1px;
+}

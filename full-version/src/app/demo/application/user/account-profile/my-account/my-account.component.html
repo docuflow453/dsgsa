@@ -1,0 +1,111 @@
+<div class="row">
+  <div class="col-12">
+    <app-card cardTitle="General Settings" [padding]="24">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="form-label" for="person username">
+              Username
+              <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" id="person username" value="Ashoka_Tano_16" />
+            <small class="form-text text-muted">Your Profile URL: https://pc.com/Ashoka_Tano_16</small>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="form-label" for="Email of Account">
+              Account Email
+              <span class="text-danger">*</span>
+            </label>
+            <input type="email" id="Email of Account" class="form-control" value="demo@sample.com" />
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="form-label">Language</label>
+            <select class="form-control" title="Select Language">
+              <option>Washington</option>
+              <option>India</option>
+              <option>Africa</option>
+              <option>New York</option>
+              <option>Malaysia</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="form-label">Sign in Using</label>
+            <select class="form-control" title="Select Type of Sign in">
+              <option>Password</option>
+              <option>Face Recognition</option>
+              <option>Thumb Impression</option>
+              <option>Key</option>
+              <option>Pin</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </app-card>
+  </div>
+  <div class="col-lg-6">
+    <app-card cardTitle="Advance Setting" [padding]="24">
+      <ul class="list-group list-group-flush">
+        @for (task of advance_setting; track task) {
+          <li class="list-group-item px-0 {{ task.style }}">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <p class="mb-0">{{ task.title }}</p>
+                <p class="text-muted text-sm mb-0">{{ task.text }}</p>
+              </div>
+              <div class="form-check form-switch p-0">
+                <input class="form-check-input h4 position-relative m-0" type="checkbox" role="switch" checked title="Switch On" />
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+    </app-card>
+  </div>
+  <div class="col-lg-6">
+    <app-card cardTitle="Recognized Devices" [padding]="24">
+      <ul class="list-group list-group-flush">
+        @for (task of recognized_device; track task; let last = $last, first = $first) {
+          <li class="list-group-item px-0" [ngClass]="{ 'pt-0': first, 'pb-0': last }">
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="me-2">
+                <p class="mb-0">{{ task.title }}</p>
+                <p class="mb-0 text-sm text-muted">{{ task.text }}</p>
+              </div>
+              <div class="d-flex align-items-center {{ task.status_type }}">
+                <div class="me-1 device-dot {{ task.dot_background }}"></div>
+                <div>{{ task.status }}</div>
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+    </app-card>
+  </div>
+  <div class="col-12">
+    <app-card cardTitle="Active Sessions" [padding]="24">
+      <ul class="list-group list-group-flush">
+        @for (item of active_sessions; track item) {
+          <li class="list-group-item px-0" [ngClass]="item.style">
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="me-2">
+                <p class="mb-0">{{ item.title }}</p>
+                <p class="mb-0 text-muted text-sm">{{ item.value }}</p>
+              </div>
+              <button class="btn btn-link-primary">Logout</button>
+            </div>
+          </li>
+        }
+      </ul>
+    </app-card>
+  </div>
+  <div class="col-12 text-end">
+    <button class="btn btn-outline-secondary me-2">Clear</button>
+    <button class="btn btn-primary">Update Profile</button>
+  </div>
+</div>

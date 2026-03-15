@@ -1,0 +1,117 @@
+<div class="row">
+  <div class="col-lg-9">
+    <app-invoice-chart />
+  </div>
+  <div class="col-lg-3">
+    <app-card [showHeader]="false">
+      <div class="row g-3 text-center">
+        @for (item of invoiceCard; track item) {
+          <div class="col-6">
+            <app-card [showHeader]="false" cardClass="mb-0" blockClass="py-4 px-2" [padding]="0">
+              <div class="avatar {{ item.background }} rounded-circle">
+                <i antIcon type="{{ item.icon }}" theme="fill" class="text-white d-flex"></i>
+              </div>
+              <h6 class="mb-0 mt-3 text-muted">{{ item.title }}</h6>
+            </app-card>
+          </div>
+        }
+      </div>
+    </app-card>
+  </div>
+  <div class="col-md-6 col-xl-4">
+    <app-card cardTitle="Recent Invoice" [padding]="0">
+      <ng-template #headerOptionsTemplate>
+        <div ngbDropdown placement="bottom-end">
+          <a class="avatar avatar-s btn-link-secondary arrow-none" href="javascript:" ngbDropdownToggle>
+            <i class="f-18" antIcon type="more" theme="outline"></i>
+          </a>
+          <div ngbDropdownMenu>
+            <a ngbDropdownItem>Today</a>
+            <a ngbDropdownItem>Weekly</a>
+            <a ngbDropdownItem>Monthly</a>
+          </div>
+        </div>
+      </ng-template>
+      <ul class="list-group list-group-flush border-top-0">
+        @for (list of UserList; track list) {
+          <li class="list-group-item border-0">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <img src="{{ list.avatar }}" alt="user-image" class="user-avatar rounded-circle wid-40 hie-40" />
+              </div>
+              <div class="flex-grow-1 mx-2">
+                <h6 class="mb-1">
+                  {{ list.name }}
+                  <span class="text-muted">- #790841</span>
+                </h6>
+                <p class="mb-0 text-primary">{{ list.value }}</p>
+              </div>
+              <div class="flex-shrink-0">
+                <p class="text-muted mb-0">{{ list.time }}</p>
+              </div>
+            </div>
+          </li>
+        }
+        <li class="list-group-item border-0">
+          <div class="d-grid">
+            <button class="btn btn-outline-secondary">View All</button>
+          </div>
+        </li>
+      </ul>
+    </app-card>
+  </div>
+  <div class="col-md-6 col-xl-4">
+    <app-total-expenses-chart />
+  </div>
+  <div class="col-sm-12 col-xl-4">
+    <app-card cardTitle="Notification" [padding]="0">
+      <ng-template #headerOptionsTemplate>
+        <div ngbDropdown placement="bottom-end">
+          <a class="avatar avatar-s btn-link-secondary arrow-none" href="javascript:" ngbDropdownToggle>
+            <i class="f-18" antIcon type="more" theme="outline"></i>
+          </a>
+          <div ngbDropdownMenu>
+            <a ngbDropdownItem>Today</a>
+            <a ngbDropdownItem>Weekly</a>
+            <a ngbDropdownItem>Monthly</a>
+          </div>
+        </div>
+      </ng-template>
+      <ul class="list-group list-group-flush border-top-0">
+        @for (item of notificationList; track $index) {
+          <li class="list-group-item border-0">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="avatar avatar-s {{ item.background }} rounded-circle">
+                  @if (item.text === true) {
+                    <div class="f-16">C</div>
+                  } @else {
+                    <i class="f-16 d-flex" antIcon type="{{ item.icon }}" theme="outline"></i>
+                  }
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3 me-2">
+                <h6 class="mb-1">
+                  {{ item.title }}
+                  @if (item.link === true) {
+                    <a href="javascript:" class="link-primary">{{ item.linkValue }}</a>
+                    .
+                  }
+                </h6>
+                <p class="mb-0 text-muted text-sm">{{ item.date }}</p>
+              </div>
+              <div class="flex-shrink-0">
+                <a href="javascript:" class="avatar avatar-s btn-link-secondary"><i antIcon type="link" theme="outline"></i></a>
+              </div>
+            </div>
+          </li>
+        }
+        <li class="list-group-item border-0">
+          <div class="d-grid">
+            <button class="btn btn-outline-secondary">View All</button>
+          </div>
+        </li>
+      </ul>
+    </app-card>
+  </div>
+</div>

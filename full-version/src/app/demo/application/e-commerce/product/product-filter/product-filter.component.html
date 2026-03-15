@@ -1,0 +1,67 @@
+<div class="card-body">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item px-0 py-2 border-0">
+      <h5 class="mb-0">Gender</h5>
+      <div class="py-3">
+        @for (gender of genders; track gender; let i = $index, last = $last, first = $first) {
+          <div class="form-check my-3" [ngClass]="{ 'mb-0': last, 'mt-0': first }">
+            <input class="form-check-input" type="checkbox" id="genderfilter{{ i }}" value="option1" [checked]="gender.check" />
+            <label class="form-check-label" for="genderfilter{{ i }}">{{ gender.type }}</label>
+          </div>
+        }
+      </div>
+    </li>
+    <li class="list-group-item px-0 py-2 border-0">
+      <h5 class="mb-0">Categories</h5>
+      <div class="py-3">
+        @for (category of categories; track category; let i = $index, last = $last, first = $first) {
+          <div class="form-check my-3" [ngClass]="{ 'mb-0': last, 'mt-0': first }">
+            <input class="form-check-input" type="checkbox" id="categoryfilter{{ i }}" value="option1" [checked]="category.check" />
+            <label class="form-check-label" for="categoryfilter{{ i }}">{{ category.type }}</label>
+          </div>
+        }
+      </div>
+    </li>
+    <li class="list-group-item px-0 py-2 border-0">
+      <h5 class="mb-0">Colors</h5>
+      <div class="py-3">
+        @for (color of Colors; track color) {
+          <div class="form-check form-check-inline color-checkbox mb-0">
+            <input class="form-check-input" type="checkbox" title="Filter By Colors" />
+            <i class="fas fa-circle {{ color.type }}"></i>
+          </div>
+        }
+      </div>
+    </li>
+    <li class="list-group-item px-0 py-2 border-0">
+      <h5>Price</h5>
+      <div class="row">
+        <div class="col-6">
+          <label for="min" class="form-label">Min</label>
+          <input type="number" class="form-control text-sm" [(ngModel)]="minValue" id="min" />
+        </div>
+        <div class="col-6">
+          <label for="max" class="form-label">Max</label>
+          <input type="number" class="form-control text-sm" [(ngModel)]="maxValue" id="max" />
+        </div>
+      </div>
+      <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options"></ngx-slider>
+    </li>
+    <li class="list-group-item px-0 py-2">
+      <h5>Rating</h5>
+      <div class="pb-3">
+        <ngb-rating [(rate)]="selected" [max]="5">
+          <ng-template let-fill="fill" let-index="index">
+            <i
+              antIcon
+              type="{{ fill === 100 ? 'star' : 'star' }}"
+              theme="{{ fill === 100 ? 'fill' : 'outline' }}"
+              class="text-warning f-24 me-1"
+            ></i>
+          </ng-template>
+        </ngb-rating>
+        ({{ selected }})
+      </div>
+    </li>
+  </ul>
+</div>

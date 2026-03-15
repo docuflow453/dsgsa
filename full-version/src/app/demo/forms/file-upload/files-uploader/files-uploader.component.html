@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="File Uploader">
+      <div class="d-block">
+        <a href="{{ uploadedFileUrl }}" target="_blank">{{ uploadedFileUrl }}</a>
+      </div>
+      <button class="btn btn-primary m-t-5" uploadButton [uploadComplete]="onComplete" [uploadOptions]="options" [uploader]="uploader">
+        Upload a file...
+      </button>
+    </app-card>
+  </div>
+</div>

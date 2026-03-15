@@ -1,0 +1,105 @@
+<div class="row">
+  <div class="p-3 d-sm-flex align-items-center justify-content-between user-card">
+    <div class="form-search user-card">
+      <i antIcon type="search" theme="outline"></i>
+      <input type="search" class="form-control" placeholder="Search" />
+    </div>
+    <div class="d-flex align-items-center m-sm-0 mt-3">
+      <select class="form-select" aria-label="Default select example">
+        <option selected>Short by (Default)</option>
+        <option value="1">Customer Name</option>
+        <option value="2">Email</option>
+        <option value="3">Contact</option>
+        <option value="4">Age</option>
+        <option value="5">Country</option>
+        <option value="6">Status</option>
+      </select>
+      <a href="javascript:" class="btn btn-primary d-inline-flex align-items-center ms-2 text-white">
+        <i class="me-2 d-flex" antIcon type="plus" theme="outline"></i>
+        <span>Add Customer</span>
+      </a>
+    </div>
+  </div>
+  @for (card of card_detail; track card) {
+    <div class="col-md-6 col-xl-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex">
+            <div class="flex-shrink-0">
+              <img src="{{ card.src }}" alt="user-image" class="wid-40 rounded-circle" />
+            </div>
+            <div class="flex-grow-1 mx-3">
+              <h6 class="mb-0">{{ card.name }}</h6>
+              <p class="text-muted text-sm mb-0">{{ card.position }}</p>
+            </div>
+            <div class="dropdown" ngbDropdown>
+              <a
+                class="avatar avatar-s btn-link-secondary dropdown-toggle arrow-none"
+                title="dropdowns"
+                href="javascript:"
+                ngbDropdownToggle
+              >
+                <i antIcon type="more" theme="outline" class="f-16"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                <a class="dropdown-item" href="javascript:">Preview</a>
+                <a class="dropdown-item" href="javascript:">Share</a>
+                <a class="dropdown-item" href="javascript:">Edit</a>
+                <a class="dropdown-item" href="javascript:">Delete</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="mb-4">Hello, Mo cebu eroul fuh omigita uf wo zuzpoza urdovwak guwmofce etsonot fufne do lecwez arepolet.</p>
+          <div class="row g-2">
+            <div class="col-sm-6">
+              <div class="d-inline-flex align-items-center w-100">
+                <i antIcon type="mail" theme="outline"></i>
+                <p class="mb-0 ms-2 text-truncate text-muted">bo&#64;gmail.com</p>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-inline-flex align-items-center w-100">
+                <i antIcon type="phone" theme="outline"></i>
+                <p class="mb-0 ms-2 text-truncate text-muted">+1 (247) 849-6968</p>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-inline-flex align-items-center w-100">
+                <i antIcon type="environment" theme="outline"></i>
+                <p class="mb-0 ms-2 text-truncate text-muted">Lesotho</p>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-inline-flex align-items-center w-100">
+                <i antIcon type="link" theme="outline"></i>
+                <a href="javascript:" class="link-primary text-truncate">
+                  <p class="mb-0 ms-2 text-truncate">https://anshan.dh.url</p>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3">
+            @for (item of card.user_skill; track item) {
+              <span class="badge bg-outline-secondary f-14 me-1 mt-1">{{ item.skill }}</span>
+            }
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex align-items-center justify-content-between">
+            <p class="mb-0 text-muted text-sm">Updated in 2 min ago</p>
+            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" (click)="open(preview)">Preview</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<ng-template #preview let-modal>
+  <app-card-preview></app-card-preview>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="modal.close('Close click')">Close</button>
+  </div>
+</ng-template>

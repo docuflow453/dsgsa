@@ -21,15 +21,27 @@ export class RiderNavbarComponent {
   showUserMenu = false;
 
   navItems: RiderNavItem[] = [
-    { label: 'My Dashboard', icon: 'bi-grid', route: '/rider/dashboard' },
-    { label: 'My Entries', icon: 'bi-calendar-check', route: '/rider/entries' },
-    { label: 'My Horses', icon: 'bi-heart', route: '/rider/horses' },
-    { label: 'Results', icon: 'bi-trophy', route: '/rider/results' },
-    { label: 'My Profile', icon: 'bi-person', route: '/rider/profile' }
+    { label: 'Dashboard', icon: 'bi-grid', route: '/my/dashboard' },
+    { label: 'Entries', icon: 'bi-calendar-check', route: '/my/entries' },
+    { label: 'Horses', icon: 'bi-heart', route: '/my/horses' },
+    { label: 'Results', icon: 'bi-trophy', route: '/my/results' },
+    { label: 'Profile', icon: 'bi-person', route: '/my/profile' }
   ];
 
   toggleUserMenu(): void {
     this.showUserMenu = !this.showUserMenu;
+  }
+
+  closeUserMenu(): void {
+    this.showUserMenu = false;
+  }
+
+  getUserInitials(user: { first_name?: string | null; last_name?: string | null }): string {
+    return `${user.first_name?.charAt(0) ?? ''}${user.last_name?.charAt(0) ?? ''}` || 'DR';
+  }
+
+  getUserFirstName(user: { first_name?: string | null }): string {
+    return user.first_name?.trim() || 'Rider';
   }
 
   logout(): void {

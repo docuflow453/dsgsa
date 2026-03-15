@@ -1,0 +1,49 @@
+<section class="component-block" style="padding-top: 120px">
+  <div class="container">
+    <div class="component-page">
+      <div class="component-menubar">
+        <div class="card sticky-top component-list-card" style="top: 100px">
+          <div class="card-header">
+            <div class="form-search">
+              <i antIcon theme="outline" type="search" class="d-flex"></i>
+              <input
+                type="search"
+                class="form-control"
+                placeholder="Search Components"
+                id="compo-menu-search"
+                [(ngModel)]="searchMenusItems"
+              />
+            </div>
+          </div>
+          <div class="pc-sidebar component-menu py-3" (click)="closeOtherMenu()">
+            <div class="scroll-div w-100">
+              <app-scrollbar [customStyle]="'calc(100vh - 250px)'" id="nav-ps-mantis">
+                <div class="navbar-content">
+                  <ul class="nav coded-inner-navbar">
+                    @for (item of navigations | searchFilter: searchMenusItems; track item) {
+                      @if (item.type === 'group') {
+                        <app-com-group [item]="item"></app-com-group>
+                      }
+                    }
+                  </ul>
+                </div>
+              </app-scrollbar>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="component-content">
+        <div class="row">
+          <div class="col-md-8 col-xxl-12">
+            <a (click)="mobClick()" class="component-explore btn btn-primary mb-3 text-white">
+              <i class="f-16" antIcon theme="outline" type="database"></i>
+              Explore Component
+            </a>
+            <app-breadcrumb [Component]="true" [dashboard]="false"></app-breadcrumb>
+          </div>
+        </div>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</section>

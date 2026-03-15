@@ -1,0 +1,108 @@
+<div class="row">
+  <div class="col-lg-6">
+    <app-card cardTitle="Personal Information" [padding]="24">
+      <div class="row">
+        <div class="col-sm-12 text-center mb-3">
+          <div class="user-upload wid-75">
+            <img src="assets/images/user/avatar-4.jpg" alt="img" class="img-fluid" />
+            <label for="uplfile" class="img-avatar-upload">
+              <i class="ti ti-camera f-24 mb-1"></i>
+              <span>Upload</span>
+            </label>
+            <input type="file" id="uplfile" class="d-none" />
+          </div>
+        </div>
+        @for (task of personal; track task) {
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="form-label">{{ task.label }}</label>
+              <input type="text" class="form-control" value="{{ task.value }}" placeholder="{{ task.detail }}" />
+            </div>
+          </div>
+        }
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label class="form-label">Bio</label>
+            <textarea class="form-control" placeholder="Leave a comment here">
+Hello, I’m Anshan Handgun Creative Graphic Designer & User Experience Designer based in Website, I create digital Products a more Beautiful and usable place. Morbid accusant ipsum. Nam nec tellus at.</textarea
+            >
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label class="form-label">Experience</label>
+            <select class="form-control" title="Enter Total Year Of Experience">
+              <option>Startup</option>
+              <option>2 year</option>
+              <option>3 year</option>
+              <option selected>4 year</option>
+              <option>5 year</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </app-card>
+  </div>
+  <div class="col-lg-6">
+    <app-card cardTitle="Social Network" [padding]="24">
+      @for (task of social_media; track task) {
+        <div class="d-flex align-items-center {{ task.style }}">
+          <div class="flex-grow-1 me-3">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <i class="f-16 {{ task.background }}" antIcon type="{{ task.icon }}" theme="fill"></i>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="mb-0">{{ task.name }}</h6>
+              </div>
+            </div>
+          </div>
+          <div class="flex-shrink-0">
+            @if (task.icon === 'facebook') {
+              <a href="javascript:" class="text-facebook">Anshan Handgun</a>
+            } @else {
+              <button class="btn btn-link-danger">Connect</button>
+            }
+          </div>
+        </div>
+      }
+    </app-card>
+    <app-card cardTitle="Contact Information" [padding]="24">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="form-label" for="Contact Number">Contact Phone</label>
+            <input type="text" id="Contact Number" class="form-control" value="(+99) 9999 999 999" />
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="form-label" for="Email Address">
+              Email
+              <span class="text-danger">*</span>
+            </label>
+            <input type="email" id="Email Address" class="form-control" value="demo@sample.com" />
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label class="form-label">Portfolio Url</label>
+            <input type="text" class="form-control" value="https://demo.com" placeholder="Enter Your URl" />
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label class="form-label" for="Address">Address</label>
+            <textarea class="form-control" id="Address" placeholder="Leave a comment here">
+3379  Monroe Avenue, Fort Myers, Florida(33912)</textarea
+            >
+          </div>
+        </div>
+      </div>
+    </app-card>
+  </div>
+  <div class="col-12 text-end btn-page">
+    <div class="btn btn-outline-secondary">Cancel</div>
+    <div class="btn btn-primary">Update Profile</div>
+  </div>
+</div>

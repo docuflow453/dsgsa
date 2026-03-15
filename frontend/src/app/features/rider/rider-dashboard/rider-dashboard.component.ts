@@ -47,31 +47,31 @@ export class RiderDashboardComponent implements OnInit {
 
   upcomingEntries: UpcomingEntry[] = [
     {
-      event: 'Spring Classic Show',
+      event: 'Western Cape Autumn Dressage',
       date: 'Mar 22, 2026',
       horse: 'Thunder Bay',
-      class: 'Hunter 3\'',
+      class: 'Novice Test 3',
       status: 'Confirmed'
     },
     {
-      event: 'Riverside Open',
+      event: 'KwaZulu-Natal Indoor Classic',
       date: 'Apr 05, 2026',
       horse: 'Silver Mist',
-      class: 'Jumper 1.10m',
+      class: 'Elementary Test 1',
       status: 'Confirmed'
     },
     {
-      event: 'Lakeside Dressage Cup',
+      event: 'Gauteng Dressage Cup',
       date: 'Apr 18, 2026',
       horse: 'Noble Star',
-      class: 'Training Level',
+      class: 'Medium Test 2',
       status: 'Pending'
     },
     {
-      event: 'Grand Prix Qualifier',
+      event: 'National Selection Show',
       date: 'May 02, 2026',
       horse: 'Thunder Bay',
-      class: 'Jumper 1.30m',
+      class: 'Advanced Test 1',
       status: 'Confirmed'
     }
   ];
@@ -80,19 +80,19 @@ export class RiderDashboardComponent implements OnInit {
     {
       position: 1,
       event: 'Winter Championship',
-      details: 'Thunder Bay · Jumper 1.20m',
+      details: 'Thunder Bay · Elementary Test 4',
       date: 'Feb 28, 2026'
     },
     {
       position: 3,
       event: 'Valley Classic',
-      details: 'Silver Mist · Hunter 3\'',
+      details: 'Silver Mist · Novice Test 5',
       date: 'Feb 14, 2026'
     },
     {
       position: 2,
       event: 'City Equestrian Cup',
-      details: 'Noble Star · Dressage Training',
+      details: 'Noble Star · Medium Test 1',
       date: 'Jan 30, 2026'
     }
   ];

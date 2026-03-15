@@ -1,0 +1,220 @@
+<div class="welcome-card">
+  <div class="body">
+    <div class="d-flex flex-wrap">
+      <div class="row w-100">
+        <div class="col-sm-6 col-xs-12">
+          <div class="info-section">
+            <h2 class="">Welcome to Mantis</h2>
+            <h6 class="my-3 f-w-400">
+              The purpose of a product update is to add new features, fix bugs or improve the performance of the product.
+            </h6>
+            <button routerLink="/dashboard/analytics" class="btn btn-outline-light">View full statistic</button>
+          </div>
+        </div>
+        <div class="col-sm-6 col-xs-12">
+          <div class="pe-5 d-flex flex-column justify-content-center align-items-end position-relative">
+            <img src="assets/images/analytics/welcome-banner.png" alt="welcome" />
+            <div class="sub-img">
+              <img src="assets/images/analytics/welcome-arrow.png" alt="welcome-arrow" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6 col-xl-3">
+    <app-user-card-chart />
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <app-order-card-chart />
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <app-sale-card-chart />
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <app-marketing-card-chart />
+  </div>
+
+  <div class="col-md-12 col-xl-8">
+    <app-income-over-chart />
+  </div>
+  <div class="col-md-12 col-xl-4">
+    <h5 class="mb-3">Page Views by Page Title</h5>
+    <div class="card">
+      <div class="list-group list-group-flush">
+        @for (task of page_view; track task) {
+          <a href="javascript:" class="list-group-item list-group-item-action">
+            <div class="d-flex my-1">
+              <div class="flex-grow-1 me-2">
+                <h6 class="mb-1">{{ task.title }}</h6>
+                <p class="mb-0 text-muted">{{ task.link }}</p>
+              </div>
+              <div class="flex-shrink-0 text-end">
+                <h5 class="mb-1 text-primary">{{ task.amount }}</h5>
+                <p class="mb-0 text-muted">{{ task.percentage }}</p>
+              </div>
+            </div>
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12 col-xl-8">
+    <h5 class="mb-3">Recent Orders</h5>
+    <div class="card tbl-card">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>TRACKING NO.</th>
+              <th>PRODUCT NAME</th>
+              <th class="text-end">TOTAL ORDER</th>
+              <th class="text-center">STATUS</th>
+              <th class="text-end">TOTAL AMOUNT</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (order of recentOrder; track order) {
+              <tr>
+                <td>
+                  <a href="javascript:" class="text-muted">{{ order.id }}</a>
+                </td>
+                <td>{{ order.name }}</td>
+                <td class="text-end">{{ order.quantity }}</td>
+                <td>
+                  <span class="px-4 text-center d-block">
+                    <i class="fas fa-circle {{ order.status_type }} f-10 m-r-5"></i>
+                    {{ order.status }}
+                  </span>
+                </td>
+                <td class="text-end">{{ order.amount }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 col-xl-4">
+    <app-analytics-chart />
+  </div>
+
+  <div class="col-md-12 col-xl-8">
+    <app-sales-report-chart />
+  </div>
+  <div class="col-md-12 col-xl-4">
+    <h5 class="mb-3">Transaction History</h5>
+    <div class="card">
+      <div class="list-group list-group-flush">
+        @for (history of transaction; track history) {
+          <a href="javascript:" class="list-group-item list-group-item-action">
+            <div class="d-flex">
+              <div class="flex-shrink-0">
+                <div class="avatar avatar-s rounded-circle {{ history.background }}">
+                  <i antIcon type="{{ history.icon }}" theme="outline"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="mb-1">{{ history.title }}</h6>
+                <p class="mb-0 text-muted">{{ history.time }}</p>
+              </div>
+              <div class="flex-shrink-0 text-end">
+                <h6 class="mb-1">{{ history.amount }}</h6>
+                <p class="mb-0 text-muted">{{ history.percentage }}</p>
+              </div>
+            </div>
+          </a>
+        }
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div class="row justify-content-between">
+          <div class="col-auto">
+            <h5>Help & Support Chat</h5>
+            <p class="mb-3">Typical replay within 5 min</p>
+          </div>
+          <div class="col-auto">
+            <div class="user-group mb-3">
+              <img src="assets/images/user/avatar-1.jpg" alt="image" />
+              <img src="assets/images/user/avatar-2.jpg" alt="image" />
+              <img src="assets/images/user/avatar-3.jpg" alt="image" />
+            </div>
+          </div>
+        </div>
+        <div class="btn btn-primary">Need Help?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12 col-xl-8">
+    <div class="card">
+      <div class="card-body">
+        @for (details of summaryIncome; track details) {
+          <div class="row align-items-center my-2">
+            <div class="col-5">
+              <p class="mb-0">{{ details.title }}</p>
+            </div>
+            <div class="col">
+              <ngb-progressbar class="{{ details.background }}" type="{{ details.color }}" value="{{ details.value }}" height="6px" />
+            </div>
+            <div class="col-auto ps-0">
+              <p class="mb-0 text-sm text-muted">{{ details.percentage }}</p>
+            </div>
+          </div>
+        }
+        <hr class="my-4" />
+        <div class="d-flex align-items-center">
+          <div class="flex-shrink-0">
+            <img src="assets/images/widget/target.svg" alt="img" class="img-fluid" />
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <span>Income Salaries & Budget</span>
+            <p class="text-muted mb-0 text-sm">All your income salaries and budget comes here, you can track them or manage them</p>
+            <p class="text-muted mb-0 text-sm">All your income salaries and budget comes here, you can track them or manage them</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="row g-0">
+        <div class="col-md-7">
+          <div class="card-body bg-primary position-relative h-100">
+            <h5 class="text-white">What would you want to learn today</h5>
+            <p class="text-white text-sm mb-4">Your learning capacity is 80% as daily analytics</p>
+            <h4 class="text-white pt-5">35% Completed</h4>
+            <div class="max-60 position-relative">
+              <ngb-progressbar type="success" height="6px" [value]="40"></ngb-progressbar>
+            </div>
+            <img src="assets/images/widget/reader.svg" alt="img" class="img-fluid img-reader" />
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="card-body">
+            <p class="mb-2">Get started with new basic skills</p>
+            <p class="text-muted mb-3">Last Date 5th Nov 2020</p>
+            <hr class="my-4" />
+            <div class="d-flex align-items-center justify-content-between mb-4">
+              <div class="user-group">
+                <img src="assets/images/user/avatar-1.jpg" alt="image" />
+                <img src="assets/images/user/avatar-2.jpg" alt="image" />
+                <img src="assets/images/user/avatar-3.jpg" alt="image" />
+              </div>
+              <a href="javascript:" class="avatar avatar-xs btn btn-primary" title="Add User">
+                <i antIcon type="plus" theme="outline"></i>
+              </a>
+            </div>
+            <p class="text-muted text-sm mb-0">Chrome fixed the bug several versions ago, thus rendering this...</p>
+            <p class="text-muted text-sm mb-0">Chrome fixed the bug several versions ago, thus rendering this...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 col-xl-4">
+    <app-acquisition-chart />
+  </div>
+</div>

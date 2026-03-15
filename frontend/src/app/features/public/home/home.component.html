@@ -1,184 +1,96 @@
-<!-- Hero Carousel Section - British Dressage Style -->
-<section class="carousel-section">
-  <div class="carousel-wrapper">
-    <div class="carousel-item active">
-      <div class="carousel-image-wrapper">
-        <img src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=1920&h=540&fit=crop"
-             alt="Dressage Competition"
-             class="carousel-image" />
-      </div>
-      <div class="carousel-overlay"></div>
-      <div class="carousel-content-wrapper">
-        <div class="container">
-          <div class="carousel-content">
-            <h2 class="carousel-hero-title">Excellence in Dressage</h2>
-            <div class="carousel-text">
-              South Africa's premier platform for dressage competition management
-            </div>
-            <div class="carousel-button-wrapper">
-              <a routerLink="/auth/register" class="carousel-button">
-                REGISTER NOW
-              </a>
-            </div>
+<div class="home-page">
+  <section class="coming-soon-hero">
+    <div class="container">
+      <div class="hero-panel">
+        <div class="hero-copy">
+          <span class="hero-eyebrow">Coming Soon inspired · DSRiding</span>
+          <h1 class="hero-title">A refined digital home for South African dressage is taking shape.</h1>
+          <p class="hero-description">
+            Discover competitions, manage entries, follow results, and stay connected to the national dressage calendar through a cleaner, faster DSRiding experience.
+          </p>
+
+          <div class="hero-actions">
+            <a routerLink="/auth/login" class="btn btn-light btn-lg">
+              <i class="bi bi-box-arrow-in-right"></i>
+              Login
+            </a>
+            <a routerLink="/calendar" class="btn btn-outline-light btn-lg">
+              <i class="bi bi-calendar-event"></i>
+              National Calendar
+            </a>
+          </div>
+
+          <div class="hero-note">
+            <i class="bi bi-stars"></i>
+            <span>Using the new shared shell across public pages and rider pages while preserving the existing routes.</span>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- Quick Links Section -->
-<section class="quick-links-section">
-  <div class="container">
-    <div class="row g-4">
-      @for (link of quickLinks; track link.title) {
-        <div class="col-lg-3 col-md-6">
-          <a [routerLink]="link.route" class="quick-link-card quick-link-{{ link.color }}">
-            <div class="quick-link-icon">
-              <i class="bi {{ link.icon }}"></i>
-            </div>
-            <h3 class="quick-link-title">{{ link.title }}</h3>
-            <p class="quick-link-description">{{ link.description }}</p>
-            <span class="quick-link-arrow">
-              <i class="bi bi-arrow-right"></i>
-            </span>
-          </a>
-        </div>
-      }
-    </div>
-  </div>
-</section>
-
-<!-- Latest News Section - British Dressage Style -->
-<section class="news-feed-section">
-  <div class="container">
-    <div class="news-feed-listing">
-      <h3 class="news-feed-listing__title">Latest news</h3>
-      <div class="default-listing__list news-feed-listing__list">
-        @for (article of newsArticles; track article.id) {
-          <div class="default-listing__list-item news-feed-listing__list-item">
-            <div class="default-listing-item news-feed-listing-item">
-              <a [routerLink]="article.link" class="default-listing-item__link news-feed-listing-item__link">
-                <div class="default-listing-item__image-container">
-                  <img [src]="article.image"
-                       [alt]="article.title"
-                       class="default-listing-item__image news-feed-listing-item__image" />
-                </div>
-                <div class="default-listing-item__content news-feed-listing-item__content">
-                  <div class="default-listing-item__title-wrapper news-feed-listing-item__title-wrapper">
-                    <h3 class="default-listing-item__title news-feed-listing-item__title">
-                      {{ article.title }}
-                    </h3>
-                  </div>
-                  <div class="default-listing-item__description news-feed-listing-item__description">
-                    {{ article.excerpt }}
-                  </div>
-                  <span class="default-listing-item__btn news-feed-listing-item__btn">
-                    READ MORE
-                  </span>
-                </div>
-              </a>
-            </div>
+        <div class="countdown-card">
+          <div class="countdown-header">
+            <span class="countdown-label">Countdown</span>
+            <h2>Next experience milestone</h2>
+            <p>Fresh navigation, themed rider views, and a reusable visual system for DSRiding.</p>
           </div>
-        }
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- Upcoming Events Section -->
-<section class="events-section">
-  <div class="container">
-    <div class="section-header">
-      <div class="row align-items-end">
-        <div class="col-md-8">
-          <h2 class="section-title">Upcoming Competitions</h2>
-          <p class="section-subtitle">Find and enter competitions across South Africa</p>
-        </div>
-        <div class="col-md-4 text-md-end">
-          <a routerLink="/calendar" class="btn btn-outline-primary">
-            View Full Calendar
+          <div class="countdown-grid">
+            @for (unit of countdown; track unit.label) {
+              <div class="countdown-unit">
+                <span class="countdown-value">{{ unit.value }}</span>
+                <span class="countdown-text">{{ unit.label }}</span>
+              </div>
+            }
+          </div>
+
+          <a routerLink="/about" class="countdown-link">
+            Learn more about DSRiding
             <i class="bi bi-arrow-right"></i>
           </a>
         </div>
       </div>
     </div>
+  </section>
 
-    <div class="row g-4">
-      @for (event of upcomingEvents; track event.id) {
-        <div class="col-lg-6">
-          <div class="event-card">
-            <div class="event-header">
-              <div class="event-date">
-                <div class="event-day">{{ event.date.split(' ')[1].split('-')[0] }}</div>
-                <div class="event-month">{{ event.date.split(' ')[0].substring(0, 3) }}</div>
+  <section class="stats-section">
+    <div class="container">
+      <div class="row g-4">
+        @for (stat of stats; track stat.label) {
+          <div class="col-md-6 col-xl-3">
+            <div class="stat-card">
+              <div class="stat-icon"><i class="bi {{ stat.icon }}"></i></div>
+              <div>
+                <h3 class="stat-value">{{ stat.value }}</h3>
+                <p class="stat-label">{{ stat.label }}</p>
               </div>
-              <div class="event-info">
-                <h3 class="event-title">{{ event.title }}</h3>
-                <p class="event-location">
-                  <i class="bi bi-geo-alt"></i>
-                  {{ event.location }}
-                </p>
-              </div>
-              <span class="event-status status-{{ event.status.toLowerCase().replace(' ', '-') }}">
-                {{ event.status }}
-              </span>
-            </div>
-            <div class="event-footer">
-              <span class="event-type">
-                <i class="bi bi-tag"></i>
-                {{ event.type }}
-              </span>
-              <a routerLink="/calendar" class="event-link">
-                View Details
-                <i class="bi bi-arrow-right"></i>
-              </a>
             </div>
           </div>
-        </div>
-      }
+        }
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Stats Section -->
-<section class="stats-section">
-  <div class="container">
-    <div class="row g-4">
-      @for (stat of stats; track stat.label) {
-        <div class="col-lg-3 col-md-6">
-          <div class="stat-card">
-            <div class="stat-icon">
-              <i class="bi {{ stat.icon }}"></i>
-            </div>
-            <div class="stat-content">
-              <h3 class="stat-value">{{ stat.value }}</h3>
-              <p class="stat-label">{{ stat.label }}</p>
+  <section class="features-section">
+    <div class="container">
+      <div class="section-heading text-center">
+        <span class="section-eyebrow">What stays central</span>
+        <h2>Built for the full competition journey</h2>
+        <p>The new landing experience keeps the same routing structure while presenting the platform through a Coming Soon-inspired visual language.</p>
+      </div>
+
+      <div class="row g-4">
+        @for (feature of features; track feature.title) {
+          <div class="col-md-6 col-xl-4">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="bi {{ feature.icon }}"></i>
+              </div>
+              <h3>{{ feature.title }}</h3>
+              <p>{{ feature.description }}</p>
             </div>
           </div>
-        </div>
-      }
-    </div>
-  </div>
-</section>
-
-<!-- CTA Section -->
-<section class="cta-section">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-8">
-        <h2 class="cta-title">Join South Africa's Leading Dressage Community</h2>
-        <p class="cta-description">
-          Register today and gain access to competitions, results, and resources across all provinces
-        </p>
-      </div>
-      <div class="col-lg-4 text-lg-end">
-        <a routerLink="/auth/register" class="btn btn-light btn-lg">
-          <i class="bi bi-person-plus"></i>
-          Get Started
-        </a>
+        }
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>
 

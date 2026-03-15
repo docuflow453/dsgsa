@@ -1,0 +1,123 @@
+<div class="row">
+  <div class="col-12">
+    <app-card cardTitle="Basic Information">
+      <form [formGroup]="basicInfoForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-control" placeholder="Enter first name" formControlName="firstName" />
+            @if (basicInfoForm.get('firstName')?.touched && basicInfoForm.get('firstName')?.invalid) {
+              <div class="text-danger">First name is required.</div>
+            }
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-control" placeholder="Enter last name" formControlName="lastName" />
+            @if (basicInfoForm.get('lastName')?.touched && basicInfoForm.get('lastName')?.invalid) {
+              <div class="text-danger">Last name is required.</div>
+            }
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" placeholder="Enter email" formControlName="email" />
+            @if (basicInfoForm.get('email')?.touched && basicInfoForm.get('email')?.invalid) {
+              <div class="text-danger">Email is required.</div>
+            }
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Joining Date</label>
+            <input type="date" class="form-control" formControlName="joiningDate" />
+            @if (basicInfoForm.get('joiningDate')?.touched && basicInfoForm.get('joiningDate')?.invalid) {
+              <div class="text-danger">Date is required.</div>
+            }
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" placeholder="Enter Password" formControlName="password" />
+            @if (basicInfoForm.get('password')?.touched && basicInfoForm.get('password')?.invalid) {
+              <div class="text-danger">Password is required.</div>
+            }
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <div class="position-relative">
+              <label class="form-label">Confirm Password</label>
+              <input type="password" class="form-control" placeholder="Enter confirm password" formControlName="confirmPassword" />
+              @if (basicInfoForm.get('confirmPassword')?.touched && basicInfoForm.get('confirmPassword')?.invalid) {
+                <div class="text-danger">Confirm Password is required.</div>
+              }
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Mobile Number</label>
+            <input type="number" class="form-control" placeholder="Enter Mobile number" formControlName="mobileNumber" maxlength="10" />
+            @if (basicInfoForm.get('mobileNumber')?.touched && basicInfoForm.get('mobileNumber')?.invalid) {
+              <div class="text-danger">Mobile Number is required.</div>
+            }
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Gender</label>
+            <select class="form-select" formControlName="gender">
+              <option value="">Select Gender</option>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+            </select>
+            @if (basicInfoForm.get('gender')?.touched && basicInfoForm.get('gender')?.invalid) {
+              <div class="text-danger">Gender is required.</div>
+            }
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Designation</label>
+            <input type="text" class="form-control" placeholder="Designation" formControlName="designation" />
+            @if (basicInfoForm.get('designation')?.touched && basicInfoForm.get('designation')?.invalid) {
+              <div class="text-danger">Designation is required.</div>
+            }
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Department</label>
+            <select class="form-select" formControlName="department">
+              <option value="">Select Department</option>
+              <option value="Department 1">Department 1</option>
+              <option value="Department 2">Department 2</option>
+            </select>
+            @if (basicInfoForm.get('department')?.touched && basicInfoForm.get('department')?.invalid) {
+              <div class="text-danger">Department is required.</div>
+            }
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Date of Birth</label>
+            <input type="date" class="form-control" formControlName="dateOfBirth" />
+            @if (basicInfoForm.get('dateOfBirth')?.touched && basicInfoForm.get('dateOfBirth')?.invalid) {
+              <div class="text-danger">DOB is required.</div>
+            }
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Education</label>
+            <input type="text" class="form-control" placeholder="Education" formControlName="education" />
+            @if (basicInfoForm.get('education')?.touched && basicInfoForm.get('education')?.invalid) {
+              <div class="text-danger">Education is required.</div>
+            }
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <input type="file" class="form-control" (change)="basicInfoForm.get('file')?.setValue($event.target.files[0])" />
+          </div>
+
+          <div class="col-md-12 text-end">
+            <button class="btn btn-primary" [disabled]="!basicInfoForm.valid">Submit</button>
+          </div>
+        </div>
+      </form>
+    </app-card>
+  </div>
+</div>

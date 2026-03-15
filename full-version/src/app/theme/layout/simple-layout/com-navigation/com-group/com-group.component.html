@@ -1,0 +1,8 @@
+<li class="nav-item coded-menu-caption">
+  <h6>{{ item().title }}</h6>
+</li>
+@for (item of item().children; track item) {
+  @if (item.type === 'item') {
+    <app-com-item [item]="item"></app-com-item>
+  }
+}

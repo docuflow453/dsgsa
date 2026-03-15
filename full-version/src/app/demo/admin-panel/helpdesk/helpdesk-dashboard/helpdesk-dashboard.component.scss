@@ -1,0 +1,36 @@
+::ng-deep.feed-card {
+  .card-body {
+    padding-left: 25px;
+    &.py-0 {
+      padding-left: 12px !important;
+
+      ::ng-deep.mantis-rtl & {
+        padding-right: 12px !important;
+        padding-left: 0px !important;
+      }
+    }
+    .border-feed {
+      transition: all 0.3s ease-in-out;
+      position: relative;
+      i {
+        position: absolute;
+        top: calc(50% - 20px);
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #fff;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+  }
+  &:hover {
+    .border-feed.bg-primary {
+      background-color: rgba(24, 144, 255, 0.3) !important;
+      color: var(--bs-primary);
+
+      i {
+        color: var(--bs-primary);
+      }
+    }
+  }
+}

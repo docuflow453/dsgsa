@@ -1,0 +1,160 @@
+<div class="row">
+  <!-- [ Breadcrumbs & Pagination ] start -->
+  <div class="col-sm-6">
+    <app-card cardTitle="Breadcrumb" blockClass="pc-component">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active" aria-current="page">Home</li>
+        </ol>
+      </nav>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="javascript:">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Library</li>
+        </ol>
+      </nav>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="javascript:">Home</a></li>
+          <li class="breadcrumb-item"><a href="javascript:">Library</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Data</li>
+        </ol>
+      </nav>
+    </app-card>
+  </div>
+  <div class="col-sm-6">
+    <app-card cardTitle="Breadcrumb Icon" blockClass="pc-component">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active" aria-current="page"><i antIcon theme="outline" type="home"></i></li>
+        </ol>
+      </nav>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="javascript:" title="Home"><i antIcon theme="outline" type="home"></i></a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">Library</li>
+        </ol>
+      </nav>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="javascript:" title="Home"><i antIcon theme="outline" type="home"></i></a>
+          </li>
+          <li class="breadcrumb-item"><a href="javascript:">Library</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Data</li>
+        </ol>
+      </nav>
+    </app-card>
+  </div>
+  <div class="col-sm-6">
+    <app-card cardTitle="Breadcrumb Dividers [ character ]" blockClass="pc-component">
+      <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active" aria-current="page"><i antIcon theme="outline" type="home"></i></li>
+        </ol>
+      </nav>
+      <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="javascript:" title="Home"><i antIcon theme="outline" type="home"></i></a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">Library</li>
+        </ol>
+      </nav>
+      <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="javascript:" title="Home"><i antIcon theme="outline" type="home"></i></a>
+          </li>
+          <li class="breadcrumb-item"><a href="javascript:">Library</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Data</li>
+        </ol>
+      </nav>
+    </app-card>
+  </div>
+  <div class="col-sm-6">
+    <app-card cardTitle="Breadcrumb Dividers [ embedded SVG icon ]" blockClass="pc-component">
+      <nav
+        aria-label="breadcrumb"
+        style="
+          --bs-breadcrumb-divider: url(
+            &#34;data:image/svg + xml,
+            %3Csvgxmlns='http://www.w3.org/2000/svg'width='8'height='8'%3E%3Cpathd='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z'fill='currentColor'/%3E%3C/svg%3E&#34;
+          );
+        "
+      >
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active" aria-current="page"><i antIcon theme="outline" type="home"></i></li>
+        </ol>
+      </nav>
+      <nav
+        aria-label="breadcrumb"
+        style="
+          --bs-breadcrumb-divider: url(
+            &#34;data:image/svg + xml,
+            %3Csvgxmlns='http://www.w3.org/2000/svg'width='8'height='8'%3E%3Cpathd='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z'fill='currentColor'/%3E%3C/svg%3E&#34;
+          );
+        "
+      >
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="javascript:" title="Home"><i antIcon theme="outline" type="home"></i></a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">Library</li>
+        </ol>
+      </nav>
+      <nav
+        aria-label="breadcrumb"
+        style="
+          --bs-breadcrumb-divider: url(
+            &#34;data:image/svg + xml,
+            %3Csvgxmlns='http://www.w3.org/2000/svg'width='8'height='8'%3E%3Cpathd='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z'fill='currentColor'/%3E%3C/svg%3E&#34;
+          );
+        "
+      >
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="javascript:" title="Home"><i antIcon theme="outline" type="home"></i></a>
+          </li>
+          <li class="breadcrumb-item"><a href="javascript:">Library</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Data</li>
+        </ol>
+      </nav>
+    </app-card>
+  </div>
+  <div class="col-sm-12">
+    <app-card cardTitle="Pagination" blockClass="pc-component">
+      <h5>A pagination with customized links:</h5>
+      <hr />
+      <div class="overflow-x-auto">
+        <ngb-pagination [collectionSize]="70" page="4" aria-label="Custom pagination">
+          <ng-template ngbPaginationPrevious>Prev</ng-template>
+          <ng-template ngbPaginationNext>Next</ng-template>
+          <ng-template ngbPaginationNumber let-p>{{ getPageSymbol(p) }}</ng-template>
+        </ngb-pagination>
+      </div>
+      <h5 class="mt-5">Working with Icons</h5>
+      <hr />
+      <ngb-pagination [collectionSize]="70" page="4" aria-label="Default pagination" />
+      <h5 class="mt-5">Disabled and Active States</h5>
+      <hr />
+      <ngb-pagination [collectionSize]="70" page="4" [disabled]="isDisabled" />
+      <button class="btn btn-sm btn-outline-primary" (click)="toggleDisabled()">Toggle disabled</button>
+      <h5 class="mt-5">Sizing</h5>
+      <hr />
+      <div class="overflow-x-auto">
+        <ngb-pagination [collectionSize]="50" page="3" size="lg" />
+        <ngb-pagination [collectionSize]="50" page="3" />
+        <ngb-pagination [collectionSize]="50" page="3" size="sm" />
+      </div>
+      <h5 class="mt-5">Alignment</h5>
+      <hr />
+      <ngb-pagination class="d-flex justify-content-start" [collectionSize]="70" page="4" />
+      <ngb-pagination class="d-flex justify-content-center" [collectionSize]="70" page="4" />
+      <ngb-pagination class="d-flex justify-content-end" [collectionSize]="70" page="4" />
+    </app-card>
+  </div>
+  <!-- [ Breadcrumbs & Pagination ] end -->
+</div>

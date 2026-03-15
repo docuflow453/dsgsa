@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { LayoutComponent } from '@app/shared/components/layout/layout.component';
+import { RiderLayoutComponent } from '@shared/components/rider-layout/rider-layout.component';
 
 export const RIDER_ROUTES: Routes = [
   {
     path: '',
-    component: LayoutComponent,
+    component: RiderLayoutComponent,
     children: [
       {
         path: 'profile',

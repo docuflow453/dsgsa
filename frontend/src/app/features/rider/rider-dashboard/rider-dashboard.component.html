@@ -1,21 +1,47 @@
 <div class="rider-dashboard">
-  <!-- Welcome Banner -->
-  <div class="welcome-banner">
-    <div class="welcome-content">
+  <section class="dashboard-hero">
+    <div class="hero-copy">
       @if (authService.currentUser(); as user) {
-        <h1 class="welcome-title">Welcome back, {{ user.first_name }}!</h1>
-        <p class="welcome-subtitle">
+        <span class="hero-eyebrow">Authenticated rider experience</span>
+        <h1 class="hero-title">Welcome back, {{ user.first_name }}.</h1>
+        <p class="hero-subtitle">
+          Your rider pages now share the same DSRiding visual language as the public site while keeping the existing authenticated routes intact.
+        </p>
+        <p class="hero-description">
           You have <span class="highlight">{{ upcomingEntriesCount }} upcoming entries</span> 
-          and your next event is in <span class="highlight">{{ nextEventDays }} days</span>.
+          and your next event is in <span class="highlight">{{ nextEventDays }} days</span>. Keep entries, horses, and results organised from one streamlined dashboard.
         </p>
       }
-    </div>
-    <div class="welcome-image">
-      <img src="assets/images/horse-rider.jpg" alt="Horse and Rider" />
-    </div>
-  </div>
 
-  <!-- Stats Cards -->
+      <div class="hero-actions">
+        <a routerLink="/my/entries" class="btn btn-light btn-lg">
+          <i class="bi bi-calendar-check"></i>
+          Manage entries
+        </a>
+        <a routerLink="/my/results" class="btn btn-outline-light btn-lg">
+          <i class="bi bi-trophy"></i>
+          View results
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-side-card">
+      <span class="hero-side-label">At a glance</span>
+      <div class="hero-side-stat">
+        <strong>{{ upcomingEntriesCount }}</strong>
+        <span>entries queued for upcoming shows</span>
+      </div>
+      <div class="hero-side-stat">
+        <strong>{{ nextEventDays }}</strong>
+        <span>days until your next competition</span>
+      </div>
+      <a routerLink="/calendar" class="hero-side-link">
+        Open national calendar
+        <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+  </section>
+
   <div class="stats-grid">
     @for (stat of stats; track stat.label) {
       <div class="stat-card stat-{{ stat.color }}">
@@ -30,20 +56,18 @@
     }
   </div>
 
-  <!-- Main Content Grid -->
   <div class="content-grid">
-    <!-- Upcoming Entries -->
     <div class="content-section">
       <div class="section-header">
         <div class="section-title">
           <i class="bi bi-calendar-check"></i>
           <h2>Upcoming Entries</h2>
         </div>
-        <a [routerLink]="['/rider/entries']" class="view-all-link">View all</a>
+        <a [routerLink]="['/my/entries']" class="view-all-link">View all</a>
       </div>
 
       <div class="entries-table">
-        <table class="table">
+        <table class="table align-middle mb-0">
           <thead>
             <tr>
               <th>Event</th>
@@ -72,14 +96,13 @@
       </div>
     </div>
 
-    <!-- Recent Results -->
     <div class="content-section">
       <div class="section-header">
         <div class="section-title">
           <i class="bi bi-trophy"></i>
           <h2>Recent Results</h2>
         </div>
-        <a [routerLink]="['/rider/results']" class="view-all-link">View all</a>
+        <a [routerLink]="['/my/results']" class="view-all-link">View all</a>
       </div>
 
       <div class="results-list">
