@@ -1,0 +1,13 @@
+.invoice-options {
+  margin-left: auto;
+  margin-bottom: 0px;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+
+  ::ng-deep.mantis-rtl & {
+    li {
+      margin-right: 0px !important;
+    }
+  }
+}

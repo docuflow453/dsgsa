@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -14,6 +14,11 @@ interface Stat {
   icon: string;
 }
 
+interface CountdownUnit {
+  label: string;
+  value: string;
+}
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -21,7 +26,7 @@ interface Stat {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, OnDestroy {
   features: Feature[] = [
     {
       icon: 'bi-calendar-event',
@@ -61,5 +66,42 @@ export class HomeComponent {
     { value: '50+', label: 'Annual Competitions', icon: 'bi-calendar-check' },
     { value: '9', label: 'Provinces', icon: 'bi-geo' }
   ];
+
+  countdown: CountdownUnit[] = [
+    { label: 'Days', value: '00' },
+    { label: 'Hours', value: '00' },
+    { label: 'Minutes', value: '00' },
+    { label: 'Seconds', value: '00' }
+  ];
+
+  private readonly launchDate = new Date(Date.now() + 120 * 24 * 60 * 60 * 1000);
+  private intervalId?: number;
+
+  ngOnInit(): void {
+    this.updateCountdown();
+    this.intervalId = window.setInterval(() => this.updateCountdown(), 1000);
+  }
+
+  ngOnDestroy(): void {
+    if (this.intervalId) {
+      window.clearInterval(this.intervalId);
+    }
+  }
+
+  private updateCountdown(): void {
+    const difference = Math.max(this.launchDate.getTime() - Date.now(), 0);
+    const totalSeconds = Math.floor(difference / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    this.countdown = [
+      { label: 'Days', value: String(days).padStart(2, '0') },
+      { label: 'Hours', value: String(hours).padStart(2, '0') },
+      { label: 'Minutes', value: String(minutes).padStart(2, '0') },
+      { label: 'Seconds', value: String(seconds).padStart(2, '0') }
+    ];
+  }
 }
 

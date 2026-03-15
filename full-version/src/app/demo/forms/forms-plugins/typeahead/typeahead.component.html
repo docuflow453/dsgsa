@@ -1,0 +1,88 @@
+<div class="row">
+  <div class="col-sm-6">
+    <app-card cardTitle="Simple Typeahead">
+      <ul>
+        <li>
+          <code>debounceTime</code>
+          operator
+        </li>
+        <li>kicks in only if 2+ characters typed</li>
+        <li>limits to 10 results</li>
+      </ul>
+
+      <label for="typeahead-basic">Search for a state:</label>
+      <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="modal" [ngbTypeahead]="search" />
+    </app-card>
+  </div>
+  <div class="col-sm-6">
+    <app-card cardTitle="Open on focus">
+      <ul>
+        <li>on empty input all options will be taken</li>
+        <li>otherwise options will be filtered against the search term</li>
+        <li>it will limit the display to 10 results in all cases</li>
+      </ul>
+
+      <label for="typeahead-focus">Search for a state:</label>
+      <input
+        id="typeahead-focus"
+        type="text"
+        class="form-control"
+        [(ngModel)]="secondModal"
+        [ngbTypeahead]="search1"
+        (focus)="focus$.next($any($event).target.value)"
+        (click)="click$.next($any($event).target.value)"
+        #instance="ngbTypeahead"
+      />
+    </app-card>
+  </div>
+  <div class="col-sm-12">
+    <app-card cardTitle="Wikipedia Search">
+      <ul>
+        <li>remote data retrieval</li>
+        <li>
+          <code>debounceTime</code>
+          operator
+        </li>
+        <li>
+          <code>tap</code>
+          operator
+        </li>
+        <li>
+          <code>distinctUntilChanged</code>
+          operator
+        </li>
+        <li>
+          <code>switchMap</code>
+          operator
+        </li>
+        <li>
+          <code>catch</code>
+          operator to display an error message in case of connectivity issue
+        </li>
+      </ul>
+
+      <fieldset>
+        <div class="mb-3 row">
+          <label for="typeahead-http" class="col-xs-3 col-sm-auto col-form-label">Search for a wiki page:</label>
+          <div class="col">
+            <input
+              id="typeahead-http"
+              type="text"
+              class="form-control"
+              [class.is-invalid]="searchFailed"
+              [(ngModel)]="wikipediaModel"
+              [ngbTypeahead]="WikipediaSearch"
+              placeholder="Wikipedia search"
+            />
+            @if (searching) {
+              <small class="form-text text-muted">searching...</small>
+            }
+            @if (searchFailed) {
+              <div class="invalid-feedback">Sorry, suggestions could not be loaded.</div>
+            }
+          </div>
+        </div>
+      </fieldset>
+    </app-card>
+  </div>
+</div>

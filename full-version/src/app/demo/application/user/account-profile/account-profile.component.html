@@ -1,0 +1,83 @@
+<!-- [ Main Content ] start -->
+<div class="row">
+  <!-- [ sample-page ] start -->
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-header pb-0">
+        <ul ngbNav aria-busy="true" #nav="ngbNav" class="nav-tabs profile-tabs">
+          <li [ngbNavItem]="1">
+            <a ngbNavLink>
+              <div class="d-flex align-items-center">
+                <i antIcon type="user" theme="outline" class="me-2 f-14"></i>
+                <span class="f-w-500">Profile</span>
+              </div>
+            </a>
+            <ng-template ngbNavContent>
+              <app-profiles></app-profiles>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="2">
+            <a ngbNavLink>
+              <div class="d-flex align-items-center">
+                <i antIcon type="file-text" theme="outline" class="me-2 f-14"></i>
+                <span class="f-w-500">Personal</span>
+              </div>
+            </a>
+            <ng-template ngbNavContent>
+              <app-personals></app-personals>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="3">
+            <a ngbNavLink>
+              <div class="d-flex align-items-center">
+                <i antIcon type="container" theme="outline" class="me-2 f-14"></i>
+                <span class="f-w-500">My Account</span>
+              </div>
+            </a>
+            <ng-template ngbNavContent>
+              <app-my-account></app-my-account>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="4">
+            <a ngbNavLink>
+              <div class="d-flex align-items-center">
+                <i antIcon type="lock" theme="outline" class="me-2 f-14"></i>
+                <span class="f-w-500">Change Password</span>
+              </div>
+            </a>
+            <ng-template ngbNavContent>
+              <app-account-password></app-account-password>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="5">
+            <a ngbNavLink>
+              <div class="d-flex align-items-center">
+                <i antIcon type="team" theme="outline" class="me-2 f-14"></i>
+                <span class="f-w-500">Role</span>
+              </div>
+            </a>
+            <ng-template ngbNavContent>
+              <app-role></app-role>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="6">
+            <a ngbNavLink>
+              <div class="d-flex align-items-center">
+                <i antIcon type="setting" theme="outline" class="me-2 f-14"></i>
+                <span class="f-w-500">Settings</span>
+              </div>
+            </a>
+            <ng-template ngbNavContent>
+              <app-account-setting></app-account-setting>
+            </ng-template>
+          </li>
+        </ul>
+      </div>
+      <div class="card-body">
+        <div [ngbNavOutlet]="nav"></div>
+      </div>
+    </div>
+  </div>
+  <!-- [ sample-page ] end -->
+</div>
+<!-- [ Main Content ] end -->

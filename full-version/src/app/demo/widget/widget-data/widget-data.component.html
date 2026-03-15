@@ -1,0 +1,606 @@
+<div class="row widget-data">
+  <div class="col-xl-4 col-md-12">
+    <app-card cardTitle="To Do List" cardClass="todoList" [padding]="14">
+      <ng-template #headerOptionsTemplate>
+        <a class="avatar avatar-xs btn btn-link-primary">
+          <i antIcon type="plus-circle" theme="outline"></i>
+        </a>
+      </ng-template>
+      <div class="new-task">
+        @for (task of todoList; track task; let i = $last) {
+          <div class="to-do-list mb-3" [ngClass]="{ 'mb-3': !i }">
+            <div class="check-task form-check">
+              <input type="checkbox" class="form-check-input" id="task{{ i }}" [(ngModel)]="task.checked" />
+              <label class="form-check-label" for="task{{ i }}" [class.text-decoration-line-through]="task.checked">{{ task.text }}</label>
+            </div>
+          </div>
+        }
+      </div>
+    </app-card>
+  </div>
+  <div class="col-xl-4 col-md-6">
+    <app-card cardTitle="Traffic Sources">
+      <ng-template #headerTitleTemplate>
+        <div class="text-sm text-muted">You’re getting more and more sources, keep it up!</div>
+      </ng-template>
+      @for (traffic of TrafficSources; track traffic; let i = $last) {
+        <div [ngClass]="{ 'mb-4': !i }">
+          <p class="m-b-10 text-sm">
+            {{ traffic.title }}
+            <span class="float-end">{{ traffic.percentage }}</span>
+          </p>
+          <ngb-progressbar
+            class="progressbar {{ traffic.background }}"
+            type="{{ traffic.background }}"
+            height="6px"
+            value="{{ traffic.value }}"
+          ></ngb-progressbar>
+        </div>
+      }
+    </app-card>
+  </div>
+  <div class="col-xl-4 col-md-6">
+    <app-card cardTitle="Team Members" cardClass="user-activity-card">
+      <ng-template #headerOptionsTemplate>
+        <a href="javascript:" class="link-primary">View all</a>
+      </ng-template>
+      @for (task of team_members; track task; let i = $last) {
+        <div class="row align-items-center" [ngClass]="{ 'mb-4': !i }">
+          <div class="col-auto p-r-0">
+            <div class="u-img">
+              <img src="{{ task.src }}" alt="user image" class="img-radius cover-img" />
+            </div>
+          </div>
+          <div class="col">
+            <a href="javascript:">
+              <h6 class="m-b-5">{{ task.title }}</h6>
+            </a>
+            <p class="text-muted text-sm mb-0">{{ task.text }}</p>
+          </div>
+          <div class="col-auto">
+            <p class="text-muted text-sm mb-0">{{ task.time }}</p>
+          </div>
+        </div>
+      }
+    </app-card>
+  </div>
+
+  <div class="col-xl-6 col-md-12">
+    <app-card cardTitle="Latest Updates" cardClass="latest-update-card">
+      <ng-template #headerOptionsTemplate>
+        <a href="javascript:" class="link-primary">View all</a>
+      </ng-template>
+      <div class="latest-update-box">
+        @for (message of latestMessages; track message; let i = $last, f = $first) {
+          <div class="row" [ngClass]="{ 'p-t-20': f, 'p-b-30': !i }">
+            <div class="col-auto text-end update-meta">
+              <p class="text-muted mb-0 d-inline-flex m-r-20 text-sm">{{ message.time }}</p>
+              <div class="avatar avatar-s">
+                <i class="update-icon {{ message.color }}" antIcon type="{{ message.icon }}" theme="outline"></i>
+              </div>
+            </div>
+            <div class="col ps-1">
+              <a href="javascript:">
+                <h6 class="mb-0">{{ message.title }}</h6>
+              </a>
+              <p class="text-muted mb-0 text-sm">{{ message.text }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </app-card>
+  </div>
+  <div class="col-xl-6 col-md-12">
+    <app-card cardTitle="User Activity" cardClass="user-activity-card">
+      <ng-template #headerOptionsTemplate>
+        <a href="javascript:" class="link-primary">View all</a>
+      </ng-template>
+      @for (user of userActivity; track user; let last = $last) {
+        <div class="row" [ngClass]="{ 'mb-4': !last }">
+          <div class="col-auto p-r-0">
+            <div class="u-img">
+              <img src="{{ user.src }}" alt="user image" class="img-radius cover-img" />
+              <div class="badge profile-img {{ user.status }}"></div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="float-end">
+              <p class="text-muted text-sm d-flex align-items-center mb-0">
+                {{ user.time }}
+                <i class="ms-1" antIcon type="clock-circle" theme="outline"></i>
+              </p>
+            </div>
+            <a>
+              <h6 class="mb-0">John Deo</h6>
+            </a>
+            <p class="text-muted text-sm mb-0">Lorem Ipsum is simply dummy text.</p>
+          </div>
+        </div>
+      }
+    </app-card>
+  </div>
+
+  <div class="col-xl-6 col-md-12">
+    <app-card cardTitle="Projects" cardClass="table-card" blockClass="p-0">
+      <ng-template #headerOptionsTemplate>
+        <a href="javascript:" class="link-primary">View all</a>
+      </ng-template>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>ASSIGNED</th>
+              <th>NAME</th>
+              <th>DUE DATE</th>
+              <th class="text-end">PRIORITY</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (project of ProjectTable; track project) {
+              <tr>
+                <td>
+                  <div class="d-inline-block align-middle">
+                    <img src="{{ project.src }}" alt="user image" class="img-radius wid-40 align-top m-r-15" />
+                    <div class="d-inline-block">
+                      <h6 class="mb-0">{{ project.name }}</h6>
+                      <p class="text-muted mb-0 text-sm">{{ project.position }}</p>
+                    </div>
+                  </div>
+                </td>
+                <td>{{ project.theme }}</td>
+                <td>{{ project.date }}</td>
+                <td class="text-end">
+                  <label class="badge px-2 {{ project.background }}">{{ project.priority }}</label>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+  <div class="col-xl-6 col-md-12">
+    <app-card cardTitle="Product Sales" blockClass="p-0">
+      <div class="d-flex align-items-center justify-content-around p-20">
+        <div class="d-flex align-items-center flex-column">
+          <span class="text-muted text-sm">Earning</span>
+          <h4 class="mt-2 f-w-600">20,569$</h4>
+        </div>
+        <div class="d-flex align-items-center flex-column">
+          <span class="text-muted text-sm">Yesterday</span>
+          <h4 class="mt-2 f-w-600">580$</h4>
+        </div>
+        <div class="d-flex align-items-center flex-column">
+          <span class="text-muted text-sm">This Week</span>
+          <h4 class="mt-2 f-w-600">5,789$</h4>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <app-scrollbar [customStyle]="'304px'">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th>LAST SALES</th>
+                <th>PRODUCT NAME</th>
+                <th class="text-end">PRICE</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (sales of ProductSales; track sales) {
+                <tr>
+                  <td>
+                    <p class="mb-1">{{ sales.sale }}</p>
+                  </td>
+                  <td>{{ sales.product }}</td>
+                  <td class="text-end">
+                    <p class="mb-1">{{ sales.price }}</p>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </app-scrollbar>
+      </div>
+    </app-card>
+  </div>
+  <div class="col-xl-4 col-md-12">
+    <app-card cardTitle="Tasks" cardClass="task-card" blockClass="position-relative">
+      <ng-template #headerOptionsTemplate>
+        <a href="javascript:" class="link-primary">View all</a>
+      </ng-template>
+      <ul class="list-unstyled task-list">
+        @for (task of TasksCard; track $index; let last = $last) {
+          <li [ngClass]="{ 'm-b-30': !last }">
+            <div class="d-flex align-items-center">
+              <div class="task-icon avatar avatar-xs text-white" [ngClass]="task.background">
+                <i antIcon type="{{ task.icon }}" theme="fill"></i>
+              </div>
+              <div class="ms-3">
+                <p class="mb-0 text-sm text-muted">{{ task.time }}</p>
+                <div class="text-sm">{{ task.details }}</div>
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+    </app-card>
+  </div>
+  <div class="col-xl-8 col-md-12">
+    <app-card cardTitle="Application Sales" cardClass="table-card" blockClass="p-0">
+      <ng-template #headerOptionsTemplate>
+        <a href="javascript:" class="link-primary">View all</a>
+      </ng-template>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>APPLICATION</th>
+              <th class="text-end">SALES</th>
+              <th class="text-end">AVG. PRICE</th>
+              <th class="text-end">TOTAL</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (sales of applicationSales; track sales) {
+              <tr>
+                <td>
+                  <div class="d-inline-block align-middle">
+                    <h6 class="mb-0">{{ sales.application }}</h6>
+                    <p class="text-muted text-sm mb-0">{{ sales.text }}</p>
+                  </div>
+                </td>
+                <td class="text-end">{{ sales.sale }}</td>
+                <td class="text-end">{{ sales.price }}</td>
+                <td class="text-end">{{ sales.total }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+
+  <div class="col-xl-8 col-md-12">
+    <app-card cardTitle="Active Tickets" cardClass="table-card" blockClass="p-0">
+      <ng-template #headerOptionsTemplate>
+        <a href="javascript:" class="link-primary">View all</a>
+      </ng-template>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>
+                <div class="form-check">
+                  <label class="form-check-label">DUE</label>
+                </div>
+              </th>
+              <th>NAME</th>
+              <th>POSITION</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (ticket of ActiveTickets; track ticket) {
+              <tr>
+                <td>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <h6 class="mb-0 text-center">{{ ticket.time }}</h6>
+                      <div class="text-muted text-sm f-w-500">hours</div>
+                    </label>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <img src="{{ ticket.src }}" alt="user image" class="img-radius wid-40 me-3" />
+                    <h6 class="mb-0">{{ ticket.user }}</h6>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-inline-block align-middle">
+                    <h6 class="mb-0">{{ ticket.text }}</h6>
+                    <p class="text-muted text-muted mb-0">{{ ticket.description }}</p>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+  <div class="col-xl-4 col-md-12">
+    <app-card cardTitle="Latest Posts" cardClass="latest-posts-card">
+      <ng-template #headerOptionsTemplate>
+        <a href="javascript:" class="link-primary">View all</a>
+      </ng-template>
+      @for (post of latestPost; track post) {
+        <div class="row m-b-30">
+          <div class="col-auto p-r-0">
+            <img src="{{ post.src }}" alt="user image" class="latest-posts-img rounded" />
+          </div>
+          <div class="col d-flex align-items-center">
+            <div>
+              <a href="javascript:">
+                <h6 class="mb-0">Up unpacked friendly</h6>
+              </a>
+              <p class="text-muted text-sm">Video | 14 minutes ago</p>
+            </div>
+          </div>
+        </div>
+      }
+      <div class="row">
+        <div class="col-auto p-r-0">
+          <iframe
+            title="Latest Posts Video"
+            class="embed-responsive-item latest-posts-img rounded"
+            src="//www.youtube.com/embed/b0fI60sBMV0"
+          ></iframe>
+        </div>
+        <div class="col d-flex align-items-center">
+          <div>
+            <a href="javascript:">
+              <h6 class="mb-0">Up unpacked friendly</h6>
+            </a>
+            <p class="text-muted">tutorials | 14 minutes ago</p>
+          </div>
+        </div>
+      </div>
+    </app-card>
+    <!-- <div class="card latest-posts-card">
+      <div class="card-header d-flex align-items-center justify-content-between">
+        <h5>Latest Posts</h5>
+        <a class="link-primary">View all</a>
+      </div>
+      <div class="card-body">
+        @for (post of LatestPosts; track post) {
+          <div class="row m-b-30">
+            <div class="col-auto p-r-0">
+              <img src="{{ post.src }}" alt="user image" class="latest-posts-img" />
+            </div>
+            <div class="col">
+              <a>
+                <h5>Up unpacked friendly</h5>
+              </a>
+              <p class="text-muted m-b-10"> <i class="fa fa-play-circle-o"></i> Video | 14 minutes ago </p>
+              <p class="text-muted mb-0"> Lorem Ipsum is simply dummy text of the. </p>
+            </div>
+          </div>
+        }
+        <div class="row m-b-30">
+          <div class="col-auto p-r-0">
+            <iframe class="embed-responsive-item latest-posts-img" title="Youtube Video" src="//www.youtube.com/embed/b0fI60sBMV0"></iframe>
+          </div>
+          <div class="col">
+            <a>
+              <h5>Up unpacked friendly</h5>
+            </a>
+            <p class="text-muted m-b-10"> <i class="fa fa-play-circle-o"></i> tutorials | 14 minutes ago </p>
+            <p class="text-muted mb-0"> Lorem Ipsum is simply dummy text of the. </p>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <a class="b-b-primary text-primary">View Friend List</a>
+        </div>
+      </div>
+    </div> -->
+  </div>
+
+  <div class="col-xl-4 col-md-12">
+    <app-card cardTitle="Feeds" cardClass="feed-card">
+      <ng-template #headerOptionsTemplate>
+        <a href="javascript:" class="link-primary">View all</a>
+      </ng-template>
+      @for (card of FeedsCard; track card; let last = $last) {
+        <div class="row align-items-center" [ngClass]="{ 'mb-4': !last }">
+          <div class="col-auto">
+            <div class="feed-icon avatar avatar-xs rounded-circle text-white" [ngClass]="card.background">
+              <i class="f-14" antIcon type="{{ card.icon }}" theme="fill"></i>
+            </div>
+          </div>
+          <div class="col ps-1">
+            <a>
+              <div class="text-sm">
+                {{ card.title }}
+                <span class="text-muted text-sm float-end">{{ card.time }}</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      }
+    </app-card>
+  </div>
+  <div class="col-xl-8 col-md-12">
+    <app-card cardTitle="Latest Customers" cardClass="table-card" blockClass="p-0">
+      <ng-template #headerOptionsTemplate>
+        <a href="javascript:" class="link-primary">View all</a>
+      </ng-template>
+      <app-scrollbar [customStyle]="'305px'">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>COUNTRY</th>
+                <th>NAME</th>
+                <th class="text-end">AVERAGE</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (task of customersList; track task) {
+                <tr>
+                  <td>
+                    <img src="{{ task.src }}" alt="customer images" class="wid-30" />
+                  </td>
+                  <td>{{ task.country }}</td>
+                  <td>{{ task.name }}</td>
+                  <td class="text-end">{{ task.avrange }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </app-scrollbar>
+    </app-card>
+  </div>
+
+  <div class="col-md-12">
+    <app-card cardTitle="Latest Order" cardClass="table-card latest-order" blockClass="p-0">
+      <ng-template #headerOptionsTemplate>
+        <a href="javascript:" class="link-primary">View all</a>
+      </ng-template>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>CUSTOMER</th>
+              <th>ORDER ID</th>
+              <th>PHOTO</th>
+              <th>PRODUCT</th>
+              <th class="text-end">TOTAL</th>
+              <th class="text-center">DATE</th>
+              <th>STATUS</th>
+              <th class="text-center">ACTION</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (order of LatestOrder; track order) {
+              <tr>
+                <td>{{ order.user }}</td>
+                <td>{{ order.Id }}</td>
+                <td>
+                  <img src="{{ order.src }}" alt="order images" class="img-fluid" />
+                </td>
+                <td>{{ order.product }}</td>
+                <td class="text-end">{{ order.qty }}</td>
+                <td class="text-center">{{ order.date }}</td>
+                <td>
+                  <label class="badge {{ order.bgcolor }} text-white">{{ order.status }}</label>
+                </td>
+                <td class="text-center">
+                  <button class="btn btn-icon btn-link-primary">
+                    <i class="f-20" antIcon type="edit" theme="outline"></i>
+                  </button>
+                  <button class="btn btn-icon">
+                    <i class="f-20" antIcon type="delete" theme="outline"></i>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+
+  <div class="col-xl-4 col-md-6">
+    <app-card cardTitle="Incoming Requests" cardClass="income-request" blockClass="p-0">
+      <ng-template #headerOptionsTemplate>
+        <a href="javascript:" class="link-primary">View all</a>
+      </ng-template>
+      <app-scrollbar [customStyle]="'328px'">
+        @for (task of incomingList; track task) {
+          <div>
+            <div class="request-details d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="request-type me-2" [ngClass]="task.color"></div>
+              </div>
+              <div class="flex-grow-1">
+                {{ task.text }}
+              </div>
+            </div>
+            <hr class="m-0" />
+          </div>
+        }
+      </app-scrollbar>
+    </app-card>
+  </div>
+  <div class="col-xl-4 col-md-6">
+    <app-card cardTitle="Total Revenue" blockClass="p-0" cardClass="revenue-list">
+      <ng-template #headerOptionsTemplate>
+        <a href="javascript:" class="link-primary">View all</a>
+      </ng-template>
+      <app-scrollbar [customStyle]="'328px'">
+        @for (revenue of totalRevenue; track revenue) {
+          <div>
+            <div class="d-flex align-items-center revenue-details">
+              <div class="flex-shrink-0">
+                <i class="f-14 {{ revenue.color }}" antIcon type="caret-up" theme="fill"></i>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                {{ revenue.name }}
+              </div>
+              <div class="flex-shrink-0">
+                <div [ngClass]="revenue.color">
+                  {{ revenue.percentage }}
+                </div>
+              </div>
+            </div>
+            <hr class="m-0" />
+          </div>
+        }
+      </app-scrollbar>
+    </app-card>
+  </div>
+  <div class="col-xl-4 col-md-12">
+    <app-card cardTitle="New Customers" cardClass="new-customer-card" blockClass="p-0">
+      <ng-template #headerOptionsTemplate>
+        <a href="javascript:" class="link-primary">View all</a>
+      </ng-template>
+      <app-scrollbar [customStyle]="'328px'">
+        <div class="p-20">
+          @for (task of newCustomerList; track task; let last = $last) {
+            <div class="align-middle" [ngClass]="{ 'mb-4': !last }">
+              <img src="{{ task.src }}" alt="user image" class="img-radius align-top m-r-15" />
+              <div class="d-inline-block">
+                <a href="javascript:">
+                  <h6 class="mb-0">{{ task.user }}</h6>
+                </a>
+                <p class="mb-0 text-sm">{{ task.text }}</p>
+                @if (task.status === 'active') {
+                  <div class="status active"></div>
+                } @else {
+                  <p class="status text-muted text-sm d-flex align-items-center mb-0">
+                    {{ task.time }}
+                    <i class="ms-1" antIcon type="clock-circle" theme="outline"></i>
+                  </p>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </app-scrollbar>
+    </app-card>
+  </div>
+  <div class="col-xl-8 col-md-12">
+    <app-card cardTitle="Recent Tickets" blockClass="p-0" cardClass="table-card ticket-table">
+      <ng-template #headerOptionsTemplate>
+        <a href="javascript:" class="link-primary">View all</a>
+      </ng-template>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>SUBJECT</th>
+              <th>DEPARTMENT</th>
+              <th>DATE</th>
+              <th class="text-end">STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (list of recentList; track list) {
+              <tr>
+                <td>{{ list.sub }}</td>
+                <td>{{ list.department }}</td>
+                <td>{{ list.time }}</td>
+                <td class="text-end">
+                  <div class="ticket-status text-muted rounded">{{ list.status }}</div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<app-card cardTitle="Column Moving Table" [padding]="0">
+  <div class="d-flex align-item-center flex-wrap gap-2 p-3">
+    <button class="btn btn-outline-primary" (click)="onMedalsFirst()">Medals First</button>
+    <button class="btn btn-outline-primary" (click)="onMedalsLast()">Medals Last</button>
+    <button class="btn btn-outline-primary" (click)="onCountryFirst()">Country First</button>
+    <button class="btn btn-outline-primary" (click)="onSwapFirstTwo()">Swap First Two</button>
+  </div>
+  <hr class="m-0" />
+  @if (showGrid) {
+  <ag-grid-angular
+    style="width: 100%; height: calc(100vh - 395px)"
+    [theme]="theme"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [suppressDragLeaveHidesColumns]="true"
+    [rowData]="rowData"
+    (gridReady)="onGridReady($event)"
+    [suppressMoveWhenColumnDragging]="true"
+    [enableRtl]="direction"
+  />
+  }
+</app-card>

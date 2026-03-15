@@ -24,7 +24,13 @@ export const routes: Routes = [
     loadChildren: () => import('./features/rider/rider-module.routes').then(m => m.RIDER_MODULE_ROUTES),
     canActivate: [authGuard]
   },
-  // Legacy rider routes (using general layout)
+  // Rider route alias for legacy /rider/* URLs
+  {
+    path: 'rider',
+    loadChildren: () => import('./features/rider/rider-module.routes').then(m => m.RIDER_MODULE_ROUTES),
+    canActivate: [authGuard]
+  },
+  // Legacy rider routes kept for compatibility
   {
     path: 'riders',
     loadChildren: () => import('./features/rider/rider.routes').then(m => m.RIDER_ROUTES),

@@ -1,0 +1,107 @@
+<div class="row">
+  <div class="col-xl-8">
+    <div class="card">
+      <div class="card-header">
+        <h5>Shipping information</h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          @for (task of address; track task) {
+            <div class="col-md-6">
+              <div class="card border">
+                <div class="card-body">
+                  <h6 class="mb-1">
+                    {{ task.title }}
+                    <span class="text-muted text-sm ms-1">{{ task.type }}</span>
+                  </h6>
+                  <p class="text-sm text-muted">{{ task.address }}</p>
+                  <p class="text-secondary mb-0 text-sm">{{ task.number }}</p>
+                </div>
+              </div>
+            </div>
+          }
+          <div class="col-12">
+            @for (task of group; track task) {
+              <div class="form-group row">
+                <label class="col-lg-4 col-form-label text-muted">{{ task.title }} :</label>
+                <div class="col-lg-8">
+                  <input type="{{ task.type }}" class="form-control" placeholder="{{ task.details }} " />
+                </div>
+              </div>
+            }
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkaddres" checked />
+                <label class="form-check-label" for="checkaddres">Save this new address for future shipping</label>
+              </div>
+            </div>
+            <div class="text-end btn-page mb-0 mt-4">
+              <button class="btn btn-outline-secondary">Cancel</button>
+              <button class="btn btn-primary">Save</button>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end mb-3">
+          <button class="btn btn-link-primary d-flex align-items-center">
+            <i antIcon theme="outline" type="left" class="me-2"></i>
+            Back to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4">
+    <div class="card">
+      <div class="card-body">
+        <a href="javascript:" class="text-secondary text-sm" (click)="openOfferMOdal()">Have a coupon code?</a>
+        <div class="input-group my-2">
+          <input type="text" class="form-control" placeholder="Discount Coupon" />
+          <button class="btn btn-outline-secondary" type="button">Apply</button>
+        </div>
+      </div>
+    </div>
+    <app-card cardTitle="Order Summary" [padding]="0" blockClass="order-summary">
+      <ul class="list-group list-group-flush p-20 border-bottom">
+        <li class="list-group-item p-0">
+          <div class="media align-items-start cart-product-img">
+            <img class="rounded img-fluid border wid-50" src="assets/images/application/prod-img-1.png" alt="User image" />
+            <div class="media-body mx-2">
+              <h6 class="mb-0">Canon EOS 1500D 24.1</h6>
+              <p class="text-truncate text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
+              <p class="mb-0">
+                $12.99
+                <span class="mx-2 text-muted">1 Item</span>
+              </p>
+            </div>
+            <a href="javascript:" class="avatar avatar-s btn-link-secondary" title="Delete">
+              <i class="f-20" antIcon theme="outline" type="delete"></i>
+            </a>
+          </div>
+        </li>
+      </ul>
+      <ul class="list-group list-group-flush p-20 py-0">
+        @for (task of summary; track task) {
+          <li class="list-group-item border-0 py-2 px-0 ng-star-inserted">
+            <div class="float-end">
+              <h5 class="mb-0">{{ task.amount }}</h5>
+            </div>
+            <span class="text-muted">{{ task.title }}</span>
+          </li>
+        }
+      </ul>
+    </app-card>
+    <app-card [showHeader]="false">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item p-0">
+          <div class="float-end">
+            <h5 class="mb-0">$100.00</h5>
+          </div>
+          <h5 class="mb-0 d-inline-block">Total</h5>
+        </li>
+      </ul>
+    </app-card>
+    <div class="d-grid mb-3">
+      <button class="btn btn-primary">Process to Checkout</button>
+    </div>
+  </div>
+</div>

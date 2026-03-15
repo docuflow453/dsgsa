@@ -1,0 +1,30 @@
+<!-- [ Main Content ] start -->
+<div class="maintenance-block">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card error-card">
+          <div class="card-body">
+            <div class="error-image-block">
+              <div class="row justify-content-center">
+                <div class="col-10">
+                  <img class="img-fluid" src="assets/images/pages/error-401.png" alt="error img" />
+                </div>
+              </div>
+            </div>
+            <div class="text-center">
+              <h1 class="mt-4"><b>Error Unauthorized</b></h1>
+              <p class="mt-2 mb-4 text-sm text-muted">
+                Your authorization failed.
+                <br />
+                Please try refreshing the page and fill in the correct login details.
+              </p>
+              <a [routerLink]="[dashboard_link]" type="button" class="btn btn-primary mb-3">Back To Home</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- [ Main Content ] end -->

@@ -1,0 +1,104 @@
+[
+  {
+    "img": "assets/images/application/prod-img-1.png",
+    "name": "Apple Series 4 GPS A38 MM Space",
+    "brand": "Apple",
+    "price_sell": "$12.99",
+    "price": "$15.99",
+    "rating": 4,
+    "type": "",
+    "discount": "",
+    "buy": "Add to Cart",
+    "stock": true
+  },
+  {
+    "img": "assets/images/application/prod-img-2.png",
+    "name": "Boat On-Ear Wirelesses",
+    "brand": "Boat",
+    "price_sell": "$81.99",
+    "price": "$15.99",
+    "rating": 3,
+    "type": "bg-light-success",
+    "discount": "30%",
+    "buy": "Add to Cart",
+    "stock": true
+  },
+  {
+    "img": "assets/images/application/prod-img-3.png",
+    "name": "FireBolt MX30 Smart Watch",
+    "brand": "FireBolt",
+    "price_sell": "$49.9",
+    "price": "$85",
+    "rating": 3,
+    "type": "bg-light-danger",
+    "discount": "Sold out",
+    "buy": "Sold Out",
+    "stock": false
+  },
+  {
+    "img": "assets/images/application/prod-img-4.png",
+    "name": "Apple Series 4 GPS A38 MM Space",
+    "brand": "Apple",
+    "price_sell": "$12.99",
+    "price": "$15.99",
+    "rating": 4,
+    "buy": "Add to Cart",
+    "stock": true
+  },
+  {
+    "img": "assets/images/application/prod-img-5.png",
+    "name": "Apple Series 4 GPS A38 MM Space",
+    "brand": "Apple",
+    "price_sell": "$12.99",
+    "price": "$15.99",
+    "rating": 4,
+    "buy": "Add to Cart",
+    "stock": true
+  },
+  {
+    "img": "assets/images/application/prod-img-6.png",
+    "name": "Boat On-Ear Wirelesses",
+    "brand": "Boat",
+    "price_sell": "$81.99",
+    "price": "$15.99",
+    "rating": 3,
+    "type": "bg-light-success",
+    "discount": "30%",
+    "buy": "Add to Cart",
+    "stock": true
+  },
+  {
+    "img": "assets/images/application/prod-img-7.png",
+    "name": "FireBolt MX30 Smart Watch",
+    "brand": "FireBolt",
+    "price_sell": "$49.9",
+    "price": "$85",
+    "rating": 3,
+    "type": "bg-light-danger",
+    "discount": "Sold out",
+    "buy": "Sold Out",
+    "stock": false
+  },
+  {
+    "img": "assets/images/application/prod-img-8.png",
+    "name": "Apple Series 4 GPS A38 MM Space",
+    "brand": "Apple",
+    "price_sell": "$12.99",
+    "price": "$15.99",
+    "rating": 4,
+    "buy": "Add to Cart",
+    "stock": true
+  },
+  {
+    "img": "assets/images/application/prod-img-9.png",
+    "name": "Boat On-Ear Wirelesses",
+    "brand": "Boat",
+    "price_sell": "$81.99",
+    "price": "$15.99",
+    "rating": 3,
+    "type": "bg-light-success",
+    "discount": "30%",
+    "buy": "Add to Cart",
+    "stock": true
+  }
+]

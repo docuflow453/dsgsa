@@ -1,0 +1,103 @@
+/**======================================================================
+=========================================================================
+Template Name: Mantis Angular - Angular Admin Template
+Author: codedThemes
+Support: https://codedthemes.support-hub.io/
+File: style.css
+=========================================================================
+=================================================================================== */
+@use 'sass:map';
+@use 'sass:color';
+@use 'sass:string';
+
+// bootstrap functions, variables, and variables-dark
+@import '../node_modules/bootstrap/scss/functions';
+@import '../node_modules/bootstrap/scss/variables';
+@import '../node_modules/bootstrap/scss/variables-dark';
+
+@import 'scss/settings/color-variables';
+@import 'scss/settings/theme-variables';
+@import 'scss/settings/bootstrap-variables';
+
+// bootstrap import
+@import 'scss/bootstrap/bootstrap';
+
+body.mantis-ltr {
+  @import '../node_modules/bootstrap/scss/utilities';
+  @import '../node_modules/bootstrap/scss/utilities/api';
+}
+
+body.mantis-rtl {
+  @import 'scss/theme/layouts/RTL/style-rtl-utility';
+  @import '../node_modules/bootstrap/scss/utilities/api';
+}
+
+// main framework
+@import 'scss/theme/generic.scss';
+@import 'scss/theme/general.scss';
+
+@import 'scss/theme/components/components.scss';
+
+// theme
+@import 'scss/theme/layouts/menu/sidebar.scss';
+@import 'scss/theme/layouts/navbar/navbar.scss';
+@import 'scss/theme/layouts/configuration/configuration.scss';
+@import 'scss/theme/layouts/pc-common.scss';
+@import 'scss/theme/layouts/breadcrumb/breadcrumb.scss';
+@import 'scss/theme/layouts/footer/footer.scss';
+@import 'scss/theme/layouts/menu/horizontal.scss';
+@import 'scss/theme/layouts/menu/compact.scss';
+
+@import '../node_modules/angular-calendar/css/angular-calendar.css';
+
+// component page
+@import 'scss/pages/component-page/sweatalert.scss';
+
+// form page
+@import 'scss/pages/forms/ngx-chips.scss';
+@import 'scss/pages/forms/text-editor.scss';
+
+// data table
+@import 'scss/pages/data-table/data-table.scss';
+
+// isRTLMode
+@import 'scss/theme/layouts/RTL/rtl.scss';
+
+// plugin
+@import 'scss/plugin/data-table.scss';
+
+// sweetAlert
+@import '../node_modules/animate.css';
+@import '../node_modules/sweetalert2/src/sweetalert2.scss';
+
+// angular Material css
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+// angular notification
+@import '../node_modules/angular-notifier/styles';
+
+// quill text-editor
+@import '../node_modules/quill/dist/quill.bubble.css';
+@import '../node_modules/quill/dist/quill.snow.css';
+
+// ng-select
+@import '../node_modules/@ng-select/ng-select/themes/default.theme.css';
+
+// ngx carousel
+// @import 'ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+@import '../node_modules/ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+@import '../node_modules/ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
+
+// apex-chart
+@import 'scss/plugin/apex-chart.scss';
+@import 'scss/plugin/date-picker.scss';
+
+// font
+@import 'scss/fonts/feather.css';
+@import 'scss/fonts/fontawesome.css';
+@import 'scss/fonts/material.css';
+@import 'scss/fonts/tabler-icons.min.css';
+
+@import 'scss/theme/layouts/dark-mode/dark.scss';
+
+@import 'scss/theme/style-preset.scss';

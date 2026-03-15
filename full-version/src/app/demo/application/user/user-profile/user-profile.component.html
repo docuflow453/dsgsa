@@ -1,0 +1,390 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card profile-wave-card">
+      <img src="assets/images/profile/img-profile-top.svg" alt="images" class="img-fluid profiled-wave-img wave-top" />
+      <img src="assets/images/profile/img-profile-bottom.svg" alt="images" class="img-fluid profiled-wave-img wave-bottom" />
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <div class="d-flex align-items-center">
+              <div class="my-n4" style="width: 150px">
+                <div id="profile-chart">
+                  <apx-chart
+                    [series]="chartOptions.series"
+                    [chart]="chartOptions.chart"
+                    [plotOptions]="chartOptions.plotOptions"
+                    [colors]="chartOptions.colors"
+                    [fill]="chartOptions.fill"
+                    [stroke]="chartOptions.stroke"
+                  ></apx-chart>
+                </div>
+              </div>
+              <div class="ms-3">
+                <h5>Edit Your Profile</h5>
+                <p class="mb-0">Complete your profile to unlock all features</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="btn btn-primary my-3">Edit Your Profile</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-xl-3">
+        <div class="card">
+          <div class="card-body position-relative">
+            <div class="d-flex justify-content-end" ngbDropdown>
+              <a href="javascript:" class="profile-edit dropdown-toggle" title="profile-Edit Tab" ngbDropdownToggle>
+                <i class="f-16" antIcon theme="outline" type="more"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-end pc-h-dropdown pc-mega-dropdown user-edit" ngbDropdownMenu>
+                <a href="javascript:" class="dropdown-item">Edit</a>
+                <a href="javascript:" class="dropdown-item">Delete</a>
+              </div>
+            </div>
+            <div class="text-center">
+              <div class="chat-avatar d-inline-flex mx-auto">
+                <img class="rounded-circle img-fluid wid-120" src="assets/images/user/avatar-5.jpg" alt="User image" />
+              </div>
+              <h5 class="mt-3">Stein Ben</h5>
+              <p class="text-muted">Full Stack Developer</p>
+              <ul class="list-inline ms-auto mb-0">
+                @for (task of socialMedia; track task; let last = $last) {
+                  <li class="list-inline-item" [ngClass]="{ 'me-4': !last }">
+                    <a href="javascript:" class="social-media" title="Social Media">
+                      <i class="{{ task.background }}" antIcon type="{{ task.icon }}" theme="fill"></i>
+                    </a>
+                  </li>
+                }
+              </ul>
+              <div class="row g-3 my-4">
+                <div class="col-4">
+                  <h5 class="mb-0">86</h5>
+                  <p class="text-muted">Post</p>
+                </div>
+                <div class="col-4 border border-top-0 border-bottom-0">
+                  <h5 class="mb-0">40</h5>
+                  <p class="text-muted">Project</p>
+                </div>
+                <div class="col-4">
+                  <h5 class="mb-0">4.5K</h5>
+                  <p class="text-muted">Members</p>
+                </div>
+              </div>
+            </div>
+            <ul ngbNav #nav="ngbNav" aria-busy="true" class="nav-pills list-group list-group-flush user-sett-tabs" orientation="vertical">
+              <li [ngbNavItem]="1">
+                <a ngbNavLink class="list-group-item list-group-item-action border-0">
+                  <div class="d-flex align-items-center">
+                    <i antIcon type="user" theme="outline" class="me-2 f-14"></i>
+                    <span class="f-w-500">Personal Information</span>
+                  </div>
+                </a>
+                <ng-template ngbNavContent>
+                  <app-card cardTitle="Personal Information" footerClass="text-end btn-page">
+                    <div class="row">
+                      <div class="col-12">
+                        <h5>Personal Information</h5>
+                        <hr class="mb-4" />
+                      </div>
+                      @for (task of personal_info; track task) {
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label class="form-label">{{ task.label }}</label>
+                            <input type="{{ task.type }}" class="form-control" value="{{ task.value }}" placeholder="{{ task.detail }}" />
+                          </div>
+                        </div>
+                      }
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <h5 class="mt-4">Address</h5>
+                        <hr class="mb-4" />
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label class="form-label">Address 01</label>
+                          <textarea class="form-control" placeholder="Leave a Address here">
+3801 Chalk Butte Rd, Cut Bank, MT 59427, United States</textarea
+                          >
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label class="form-label">Address 02</label>
+                          <textarea class="form-control" placeholder="Leave a Address here">
+301 Chalk Butte Rd, Cut Bank, NY 96572, New York</textarea
+                          >
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label class="form-label">Country</label>
+                          <select class="form-select" title="Select Country">
+                            <option>United States</option>
+                            <option>United States 1</option>
+                            <option>United States 2</option>
+                            <option>United States 3</option>
+                            <option>United States 4</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label class="form-label">State</label>
+                          <input type="text" class="form-control" value="California" placeholder="Enter Your State" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <h5 class="mt-4">Skills</h5>
+                        <hr class="mb-4" />
+                      </div>
+                      <ng-select
+                        [items]="people$ | async"
+                        [multiple]="true"
+                        [closeOnSelect]="false"
+                        [searchable]="false"
+                        bindLabel="name"
+                        placeholder="Select people"
+                        [(ngModel)]="selectedPeople"
+                      ></ng-select>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <h5 class="mt-4">Note</h5>
+                        <hr class="mb-4" />
+                      </div>
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <textarea class="form-control" rows="4">
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</textarea
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <ng-template #footerTemplate>
+                      <div class="btn btn-outline-secondary">Cancel</div>
+                      <div class="btn btn-primary">Save</div>
+                    </ng-template>
+                  </app-card>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="2">
+                <a ngbNavLink class="list-group-item list-group-item-action border-0">
+                  <div class="d-flex align-items-center">
+                    <i antIcon type="credit-card" theme="outline" class="me-2 f-14"></i>
+                    <span class="f-w-500">Payment</span>
+                  </div>
+                </a>
+                <ng-template ngbNavContent>
+                  <app-card cardTitle="Payment" footerClass="text-end btn-page">
+                    <ul ngbNav #nav1="ngbNav" class="nav-pills mb-3">
+                      <li [ngbNavItem]="1" class="mb-2">
+                        <a ngbNavLink class="card-type">
+                          <span class="card-img">
+                            <img src="assets/images/profile/master.png" alt="master" />
+                          </span>
+                          Card
+                        </a>
+                        <ng-template ngbNavContent>
+                          <div class="row mb-2">
+                            <div class="row">
+                              @for (cardItem of cardItems; track $index) {
+                                <div class="col-lg-6">
+                                  <div class="border card p-3">
+                                    <div class="form-check">
+                                      <input
+                                        type="radio"
+                                        name="radio1"
+                                        class="form-check-input input-primary"
+                                        [id]="'customCheckDef' + cardItem.cardType"
+                                        [checked]="cardItem.checked"
+                                      />
+                                      <label class="form-check-label d-block" [for]="'customCheckDef' + cardItem.cardType">
+                                        <span class="d-flex align-items-center justify-content-between">
+                                          <span>
+                                            <span class="mb-2 text-muted d-block">{{ cardItem.name }}</span>
+                                            <span class="h5 mb-0">{{ cardItem.cardNumber }}</span>
+                                          </span>
+                                          <span class="d-inline-flex align-items-center">
+                                            <span class="mx-3">
+                                              <img
+                                                [src]="'assets/images/profile/' + cardItem.cardType + '.png'"
+                                                [alt]="cardItem.cardType + '-card'"
+                                              />
+                                            </span>
+                                            <a
+                                              href="javascript:"
+                                              class="avatar avatar-xs btn-link-danger"
+                                              (click)="removeCard(cardItem.id)"
+                                            >
+                                              <i class="f-18" antIcon type="delete" theme="outline"></i>
+                                            </a>
+                                          </span>
+                                        </span>
+                                      </label>
+                                    </div>
+                                  </div>
+                                </div>
+                              }
+                            </div>
+                          </div>
+                        </ng-template>
+                      </li>
+                      <li [ngbNavItem]="2" class="ms-2 mb-2">
+                        <a ngbNavLink class="card-type">
+                          <span class="card-img">
+                            <img src="assets/images/profile/paypal.png" alt="paypal method" />
+                          </span>
+                          Paypal
+                        </a>
+                        <ng-template ngbNavContent>
+                          <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" value="stebin.ben@gmail.com" />
+                          </div>
+                        </ng-template>
+                      </li>
+                      <li [ngbNavItem]="3" class="ms-2 mb-2">
+                        <a ngbNavLink class="p-0">
+                          <a href="javascript:" class="btn btn-primary d-inline-flex align-items-center text-white">
+                            <i antIcon type="plus" theme="outline" class="d-flex me-2 f-14"></i>
+                            <span>Add New Card</span>
+                          </a>
+                        </a>
+                        <ng-template ngbNavContent>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="mb-3">
+                                <label for="name" class="form-label">Name on Card</label>
+                                <input type="text" class="form-control" id="name" placeholder="Name on Card" />
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="mb-3">
+                                <label for="name" class="form-label">Card Number</label>
+                                <input type="number" class="form-control" id="name" placeholder="Name on Card" />
+                              </div>
+                            </div>
+                            <div class="col-sm-4">
+                              <div class="mb-3">
+                                <label for="date" class="form-label">Expiry Date</label>
+                                <input type="number" class="form-control" id="date" placeholder="Expiry Date" />
+                              </div>
+                            </div>
+                            <div class="col-sm-4">
+                              <div class="mb-3">
+                                <label for="cvv" class="form-label">CVV Number</label>
+                                <input type="number" class="form-control" id="cvv" placeholder="CVV Number" />
+                              </div>
+                            </div>
+                            <div class="col-sm-4">
+                              <div class="mb-3">
+                                <label for="code" class="form-label">Security Code</label>
+                                <input type="number" class="form-control" id="code" placeholder="Enter Security Code" />
+                              </div>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </li>
+                    </ul>
+                    <div [ngbNavOutlet]="nav1"></div>
+                    <ng-template #footerTemplate>
+                      <div class="btn btn-outline-secondary">Cancel</div>
+                      <div class="btn btn-primary">Save</div>
+                    </ng-template>
+                  </app-card>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="3">
+                <a ngbNavLink class="list-group-item list-group-item-action border-0">
+                  <div class="d-flex align-items-center">
+                    <i antIcon type="lock" theme="outline" class="me-2 f-14"></i>
+                    <span class="f-w-500">Change Password</span>
+                  </div>
+                </a>
+                <ng-template ngbNavContent>
+                  <app-card cardTitle="Change Password" footerClass="text-end btn-page">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        @for (password of passwords; track password) {
+                          <div class="form-group">
+                            <label class="form-label">{{ password.label }}</label>
+                            <input type="password" class="form-control" placeholder="{{ password.placeholder }}" />
+                          </div>
+                        }
+                      </div>
+                      <div class="col-lg-6">
+                        <h5>New password must contain:</h5>
+                        <ul class="list-group list-group-flush">
+                          @for (list of condition; track list) {
+                            <li class="list-group-item">
+                              <i class="me-2" antIcon type="line" theme="outline"></i>
+                              {{ list.text }}
+                            </li>
+                          }
+                        </ul>
+                      </div>
+                    </div>
+                  </app-card>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="4">
+                <a ngbNavLink class="list-group-item list-group-item-action border-0">
+                  <div class="d-flex align-items-center">
+                    <i antIcon type="setting" theme="outline" class="me-2 f-14"></i>
+                    <span class="f-w-500">Settings</span>
+                  </div>
+                </a>
+                <ng-template ngbNavContent>
+                  <app-card cardTitle="Settings" footerClass="text-end btn-page">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <ul class="list-group list-group-flush">
+                          @for (task of setting; track task) {
+                            <li class="list-group-item px-0">
+                              <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                  <i class="me-3 f-24 text-primary" antIcon type="{{ task.icon }}" theme="outline"></i>
+                                  <div>
+                                    <h5 class="mb-1">{{ task.title }}</h5>
+                                    <p class="text-muted text-sm mb-0">{{ task.text }}</p>
+                                  </div>
+                                </div>
+                                <div class="form-check form-switch p-0">
+                                  <input
+                                    class="form-check-input h4 position-relative m-0"
+                                    type="checkbox"
+                                    role="switch"
+                                    [checked]="task.check"
+                                  />
+                                </div>
+                              </div>
+                            </li>
+                          }
+                        </ul>
+                      </div>
+                    </div>
+                    <ng-template #footerTemplate>
+                      <div class="btn btn-outline-secondary">Cancel</div>
+                      <div class="btn btn-primary">Save</div>
+                    </ng-template>
+                  </app-card>
+                </ng-template>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8 col-xl-9">
+        <div [ngbNavOutlet]="nav"></div>
+      </div>
+    </div>
+  </div>
+  <!-- [ sample-page ] end -->
+</div>
+<!-- [ Main Content ] end -->

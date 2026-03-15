@@ -1,0 +1,172 @@
+<!-- [ Main Content ] start -->
+<div class="row">
+  <!-- [ sample-page ] start -->
+  <div class="col-sm-12">
+    <div class="ecom-wrapper">
+      <div class="offcanvas-xxl offcanvas-start ecom-offcanvas" tabindex="-1" id="offcanvas_mail_filter">
+        <div class="offcanvas-header">
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            data-bs-target="javascript:offcanvas_mail_filter"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="offcanvas-body p-0 sticky-xxl-top">
+          <div id="ecom-filter" class="show collapse collapse-horizontal" [ngbCollapse]="isCollapsed">
+            <div class="ecom-filter">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Filter</h5>
+                </div>
+                <app-scrollbar [customStyle]="'calc(100vh - 120px)'">
+                  <app-product-filter></app-product-filter>
+                </app-scrollbar>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #filter let-offcanvas>
+          <div class="offcanvas-header pb-0">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Filter</h5>
+            <button
+              type="button"
+              class="btn-close text-reset"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+              (click)="offcanvas.close('Close click')"
+            ></button>
+          </div>
+          <div class="offcanvas-body p-0 sticky-xxl-top">
+            <div class="ecom-filter">
+              <div class="card">
+                <app-scrollbar [customStyle]="'calc(100vh - 120px)'">
+                  <app-product-filter></app-product-filter>
+                </app-scrollbar>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <div class="ecom-content">
+        <div class="card">
+          <div class="card-body p-3">
+            <div class="d-sm-flex align-items-center justify-content-between">
+              <ul class="list-inline my-1 d-sm-flex align-items-center">
+                <li class="list-inline-item align-bottom me-2">
+                  <a
+                    href="javascript:"
+                    class="d-xxl-none btn btn-link-secondary filter-button"
+                    data-bs-toggle="offcanvas"
+                    (click)="showFilter(filter)"
+                  >
+                    <i antIcon type="filter" theme="outline" class="me-2"></i>
+                    Filter
+                  </a>
+                  <a
+                    href="javascript:"
+                    class="d-none d-xxl-inline-flex btn btn-link-secondary filter-button"
+                    (click)="isCollapsed = !isCollapsed"
+                    [attr.aria-expanded]="!isCollapsed"
+                  >
+                    <i antIcon type="filter" theme="outline" class="me-2"></i>
+                    Filter
+                  </a>
+                </li>
+                <li class="list-inline-item m-sm-0 my-2">
+                  <div class="form-search product-search">
+                    <i antIcon theme="outline" type="search"></i>
+                    <input type="search" class="form-control" placeholder="Search Products" />
+                  </div>
+                </li>
+              </ul>
+              <ul class="list-inline my-1">
+                <li class="list-inline-item">
+                  <select class="form-select" title="select to filter">
+                    <option>Price: High To Low</option>
+                    <option>Price: Low To High</option>
+                    <option>Popularity</option>
+                    <option>Discount</option>
+                    <option>Fresh Arrivals</option>
+                  </select>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          @for (product of products; track product) {
+            <div class="col-sm-6 col-xl-4">
+              <div class="card product-card">
+                <div class="card-img-top">
+                  <img src="{{ product.img }}" alt="image" class="img-prod" [ngClass]="product.stock === true ? '' : 'opacity-25'" />
+                  <div class="card-body position-absolute end-0 top-0">
+                    <div class="form-check prod-likes">
+                      <input type="checkbox" class="form-check-input" title="Add Whitelist" (change)="onLikeChange($event)" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="feather feather-heart prod-likes-icon"
+                      >
+                        <path
+                          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                        ></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="card-body position-absolute start-0 top-0">
+                    <span class="badge {{ product.type }}">{{ product.discount }}</span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <a [routerLink]="['/e-commerce/product-details']">
+                    <h5 class="mb-0 text-truncate">{{ product.name }}</h5>
+                  </a>
+                  <p class="prod-content mb-3 text-muted">{{ product.brand }}</p>
+
+                  <div class="d-flex align-items-center justify-content-between mt-3">
+                    <div class="me-2">
+                      <h5 class="mb-0">
+                        <b>{{ product.price_sell }}</b>
+                        <span class="f-14 text-muted f-w-400 text-decoration-line-through ms-2">{{ product.price }}</span>
+                      </h5>
+                      <ngb-rating [(rate)]="product.rating" [max]="5">
+                        <ng-template let-fill="fill" let-index="index">
+                          <i
+                            antIcon
+                            type="{{ fill === 100 ? 'star' : 'star' }}"
+                            theme="{{ fill === 100 ? 'fill' : 'outline' }}"
+                            class="text-warning f-16 me-1"
+                          ></i>
+                        </ng-template>
+                      </ngb-rating>
+                      <span class="text-sm text-muted ms-1">( {{ product.rating }}.0 )</span>
+                    </div>
+                    <button class="btn" [ngClass]="product.stock === true ? 'btn-primary' : 'btn-secondary'" [disabled]="!product.stock">
+                      {{ product.buy }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+      <div class="ec-cart">
+        <a [routerLink]="['/e-commerce/checkout']" class="icon" title="Cart Icon">
+          <i antIcon theme="outline" type="shopping-cart" class="d-flex"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- [ sample-page ] end -->
+</div>
+<!-- [ Main Content ] end -->

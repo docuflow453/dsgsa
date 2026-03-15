@@ -1,0 +1,212 @@
+[
+  {
+    "src": "assets/images/user/avatar-1.jpg",
+    "name": "Marc Hubbard",
+    "position": "Airline Pilot",
+    "user_skill": [
+      {
+        "skill": "UX"
+      },
+      {
+        "skill": "Figma"
+      },
+      {
+        "skill": "Backend"
+      }
+    ]
+  },
+  {
+    "src": "assets/images/user/avatar-2.jpg",
+    "name": "Glen Schneider",
+    "position": "Business Manager",
+    "user_skill": [
+      {
+        "skill": "Mobile App"
+      },
+      {
+        "skill": "Figma"
+      },
+      {
+        "skill": "Angular"
+      },
+      {
+        "skill": "HTML"
+      },
+      {
+        "skill": "Backend"
+      }
+    ]
+  },
+  {
+    "src": "assets/images/user/avatar-3.jpg",
+    "name": "Cora Fowler",
+    "position": "Dietitian",
+    "user_skill": [
+      {
+        "skill": "Web App"
+      },
+      {
+        "skill": "Figma"
+      },
+      {
+        "skill": "Javascript"
+      },
+      {
+        "skill": "ES6"
+      }
+    ]
+  },
+  {
+    "src": "assets/images/user/avatar-4.jpg",
+    "name": "Evan Kelly",
+    "position": "Freelance Writer",
+    "user_skill": [
+      {
+        "skill": "Codeigniter"
+      },
+      {
+        "skill": "React"
+      },
+      {
+        "skill": "HTML"
+      },
+      {
+        "skill": "ES6"
+      }
+    ]
+  },
+  {
+    "src": "assets/images/user/avatar-5.jpg",
+    "name": "Marc Hubbard",
+    "position": "Airline Pilot",
+    "user_skill": [
+      {
+        "skill": "UX"
+      },
+      {
+        "skill": "Figma"
+      },
+      {
+        "skill": "Backend"
+      }
+    ]
+  },
+  {
+    "src": "assets/images/user/avatar-6.jpg",
+    "name": "Marc Hubbard",
+    "position": "Airline Pilot",
+    "user_skill": [
+      {
+        "skill": "UX"
+      },
+      {
+        "skill": "Figma"
+      },
+      {
+        "skill": "Backend"
+      }
+    ]
+  },
+  {
+    "src": "assets/images/user/avatar-7.jpg",
+    "name": "Glen Schneider",
+    "position": "Business Manager",
+    "user_skill": [
+      {
+        "skill": "UX"
+      },
+      {
+        "skill": "Figma"
+      },
+      {
+        "skill": "Backend"
+      }
+    ]
+  },
+  {
+    "src": "assets/images/user/avatar-8.jpg",
+    "name": "Cora Fowler",
+    "position": "Dietitian",
+    "user_skill": [
+      {
+        "skill": "Web App"
+      },
+      {
+        "skill": "Figma"
+      },
+      {
+        "skill": "Javascript"
+      },
+      {
+        "skill": "ES6"
+      }
+    ]
+  },
+  {
+    "src": "assets/images/user/avatar-9.jpg",
+    "name": "Evan Kelly",
+    "position": "Freelance Writer",
+    "user_skill": [
+      {
+        "skill": "Web App"
+      },
+      {
+        "skill": "Figma"
+      },
+      {
+        "skill": "Javascript"
+      },
+      {
+        "skill": "ES6"
+      }
+    ]
+  },
+  {
+    "src": "assets/images/user/avatar-10.jpg",
+    "name": "Marc Hubbard",
+    "position": "Airline Pilot",
+    "user_skill": [
+      {
+        "skill": "UX"
+      },
+      {
+        "skill": "Figma"
+      },
+      {
+        "skill": "Backend"
+      }
+    ]
+  },
+  {
+    "src": "assets/images/user/avatar-1.jpg",
+    "name": "Marc Hubbard",
+    "position": "Airline Pilot",
+    "user_skill": [
+      {
+        "skill": "UX"
+      },
+      {
+        "skill": "Figma"
+      },
+      {
+        "skill": "Backend"
+      }
+    ]
+  },
+  {
+    "src": "assets/images/user/avatar-2.jpg",
+    "name": "Glen Schneider",
+    "position": "Business Manager",
+    "user_skill": [
+      {
+        "skill": "UX"
+      },
+      {
+        "skill": "Figma"
+      },
+      {
+        "skill": "Backend"
+      }
+    ]
+  }
+]

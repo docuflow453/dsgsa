@@ -1,0 +1,641 @@
+<!-- [ Header ] start -->
+<header id="home">
+  <!-- [ Nav ] start -->
+  <nav class="navbar navbar-expand-md navbar-dark">
+    <div class="container">
+      <a class="navbar-brand p-0" [routerLink]="['/']">
+        <img src="assets/images/logo-white.svg" alt="logo" />
+        <span class="theme-version text-muted">v{{ currentApplicationVersion }}</span>
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        (click)="isCollapsed = !isCollapsed"
+        [attr.aria-expanded]="!isCollapsed"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" [ngbCollapse]="isCollapsed">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item landing-header-title">
+            <a class="nav-link" [routerLink]="[dashboard_link]">{{ userLogin ? 'Dashboard' : 'Login' }}</a>
+          </li>
+          <li class="nav-item ms-3 landing-header-title">
+            <a class="nav-link" [routerLink]="['/components/basic/alert']">Components</a>
+          </li>
+          <li class="nav-item ms-3 landing-header-title">
+            <a class="nav-link me-2" [href]="docs_link" target="_blank">Documentation</a>
+          </li>
+          <li class="nav-item ms-2">
+            <a class="btn btn-primary" [href]="buy_now_link" target="_blank">Purchase Now</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- [ Nav ] start -->
+
+  <img
+    src="assets/images/landing/bg-mockup-theme-1.png"
+    alt="img"
+    class="img-fluid img-home-mokeup img-landing"
+    data-img="assets/images/landing/bg-mockup-theme-"
+    data-img-type=".png"
+  />
+  <div class="container">
+    <div class="row align-items-center justify-content-between">
+      @defer (on viewport; prefetch on viewport) {
+        <div class="col-md-12 col-xl-5">
+          <div class="hero-content">
+            <h1 class="text-white mb-3 f-w-600 animate__animated animate__delay-1s animate__fadeInUpBig">
+              Carefully Crafted for your
+              <span class="text-primary">Caring Angular</span>
+              Project
+            </h1>
+            <div class="mb-4 f-16 text-white animate__animated animate__delay-2s animate__fadeInUpBig">
+              Mantis Angular is a blazing-fast dashboard template built using the Bootstrap library.
+            </div>
+            <div class="live-button animate__animated animate__delay-4s animate__fadeInUpBig">
+              <a [routerLink]="['/components/basic/alert']" class="btn btn-outline-primary me-3 mt-3" target="_blank">Explore Components</a>
+              <a [routerLink]="['/login']" class="btn btn-primary mt-3" target="_blank">
+                <i class="me-1" antIcon theme="outline" type="eye"></i>
+                Live Preview
+              </a>
+            </div>
+            <img
+              src="assets/images/landing/img-headertech.svg"
+              alt="img"
+              class="img-fluid animate__animated animate__delay-5s animate__fadeInUpBig"
+            />
+          </div>
+        </div>
+      } @placeholder {
+        <div></div>
+      }
+      <div class="col-lg-7"></div>
+    </div>
+  </div>
+</header>
+<!-- [ Header ] End -->
+<!-- [ Why Mantis ] start -->
+<section class="why-mantis">
+  <div class="container title">
+    <div class="row justify-content-center text-center">
+      <div class="col-md-10 col-xl-6">
+        <h6 class="text-primary mb-0">Mantis nailed it!</h6>
+        <h2 class="my-3 pt-2">Why Mantis?</h2>
+        <p class="mb-0">
+          Customize everything with the Mantis Admin Dashboard Template built with the latest Angular 21 component library.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row align-items-center justify-content-center">
+      <div class="col-sm-6 col-lg-4">
+        @defer (on viewport; prefetch on viewport) {
+          <div class="card animate__animated animate__delay-1s animate__fadeInUp">
+            <div class="card-body">
+              <img src="assets/images/landing/img-feature1.svg" alt="img" class="img-fluid" />
+              <h5 class="my-3 pt-2">Professional Design</h5>
+              <p class="mb-0 text-muted">Mantis has a fully professional-grade user interface for any kind of backend project.</p>
+            </div>
+          </div>
+        } @placeholder {
+          <div></div>
+        }
+      </div>
+
+      <div class="col-sm-6 col-lg-4">
+        @defer (on viewport; prefetch on viewport) {
+          <div class="card animate__animated animate__delay-2s animate__fadeInUp">
+            <div class="card-body">
+              <img src="assets/images/landing/img-feature2.svg" alt="img" class="img-fluid" />
+              <h5 class="my-3 pt-2">Flexible Solution</h5>
+              <p class="mb-0 text-muted">Highly flexible to work around using the Mantis Angular Template.</p>
+            </div>
+          </div>
+        } @placeholder {
+          <div></div>
+        }
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        @defer (on viewport; prefetch on viewport) {
+          <div class="card animate__animated animate__delay-3s animate__fadeInUp">
+            <div class="card-body">
+              <img src="assets/images/landing/img-feature3.svg" alt="img" class="img-fluid" />
+              <h5 class="my-3">Effective Documentation</h5>
+              <p class="mb-0 text-muted">Need help? Check out the detailed Documentation guide.</p>
+            </div>
+          </div>
+        } @placeholder {
+          <div></div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+<!-- [ Why Mantis ] End -->
+<!-- [ Complete Combo ] start -->
+<section class="pt-0">
+  <div class="container title">
+    <div class="row justify-content-center text-center">
+      <div class="col-md-10 col-xl-6">
+        <h6 class="text-primary mb-0">Mantis for all</h6>
+        <h2 class="my-3">Complete Combo</h2>
+        <p class="mb-0">
+          Whether you are a developer or a designer, Mantis serves the needs of all, No matter you are a novice or an expert.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="card-group gap-4 flex-wrap">
+      @defer (on viewport; prefetch on viewport) {
+        <div class="card animate__animated animate__delay-1s animate__fadeInUp">
+          <div class="card-body">
+            <h3 class="mb-3">Design Source File</h3>
+            <p class="mb-4 text-muted">Check the live preview of Mantis figma design file.</p>
+            <a
+              class="btn btn-outline-primary com-btn"
+              href="https://www.figma.com/design/Phs1kIJuU0pfel0DapbhiW/Mantis-v2.1.3-Preview?node-id=117228-901&t=2c0arltUT0Jsx1nc-1"
+              target="_blank"
+            >
+              Preview Figma
+              <i theme="outline" type="send" antIcon class="ms-2"></i>
+            </a>
+          </div>
+          <div class="p-t-20 p-l-20">
+            <img src="assets/images/landing/img-demo2.jpg" alt="img" class="img-fluid w-100" />
+          </div>
+        </div>
+      } @placeholder {
+        <div></div>
+      }
+      @defer (on viewport; prefetch on viewport) {
+        <div class="card animate__animated animate__delay-3s animate__fadeInUp">
+          <div class="card-body bg-light-primary">
+            <h3 class="mb-3">Components</h3>
+            <p class="mb-4 text-muted">
+              Check all components of Mantis in a single place with a search feature to ease your development while working.
+            </p>
+            <a class="btn btn-primary" [routerLink]="['/components/basic/alert']">View all components</a>
+          </div>
+          <div class="card-body bg-light-primary pb-0 pe-0">
+            <img src="assets/images/landing/img-demo1.jpg" alt="img" class="img-fluid w-100" />
+          </div>
+        </div>
+      } @placeholder {
+        <div></div>
+      }
+      @defer (on viewport; prefetch on viewport) {
+        <div class="card animate__animated animate__delay-5s animate__fadeInUp">
+          <div class="card-body">
+            <h3 class="mb-3">Documentation</h3>
+            <p class="mb-4 text-muted">
+              From a quick start to detailed installation, the easy-to-use documentation guide helps you find answers and get started
+              quickly.
+            </p>
+            <a class="btn btn-outline-primary" [href]="docs_link" target="_blank">Explore Documentation</a>
+          </div>
+          <div class="card-body pb-0 pe-0">
+            <img src="assets/images/landing/img-demo3.jpg" alt="img" class="img-fluid w-100" />
+          </div>
+        </div>
+      } @placeholder {
+        <div></div>
+      }
+    </div>
+  </div>
+</section>
+<!-- [ Complete Combo ] End -->
+<!-- [ Figma Section ] Start -->
+<section class="pt-0">
+  <div class="container title">
+    <div class="row justify-content-center text-center">
+      <div class="col-md-10 col-xl-6">
+        <h2 class="my-3">The Complete Figma Design System to Save Hundreds of Hours</h2>
+        <p class="mb-0">
+          Optimize your workflow with 100% auto layout, variables, smart variants, and WCAG accessibility. Enjoy super-smart global colors,
+          typography, and effects styles + variables, crafted for seamless design efficiency!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row align-items-center justify-content-center">
+      <div class="col-lg-9 position-relative img-webapp-block">
+        @defer (on viewport; prefetch on viewport) {
+          <img
+            [src]="isDark ? 'assets/images/landing/figma-dark.png' : 'assets/images/landing/figma-light.png'"
+            alt="img"
+            data-img-type=".png"
+            class="img-landing img-fluid"
+          />
+        } @placeholder {
+          <app-placeholder-card-1 height="907" />
+        }
+      </div>
+    </div>
+  </div>
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-6 d-flex justify-content-end">
+        <a href="https://codedthemes.com/item/mantis-free-figma-ui-kit/" target="_blank" class="btn btn-primary d-flex align-items-center">
+          <i class="ti ti-download me-2"></i>
+          Free Figma
+        </a>
+      </div>
+      <div class="col-6 d-flex justify-content-start">
+        <a href="https://codedthemes.com/item/mantis-figma-ui-kit/" target="_blank" class="btn btn-primary d-flex align-items-center">
+          <i class="ti ti-shopping-cart me-2"></i>
+          Buy Figma
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- [ Figma Section ] End -->
+<!-- [ CTA ] start -->
+<section class="cta-block">
+  @defer (on viewport; prefetch on viewport) {
+    <img src="assets/images/landing/img-bg-screen.svg" alt="img" class="img-cta animate__animated animate__delay-2s animate__fadeInRight" />
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 col-xl-7 text-center text-xl-start">
+          <h2 class="text-white mb-4 animate__animated animate__delay-1s animate__fadeInLeft">
+            Check Mantis
+            <span class="text-primary">Free</span>
+            Version Before Purchase
+          </h2>
+          <a
+            href="https://codedthemes.com/item/mantis-angular-free-admin-template/"
+            target="_blank"
+            class="btn btn-primary text-white animate__animated animate__delay-2s animate__fadeInLeft"
+          >
+            <i class="me-2" antIcon theme="outline" type="download"></i>
+            Download Now
+          </a>
+        </div>
+      </div>
+    </div>
+  } @placeholder {
+    <div></div>
+  }
+</section>
+<!-- [ CTA ] End -->
+<!-- [ number ] start -->
+<section class="bg-white">
+  <div class="container">
+    <div class="row">
+      @defer (on viewport; prefetch on viewport) {
+        <div class="col-sm-6 col-lg-4 animate__animated animate__delay-1s animate__fadeInUp">
+          <div class="card border-0">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div class="flex-shrink-0">
+                  <h2 class="m-0">100+</h2>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <h4 class="mb-1">Pages</h4>
+                  <p class="mb-0">Hand-crafted useful pages with the best user experience.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-4 animate__animated animate__delay-2s animate__fadeInUp">
+          <div class="card border-0">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div class="flex-shrink-0">
+                  <h2 class="m-0">54+</h2>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <h4 class="mb-1">Bootstrap Components</h4>
+                  <p class="mb-0">For consistent design and smooth user experience in your Angular projects.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-4 animate__animated animate__delay-3s animate__fadeInUp">
+          <div class="card border-0">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div class="flex-shrink-0">
+                  <h2 class="m-0">5+</h2>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <h4 class="mb-1">Conceptual Apps</h4>
+                  <p class="mb-0">Find out 5+ working apps that suit your Angular Project.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      } @placeholder {
+        <div></div>
+      }
+    </div>
+  </div>
+</section>
+<!-- [ number ] End -->
+<!-- [ light/dark ] start -->
+<section class="position-relative p-0 overflow-hidden">
+  <div class="img-comp-container">
+    <div class="img-comp-img">
+      <img
+        src="assets/images/landing/img-theme-light-1.jpg"
+        alt="img"
+        data-img-type=".jpg"
+        class="img-landing"
+        data-img="assets/images/landing/img-theme-light-"
+      />
+    </div>
+    <div class="img-comp-img img-comp-overlay">
+      <img
+        src="assets/images/landing/img-theme-dark-1.jpg"
+        alt="img"
+        data-img-type=".jpg"
+        class="img-landing"
+        data-img="assets/images/landing/img-theme-dark-"
+      />
+    </div>
+  </div>
+</section>
+<!-- [ light/dark ] End -->
+<!-- [ webapp ] start -->
+<section class="webapp-block">
+  <div class="container title">
+    <div class="row justify-content-center text-center">
+      <div class="col-md-10 col-xl-6">
+        <h2 class="mb-3">
+          Create Beautiful Yet Powerful
+          <span class="text-primary">Web Apps</span>
+          with Mantis Angular
+        </h2>
+        <p class="mb-0">Create your powerful backend project using powerful design system of Mantis Angular Template.</p>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row align-items-center justify-content-center">
+      <div class="col-lg-9 position-relative img-webapp-block">
+        @defer (on viewport; prefetch on viewport) {
+          <img
+            src="assets/images/landing/img-element-main-theme-1.png"
+            alt="img"
+            data-img-type=".png"
+            class="img-landing img-fluid"
+            data-img="assets/images/landing/img-element-main-theme-"
+          />
+        } @placeholder {
+          <app-placeholder-card-1 height="907" />
+        }
+        <img src="assets/images/landing/img-element-msg.png" alt="img" class="img-fluid img-msg" />
+        <img src="assets/images/landing/img-element-widget.png" alt="img" class="img-fluid img-widget" />
+      </div>
+      <div class="col-lg-9 position-relative img-webapp-block">
+        <div class="row mt-5">
+          @defer (on viewport; prefetch on viewport) {
+            @for (list of webApps; track list) {
+              <div class="col-md-4">
+                @for (sub of list.sub_list; track sub; let i = $index) {
+                  <div class="d-flex align-items-center my-3 animate__animated animate__delay-{{ i + 1 }}s animate__fadeInUp">
+                    @defer (on viewport; prefetch on viewport) {
+                      <i class="f-18 text-primary" antIcon type="check-circle" theme="outline"></i>
+                      <span class="ms-2 text-muted lh-1">{{ sub.title }}</span>
+                    } @placeholder {
+                      <app-placeholder-card-2 [ShowLine]="1" height="20" />
+                    }
+                  </div>
+                }
+              </div>
+            }
+          } @placeholder {
+            <div></div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- [ webapp ] End -->
+<!-- [ Why Mantis ] start -->
+<section class="client-block">
+  <div class="container title">
+    <div class="row justify-content-center text-center">
+      <div class="col-md-10 col-xl-6">
+        <h6 class="text-primary mb-0">Multiple Tech Stack</h6>
+        <h2 class="my-3">Available Technology</h2>
+        <p class="mb-0">
+          Mantis is available in multiple technologies. Simply click to dive in and discover the perfect solution for your needs. Each sold
+          <a href="https://codedthemes.gitbook.io/mantis/mantis-eco-system" target="_blank" class="text-primary">separately.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row align-items-center justify-content-center mb-4 mb-md-5">
+      @for (tech of techList; track tech; let i = $index) {
+        @defer (on viewport; prefetch on viewport) {
+          <a class="col-auto my-2 animate__animated animate__delay-{{ i + 1 }}s animate__fadeInUp" href="{{ tech.url }}" target="_blank">
+            <img src="{{ tech.img }}" alt="img" class="img-fluid" />
+          </a>
+        } @placeholder {
+          <app-placeholder-card-1 height="67" />
+        }
+      }
+    </div>
+  </div>
+  <div class="marquee">
+    <ul class="list-inline marquee-list h2">
+      @for (marquee of marquees; track marquee) {
+        <li class="list-inline-item">{{ marquee.text }}</li>
+      }
+    </ul>
+  </div>
+
+  <div class="marquee-1">
+    <ul class="list-inline marquee-list h2">
+      @for (marquee of marquees; track marquee) {
+        <li class="list-inline-item">{{ marquee.text }}</li>
+      }
+    </ul>
+  </div>
+</section>
+<!-- [ Why Mantis ] End -->
+
+<!-- [ Customers Voice ] start -->
+<section class="pt-0">
+  <div class="container title">
+    <div class="row justify-content-center text-center">
+      <div class="col-md-10 col-xl-6">
+        <h6 class="text-primary mb-0">Testament</h6>
+        <h2 class="my-3">Customers Voice</h2>
+        <p class="mb-0">
+          We have proven records in Dashboard development with an average 4.9/5 ratings. We are glad to show such a warm reviews from our
+          loyal customers.
+        </p>
+      </div>
+    </div>
+  </div>
+  <owl-carousel-o [options]="customerReview">
+    @for (review of reviewers; track $index) {
+      <ng-template carouselSlide>
+        @defer (on timer(500ms)) {
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex">
+                <div class="flex-shrink-0">
+                  <img src="assets/images/landing/img-user1.svg" alt="img" class="img-fluid wid-40" />
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <h5 class="mb-1">{{ review.title }}</h5>
+                  <ngb-rating [(rate)]="review.rating" [max]="5">
+                    <ng-template let-fill="fill" let-index="index">
+                      <i
+                        antIcon
+                        type="{{ fill === 100 ? 'star' : 'star' }}"
+                        theme="{{ fill === 100 ? 'fill' : 'outline' }}"
+                        class="text-warning d-flex f-14 mb-3"
+                      ></i>
+                    </ng-template>
+                  </ngb-rating>
+                  <p class="mb-2 text-muted">{{ review.text }}</p>
+                  <h6 class="mb-0">{{ review.name }}</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        } @placeholder {
+          <app-placeholder-card-1 height="197" />
+        }
+      </ng-template>
+    }
+  </owl-carousel-o>
+</section>
+<!-- [ Customers Voice ] End -->
+<!-- [ footer ] start -->
+<footer class="contact-footer bg-gray-900 text-white">
+  @defer (on viewport; prefetch on viewport) {
+    <div class="top-footer footer-moke">
+      <img
+        src="assets/images/landing/img-footer-moke-1.png"
+        alt="img"
+        data-img-type=".png"
+        class="img-fluid img-footer img-landing animate__animated animate__delay-2s animate__fadeInRight"
+        data-img="assets/images/landing/img-footer-moke-"
+      />
+      <div class="container">
+        <div class="row">
+          <div class="col-md-5 text-center text-md-start">
+            <h6 class="mb-0 text-white">What’s New in Mantis Angular</h6>
+            <h2 class="my-3 text-white">Latest Updates</h2>
+            <p class="mb-3 text-white">Checkout the latest update of Mantis Angular</p>
+            <a class="btn btn-link text-white btn-primary road-map-btn" [href]="docs_link + '/changelog'" target="_blank">
+              Latest Updates
+              <i antIcon theme="outline" type="send" class="ms-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @placeholder {
+    <div></div>
+  }
+  <div class="middle-footer">
+    <div class="container">
+      <div class="row">
+        @defer (on viewport; prefetch on viewport) {
+          <div class="col-md-4 animate__animated animate__delay-1s animate__fadeInUp">
+            <img src="assets/images/pages/codedthemes-logo.svg" alt="image" class="img-fluid mb-3" />
+            <p>
+              CodedThemes has gained the trust of over 2.5K customers Since 2017, more than 204K+ developers trust the CodedThemes digital
+              products. Mantis Angular is Manage under our experienced team players.
+            </p>
+          </div>
+        } @placeholder {
+          <div></div>
+        }
+        <div class="col-md-8">
+          <div class="row">
+            @defer (on viewport; prefetch on viewport) {
+              @for (list of short_link; track list) {
+                <div class="col-sm-3 animate__animated animate__delay-{{ $index + 1 }}s animate__fadeInUp">
+                  <h5 class="text-white mb-4">{{ list.title }}</h5>
+                  <ul class="list-unstyled footer-link">
+                    @for (item of list.support; track item) {
+                      <li>
+                        <a href="{{ item.url }}" target="_blank">{{ item.support_link }}</a>
+                      </li>
+                    }
+                  </ul>
+                </div>
+              }
+            } @placeholder {
+              <div></div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-footer">
+    <div class="container">
+      <div class="row align-items-center">
+        @defer (on viewport; prefetch on viewport) {
+          <div class="col my-1 animate__animated animate__delay-2s animate__fadeInUp">
+            <p class="mb-0 text-muted text-sm">
+              © Made with love by Team
+              <a href="https://codedthemes.com" target="_blank" class="text-primary">CodedThemes</a>
+            </p>
+          </div>
+          <div class="col-auto my-1">
+            <ul class="list-inline footer-sos-link mb-0">
+              @for (social of socialLinks; track social) {
+                <li class="list-inline-item me-3 animate__animated animate__delay-{{ $index + 1 }}s animate__fadeInUp">
+                  <a [href]="social.link" target="_blank" [title]="social.title">
+                    <i class="d-flex text-white" antIcon [theme]="social.theme" [type]="social.icon"></i>
+                  </a>
+                </li>
+              }
+            </ul>
+          </div>
+        } @placeholder {
+          <div></div>
+        }
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- [ footer ] End -->
+
+<!-- [ Customize ] start -->
+<div class="pc-landing-customize">
+  @for (preset of colorPresets; track preset) {
+    <div
+      class="form-check form-check-inline color-checkbox"
+      [ngClass]="{ active: bodyColor === preset }"
+      (click)="SetBodyColor(preset)"
+      [attr.data-value]="preset"
+    >
+      <input
+        class="form-check-input"
+        [title]="preset"
+        type="radio"
+        [attr.data-pc-value]="$index + 1"
+        name="pc-landing-color"
+        [checked]="bodyColor === preset"
+      />
+      <i class="fas fa-circle"></i>
+    </div>
+  }
+</div>
+<!-- [ Customize ] End -->
+
+<!-- [ Main Content ] end -->

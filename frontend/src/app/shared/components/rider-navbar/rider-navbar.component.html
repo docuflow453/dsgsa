@@ -1,69 +1,77 @@
 <nav class="rider-navbar">
   <div class="navbar-container">
-    <!-- Logo Section -->
-    <div class="navbar-brand">
-      <div class="logo-icon">
-        <i class="bi bi-trophy-fill"></i>
-      </div>
-      <span class="brand-name">DSRiding</span>
-    </div>
+    <div class="navbar-shell">
+      <a routerLink="/my/dashboard" class="navbar-brand" (click)="closeUserMenu()">
+        <span class="brand-mark"><i class="bi bi-trophy-fill"></i></span>
+        <span class="brand-copy">
+          <span class="brand-title">DSRiding</span>
+          <span class="brand-subtitle">Rider portal</span>
+        </span>
+      </a>
 
-    <!-- Navigation Menu -->
-    <ul class="nav-menu">
-      @for (item of navItems; track item.route) {
-        <li class="nav-item">
-          <a 
-            [routerLink]="item.route" 
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{exact: false}"
-            class="nav-link">
-            <i class="bi {{ item.icon }}"></i>
-            <span>{{ item.label }}</span>
-          </a>
-        </li>
-      }
-    </ul>
-
-    <!-- User Menu -->
-    <div class="navbar-user">
-      <button 
-        class="user-menu-trigger" 
-        (click)="toggleUserMenu()">
-        @if (authService.currentUser(); as user) {
-          <div class="user-avatar">
-            {{ user.first_name.charAt(0) }}{{ user.last_name.charAt(0) }}
-          </div>
-          <span class="user-name">{{ user.first_name }}</span>
-          <i class="bi bi-chevron-down"></i>
+      <ul class="nav-menu">
+        @for (item of navItems; track item.route) {
+          <li class="nav-item">
+            <a
+              [routerLink]="item.route"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: false }"
+              class="nav-link"
+              (click)="closeUserMenu()">
+              <i class="bi {{ item.icon }}"></i>
+              <span>{{ item.label }}</span>
+            </a>
+          </li>
         }
-      </button>
+      </ul>
 
-      @if (showUserMenu) {
-        <div class="user-dropdown">
+      <div class="navbar-user">
+        <button type="button" class="user-menu-trigger" (click)="toggleUserMenu()">
           @if (authService.currentUser(); as user) {
-            <div class="dropdown-header">
-              <div class="user-info">
-                <div class="fw-bold">{{ user.full_name }}</div>
-                <small class="text-muted">{{ user.email }}</small>
-              </div>
+            <div class="user-avatar">
+              {{ getUserInitials(user) }}
+            </div>
+            <div class="user-copy">
+              <span class="user-label">Signed in</span>
+              <span class="user-name">{{ getUserFirstName(user) }}</span>
+            </div>
+          } @else {
+            <div class="user-avatar">
+              <i class="bi bi-person"></i>
+            </div>
+            <div class="user-copy">
+              <span class="user-label">Rider</span>
+              <span class="user-name">Account</span>
             </div>
           }
-          <div class="dropdown-divider"></div>
-          <a [routerLink]="['/rider/profile']" class="dropdown-item" (click)="showUserMenu = false">
-            <i class="bi bi-person me-2"></i>
-            My Profile
-          </a>
-          <a [routerLink]="['/rider/settings']" class="dropdown-item" (click)="showUserMenu = false">
-            <i class="bi bi-gear me-2"></i>
-            Settings
-          </a>
-          <div class="dropdown-divider"></div>
-          <button class="dropdown-item text-danger" (click)="logout()">
-            <i class="bi bi-box-arrow-right me-2"></i>
-            Logout
-          </button>
-        </div>
-      }
+          <i class="bi bi-chevron-down menu-caret"></i>
+        </button>
+
+        @if (showUserMenu) {
+          <div class="user-dropdown">
+            @if (authService.currentUser(); as user) {
+              <div class="dropdown-header">
+                <span class="dropdown-eyebrow">Signed in as</span>
+                <div class="dropdown-name">{{ user.full_name }}</div>
+                <small>{{ user.email }}</small>
+              </div>
+            }
+
+            <a [routerLink]="['/my/profile']" class="dropdown-item" (click)="closeUserMenu()">
+              <i class="bi bi-person"></i>
+              <span>My Profile</span>
+            </a>
+            <a [routerLink]="['/my/settings']" class="dropdown-item" (click)="closeUserMenu()">
+              <i class="bi bi-gear"></i>
+              <span>Settings</span>
+            </a>
+            <button type="button" class="dropdown-item dropdown-item-danger" (click)="logout()">
+              <i class="bi bi-box-arrow-right"></i>
+              <span>Logout</span>
+            </button>
+          </div>
+        }
+      </div>
     </div>
   </div>
 </nav>

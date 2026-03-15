@@ -1,0 +1,69 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card
+      cardTitle="Copy From Text -- Text"
+      CardDate="Click this button, it will copy the text from the input by referring to the text content"
+    >
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="text1"
+          placeholder="content will be copy after click the copy button"
+          aria-label="Recipient's username"
+          aria-describedby="button-addon2"
+        />
+        <button
+          class="btn btn-primary"
+          type="button"
+          id="button-addon2"
+          ngxClipboard
+          [cbContent]="text1"
+          (cbOnSuccess)="isCopied1 = true"
+          (cbOnError)="onCopyFailure()"
+          [class.btn-success]="isCopied1"
+        >
+          Copy
+        </button>
+      </div>
+    </app-card>
+  </div>
+
+  <div class="col-sm-12">
+    <app-card
+      cardTitle="Copy From Text -- Target"
+      CardDate="Click this button, it will copy the text from the input by referring to the input element"
+    >
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="text2"
+          placeholder="content will be copy after click the copy button"
+          #inputTarget
+          aria-label="Recipient's username"
+          aria-describedby="basic-addon1"
+        />
+        <button
+          class="btn btn-primary"
+          id="basic-addon1"
+          [ngxClipboard]="inputTarget"
+          (cbOnSuccess)="isCopied2 = true"
+          (cbOnError)="onCopyFailure()"
+          [class.btn-success]="isCopied2"
+        >
+          Copy
+        </button>
+      </div>
+    </app-card>
+  </div>
+
+  <div class="col-sm-12">
+    <app-card cardTitle="Copy From Service">
+      <div class="d-flex">
+        <button class="btn btn-primary me-2" (click)="callServiceToCopy()">Copy From Service</button>
+        <button class="btn btn-primary" (click)="basic = true">Focus Trapper</button>
+      </div>
+    </app-card>
+  </div>
+</div>

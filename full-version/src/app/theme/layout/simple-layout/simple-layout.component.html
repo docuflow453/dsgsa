@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-md navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" [routerLink]="['/']">
+      <img src="assets/images/logo-white.svg" alt="logo" />
+      <span class="badge badge-sm bg-outline-secondary ms-2">v{{ currentApplicationVersion }}</span>
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      (click)="isCollapsed = !isCollapsed"
+      [attr.aria-expanded]="!isCollapsed"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" [(ngbCollapse)]="isCollapsed">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" href="javascript:">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="[dashboard_link]">{{ userLogin ? 'Dashboard' : 'Login' }}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link me-2" [href]="docs_link" target="_blank">Documentation</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-primary" [href]="buy_now_link" target="_blank">Purchase Now</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<router-outlet />
+<app-configuration />

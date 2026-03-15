@@ -1,0 +1,89 @@
+<div class="row">
+  <!-- [ progress ] start -->
+  <div class="col-sm-12">
+    <app-card cardTitle="Progress" blockClass="pc-component">
+      <ngb-progressbar type="progress-bar bg-primary" class="mb-4" height="6px" [value]="0"></ngb-progressbar>
+      <ngb-progressbar type="progress-bar bg-primary" class="mb-4" height="6px" [value]="25"></ngb-progressbar>
+      <ngb-progressbar type="progress-bar bg-primary" class="mb-4" height="6px" [value]="50"></ngb-progressbar>
+      <ngb-progressbar type="progress-bar bg-primary" class="mb-4" height="6px" [value]="75"></ngb-progressbar>
+      <ngb-progressbar type="progress-bar bg-primary" height="6px" [value]="100"></ngb-progressbar>
+    </app-card>
+    <app-card cardTitle="Labels" blockClass="pc-component">
+      <ngb-progressbar type="progress-bar bg-primary" textType="white" height="25px" [value]="25" [showValue]="true"></ngb-progressbar>
+    </app-card>
+    <app-card cardTitle="Height" blockClass="pc-component">
+      <ngb-progressbar type="progress-bar bg-primary" class="mb-4" height="1px" [value]="25"></ngb-progressbar>
+      <ngb-progressbar type="progress-bar bg-primary" height="25px" [value]="25"></ngb-progressbar>
+    </app-card>
+    <app-card cardTitle="Backgrounds" blockClass="pc-component">
+      <ngb-progressbar type="progress-bar bg-success" class="mb-4" height="6px" [value]="25"></ngb-progressbar>
+      <ngb-progressbar type="progress-bar bg-info" class="mb-4" height="6px" [value]="50"></ngb-progressbar>
+      <ngb-progressbar type="progress-bar bg-warning" class="mb-4" height="6px" [value]="75"></ngb-progressbar>
+      <ngb-progressbar type="progress-bar bg-danger" height="6px" [value]="100"></ngb-progressbar>
+    </app-card>
+    <app-card cardTitle="Multiple Bars" blockClass="pc-component">
+      <div class="progress mb-4">
+        <div class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+        <div
+          class="progress-bar bg-success"
+          role="progressbar"
+          style="width: 30%"
+          aria-valuenow="30"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+        <div
+          class="progress-bar bg-danger"
+          role="progressbar"
+          style="width: 20%"
+          aria-valuenow="20"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+      </div>
+    </app-card>
+    <app-card cardTitle="Striped" blockClass="pc-component">
+      <ngb-progressbar type="progress-bar bg-primary" class="mb-4" height="6px" [value]="10" [striped]="true"></ngb-progressbar>
+      <ngb-progressbar type="progress-bar bg-success" class="mb-4" height="6px" [value]="25" [striped]="true"></ngb-progressbar>
+      <ngb-progressbar type="progress-bar bg-info" class="mb-4" height="6px" [value]="50" [striped]="true"></ngb-progressbar>
+      <ngb-progressbar type="progress-bar bg-warning" class="mb-4" height="6px" [value]="75" [striped]="true"></ngb-progressbar>
+      <ngb-progressbar type="progress-bar bg-danger" height="6px" [value]="100" [striped]="true"></ngb-progressbar>
+    </app-card>
+    <app-card cardTitle="Animated Stripes" blockClass="pc-component">
+      <ngb-progressbar
+        type="progress-bar bg-primary"
+        class="mb-4"
+        height="6px"
+        [value]="85"
+        [striped]="true"
+        [animated]="true"
+      ></ngb-progressbar>
+      <ngb-progressbar
+        type="progress-bar bg-success"
+        class="mb-4"
+        height="6px"
+        [value]="60"
+        [striped]="true"
+        [animated]="true"
+      ></ngb-progressbar>
+      <ngb-progressbar
+        type="progress-bar bg-info"
+        class="mb-4"
+        height="6px"
+        [value]="90"
+        [striped]="true"
+        [animated]="true"
+      ></ngb-progressbar>
+      <ngb-progressbar
+        type="progress-bar bg-warning"
+        class="mb-4"
+        height="6px"
+        [value]="50"
+        [striped]="true"
+        [animated]="true"
+      ></ngb-progressbar>
+      <ngb-progressbar type="progress-bar bg-danger" height="6px" [value]="35" [striped]="true" [animated]="true"></ngb-progressbar>
+    </app-card>
+  </div>
+  <!-- [ progress ] end -->
+</div>

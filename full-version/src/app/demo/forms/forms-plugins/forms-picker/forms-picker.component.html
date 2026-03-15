@@ -1,0 +1,206 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="Default Datetime Picker">
+      <div class="row">
+        <div class="col-md-4 m-b-30">
+          <h5>Date</h5>
+          <hr />
+          <input type="date" id="dateDefault" class="form-control" placeholder="Date" />
+        </div>
+        <div class="col-md-4 m-b-30">
+          <h5>Month</h5>
+          <hr />
+          <input type="month" id="monthDefault" class="form-control" placeholder="Month" />
+        </div>
+        <div class="col-md-4 m-b-30">
+          <h5>Week</h5>
+          <hr />
+          <input type="week" id="weekDefault" class="form-control" placeholder="Week" />
+        </div>
+        <div class="col-md-4 m-b-30">
+          <h5>Local Datetime</h5>
+          <hr />
+          <input type="datetime-local" id="localDatetimeDefault" class="form-control" placeholder="Local Datetime" />
+        </div>
+        <div class="col-md-4 m-b-30">
+          <h5>Time</h5>
+          <hr />
+          <input type="time" id="timeDefault" class="form-control" placeholder="Time" />
+        </div>
+      </div>
+    </app-card>
+  </div>
+  <div class="col-sm-12">
+    <app-card cardTitle="Material Time Picker">
+      <div class="row">
+        <div class="col-md-6 m-b-30">
+          <h5>Basic Time Picker</h5>
+          <hr />
+          <input type="time" id="date" class="form-control" placeholder="Date" atp-time-picker value="20:55" />
+        </div>
+        <div class="col-md-6 m-b-30">
+          <h5>Restrict user to select hour and AM only</h5>
+          <hr />
+          <input
+            type="time"
+            id="date1"
+            class="form-control"
+            placeholder="Date"
+            atp-time-picker
+            value="20:55"
+            onlyHour="true"
+            onlyAM="true"
+          />
+        </div>
+      </div>
+    </app-card>
+  </div>
+  <div class="col-sm-12">
+    <app-card cardTitle="Bootstrap Datepicker">
+      <div class="row">
+        <div class="col-sm-12 col-xl-6 m-b-30">
+          <h5 class="sub-title">Simple Popup</h5>
+          <hr />
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              autocomplete="off"
+              placeholder="yyyy-mm-dd"
+              name="dp"
+              [(ngModel)]="modelPopup"
+              ngbDatepicker
+              #d="ngbDatepicker"
+              aria-label="Recipient's username"
+              aria-describedby="basic-addon2"
+            />
+            <span class="input-group-text" id="basic-addon2" (click)="d.toggle()">
+              <i class="fa fa-calendar"></i>
+            </span>
+          </div>
+
+          <pre>Selected Date: {{ parserFormatter.format(modelPopup) }}</pre>
+
+          <h5 class="sub-title">Select Today</h5>
+          <button class="btn btn-primary" (click)="selectToday()">Select Today</button>
+        </div>
+        <div class="col-sm-12 col-xl-6 m-b-30">
+          <h5 class="sub-title">Simple Inline</h5>
+          <hr />
+          <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>
+          <pre class="m-t-20">Selected Month/Year: {{ date.month }}/{{ date.year }}</pre>
+          <pre>Selected Date: {{ parserFormatter.format(model) }}</pre>
+        </div>
+        <div class="col-md-12 col-lg-6 m-b-30">
+          <h5 class="sub-title">Disabled</h5>
+          <hr />
+          <ngb-datepicker [(ngModel)]="modelDisabled" [disabled]="disabled"></ngb-datepicker>
+          <br />
+          <button class="btn btn-{{ disabled ? 'danger' : 'success' }} m-t-10" (click)="disabled = !disabled">
+            {{ disabled ? 'Disabled' : 'Enabled' }}
+          </button>
+        </div>
+        <div class="col-md-12 col-lg-6">
+          <h5 class="sub-title">Custom Day</h5>
+          <hr />
+          <div class="input-group mb-3">
+            <input
+              class="form-control"
+              placeholder="yyyy-mm-dd"
+              name="dp"
+              [(ngModel)]="modelCustomDay"
+              ngbDatepicker
+              [dayTemplate]="customDay"
+              [markDisabled]="isDisabled"
+              #dcd="ngbDatepicker"
+              aria-label="Recipient's username"
+              aria-describedby="basic-addon5"
+            />
+            <span class="input-group-text" id="basic-addon5" (click)="dcd.toggle()">
+              <i class="fa fa-calendar"></i>
+            </span>
+          </div>
+          <ng-template
+            #customDay
+            let-date="date"
+            let-currentMonth="currentMonth"
+            let-selected="selected"
+            let-disabled="disabled"
+            let-focused="focused"
+          >
+            <span
+              class="custom-day"
+              [class.weekend]="isWeekend(date)"
+              [class.focused]="focused"
+              [class.bg-primary]="selected"
+              [class.hidden]="date.month !== currentMonth"
+              [class.text-muted]="disabled"
+            >
+              {{ date.day }}
+            </span>
+          </ng-template>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <h5 class="sub-title">Range Picker</h5>
+          <hr />
+          <div class="horizontal-scroll">
+            <ngb-datepicker
+              #dp
+              (dateSelect)="onDateSelection($event)"
+              [displayMonths]="2"
+              [dayTemplate]="t"
+              outsideDays="hidden"
+            ></ngb-datepicker>
+
+            <ng-template #t let-date let-focused="focused">
+              <span
+                class="custom-day"
+                [class.focused]="focused"
+                [class.range]="isRange(date)"
+                [class.faded]="isHovered(date) || isInside(date)"
+                (mouseenter)="hoveredDate = date"
+                (mouseleave)="hoveredDate = null"
+              >
+                {{ date.day }}
+              </span>
+            </ng-template>
+          </div>
+          <pre class="m-t-20">Selected Date Range: {{ parserFormatter.format(fromDate) }} to {{ parserFormatter.format(toDate) }}</pre>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 m-b-30">
+          <h5 class="sub-title">Multiple months Inline</h5>
+          <hr />
+          <div class="horizontal-scroll">
+            <ngb-datepicker [displayMonths]="displayMonths" [navigation]="navigation" [showWeekNumbers]="showWeekNumbers"></ngb-datepicker>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-4">
+              <select class="custom-select form-control m-t-10" [(ngModel)]="displayMonths" title="select">
+                <option [ngValue]="1">One month</option>
+                <option [ngValue]="2">Two months</option>
+                <option [ngValue]="3">Three months</option>
+              </select>
+            </div>
+            <div class="col-sm-12 col-md-4">
+              <select class="custom-select form-control m-t-10" [(ngModel)]="navigation" title="select">
+                <option value="none">Without navigation</option>
+                <option value="select">With select boxes</option>
+                <option value="arrows">Without select boxes</option>
+              </select>
+            </div>
+            <div class="col-sm-12 col-md-4">
+              <select class="custom-select form-control m-t-10" [(ngModel)]="showWeekNumbers" title="select">
+                <option [ngValue]="true">Week numbers</option>
+                <option [ngValue]="false">No week numbers</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </app-card>
+  </div>
+</div>

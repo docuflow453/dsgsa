@@ -1,0 +1,282 @@
+<div class="row">
+  <!-- [ sample-page ] start -->
+  <div class="col-sm-12">
+    <div class="card table-card">
+      <div class="card-body p-0">
+        <form class="dt-responsive">
+          <div class="dataTable-top">
+            <div class="dataTable-dropdown">
+              <input
+                id="table-complete-search"
+                type="text"
+                class="form-control"
+                name="searchTerm"
+                [(ngModel)]="service.searchTerm"
+                placeholder="Search..."
+              />
+            </div>
+            <div class="dataTable-search d-flex align-items-center">
+              <a
+                href="javascript:"
+                class="btn btn-primary d-inline-flex align-items-center"
+                data-bs-toggle="modal"
+                (click)="openLg(content)"
+              >
+                <i class="me-2 d-flex" antIcon type="plus" theme="outline"></i>
+                <span>Add Customer</span>
+              </a>
+              <a href="javascript:">
+                <i class="ms-3 f-24 text-muted" antIcon type="download" theme="outline"></i>
+              </a>
+            </div>
+          </div>
+          <div class="table-responsive dt-responsive">
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col"><input class="form-check-input" type="checkbox" title="checkbox" /></th>
+                  <th scope="col">#</th>
+                  <th scope="col" sortable="Customer-name">User Info</th>
+                  <th scope="col" sortable="contact">CONTACT</th>
+                  <th scope="col" sortable="orders">ORDERS</th>
+                  <th scope="col" sortable="spent">SPENT</th>
+                  <th scope="col" sortable="status">STATUS</th>
+                  <th scope="col" sortable="action" class="text-center">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (customer of customer$ | async; track customer) {
+                  <tr>
+                    <td>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" title="checkbox" />
+                      </div>
+                    </td>
+                    <th scope="row">{{ customer.id }}</th>
+                    <td>
+                      <div class="row">
+                        <div class="col-auto pe-0">
+                          <img src="{{ customer.src }}" alt="user-image" class="wid-40 rounded-circle" />
+                        </div>
+                        <div class="col">
+                          <ngb-highlight [result]="customer.name" [term]="service.searchTerm"></ngb-highlight>
+                          <ngb-highlight [result]="customer.email" [term]="service.searchTerm" class="text-muted f-12 mb-0"></ngb-highlight>
+                        </div>
+                      </div>
+                    </td>
+                    <td>+1 (247) 849-6968</td>
+                    <td><ngb-highlight [result]="customer.orders" [term]="service.searchTerm"></ngb-highlight></td>
+                    <td><ngb-highlight [result]="customer.spent" [term]="service.searchTerm"></ngb-highlight></td>
+                    <td>
+                      <ngb-highlight
+                        [result]="customer.status"
+                        [term]="service.searchTerm"
+                        class="badge {{ customer.status_type }} rounded-pill f-12"
+                      ></ngb-highlight>
+                    </td>
+                    <td class="text-center">
+                      <ul class="list-inline me-auto mb-0">
+                        <li class="list-inline-item align-bottom">
+                          <a
+                            href="javascript:"
+                            class="avatar avatar-xs btn-link-secondary"
+                            (click)="openCustomer(details)"
+                            ngbTooltip="View"
+                          >
+                            <i class="f-16 text-secondary d-flex" antIcon type="eye" theme="outline"></i>
+                          </a>
+                        </li>
+                        <li class="list-inline-item align-bottom">
+                          <a href="javascript:" class="avatar avatar-xs btn-link-primary" ngbTooltip="Edit" (click)="openLg(content)">
+                            <i class="f-16 text-primary d-flex" antIcon type="edit" theme="outline"></i>
+                          </a>
+                        </li>
+                        <li class="list-inline-item align-bottom">
+                          <a
+                            href="javascript:"
+                            ngbTooltip="Delete"
+                            class="avatar avatar-xs btn-link-danger"
+                            (click)="service.deleteCustomer(customer.id)"
+                          >
+                            <i class="f-16 text-danger d-flex" antIcon type="delete" theme="outline"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="d-sm-flex align-item-center justify-content-between p-3">
+            <select class="form-select" title="select item per page" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
+              <option [ngValue]="5">5 items per page</option>
+              <option [ngValue]="10">10 items per page</option>
+              <option [ngValue]="15">15 items per page</option>
+            </select>
+            <div class="m-sm-0 mt-3">
+              <ngb-pagination [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize"></ngb-pagination>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  customer details -->
+<ng-template #details let-modal>
+  <div class="modal-header justify-content-between border-0 pb-0">
+    <h5 class="mb-0">Customer Details</h5>
+    <a href="javascript:" class="avatar avatar-s btn-link-danger" (click)="modal.close('Close click')">
+      <i class="f-20 text-danger" antIcon type="close" theme="outline"></i>
+    </a>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body position-relative">
+            <div class="position-absolute end-0 top-0">
+              <span class="badge bg-primary text-sm">Relationship</span>
+            </div>
+            <div class="text-center mt-3">
+              <div class="chat-avatar d-inline-flex mx-auto">
+                <img class="rounded-circle img-fluid wid-60" src="{{ user.avatar }}" alt="User image" />
+              </div>
+              <h5 class="mb-0">{{ user.name }}</h5>
+              <p class="text-muted text-sm">{{ user.jobTitle }}</p>
+              <hr class="my-3" />
+              <div class="row g-3">
+                @for (info of user.info; track info) {
+                  <div class="col-4" [ngClass]="info.style">
+                    <h5 class="mb-0">{{ info.value }}</h5>
+                    <small class="text-muted">{{ info.label }}</small>
+                  </div>
+                }
+              </div>
+              <hr class="my-3" />
+              @for (contact of user.contacts; track contact) {
+                <div class="d-inline-flex align-items-center justify-content-between w-100 mb-2">
+                  <i class="text-secondary" antIcon type="{{ contact.iconClass }}" theme="outline"></i>
+                  <p class="mb-0">{{ contact.value }}</p>
+                </div>
+              }
+              <div class="d-inline-flex align-items-center justify-content-between w-100">
+                <i class="text-secondary" antIcon type="link" theme="outline"></i>
+                <a href="javascript:" class="link-primary">
+                  <p class="mb-0">{{ user.website }}</p>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-header">
+            <h5>Personal Details</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              @for (item of userInformation; track $index) {
+                <li class="list-group-item px-0" [ngClass]="{ 'pt-0': item === userInformation[0] }">
+                  <div class="row">
+                    @for (filed of item.fileds; track $index) {
+                      <div class="col-md-6">
+                        <p class="mb-1 text-muted">{{ field.label }}</p>
+                        <p class="mb-0">{{ field.value }}</p>
+                      </div>
+                    }
+                  </div>
+                </li>
+              }
+              <li class="list-group-item px-0 pb-0">
+                <p class="mb-1 text-muted">Address</p>
+                <p class="mb-0">507 Sulnek Grove, Tudzovgeh, United States - 37173</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h5>About me</h5>
+          </div>
+          <div class="card-body">
+            <p class="mb-0">
+              Hello, I’m Aaron Poole Manufacturing Director based in international company, Void jiidki me na fep juih ced gihhiwi launke cu
+              mig tujum peodpo.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- customer edit details -->
+<ng-template #content let-modal>
+  <div class="modal-header justify-content-between">
+    <h5 class="modal-title" id="exampleModalCenterTitle">Edit Customer</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modal.close('Close click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm-3 text-center">
+        <div class="chat-avatar d-inline-flex mx-auto">
+          <img class="rounded-circle img-fluid wid-70" src="assets/images/user/avatar-5.jpg" alt="User image" />
+        </div>
+      </div>
+      <div class="col-sm-9">
+        <div class="form-group">
+          <label class="form-label">Customer Name</label>
+          <input type="text" class="form-control" placeholder="Name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Contact Number</label>
+          <input type="number" class="form-control" placeholder="Contact Number" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select class="form-select">
+            <option>Select Status</option>
+            <option>Complicated</option>
+            <option>Single</option>
+            <option>Relationship</option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="form-label">Total Orders</label>
+              <input type="number" class="form-control" placeholder="Order" />
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="form-label">Total Spent</label>
+              <input type="number" class="form-control" placeholder="Spent" />
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Customer Address</label>
+          <textarea class="form-control" rows="3" placeholder="Enter Address"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer justify-content-between">
+    <ul class="list-inline me-auto mb-0">
+      <li class="list-inline-item align-bottom">
+        <a href="javascript:" class="avatar avatar-s btn-link-danger w-sm-auto" data-bs-toggle="tooltip" title="Delete">
+          <i class="text-danger f-18" antIcon type="delete" theme="outline"></i>
+        </a>
+      </li>
+    </ul>
+    <div class="flex-grow-1 text-end">
+      <button type="button" class="btn btn-link-danger" data-bs-dismiss="modal" (click)="modal.close('Close click')">Cancel</button>
+      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="modal.close('Close click')">Add</button>
+    </div>
+  </div>
+</ng-template>

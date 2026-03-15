@@ -1,0 +1,142 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-body pc-componant">
+        <h5 class="mb-3">Basic Tabs</h5>
+        <ul ngbNav #nav="ngbNav" class="nav-tabs">
+          <li [ngbNavItem]="1">
+            <a ngbNavLink>HOME</a>
+            <ng-template ngbNavContent>
+              <p>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
+                dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
+                book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
+                unchanged.
+              </p>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="2">
+            <a ngbNavLink>PROFILE</a>
+            <ng-template ngbNavContent>
+              <p>
+                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+                The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content
+                here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use
+                Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.
+              </p>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="3">
+            <a ngbNavLink>CONTACT</a>
+            <ng-template ngbNavContent>
+              <p>
+                There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by
+                injected humour, or words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you
+                need to be sure there isn't anything embarrassing hidden in the middle of text.
+              </p>
+            </ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="nav" class="mt-3"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-body pc-component">
+        <h5 class="mb-3">Basic Pills</h5>
+        <ul ngbNav #nav2="ngbNav" class="nav-pills">
+          <li [ngbNavItem]="1">
+            <a ngbNavLink>Home</a>
+            <ng-template ngbNavContent>
+              <p>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
+                dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
+                book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
+                unchanged.
+              </p>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="2">
+            <a ngbNavLink>Profile</a>
+            <ng-template ngbNavContent>
+              <p>
+                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+                The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content
+                here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use
+                Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.
+              </p>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="3">
+            <a ngbNavLink>Contact</a>
+            <ng-template ngbNavContent>
+              <p>
+                There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by
+                injected humour, or words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you
+                need to be sure there isn't anything embarrassing hidden in the middle of text.
+              </p>
+            </ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="nav2" class="mt-3"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-body pc-component">
+        <h5 class="mb-3">Vertical Pills</h5>
+        <div class="d-flex">
+          <ul ngbNav #nav3="ngbNav" class="nav-pills" orientation="vertical">
+            <li ngbNavItem="1">
+              <a ngbNavLink>Home</a>
+              <ng-template ngbNavContent>
+                <p>
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
+                  dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
+                  book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
+                  unchanged.
+                </p>
+              </ng-template>
+            </li>
+            <li ngbNavItem="2">
+              <a ngbNavLink>Profile</a>
+              <ng-template ngbNavContent>
+                <p>
+                  It is a long established fact that a reader will be distracted by the readable content of a page when looking at its
+                  layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using
+                  'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors
+                  now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their
+                  infancy.
+                </p>
+              </ng-template>
+            </li>
+            <li ngbNavItem="3">
+              <a ngbNavLink>Messages</a>
+              <ng-template ngbNavContent>
+                <p>
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
+                  dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
+                  book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
+                  unchanged.
+                </p>
+              </ng-template>
+            </li>
+            <li ngbNavItem="4">
+              <a ngbNavLink>Settings</a>
+              <ng-template ngbNavContent>
+                <p>
+                  There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by
+                  injected humour, or words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you
+                  need to be sure there isn't anything embarrassing hidden in the middle of text.
+                </p>
+              </ng-template>
+            </li>
+          </ul>
+          <div [ngbNavOutlet]="nav3" class="ms-4"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

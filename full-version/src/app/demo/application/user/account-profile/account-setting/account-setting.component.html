@@ -1,0 +1,61 @@
+<div class="row">
+  <div class="col-md-6">
+    <app-card cardTitle="Email Settings" [padding]="24">
+      <h6 class="mb-4">Setup Email Notification</h6>
+      @for (item of email_setting; track item) {
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div>
+            <p class="text-muted mb-0">{{ item.title }}</p>
+          </div>
+          <div class="form-check form-switch p-0">
+            <input class="m-0 form-check-input h5 position-relative" type="checkbox" role="switch" [checked]="item.check" />
+          </div>
+        </div>
+      }
+    </app-card>
+    <app-card cardTitle="Updates from System Notification" [padding]="24">
+      <h6 class="mb-4">Email you with?</h6>
+      @for (email of notification; track email) {
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div>
+            <p class="text-muted mb-0">{{ email.title }}</p>
+          </div>
+          <div class="form-check p-0">
+            <input class="m-0 form-check-input h5 position-relative" type="checkbox" role="switch" [checked]="email.check" />
+          </div>
+        </div>
+      }
+    </app-card>
+  </div>
+  <div class="col-md-6">
+    <app-card cardTitle="Activity Related Emails">
+      <h6 class="mb-4">When to email?</h6>
+      @for (item of active_email; track item) {
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div>
+            <p class="text-muted mb-0">{{ item.title }}</p>
+          </div>
+          <div class="form-check form-switch p-0">
+            <input class="m-0 form-check-input h5 position-relative" type="checkbox" role="switch" [checked]="item.check" />
+          </div>
+        </div>
+      }
+      <hr class="my-4" />
+      <h6 class="mb-4">When to escalate emails?</h6>
+      @for (item of active_email; track item) {
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div>
+            <p class="text-muted mb-0">{{ item.title }}</p>
+          </div>
+          <div class="form-check form-switch p-0">
+            <input class="m-0 form-check-input h5 position-relative" type="checkbox" role="switch" [checked]="item.check" />
+          </div>
+        </div>
+      }
+    </app-card>
+  </div>
+  <div class="col-12 text-end btn-page">
+    <div class="btn btn-outline-secondary">Cancel</div>
+    <div class="btn btn-primary">Update Profile</div>
+  </div>
+</div>

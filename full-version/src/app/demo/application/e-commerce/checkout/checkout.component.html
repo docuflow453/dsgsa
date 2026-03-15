@@ -1,0 +1,156 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-body p-0">
+        <ul ngbNav aria-busy="true" #nav="ngbNav" class="nav-tabs checkout-tabs mb-0">
+          <li [ngbNavItem]="1">
+            <a ngbNavLink>
+              <div class="media align-items-center">
+                <div class="avatar avatar-xs">
+                  <i antIcon theme="outline" type="shopping-cart"></i>
+                </div>
+                <div class="media-body ms-1">
+                  <h5 class="mb-0">Cart Details</h5>
+                </div>
+              </div>
+            </a>
+            <ng-template ngbNavContent>
+              <div class="row">
+                <div class="col-xl-8">
+                  <div class="card table-card">
+                    <div class="card-header">
+                      <h5>
+                        Cart
+                        <span class="ms-2 f-14 px-2 badge bg-light-secondary rounded-pill">1</span>
+                      </h5>
+                    </div>
+                    <div class="card-body p-0">
+                      <div class="table-responsive">
+                        <table class="table mb-0 table-borderless" id="pc-dt-simple">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <div class="media align-items-center cart-product-img">
+                                  <img src="assets/images/application/prod-img-1.png" alt="image" class="wid-50 rounded border" />
+                                  <div class="media-body ms-3">
+                                    <h6 class="mb-0">Apple MacBook Pro</h6>
+                                    <p class="text-muted mb-0">Dark Red</p>
+                                  </div>
+                                </div>
+                              </td>
+                              <td class="text-end">
+                                <h6 class="mb-0">$12.99</h6>
+                              </td>
+                              <td class="text-center">
+                                <div class="btn-group btn-group-sm mb-2 border" role="group">
+                                  <button
+                                    type="button"
+                                    title="decrease"
+                                    class="btn btn-link-dark border-0"
+                                    [disabled]="inputNumber === 0"
+                                    (click)="minus()"
+                                  >
+                                    <i antIcon theme="outline" type="minus"></i>
+                                  </button>
+                                  <input
+                                    type="text"
+                                    class="wid-40 text-center border-0 m-0 form-control rounded-0 shadow-none"
+                                    [(ngModel)]="inputNumber"
+                                    title="How Many Quantity Buy"
+                                  />
+                                  <button type="button" title="increase" (click)="plus()" class="btn btn-link-dark">
+                                    <i antIcon theme="outline" type="plus"></i>
+                                  </button>
+                                </div>
+                              </td>
+                              <td class="text-end">
+                                <a href="javascript:" class="avatar avatar-s btn-link-secondary" title="Delete">
+                                  <i class="f-18" antIcon theme="outline" type="delete"></i>
+                                </a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-end">
+                    <a [routerLink]="['/e-commerce/product']" class="btn btn-link-secondary d-inline-flex align-items-center">
+                      <i class="me-2" antIcon theme="outline" type="left"></i>
+                      Back to Shopping
+                    </a>
+                  </div>
+                </div>
+                <div class="col-xl-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <a href="javascript:" class="text-secondary text-sm" (click)="openOfferMOdal()">Have a coupon code?</a>
+                      <div class="input-group my-2">
+                        <input type="text" class="form-control" placeholder="Discount Coupon" />
+                        <button class="btn btn-outline-primary" type="button">Apply</button>
+                      </div>
+                    </div>
+                  </div>
+                  <app-card cardTitle="Order Summary" blockClass="py-0" [padding]="24">
+                    @for (task of summary; track task) {
+                      <li class="list-group-item border-0 py-2 px-0">
+                        <div class="float-end">
+                          <h5 class="mb-0">{{ task.amount }}</h5>
+                        </div>
+                        <span class="text-muted">{{ task.title }}</span>
+                      </li>
+                    }
+                  </app-card>
+                  <app-card [showHeader]="false">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item p-0">
+                        <div class="float-end">
+                          <h5 class="mb-0">$100.00</h5>
+                        </div>
+                        <h5 class="mb-0 d-inline-block">Total</h5>
+                      </li>
+                    </ul>
+                  </app-card>
+                  <div class="d-grid mb-3">
+                    <button class="btn btn-primary">Process to Checkout</button>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="2">
+            <a ngbNavLink>
+              <div class="media align-items-center">
+                <div class="avatar avatar-xs">
+                  <i antIcon theme="outline" type="shop"></i>
+                </div>
+                <div class="media-body ms-1">
+                  <h5 class="mb-0">Shipping Information</h5>
+                </div>
+              </div>
+            </a>
+            <ng-template ngbNavContent>
+              <app-checkout-information></app-checkout-information>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="3">
+            <a ngbNavLink>
+              <div class="media align-items-center">
+                <div class="avatar avatar-xs">
+                  <i antIcon theme="outline" type="credit-card"></i>
+                </div>
+                <div class="media-body ms-1">
+                  <h5 class="mb-0">Payment</h5>
+                </div>
+              </div>
+            </a>
+            <ng-template ngbNavContent>
+              <app-checkout-payment></app-checkout-payment>
+            </ng-template>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div [ngbNavOutlet]="nav"></div>
+  </div>
+</div>

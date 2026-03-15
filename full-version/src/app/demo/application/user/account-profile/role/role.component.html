@@ -1,0 +1,70 @@
+<app-card cardTitle="Invite Team Members" [padding]="0" footerClass="text-end btn-page">
+  <div class="table-top p-4">
+    <h4>
+      5/10
+      <small>members available in your plan.</small>
+    </h4>
+    <hr class="my-3" />
+    <div class="row">
+      <div class="col-md-8">
+        <div class="form-group mb-0">
+          <label class="form-label">Email Address</label>
+          <div class="row">
+            <div class="col">
+              <input type="email" class="form-control" placeholder="Enter Your Email" />
+            </div>
+            <div class="col-auto">
+              <button class="btn btn-primary">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>MEMBER</th>
+          <th>ROLE</th>
+          <th class="text-end">STATUS</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (table of tables; track table) {
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col-auto pe-0">
+                  <img src="{{ table.src }}" alt="user-image" class="wid-40 rounded-circle" />
+                </div>
+                <div class="col">
+                  <h6 class="mb-0">{{ table.name }}</h6>
+                  <p class="text-muted f-12 mb-0">{{ table.email }}</p>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="badge {{ table.role_type }}">{{ table.role }}</span>
+            </td>
+            <td class="text-end">
+              @if (table.status === true) {
+                <a href="javascript:" title="status" class="btn btn-link-danger">Resend</a>
+              }
+
+              <span class="badge {{ table.status_type }}" title="status">{{ table.status_1 }}</span>
+            </td>
+            <td class="text-end">
+              <a href="javascript:" class="avatar avatar-s btn-link-secondary" title="Edit"><i class="ti ti-dots f-18"></i></a>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <ng-template #footerTemplate>
+    <div class="btn btn-link-danger">Cancel</div>
+    <div class="btn btn-primary">Update Profile</div>
+  </ng-template>
+</app-card>

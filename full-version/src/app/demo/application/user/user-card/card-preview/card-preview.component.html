@@ -1,0 +1,114 @@
+<div class="modal-header justify-content-between">
+  <div class="d-flex w-100">
+    <div class="flex-shrink-0">
+      <img src="assets/images/user/avatar-1.jpg" alt="user-image" class="wid-40 rounded-circle" />
+    </div>
+    <div class="flex-grow-1 mx-3">
+      <h6 class="mb-1">Marc Hubbard</h6>
+      <p class="text-muted text-sm mb-0">Airline Pilot</p>
+    </div>
+    <div class="dropdown" ngbDropdown>
+      <a class="avatar avatar-s btn-link-secondary dropdown-toggle arrow-none" href="javascript:" ngbDropdownToggle>
+        <i antIcon type="more" theme="outline" class="f-18"></i>
+      </a>
+      <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+        <a class="dropdown-item" href="javascript:">Preview</a>
+        <a class="dropdown-item" href="javascript:">Share</a>
+        <a class="dropdown-item" href="javascript:">Edit</a>
+        <a class="dropdown-item" href="javascript:">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-body">
+  <app-scrollbar [customStyle]="'calc(100vh - 245px)'">
+    <div class="row">
+      <div class="col-sm-12 col-xl-8">
+        <div class="card">
+          <div class="card-header">
+            <h5>About me</h5>
+          </div>
+          <div class="card-body">
+            <p class="mb-0">
+              Hello, I’m Anshan Handgun Creative Graphic Designer & User Experience Designer based in Website, I create digital Products a
+              more Beautiful and usable place. Morbid accusant ipsum. Nam nec tellus at.
+            </p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h5>Education</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              @for (task of education; track task) {
+                <li class="list-group-item px-0 {{ task.style }}">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p class="mb-1 text-muted">{{ task.title }}</p>
+                      <p class="mb-0">{{ task.detail }}</p>
+                    </div>
+                    <div class="col-md-6">
+                      <p class="mb-1 text-muted">Institute</p>
+                      <p class="mb-0">{{ task.sub_detail }}</p>
+                    </div>
+                  </div>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h5>Employment</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              @for (task of employment; track task) {
+                <li class="list-group-item px-0 {{ task.style }}">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p class="mb-1 text-muted">{{ task.title }}</p>
+                      <p class="mb-0">{{ task.name }}</p>
+                    </div>
+                    <div class="col-md-6">
+                      <p class="mb-1 text-muted">{{ task.sub_title }}</p>
+                      <p class="mb-0">{{ task.f_name }}</p>
+                    </div>
+                  </div>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h5>Skills</h5>
+          </div>
+          <div class="card-body">
+            <span class="badge bg-outline-secondary f-14 me-1 mt-1">Figma</span>
+            <span class="badge bg-outline-secondary f-14 me-1 mt-1">UX</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-xl-4">
+        <div class="card">
+          <div class="card-body">
+            @for (info of userInformation; track $index) {
+              <div class="mt-3">
+                <p class="mb-1 text-muted">{{ info.label }}</p>
+                @if (info.label === 'Website') {
+                  <p class="mb-1">{{ info.value }}</p>
+                } @else {
+                  <ng-template>
+                    <a href="{{ info.value }}" target="_blank" class="mb-1">{{ info.value }}</a>
+                  </ng-template>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-scrollbar>
+</div>

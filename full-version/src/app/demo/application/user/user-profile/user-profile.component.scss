@@ -1,0 +1,88 @@
+@import '../../../../../scss/settings/color-variables.scss';
+
+::ng-deep.profile-wave-card {
+  position: relative;
+  overflow: hidden;
+  background: rgb(230, 247, 255);
+  & > * {
+    position: relative;
+    z-index: 5;
+  }
+  .profiled-wave-img {
+    position: absolute;
+    z-index: 1;
+    &.wave-top {
+      right: 0;
+      top: 0;
+    }
+    &.wave-bottom {
+      left: 0;
+      bottom: 0;
+    }
+  }
+}
+
+.dropdown-menu.user-edit {
+  .dropdown-item {
+    ::ng-deep.mantis-rtl & {
+      flex-direction: row-reverse;
+    }
+  }
+}
+
+::ng-deep.social-media {
+  i {
+    svg {
+      width: 18px;
+      height: 18px;
+      font-size: 18px;
+    }
+  }
+}
+
+::ng-deep.card-type {
+  background-color: transparent !important;
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  min-width: 64px;
+  padding: 5px 15px;
+  border-radius: 4px;
+  border: 1px solid var(--bs-border-color) !important;
+  color: $black !important;
+
+  .card-img {
+    margin-right: 8px;
+    margin-left: -4px;
+
+    ::ng-deep.mantis-rtl & {
+      margin-left: 8px;
+      margin-right: -4px;
+    }
+  }
+
+  &.add-card.active {
+    background: var(--bs-primary) !important;
+    color: $white !important;
+  }
+
+  &.active {
+    border: 1px solid var(--bs-primary) !important;
+  }
+}
+
+::ng-deep.profile-edit {
+  width: 34px;
+  height: 34px;
+  border-radius: 4px;
+  color: $gray-900;
+  background: $gray-100;
+  align-items: center;
+  display: inline-flex;
+  padding: 0;
+  justify-content: center;
+  position: relative;
+  &:after {
+    content: none;
+  }
+}

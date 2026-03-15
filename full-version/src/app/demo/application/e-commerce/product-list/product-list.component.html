@@ -1,0 +1,194 @@
+<div class="row">
+  <!-- [ sample-page ] start -->
+  <div class="col-sm-12">
+    <div class="card table-card">
+      <div class="card-body p-0">
+        <form class="dt-responsive">
+          <div class="dataTable-top">
+            <div class="dataTable-dropdown">
+              <input
+                id="table-complete-search"
+                type="text"
+                class="form-control"
+                name="searchTerm"
+                [(ngModel)]="service.searchTerm"
+                placeholder="Search..."
+              />
+            </div>
+            <div class="dataTable-search d-flex align-items-center">
+              <div class="col-xs-3 col-sm-auto me-2">
+                <div class="dataTable-search d-flex align-items-center">
+                  <a
+                    href="javascript:"
+                    class="btn btn-primary d-inline-flex align-items-center"
+                    data-bs-toggle="modal"
+                    [routerLink]="['/e-commerce/new-product']"
+                  >
+                    <div class="d-flex align-items-center">
+                      <i class="me-2 d-flex" antIcon type="plus" theme="outline"></i>
+                      <span>Add Customer</span>
+                    </div>
+                  </a>
+                  <a href="javascript:">
+                    <i class="ms-3 f-24 text-muted" antIcon type="download" theme="outline"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col"><input class="form-check-input" type="checkbox" title="Checkbox" /></th>
+                  <th scope="col">#</th>
+                  <th scope="col" sortable="Customer-name">PRODUCT DETAILS</th>
+                  <th scope="col" sortable="contact">CATEGORIES</th>
+                  <th scope="col" sortable="orders" class="text-end">PRICE</th>
+                  <th scope="col" sortable="spent" class="text-end">QTY</th>
+                  <th scope="col" sortable="status">STATUS</th>
+                  <th scope="col" sortable="action" class="text-center">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (product of product$ | async; track product) {
+                  <tr>
+                    <td>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" title="Checkbox" />
+                      </div>
+                    </td>
+                    <td><ngb-highlight [result]="product.id" [term]="service.searchTerm" class="text-end"></ngb-highlight></td>
+                    <td>
+                      <div class="row">
+                        <div class="col-auto p-0">
+                          <img src="{{ product.src }}" alt="user-image" class="wid-40 product-list-img" />
+                        </div>
+                        <div class="col">
+                          <ngb-highlight [result]="product.name" [term]="service.searchTerm" class="f-w-600"></ngb-highlight>
+                          <ngb-highlight
+                            [result]="product.email"
+                            [term]="service.searchTerm"
+                            class="text-muted text-sm mb-0"
+                          ></ngb-highlight>
+                        </div>
+                      </div>
+                    </td>
+                    <td><ngb-highlight [result]="product.category" [term]="service.searchTerm"></ngb-highlight></td>
+                    <td class="text-end"><ngb-highlight [result]="product.price" [term]="service.searchTerm"></ngb-highlight></td>
+                    <td class="text-end"><ngb-highlight [result]="product.qty" [term]="service.searchTerm"></ngb-highlight></td>
+                    <td>
+                      <ngb-highlight
+                        [result]="product.status"
+                        [term]="service.searchTerm"
+                        class="badge {{ product.status_type }}"
+                      ></ngb-highlight>
+                    </td>
+                    <td class="text-center">
+                      <ul class="list-inline me-auto mb-0">
+                        <li class="list-inline-item align-bottom">
+                          <a
+                            href="javascript:"
+                            title="view"
+                            class="avatar avatar-xs btn-link-secondary"
+                            data-bs-toggle="modal"
+                            (click)="openProduct(product)"
+                          >
+                            <i antIcon theme="outline" type="eye" class="f-18"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="datatable-bottom">
+            <select
+              class="form-select mb-2"
+              title="select item per page"
+              style="width: auto"
+              name="pageSize"
+              [(ngModel)]="service.pageSize"
+            >
+              <option [ngValue]="2">2 items per page</option>
+              <option [ngValue]="4">4 items per page</option>
+              <option [ngValue]="6">6 items per page</option>
+            </select>
+            <ngb-pagination
+              [collectionSize]="(total$ | async)!"
+              [(page)]="service.page"
+              [pageSize]="service.pageSize"
+              class="mb-2"
+            ></ngb-pagination>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  customer details -->
+<ng-template #details let-modal>
+  <div class="modal-header justify-content-between border-0 pb-0">
+    <h5 class="mb-0">Product Details</h5>
+    <a href="javascript:" class="avatar avatar-s btn-link-danger" (click)="modal.close('Close click')">
+      <i theme="outline" antIcon type="close"></i>
+    </a>
+  </div>
+  <div class="modal-body product-details-modal">
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="rounded position-relative">
+          <div class="position-absolute end-0 top-0 p-3">
+            <span class="badge {{ selectedProduct.status_type }}">{{ selectedProduct.status }}</span>
+          </div>
+          <div class="product-images text-center mt-3">
+            <div class="d-inline-flex mx-auto">
+              <img class="img-fluid" [src]="selectedProduct.src" alt="Product image" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-8">
+        <h5>{{ selectedProduct.name }}</h5>
+        <p class="text-muted">
+          Image Enlargement: After shooting, you can enlarge photographs of the objects for clear zoomed view. Change In Aspect Ratio:
+          Boldly crop the subject and save it with a composition that has impact. You can convert it to a 1:1 square format, and after
+          shooting you can create a photo that will be popular on SNS.
+        </p>
+        <ngb-rating [rate]="3" [max]="5">
+          <ng-template let-fill="fill" let-index="index">
+            <i
+              antIcon
+              type="{{ fill === 100 ? 'star' : 'star' }}"
+              theme="{{ fill === 100 ? 'fill' : 'outline' }}"
+              class="text-warning f-20"
+            ></i>
+          </ng-template>
+        </ngb-rating>
+        <div class="table-responsive">
+          <table class="table w-auto table-borderless">
+            <tbody>
+              <tr>
+                <td class="text-muted py-1">Categories</td>
+                <td class="py-1">{{ selectedProduct.category }}</td>
+              </tr>
+              <tr>
+                <td class="text-muted py-1">Qty</td>
+                <td class="py-1">{{ selectedProduct.qty }}</td>
+              </tr>
+              <tr>
+                <td class="text-muted py-1">Price</td>
+                <td class="py-1">
+                  <h5 class="mb-0">{{ selectedProduct.price }}</h5>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

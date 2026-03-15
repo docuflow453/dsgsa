@@ -1,0 +1,125 @@
+<div class="row">
+  <div class="col-lg-4 col-xxl-3">
+    <app-card [showHeader]="false" blockClass="position-relative">
+      <div class="position-absolute end-0 top-0 p-3">
+        <span class="badge bg-primary">Pro</span>
+      </div>
+      <div class="text-center mt-3">
+        <div class="chat-avatar d-inline-flex mx-auto">
+          <img class="rounded-circle img-fluid wid-65" src="assets/images/user/avatar-5.jpg" alt="User image" />
+        </div>
+        <h5 class="mb-0">Anshan H.</h5>
+        <p class="text-muted mb-0">Project Manager</p>
+        <hr class="my-3" />
+        <div class="row g-3">
+          <div class="col-4">
+            <h5 class="mb-0">86</h5>
+            <p class="text-muted">Post</p>
+          </div>
+          <div class="col-4 border border-top-0 border-bottom-0">
+            <h5 class="mb-0">40</h5>
+            <p class="text-muted">Project</p>
+          </div>
+          <div class="col-4">
+            <h5 class="mb-0">4.5K</h5>
+            <p class="text-muted">Members</p>
+          </div>
+        </div>
+        <hr class="my-3" />
+        @for (task of details; track task) {
+          <div class="d-inline-flex align-items-center justify-content-between w-100 mb-2">
+            <i antIcon type="{{ task.icon }}" theme="outline" class="f-14"></i>
+            <p class="mb-0">{{ task.text }}</p>
+          </div>
+        }
+        <div class="d-inline-flex align-items-center justify-content-between w-100">
+          <i antIcon type="environment" theme="outline" class="f-14"></i>
+          <a href="javascript:" class="link-primary">
+            <p class="mb-0">https://anshan.dh.url</p>
+          </a>
+        </div>
+      </div>
+    </app-card>
+    <app-card cardTitle="Skills">
+      @for (skill of skills; track skill) {
+        <div class="row align-items-center mb-3">
+          <div class="col-sm-6 mb-2 mb-sm-0">
+            <p class="mb-0">{{ skill.title }}</p>
+          </div>
+          <div class="col-sm-6">
+            <div class="d-flex align-items-center">
+              <div class="flex-grow-1 me-3">
+                <ngb-progressbar class="progress progress-primary" type="progress-bar" [value]="skill.value" height="6px"></ngb-progressbar>
+              </div>
+              <div class="flex-shrink-0">
+                <p class="mb-0 text-muted">{{ skill.value }}%</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </app-card>
+  </div>
+  <div class="col-lg-8 col-xxl-9">
+    <app-card cardTitle="About me" [padding]="24">
+      <p class="mb-0 text-muted">
+        Hello, I’m Anshan Handgun Creative Graphic Designer & User Experience Designer based in Website, I create digital Products a more
+        Beautiful and usable place. Morbid accusant ipsum. Nam nec tellus at.
+      </p>
+    </app-card>
+    <app-card cardTitle="Personal Details" [padding]="24">
+      <ul class="list-group list-group-flush">
+        @for (task of personal_details; track task) {
+          <li class="list-group-item px-0 {{ task.style }}">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="mb-1 text-muted">{{ task.title }}</p>
+                <p class="mb-0">{{ task.name }}</p>
+              </div>
+              <div class="col-md-6">
+                <p class="mb-1 text-muted">{{ task.sub_title }}</p>
+                <p class="mb-0">{{ task.f_name }}</p>
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+    </app-card>
+    <app-card cardTitle="Education" [padding]="24">
+      <ul class="list-group list-group-flush">
+        @for (task of education; track task) {
+          <li class="list-group-item px-0 {{ task.style }}">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="mb-1 text-muted">{{ task.title }}</p>
+                <p class="mb-0">{{ task.detail }}</p>
+              </div>
+              <div class="col-md-6">
+                <p class="mb-1 text-muted">Institute</p>
+                <p class="mb-0">{{ task.sub_detail }}</p>
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+    </app-card>
+    <app-card cardTitle="Employment" [padding]="24">
+      <ul class="list-group list-group-flush">
+        @for (task of employment; track task) {
+          <li class="list-group-item px-0 {{ task.style }}">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="mb-1 text-muted">{{ task.title }}</p>
+                <p class="mb-0">{{ task.name }}</p>
+              </div>
+              <div class="col-md-6">
+                <p class="mb-1 text-muted">{{ task.sub_title }}</p>
+                <p class="mb-0">{{ task.f_name }}</p>
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+    </app-card>
+  </div>
+</div>

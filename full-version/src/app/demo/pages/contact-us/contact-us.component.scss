@@ -1,0 +1,138 @@
+@import '../../../../scss/settings/color-variables.scss';
+
+$i: 1;
+$delay: 0.1;
+@while $i<=6 {
+  .animate__delay {
+    &-#{$i}s {
+      --animate-delay: #{$delay}s;
+      animation-delay: var(--animate-delay);
+    }
+  }
+  $i: $i + 1;
+  $delay: $delay + 0.1;
+}
+
+.contact-hero {
+  padding: 50px 0;
+  background: $gray-900;
+  position: relative;
+  height: 480px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: 2;
+    background: linear-gradient(329.36deg, rgb(0, 0, 0) 14.79%, rgba(67, 67, 67, 0.28) 64.86%);
+  }
+
+  .container {
+    max-width: 1266px;
+  }
+
+  .row {
+    z-index: 5;
+    position: relative;
+  }
+
+  .world-img {
+    width: 600px;
+  }
+
+  @media (max-width: 1199px) {
+    height: 380px;
+
+    .container {
+      padding-left: 24px;
+      padding-right: 24px;
+      max-width: 100%;
+    }
+
+    .world-img {
+      width: 500px;
+    }
+  }
+  @media (max-width: 1024px) {
+    height: 280px;
+
+    .world-img {
+      width: 320px;
+    }
+  }
+  @media (max-width: 768px) {
+    height: 100%;
+    .container {
+      padding: 0px;
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+}
+.contact-form {
+  padding: 90px 0;
+
+  .container {
+    max-width: 1266px;
+
+    @media (max-width: 1199px) {
+      padding-left: 24px;
+      padding-right: 24px;
+      max-width: 100%;
+    }
+    @media (max-width: 768px) {
+      padding: 0px;
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+}
+.contact-footer {
+  position: relative;
+  background: rgb(31, 31, 31);
+
+  .container {
+    max-width: 1266px;
+
+    @media (max-width: 1199px) {
+      padding-left: 24px;
+      padding-right: 24px;
+      max-width: 100%;
+    }
+    @media (max-width: 768px) {
+      padding: 0px 16px;
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+  .top-footer {
+    padding: 80px 0;
+  }
+  .bottom-footer {
+    padding: 10px 0;
+    background: $gray-900;
+    border-top: thin solid $gray-800;
+  }
+  .footer-link {
+    a {
+      margin: 14px 0;
+      display: block;
+      color: var(--bs-secondary-color);
+
+      &:hover {
+        color: var(--bs-primary);
+      }
+    }
+  }
+  .footer-sos-link i {
+    font-size: 18px;
+    opacity: 0.6;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
