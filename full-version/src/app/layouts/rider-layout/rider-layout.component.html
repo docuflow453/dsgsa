@@ -1,0 +1,106 @@
+<!-- Rider Layout - Top nav + Sidebar + Content -->
+<div class="rider-layout">
+  <!-- Top Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark top-nav">
+    <div class="container-fluid">
+      <a class="navbar-brand" [routerLink]="['/']">
+        <img src="assets/images/dressage-logo-white.svg" alt="Dressage Logo" class="logo" />
+      </a>
+
+      <button class="navbar-toggler" type="button" (click)="toggleSidebar()">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/']">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/events']">Events</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/results']">Results</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/news']">News</a>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown" ngbDropdown>
+            <a class="nav-link dropdown-toggle" ngbDropdownToggle>
+              <i class="ti ti-user-circle me-1"></i>
+              {{ currentUser?.firstName || 'User' }}
+            </a>
+            <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+              <a class="dropdown-item" [routerLink]="['/rider/profile']">
+                <i class="ti ti-user me-2"></i>My Profile
+              </a>
+              <a class="dropdown-item" [routerLink]="['/rider/settings']">
+                <i class="ti ti-settings me-2"></i>Settings
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" (click)="logout()">
+                <i class="ti ti-logout me-2"></i>Logout
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" [class.collapsed]="sidebarCollapsed">
+      <div class="sidebar-header">
+        <h5>Rider Dashboard</h5>
+        <button class="btn btn-sm btn-link" (click)="toggleSidebar()">
+          <i class="ti ti-menu-2"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a [routerLink]="['/rider/dashboard']" routerLinkActive="active" class="nav-link">
+          <i class="ti ti-dashboard"></i>
+          <span>Dashboard</span>
+        </a>
+        <a [routerLink]="['/rider/entries']" routerLinkActive="active" class="nav-link">
+          <i class="ti ti-file-text"></i>
+          <span>My Entries</span>
+        </a>
+        <a [routerLink]="['/rider/horses']" routerLinkActive="active" class="nav-link">
+          <i class="ti ti-horse"></i>
+          <span>My Horses</span>
+        </a>
+        <a [routerLink]="['/rider/results']" routerLinkActive="active" class="nav-link">
+          <i class="ti ti-trophy"></i>
+          <span>My Results</span>
+        </a>
+        <a [routerLink]="['/rider/membership']" routerLinkActive="active" class="nav-link">
+          <i class="ti ti-id-badge"></i>
+          <span>Membership</span>
+        </a>
+        <a [routerLink]="['/rider/documents']" routerLinkActive="active" class="nav-link">
+          <i class="ti ti-folder"></i>
+          <span>Documents</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="rider-footer">
+    <div class="container-fluid">
+      <p class="mb-0">&copy; {{ currentYear }} South African Dressage. All rights reserved.</p>
+    </div>
+  </footer>
+</div>
+

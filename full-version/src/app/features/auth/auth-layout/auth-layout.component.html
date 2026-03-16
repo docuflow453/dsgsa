@@ -1,0 +1,33 @@
+<!-- Auth Layout - Dressage Background -->
+<div class="auth-layout">
+  <!-- Background Image Overlay -->
+  <div class="auth-background"></div>
+  
+  <!-- Content Container -->
+  <div class="auth-container">
+    <!-- Logo Header -->
+    <div class="auth-header">
+      <a [routerLink]="['/']" class="auth-logo">
+        <img src="assets/images/dressage-logo-white.svg" alt="DSRiding Logo" />
+      </a>
+    </div>
+
+    <!-- Auth Content (Login, Register, etc.) -->
+    <div class="auth-content">
+      <router-outlet></router-outlet>
+    </div>
+
+    <!-- Footer -->
+    <div class="auth-footer">
+      <p>&copy; {{ currentYear }} DSRiding - South African Dressage. All rights reserved.</p>
+      <div class="auth-footer-links">
+        <a [routerLink]="['/']">Home</a>
+        <span class="separator">|</span>
+        <a [routerLink]="['/privacy']">Privacy Policy</a>
+        <span class="separator">|</span>
+        <a [routerLink]="['/terms']">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</div>
+

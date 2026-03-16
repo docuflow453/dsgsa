@@ -37,8 +37,18 @@ const routes: Routes = [
         loadComponent: () =>
           import('./demo/pages/authentication/forgot-password/forgot-password.component').then((c) => c.ForgotPasswordComponent)
       },
+      // New Auth Module (Angular 21 Standalone Components)
       {
         path: 'auth',
+        loadChildren: () => import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES)
+      },
+      // Rider Feature Module (My Dashboard)
+      {
+        path: 'my',
+        loadChildren: () => import('./features/rider/rider.routes').then((m) => m.RIDER_ROUTES)
+      },
+      {
+        path: 'auth-old',
         canActivateChild: [AuthGuardChild],
         loadChildren: () => import('./demo/pages/authentication/authentication.module').then((m) => m.AuthenticationModule),
         data: {

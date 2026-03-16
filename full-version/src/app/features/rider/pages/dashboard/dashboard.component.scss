@@ -1,0 +1,227 @@
+// Dashboard Page Styles
+.dashboard-page {
+  .page-header {
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+      margin: 0;
+    }
+  }
+
+  // Stats Cards
+  .stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+
+      i {
+        font-size: 1.75rem;
+      }
+
+      &.bg-primary {
+        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+      }
+
+      &.bg-success {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      }
+
+      &.bg-info {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      }
+
+      &.bg-warning {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      }
+    }
+
+    .stat-content {
+      flex: 1;
+
+      h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin: 0;
+      }
+
+      p {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin: 0;
+      }
+    }
+  }
+
+  // Cards
+  .card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    .card-header {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 1.25rem 1.5rem;
+      border-radius: 12px 12px 0 0;
+
+      h5 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #1f2937;
+      }
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+  }
+
+  // Profile Info
+  .profile-info {
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #f3f4f6;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      strong {
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      span {
+        color: #1f2937;
+        font-weight: 600;
+      }
+    }
+  }
+
+  // Upcoming Entries List
+  .upcoming-entries-list {
+    .entry-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border-bottom: 1px solid #f3f4f6;
+      transition: background 0.3s ease;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background: #f9fafb;
+      }
+
+      .entry-date {
+        min-width: 100px;
+
+        strong {
+          color: #2563eb;
+          font-size: 0.875rem;
+        }
+      }
+
+      .entry-details {
+        flex: 1;
+
+        h6 {
+          margin: 0 0 0.25rem 0;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #1f2937;
+        }
+
+        p {
+          margin: 0;
+          font-size: 0.875rem;
+        }
+      }
+
+      .entry-status {
+        .badge {
+          font-size: 0.75rem;
+          padding: 0.375rem 0.75rem;
+        }
+      }
+    }
+  }
+
+  // Results List
+  .results-list {
+    .result-item {
+      padding: 1rem;
+      border-bottom: 1px solid #f3f4f6;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .result-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+
+        h6 {
+          margin: 0;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #1f2937;
+        }
+
+        small {
+          font-size: 0.875rem;
+        }
+      }
+
+      .result-details {
+        .row {
+          align-items: center;
+        }
+
+        strong {
+          color: #6b7280;
+          font-size: 0.875rem;
+        }
+
+        .badge {
+          font-size: 0.75rem;
+          padding: 0.375rem 0.75rem;
+        }
+      }
+    }
+  }
+}
+

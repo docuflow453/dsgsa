@@ -1,0 +1,271 @@
+// Public Layout Styles
+.public-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+// Utility Navigation
+.utility-nav {
+  background: #1f2937;
+  padding: 8px 0;
+  font-size: 0.875rem;
+  position: fixed;
+  width: 100%;
+  z-index: 1100;
+  top: 0;
+
+  .container {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .utility-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    li {
+      margin: 0;
+
+      &.separator {
+        color: rgba(255, 255, 255, 0.4);
+        font-weight: 300;
+      }
+
+      a {
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        transition: color 0.3s ease;
+        font-size: 0.875rem;
+
+        &:hover {
+          color: #3b82f6;
+        }
+
+        .basket-link {
+          color: rgba(255, 255, 255, 0.6);
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 991px) {
+    display: none;
+  }
+}
+
+// Main Navigation
+.main-nav {
+  position: fixed;
+  padding: 12px 0;
+  width: 100%;
+  background: #2563eb;
+  z-index: 1099;
+  top: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 991px) {
+    top: 0;
+  }
+
+  &.default {
+    background: #2563eb;
+  }
+
+  &.landing-nav {
+    background: #1e40af;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+
+    .dressage-logo {
+      height: 55px;
+      width: auto;
+      max-width: 200px;
+      transition: transform 0.3s ease, filter 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+        filter: brightness(1.1);
+      }
+
+      @media (max-width: 991px) {
+        height: 45px;
+        max-width: 180px;
+      }
+
+      @media (max-width: 576px) {
+        height: 38px;
+        max-width: 160px;
+      }
+    }
+  }
+
+  .navbar-nav {
+    .nav-item {
+      position: relative;
+
+      .nav-link {
+        color: white;
+        font-weight: 500;
+        font-size: 0.95rem;
+        padding: 10px 16px;
+        transition: all 0.3s ease;
+        position: relative;
+
+        &:hover {
+          color: #fbbf24;
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        &.search-icon {
+          font-size: 1.2rem;
+          padding: 10px 12px;
+
+          i {
+            font-size: 1.3rem;
+          }
+        }
+      }
+
+      &.dropdown {
+        .dropdown-toggle::after {
+          margin-left: 6px;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+
+  // Dropdown Menus
+  .dropdown-menu {
+    background: white;
+    border: none;
+    border-radius: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 12px 0;
+    margin-top: 0;
+    min-width: 220px;
+
+    &.mega-menu {
+      min-width: 600px;
+      padding: 20px;
+
+      &.mega-menu-large {
+        min-width: 800px;
+      }
+
+      .row {
+        margin: 0;
+      }
+
+      .dropdown-header {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #1f2937;
+        padding: 8px 16px;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    .dropdown-item {
+      color: #4b5563;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: #f3f4f6;
+        color: #3b82f6;
+        padding-left: 24px;
+      }
+
+      &:active {
+        background: #e5e7eb;
+        color: #2563eb;
+      }
+    }
+  }
+
+  @media (max-width: 991px) {
+    .navbar-collapse {
+      background: #2563eb;
+      margin-top: 12px;
+      padding: 16px;
+      border-radius: 8px;
+    }
+
+    .dropdown-menu {
+      background: rgba(255, 255, 255, 0.95);
+      margin-top: 8px;
+
+      &.mega-menu {
+        min-width: 100%;
+      }
+    }
+  }
+}
+
+// Main Content
+.public-content {
+  flex: 1;
+  padding-top: 100px; // 40px utility nav + 60px main nav
+
+  @media (max-width: 991px) {
+    padding-top: 60px; // Only main nav on mobile
+  }
+}
+
+// Footer
+.public-footer {
+  background: #1f2937;
+  color: white;
+  padding: 3rem 0 1rem;
+  margin-top: 4rem;
+
+  .footer-logo {
+    max-width: 200px;
+    height: auto;
+  }
+
+  h5 {
+    color: #fbbf24;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .footer-links {
+    list-style: none;
+    padding: 0;
+
+    li {
+      margin-bottom: 0.5rem;
+
+      a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: #3b82f6;
+        }
+      }
+    }
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 0.5rem;
+  }
+}
+

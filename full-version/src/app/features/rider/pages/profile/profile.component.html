@@ -1,0 +1,562 @@
+<!-- Enhanced Profile Page with Tabbed Interface -->
+<div class="profile-page">
+  <div class="page-header mb-4">
+    <h2><i class="ti ti-user me-2"></i>My Profile</h2>
+    <p class="text-muted">Manage your account settings and preferences</p>
+  </div>
+
+  <!-- Success/Error Messages -->
+  <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show">
+    <i class="ti ti-check me-2"></i>{{ successMessage }}
+    <button type="button" class="btn-close" (click)="successMessage = ''"></button>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show">
+    <i class="ti ti-alert-circle me-2"></i>{{ errorMessage }}
+    <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-3 text-muted">Loading profile...</p>
+  </div>
+
+  <!-- Tabbed Interface -->
+  <div *ngIf="!loading" class="card">
+    <div class="card-body">
+      <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs mb-4">
+
+        <!-- Tab 1: Personal Information -->
+        <li [ngbNavItem]="1">
+          <button ngbNavLink>
+            <i class="ti ti-user me-2"></i>Personal Information
+          </button>
+          <ng-template ngbNavContent>
+            <form [formGroup]="personalInfoForm" (ngSubmit)="onSubmitPersonalInfo()">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="firstName" formControlName="firstName">
+                  <div *ngIf="hasError(personalInfoForm, 'firstName', 'required')" class="text-danger small mt-1">
+                    First name is required
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="lastName" formControlName="lastName">
+                  <div *ngIf="hasError(personalInfoForm, 'lastName', 'required')" class="text-danger small mt-1">
+                    Last name is required
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="idNumber" class="form-label">ID Number <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="idNumber" formControlName="idNumber" placeholder="13-digit ID number">
+                  <div *ngIf="hasError(personalInfoForm, 'idNumber', 'required')" class="text-danger small mt-1">
+                    ID number is required
+                  </div>
+                  <div *ngIf="hasError(personalInfoForm, 'idNumber', 'pattern')" class="text-danger small mt-1">
+                    ID number must be 13 digits
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="dateOfBirth" class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                  <input type="date" class="form-control" id="dateOfBirth" formControlName="dateOfBirth">
+                  <div *ngIf="hasError(personalInfoForm, 'dateOfBirth', 'required')" class="text-danger small mt-1">
+                    Date of birth is required
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
+                  <select class="form-select" id="gender" formControlName="gender">
+                    <option value="">Select Gender</option>
+                    <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
+                  </select>
+                  <div *ngIf="hasError(personalInfoForm, 'gender', 'required')" class="text-danger small mt-1">
+                    Gender is required
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="ethnicity" class="form-label">Ethnicity</label>
+                  <select class="form-select" id="ethnicity" formControlName="ethnicity">
+                    <option value="">Select Ethnicity</option>
+                    <option *ngFor="let ethnicity of ethnicities" [value]="ethnicity">{{ ethnicity }}</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="saefNumber" class="form-label">SAEF Number</label>
+                  <input type="text" class="form-control" id="saefNumber" formControlName="saefNumber" placeholder="SAEF-YYYY-XXXXXX">
+                  <small class="text-muted">South African Equestrian Federation number</small>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="nationality" class="form-label">Nationality <span class="text-danger">*</span></label>
+                  <select class="form-select" id="nationality" formControlName="nationality">
+                    <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="passportNumber" class="form-label">Passport Number</label>
+                  <input type="text" class="form-control" id="passportNumber" formControlName="passportNumber" placeholder="For international riders">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="passportExpiry" class="form-label">Passport Expiry</label>
+                  <input type="date" class="form-control" id="passportExpiry" formControlName="passportExpiry">
+                </div>
+              </div>
+              <div class="d-flex justify-content-end mt-3">
+                <button type="submit" class="btn btn-primary" [disabled]="saving || personalInfoForm.invalid">
+                  <span *ngIf="saving" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  <i *ngIf="!saving" class="ti ti-device-floppy me-2"></i>
+                  {{ saving ? 'Saving...' : 'Save Changes' }}
+                </button>
+              </div>
+            </form>
+          </ng-template>
+        </li>
+
+        <!-- Tab 2: Address Details -->
+        <li [ngbNavItem]="2">
+          <button ngbNavLink>
+            <i class="ti ti-map-pin me-2"></i>Address Details
+          </button>
+          <ng-template ngbNavContent>
+            <form [formGroup]="addressForm" (ngSubmit)="onSubmitAddress()">
+              <div class="row">
+                <div class="col-12 mb-3">
+                  <label for="addressLine1" class="form-label">Address Line 1 <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="addressLine1" formControlName="addressLine1" placeholder="Street address">
+                  <div *ngIf="hasError(addressForm, 'addressLine1', 'required')" class="text-danger small mt-1">
+                    Address line 1 is required
+                  </div>
+                </div>
+                <div class="col-12 mb-3">
+                  <label for="addressLine2" class="form-label">Address Line 2</label>
+                  <input type="text" class="form-control" id="addressLine2" formControlName="addressLine2" placeholder="Apartment, suite, etc. (optional)">
+                </div>
+
+
+                <div class="col-md-6 mb-3">
+                  <label for="suburb" class="form-label">Suburb</label>
+                  <input type="text" class="form-control" id="suburb" formControlName="suburb">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="city" class="form-label">City <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="city" formControlName="city">
+                  <div *ngIf="hasError(addressForm, 'city', 'required')" class="text-danger small mt-1">
+                    City is required
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="province" class="form-label">Province <span class="text-danger">*</span></label>
+                  <select class="form-select" id="province" formControlName="province">
+                    <option value="">Select Province</option>
+                    <option *ngFor="let province of provinces" [value]="province">{{ province }}</option>
+                  </select>
+                  <div *ngIf="hasError(addressForm, 'province', 'required')" class="text-danger small mt-1">
+                    Province is required
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="postalCode" class="form-label">Postal Code <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="postalCode" formControlName="postalCode" placeholder="4-digit postal code">
+                  <div *ngIf="hasError(addressForm, 'postalCode', 'required')" class="text-danger small mt-1">
+                    Postal code is required
+                  </div>
+                  <div *ngIf="hasError(addressForm, 'postalCode', 'pattern')" class="text-danger small mt-1">
+                    Postal code must be 4 digits
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="country" class="form-label">Country <span class="text-danger">*</span></label>
+                  <select class="form-select" id="country" formControlName="country">
+                    <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="d-flex justify-content-end mt-3">
+                <button type="submit" class="btn btn-primary" [disabled]="saving || addressForm.invalid">
+                  <span *ngIf="saving" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  <i *ngIf="!saving" class="ti ti-device-floppy me-2"></i>
+                  {{ saving ? 'Saving...' : 'Save Changes' }}
+                </button>
+              </div>
+            </form>
+          </ng-template>
+        </li>
+
+        <!-- Tab 3: Contact Information -->
+        <li [ngbNavItem]="3">
+          <button ngbNavLink>
+            <i class="ti ti-phone me-2"></i>Contact Information
+          </button>
+          <ng-template ngbNavContent>
+            <form [formGroup]="contactForm" (ngSubmit)="onSubmitContact()">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                  <div class="input-group">
+                    <input type="email" class="form-control" id="email" formControlName="email">
+                    <span class="input-group-text">
+                      <i class="ti ti-circle-check text-success" ngbTooltip="Email verified"></i>
+                    </span>
+                  </div>
+                  <div *ngIf="hasError(contactForm, 'email', 'required')" class="text-danger small mt-1">
+                    Email is required
+                  </div>
+                  <div *ngIf="hasError(contactForm, 'email', 'email')" class="text-danger small mt-1">
+                    Please enter a valid email
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="mobileNumber" class="form-label">Mobile Number <span class="text-danger">*</span></label>
+                  <div class="input-group">
+                    <input type="tel" class="form-control" id="mobileNumber" formControlName="mobileNumber" placeholder="083 123 4567">
+                    <span class="input-group-text">
+                      <i class="ti ti-circle-check text-success" ngbTooltip="Mobile verified"></i>
+                    </span>
+                  </div>
+                  <div *ngIf="hasError(contactForm, 'mobileNumber', 'required')" class="text-danger small mt-1">
+                    Mobile number is required
+                  </div>
+                  <div *ngIf="hasError(contactForm, 'mobileNumber', 'pattern')" class="text-danger small mt-1">
+                    Please enter a valid SA mobile number
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="alternativePhone" class="form-label">Alternative Phone</label>
+                  <input type="tel" class="form-control" id="alternativePhone" formControlName="alternativePhone" placeholder="Optional">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="emergencyContactName" class="form-label">Emergency Contact Name <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="emergencyContactName" formControlName="emergencyContactName">
+                  <div *ngIf="hasError(contactForm, 'emergencyContactName', 'required')" class="text-danger small mt-1">
+                    Emergency contact name is required
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="emergencyContactNumber" class="form-label">Emergency Contact Number <span class="text-danger">*</span></label>
+                  <input type="tel" class="form-control" id="emergencyContactNumber" formControlName="emergencyContactNumber" placeholder="083 123 4567">
+                  <div *ngIf="hasError(contactForm, 'emergencyContactNumber', 'required')" class="text-danger small mt-1">
+                    Emergency contact number is required
+                  </div>
+                  <div *ngIf="hasError(contactForm, 'emergencyContactNumber', 'pattern')" class="text-danger small mt-1">
+                    Please enter a valid SA phone number
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex justify-content-end mt-3">
+                <button type="submit" class="btn btn-primary" [disabled]="saving || contactForm.invalid">
+                  <span *ngIf="saving" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  <i *ngIf="!saving" class="ti ti-device-floppy me-2"></i>
+                  {{ saving ? 'Saving...' : 'Save Changes' }}
+                </button>
+              </div>
+            </form>
+          </ng-template>
+        </li>
+
+        <!-- Tab 4: Security Settings -->
+        <li [ngbNavItem]="4">
+          <button ngbNavLink>
+            <i class="ti ti-lock me-2"></i>Security Settings
+          </button>
+          <ng-template ngbNavContent>
+            <form [formGroup]="securityForm" (ngSubmit)="onSubmitSecurity()">
+              <div class="alert alert-info mb-4">
+                <i class="ti ti-info-circle me-2"></i>
+                <strong>Password Requirements:</strong> Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number, and one special character.
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="currentPassword" class="form-label">Current Password <span class="text-danger">*</span></label>
+                  <input type="password" class="form-control" id="currentPassword" formControlName="currentPassword">
+                  <div *ngIf="hasError(securityForm, 'currentPassword', 'required')" class="text-danger small mt-1">
+                    Current password is required
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Last Password Change</label>
+                  <input type="text" class="form-control" [value]="lastPasswordChange | date:'medium'" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="newPassword" class="form-label">New Password <span class="text-danger">*</span></label>
+                  <input type="password" class="form-control" id="newPassword" formControlName="newPassword">
+                  <div *ngIf="hasError(securityForm, 'newPassword', 'required')" class="text-danger small mt-1">
+                    New password is required
+                  </div>
+                  <div *ngIf="hasError(securityForm, 'newPassword', 'minlength')" class="text-danger small mt-1">
+                    Password must be at least 8 characters
+                  </div>
+                  <div *ngIf="hasError(securityForm, 'newPassword', 'passwordStrength')" class="text-danger small mt-1">
+                    Password must contain uppercase, lowercase, number, and special character
+                  </div>
+
+                  <!-- Password Strength Indicator -->
+                  <div *ngIf="securityForm.get('newPassword')?.value" class="mt-2">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <small class="text-muted">Password Strength:</small>
+                      <small [class]="'fw-bold ' + (passwordStrength < 40 ? 'text-danger' : passwordStrength < 70 ? 'text-warning' : 'text-success')">
+                        {{ passwordStrengthLabel }}
+                      </small>
+                    </div>
+                    <div class="progress" style="height: 5px;">
+                      <div class="progress-bar" [ngClass]="getPasswordStrengthClass()" [style.width.%]="passwordStrength"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="confirmPassword" class="form-label">Confirm New Password <span class="text-danger">*</span></label>
+                  <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword">
+                  <div *ngIf="hasError(securityForm, 'confirmPassword', 'required')" class="text-danger small mt-1">
+                    Please confirm your password
+                  </div>
+                  <div *ngIf="securityForm.hasError('passwordMismatch') && securityForm.get('confirmPassword')?.touched" class="text-danger small mt-1">
+                    Passwords do not match
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-end mt-3">
+                <button type="submit" class="btn btn-primary" [disabled]="saving || securityForm.invalid">
+                  <span *ngIf="saving" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  <i *ngIf="!saving" class="ti ti-lock me-2"></i>
+                  {{ saving ? 'Changing...' : 'Change Password' }}
+                </button>
+              </div>
+            </form>
+          </ng-template>
+        </li>
+
+        <!-- Tab 5: Two-Factor Authentication -->
+        <li [ngbNavItem]="5">
+          <button ngbNavLink>
+            <i class="ti ti-shield me-2"></i>Two-Factor Authentication
+          </button>
+          <ng-template ngbNavContent>
+            <div class="alert alert-info mb-4">
+              <i class="ti ti-info-circle me-2"></i>
+              Two-factor authentication adds an extra layer of security to your account.
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Status</h5>
+                    <div class="d-flex align-items-center justify-content-between">
+                      <span>Two-Factor Authentication</span>
+                      <span [class]="'badge ' + (twoFactorEnabled ? 'bg-success' : 'bg-secondary')">
+                        {{ twoFactorEnabled ? 'Enabled' : 'Disabled' }}
+                      </span>
+                    </div>
+                    <div class="mt-3">
+                      <button *ngIf="!twoFactorEnabled" type="button" class="btn btn-primary" (click)="enable2FA()" [disabled]="saving">
+                        <i class="ti ti-shield-check me-2"></i>Enable 2FA
+                      </button>
+                      <button *ngIf="twoFactorEnabled" type="button" class="btn btn-danger" (click)="disable2FA()" [disabled]="saving">
+                        <i class="ti ti-shield-off me-2"></i>Disable 2FA
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- QR Code Setup (shown when enabling) -->
+              <div *ngIf="qrCodeUrl" class="col-md-6 mb-4">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">Scan QR Code</h5>
+                    <p class="text-muted small">Scan this QR code with your authenticator app</p>
+                    <img [src]="qrCodeUrl" alt="QR Code" class="img-fluid mb-3" style="max-width: 200px;">
+
+                    <form [formGroup]="twoFactorForm">
+                      <div class="mb-3">
+                        <label for="verificationCode" class="form-label">Enter Verification Code</label>
+                        <input type="text" class="form-control" id="verificationCode" formControlName="verificationCode" placeholder="6-digit code">
+                      </div>
+                      <button type="button" class="btn btn-success" (click)="verify2FACode()" [disabled]="saving">
+                        <i class="ti ti-check me-2"></i>Verify & Enable
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Backup Codes -->
+              <div *ngIf="backupCodes.length > 0" class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Backup Codes</h5>
+                    <p class="text-muted small">Save these backup codes in a safe place. You can use them to access your account if you lose your device.</p>
+                    <div class="row">
+                      <div class="col-md-4 mb-2" *ngFor="let code of backupCodes">
+                        <code class="d-block p-2 bg-light">{{ code }}</code>
+                      </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary mt-3" (click)="downloadBackupCodes()">
+                      <i class="ti ti-download me-2"></i>Download Backup Codes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </li>
+
+        <!-- Tab 6: Profile Picture -->
+        <li [ngbNavItem]="6">
+          <button ngbNavLink>
+            <i class="ti ti-camera me-2"></i>Profile Picture
+          </button>
+          <ng-template ngbNavContent>
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">Current Profile Picture</h5>
+                    <div class="profile-picture-container my-4">
+                      <img *ngIf="profilePictureUrl" [src]="profilePictureUrl" alt="Profile Picture" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                      <div *ngIf="!profilePictureUrl" class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mx-auto" style="width: 150px; height: 150px;">
+                        <i class="ti ti-user" style="font-size: 60px; color: white;"></i>
+                      </div>
+                    </div>
+                    <button *ngIf="profilePictureUrl" type="button" class="btn btn-outline-danger btn-sm" (click)="removeProfilePicture()" [disabled]="saving">
+                      <i class="ti ti-trash me-2"></i>Remove Picture
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-4">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Upload New Picture</h5>
+                    <p class="text-muted small">Accepted formats: JPG, PNG (max 2MB)</p>
+
+                    <!-- File Upload Zone -->
+                    <div class="upload-zone border border-2 border-dashed rounded p-4 text-center mb-3"
+                         (dragover)="onDragOver($event)"
+                         (drop)="onDrop($event)"
+                         style="cursor: pointer;">
+                      <i class="ti ti-cloud-upload" style="font-size: 48px; color: #2563eb;"></i>
+                      <p class="mt-2 mb-2">Drag and drop your image here or</p>
+                      <label for="fileInput" class="btn btn-primary btn-sm">
+                        <i class="ti ti-upload me-2"></i>Browse Files
+                      </label>
+                      <input type="file" id="fileInput" class="d-none" accept=".jpg,.jpeg,.png" (change)="onFileSelected($event)">
+                    </div>
+
+                    <!-- Image Preview -->
+                    <div *ngIf="imagePreview" class="preview-container mb-3">
+                      <p class="fw-bold mb-2">Preview:</p>
+                      <img [src]="imagePreview" alt="Preview" class="img-fluid rounded" style="max-height: 200px;">
+                      <div class="mt-3">
+                        <button type="button" class="btn btn-success" (click)="uploadProfilePicture()" [disabled]="saving">
+                          <span *ngIf="saving" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                          <i *ngIf="!saving" class="ti ti-check me-2"></i>
+                          {{ saving ? 'Uploading...' : 'Upload Picture' }}
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary ms-2" (click)="imagePreview = null; selectedFile = null">
+                          <i class="ti ti-x me-2"></i>Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </li>
+
+        <!-- Tab 7: Notification Preferences -->
+        <li [ngbNavItem]="7">
+          <button ngbNavLink>
+            <i class="ti ti-bell me-2"></i>Notification Preferences
+          </button>
+          <ng-template ngbNavContent>
+            <form [formGroup]="notificationForm" (ngSubmit)="onSubmitNotifications()">
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="card">
+                    <div class="card-header">
+                      <h5 class="mb-0"><i class="ti ti-mail me-2"></i>Email Notifications</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="form-check mb-3">
+                        <input type="checkbox" class="form-check-input" id="emailUpcomingEntries" formControlName="emailUpcomingEntries">
+                        <label class="form-check-label" for="emailUpcomingEntries">
+                          <strong>Upcoming Entries</strong>
+                          <br><small class="text-muted">Receive reminders about your upcoming event entries</small>
+                        </label>
+                      </div>
+                      <div class="form-check mb-3">
+                        <input type="checkbox" class="form-check-input" id="emailResults" formControlName="emailResults">
+                        <label class="form-check-label" for="emailResults">
+                          <strong>Results Published</strong>
+                          <br><small class="text-muted">Get notified when competition results are available</small>
+                        </label>
+                      </div>
+                      <div class="form-check mb-3">
+                        <input type="checkbox" class="form-check-input" id="monthlyNewsletter" formControlName="monthlyNewsletter">
+                        <label class="form-check-label" for="monthlyNewsletter">
+                          <strong>Monthly Newsletter</strong>
+                          <br><small class="text-muted">Receive our monthly newsletter with updates and tips</small>
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="marketingCommunications" formControlName="marketingCommunications">
+                        <label class="form-check-label" for="marketingCommunications">
+                          <strong>Marketing Communications</strong>
+                          <br><small class="text-muted">Receive promotional offers and announcements</small>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <div class="card">
+                    <div class="card-header">
+                      <h5 class="mb-0"><i class="ti ti-message me-2"></i>SMS Notifications</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="form-check mb-3">
+                        <input type="checkbox" class="form-check-input" id="smsResults" formControlName="smsResults">
+                        <label class="form-check-label" for="smsResults">
+                          <strong>Results Published</strong>
+                          <br><small class="text-muted">Get SMS when your competition results are available</small>
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="smsUpcomingEvents" formControlName="smsUpcomingEvents">
+                        <label class="form-check-label" for="smsUpcomingEvents">
+                          <strong>Upcoming Events</strong>
+                          <br><small class="text-muted">Receive SMS reminders for upcoming events</small>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-end mt-3">
+                <button type="submit" class="btn btn-primary" [disabled]="saving">
+                  <span *ngIf="saving" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  <i *ngIf="!saving" class="ti ti-device-floppy me-2"></i>
+                  {{ saving ? 'Saving...' : 'Save Preferences' }}
+                </button>
+              </div>
+            </form>
+          </ng-template>
+        </li>
+
+      </ul>
+
+      <!-- Tab Content Display -->
+      <div [ngbNavOutlet]="nav"></div>
+    </div>
+  </div>
+</div>
+
+

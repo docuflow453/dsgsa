@@ -1,0 +1,142 @@
+<!-- Public Layout - Two-tier navigation + content -->
+<div class="public-layout">
+  <!-- [ Utility Nav ] start -->
+  <div class="utility-nav">
+    <div class="container">
+      <ul class="utility-nav-list">
+        <li><a [routerLink]="['/auth/login']">Member Login</a></li>
+        <li><a href="#">Shop</a></li>
+        <li><a [routerLink]="['/auth/register']">Join South African Dressage</a></li>
+        <li class="separator">||</li>
+        <li><a href="#">Basket <span class="basket-link">[View Basket]</span></a></li>
+      </ul>
+    </div>
+  </div>
+  <!-- [ Utility Nav ] end -->
+
+  <!-- [ Main Nav ] start -->
+  <nav class="navbar navbar-expand-lg navbar-dark main-nav default">
+    <div class="container">
+      <a class="navbar-brand p-0" [routerLink]="['/']">
+        <img src="assets/images/dressage-logo-white.svg" alt="Dressage Logo" class="dressage-logo" />
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        ngbCollapse
+        [(ngbCollapse)]="isCollapsed"
+        [attr.aria-expanded]="!isCollapsed"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" [ngbCollapse]="isCollapsed">
+        <ul class="navbar-nav ms-auto">
+          <!-- About Us -->
+          <li class="nav-item dropdown" ngbDropdown>
+            <a class="nav-link dropdown-toggle" ngbDropdownToggle>About Us</a>
+            <div class="dropdown-menu mega-menu" ngbDropdownMenu>
+              <div class="row">
+                <div class="col-md-6">
+                  <a class="dropdown-item" [routerLink]="['/about']">Our organisation</a>
+                  <a class="dropdown-item" href="#">Meet the Team</a>
+                  <a class="dropdown-item" href="#">Governance</a>
+                  <a class="dropdown-item" href="#">Strategic Plan</a>
+                </div>
+                <div class="col-md-6">
+                  <a class="dropdown-item" href="#">Technical Committees</a>
+                  <a class="dropdown-item" href="#">Safeguarding policy</a>
+                  <a class="dropdown-item" href="#">Sustainability</a>
+                  <a class="dropdown-item" href="#">Equine welfare</a>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <!-- News -->
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/news']">News</a>
+          </li>
+
+          <!-- Events -->
+          <li class="nav-item dropdown" ngbDropdown>
+            <a class="nav-link dropdown-toggle" ngbDropdownToggle>Events</a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+              <a class="dropdown-item" [routerLink]="['/events']">All Events</a>
+              <a class="dropdown-item" [routerLink]="['/events/calendar']">Calendar</a>
+            </div>
+          </li>
+
+          <!-- Competing -->
+          <li class="nav-item dropdown" ngbDropdown>
+            <a class="nav-link dropdown-toggle" ngbDropdownToggle>Competing</a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+              <a class="dropdown-item" [routerLink]="['/competitions']">Competitions</a>
+              <a class="dropdown-item" [routerLink]="['/results']">Results</a>
+              <a class="dropdown-item" href="#">Rules & Regulations</a>
+            </div>
+          </li>
+
+          <!-- Membership -->
+          <li class="nav-item dropdown" ngbDropdown>
+            <a class="nav-link dropdown-toggle" ngbDropdownToggle>Membership</a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+              <a class="dropdown-item" [routerLink]="['/membership']">Membership Info</a>
+              <a class="dropdown-item" [routerLink]="['/auth/register']">Join Now</a>
+              <a class="dropdown-item" href="#">Member Benefits</a>
+            </div>
+          </li>
+
+          <!-- Contact Us -->
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/contact']">Contact Us</a>
+          </li>
+
+          <!-- Search Icon -->
+          <li class="nav-item">
+            <a class="nav-link search-icon" href="#" title="Search">
+              <i class="ti ti-search"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- [ Main Nav ] end -->
+
+  <!-- Main Content Area -->
+  <main class="public-content">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Footer -->
+  <footer class="public-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <img src="assets/images/dressage-logo-dark.svg" alt="Dressage Logo" class="footer-logo mb-3" />
+          <p>South African Dressage is dedicated to promoting excellence in dressage competition and training.</p>
+        </div>
+        <div class="col-md-4">
+          <h5>Quick Links</h5>
+          <ul class="footer-links">
+            <li><a [routerLink]="['/about']">About Us</a></li>
+            <li><a [routerLink]="['/events']">Events</a></li>
+            <li><a [routerLink]="['/membership']">Membership</a></li>
+            <li><a [routerLink]="['/contact']">Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h5>Contact</h5>
+          <p>Email: info@sadressage.co.za<br>Phone: +27 (0)11 123 4567</p>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-12 text-center">
+          <p class="mb-0">&copy; {{ currentYear }} South African Dressage. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+

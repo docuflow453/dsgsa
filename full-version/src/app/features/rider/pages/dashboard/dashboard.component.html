@@ -1,0 +1,234 @@
+<!-- Dashboard Page -->
+<div class="dashboard-page">
+  <!-- Page Header -->
+  <div class="page-header mb-4">
+    <h2>Dashboard</h2>
+    <p class="text-muted">Welcome back, {{ riderProfile?.firstName }}!</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div *ngIf="!loading">
+    <!-- Stats Cards Row -->
+    <div class="row mb-4">
+      <div class="col-md-3 col-sm-6 mb-3">
+        <div class="stat-card">
+          <div class="stat-icon bg-primary">
+            <i class="ti ti-calendar-event"></i>
+          </div>
+          <div class="stat-content">
+            <h3>{{ stats?.upcomingEntries || 0 }}</h3>
+            <p>Upcoming Entries</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 col-sm-6 mb-3">
+        <div class="stat-card">
+          <div class="stat-icon bg-success">
+            <i class="ti ti-horse"></i>
+          </div>
+          <div class="stat-content">
+            <h3>{{ stats?.registeredHorses || 0 }}</h3>
+            <p>Registered Horses</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 col-sm-6 mb-3">
+        <div class="stat-card">
+          <div class="stat-icon bg-info">
+            <i class="ti ti-trophy"></i>
+          </div>
+          <div class="stat-content">
+            <h3>{{ stats?.eventsThisSeason || 0 }}</h3>
+            <p>Events This Season</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 col-sm-6 mb-3">
+        <div class="stat-card">
+          <div class="stat-icon bg-warning">
+            <i class="ti ti-medal"></i>
+          </div>
+          <div class="stat-content">
+            <h3>{{ stats?.pendingResults || 0 }}</h3>
+            <p>Pending Results</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Membership Status Card -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="ti ti-id-badge me-2"></i>Membership Status
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3">
+            <strong>Status:</strong>
+            <span class="ms-2" [ngClass]="getMembershipStatusClass()">
+              <i class="ti ti-circle-filled"></i>
+              {{ riderProfile?.membership?.status || 'Unknown' }}
+            </span>
+          </div>
+          <div class="col-md-3">
+            <strong>Valid Until:</strong>
+            <span class="ms-2">{{ formatDate(riderProfile?.membership?.validUntil!) }}</span>
+          </div>
+          <div class="col-md-4">
+            <strong>Membership Type:</strong>
+            <span class="ms-2">{{ riderProfile?.membership?.type || 'N/A' }}</span>
+          </div>
+          <div class="col-md-2 text-end">
+            <button *ngIf="isExpiringSoon()" class="btn btn-sm btn-warning">
+              <i class="ti ti-refresh me-1"></i>Renew
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Overview & Upcoming Entries Row -->
+    <div class="row mb-4">
+      <!-- Profile Overview -->
+      <div class="col-md-4 mb-3">
+        <div class="card h-100">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="ti ti-user me-2"></i>Profile Overview
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="profile-info">
+              <div class="info-item">
+                <strong>Name:</strong>
+                <span>{{ riderProfile?.firstName }} {{ riderProfile?.lastName }}</span>
+              </div>
+              <div class="info-item">
+                <strong>Club:</strong>
+                <span>{{ riderProfile?.clubName || 'Not affiliated' }}</span>
+              </div>
+              <div class="info-item">
+                <strong>Grade:</strong>
+                <span>{{ riderProfile?.grade || 'Not graded' }}</span>
+              </div>
+              <div class="info-item">
+                <strong>Member Since:</strong>
+                <span>{{ formatDate(riderProfile?.joinDate!) }}</span>
+              </div>
+            </div>
+            <div class="mt-3">
+              <a [routerLink]="['../profile']" class="btn btn-sm btn-outline-primary w-100">
+                <i class="ti ti-edit me-1"></i>Edit Profile
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upcoming Entries -->
+      <div class="col-md-8 mb-3">
+        <div class="card h-100">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+              <i class="ti ti-calendar-event me-2"></i>Upcoming Entries
+            </h5>
+            <a [routerLink]="['../entries']" class="btn btn-sm btn-link">View All</a>
+          </div>
+          <div class="card-body">
+            <div *ngIf="upcomingEntries.length === 0" class="text-center text-muted py-4">
+              <i class="ti ti-calendar-off" style="font-size: 3rem; opacity: 0.3;"></i>
+              <p class="mt-2">No upcoming entries</p>
+              <a [routerLink]="['../entries']" class="btn btn-sm btn-primary">
+                <i class="ti ti-plus me-1"></i>Create Entry
+              </a>
+            </div>
+
+            <div *ngIf="upcomingEntries.length > 0" class="upcoming-entries-list">
+              <div *ngFor="let entry of upcomingEntries" class="entry-item">
+                <div class="entry-date">
+                  <strong>{{ formatDate(entry.eventDate) }}</strong>
+                </div>
+                <div class="entry-details">
+                  <h6>{{ entry.eventName }}</h6>
+                  <p class="text-muted mb-0">
+                    <small>{{ entry.horseName }} • {{ entry.tests.length }} test(s)</small>
+                  </p>
+                </div>
+                <div class="entry-status">
+                  <span class="badge" [ngClass]="{
+                    'bg-success': entry.status === 'Confirmed',
+                    'bg-warning': entry.status === 'Entered',
+                    'bg-secondary': entry.status === 'Draft'
+                  }">
+                    {{ entry.status }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Results -->
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+          <i class="ti ti-trophy me-2"></i>Recent Results
+        </h5>
+        <a [routerLink]="['../entries']" class="btn btn-sm btn-link">View All Results</a>
+      </div>
+      <div class="card-body">
+        <div *ngIf="recentResults.length === 0" class="text-center text-muted py-4">
+          <i class="ti ti-trophy-off" style="font-size: 3rem; opacity: 0.3;"></i>
+          <p class="mt-2">No recent results</p>
+        </div>
+
+        <div *ngIf="recentResults.length > 0" class="results-list">
+          <div *ngFor="let result of recentResults" class="result-item">
+            <div class="result-header">
+              <h6>{{ result.eventName }}</h6>
+              <small class="text-muted">{{ formatDate(result.eventDate) }}</small>
+            </div>
+            <div class="result-details">
+              <div class="row">
+                <div class="col-md-4">
+                  <strong>Test:</strong> {{ result.testName }}
+                </div>
+                <div class="col-md-3">
+                  <strong>Horse:</strong> {{ result.horseName }}
+                </div>
+                <div class="col-md-2">
+                  <strong>Score:</strong> {{ result.percentage }}%
+                </div>
+                <div class="col-md-3">
+                  <span class="badge" [ngClass]="{
+                    'bg-warning': result.placing === 1,
+                    'bg-secondary': result.placing === 2,
+                    'bg-info': result.placing === 3,
+                    'bg-light text-dark': result.placing > 3
+                  }">
+                    <i class="ti ti-medal me-1"></i>{{ result.placing }}{{ result.placing === 1 ? 'st' : result.placing === 2 ? 'nd' : result.placing === 3 ? 'rd' : 'th' }} Place
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
