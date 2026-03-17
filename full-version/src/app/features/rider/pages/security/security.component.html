@@ -1,0 +1,165 @@
+<!-- Security Page -->
+<div class="security-page">
+  <!-- Page Header -->
+  <div class="page-header mb-4">
+    <h1 class="h3 mb-1">Security Settings</h1>
+    <p class="text-muted mb-0">Manage your password and security preferences</p>
+  </div>
+
+  <!-- Change Password Card -->
+  <div class="card">
+    <div class="card-header bg-white">
+      <h5 class="mb-0">
+        <i class="ti ti-lock me-2"></i>Change Password
+      </h5>
+    </div>
+    <div class="card-body">
+      <!-- Success Message -->
+      <div class="alert alert-success alert-dismissible fade show" *ngIf="successMessage">
+        <i class="ti ti-check-circle me-2"></i>{{ successMessage }}
+        <button type="button" class="btn-close" (click)="clearSuccessMessage()"></button>
+      </div>
+
+      <!-- Error Message -->
+      <div class="alert alert-danger alert-dismissible fade show" *ngIf="errorMessage">
+        <i class="ti ti-alert-circle me-2"></i>{{ errorMessage }}
+        <button type="button" class="btn-close" (click)="clearErrorMessage()"></button>
+      </div>
+
+      <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <!-- Password Fields -->
+          <div class="col-lg-6">
+            <!-- Old Password -->
+            <div class="mb-3">
+              <label for="oldPassword" class="form-label">
+                Old Password <span class="text-danger">*</span>
+              </label>
+              <div class="input-group">
+                <input
+                  [type]="showOldPassword ? 'text' : 'password'"
+                  class="form-control"
+                  id="oldPassword"
+                  formControlName="oldPassword"
+                  placeholder="Enter your current password"
+                />
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  (click)="togglePasswordVisibility('old')">
+                  <i [class]="showOldPassword ? 'ti ti-eye-off' : 'ti ti-eye'"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- New Password -->
+            <div class="mb-3">
+              <label for="newPassword" class="form-label">
+                New Password <span class="text-danger">*</span>
+              </label>
+              <div class="input-group">
+                <input
+                  [type]="showNewPassword ? 'text' : 'password'"
+                  class="form-control"
+                  id="newPassword"
+                  formControlName="newPassword"
+                  placeholder="Enter your new password"
+                />
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  (click)="togglePasswordVisibility('new')">
+                  <i [class]="showNewPassword ? 'ti ti-eye-off' : 'ti ti-eye'"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">
+                Confirm Password <span class="text-danger">*</span>
+              </label>
+              <div class="input-group">
+                <input
+                  [type]="showConfirmPassword ? 'text' : 'password'"
+                  class="form-control"
+                  id="confirmPassword"
+                  formControlName="confirmPassword"
+                  placeholder="Confirm your new password"
+                  [class.is-invalid]="passwordForm.get('confirmPassword')?.value && !passwordsMatch"
+                  [class.is-valid]="passwordForm.get('confirmPassword')?.value && passwordsMatch"
+                />
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  (click)="togglePasswordVisibility('confirm')">
+                  <i [class]="showConfirmPassword ? 'ti ti-eye-off' : 'ti ti-eye'"></i>
+                </button>
+              </div>
+              <div class="invalid-feedback d-block" *ngIf="passwordForm.get('confirmPassword')?.value && !passwordsMatch">
+                Passwords do not match
+              </div>
+            </div>
+          </div>
+
+          <!-- Password Requirements -->
+          <div class="col-lg-6">
+            <h6 class="mb-3">New password must contain:</h6>
+            <ul class="list-group list-group-flush">
+              <li 
+                class="list-group-item px-0 py-2" 
+                *ngFor="let requirement of passwordRequirements"
+                [class.text-success]="requirement.met"
+                [class.text-muted]="!requirement.met">
+                <i 
+                  [class]="requirement.met ? 'ti ti-check-circle' : 'ti ti-circle'" 
+                  class="me-2"></i>
+                {{ requirement.text }}
+              </li>
+            </ul>
+
+            <!-- Password Strength Indicator -->
+            <div class="mt-4" *ngIf="passwordForm.get('newPassword')?.value">
+              <label class="form-label">Password Strength:</label>
+              <div class="progress" style="height: 8px;">
+                <div
+                  class="progress-bar"
+                  [class.bg-danger]="requirementsMet <= 2"
+                  [class.bg-warning]="requirementsMet === 3 || requirementsMet === 4"
+                  [class.bg-success]="requirementsMet === 5"
+                  [style.width.%]="passwordStrengthPercentage">
+                </div>
+              </div>
+              <small class="text-muted">
+                {{ requirementsMet }} of 5 requirements met
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="d-flex gap-2 mt-4">
+          <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="passwordForm.invalid || !allRequirementsMet || !passwordsMatch || submitting">
+            <span *ngIf="!submitting">
+              <i class="ti ti-check me-2"></i>Change Password
+            </span>
+            <span *ngIf="submitting">
+              <span class="spinner-border spinner-border-sm me-2"></span>Changing...
+            </span>
+          </button>
+          <button 
+            type="button" 
+            class="btn btn-outline-secondary"
+            (click)="onCancel()"
+            [disabled]="submitting">
+            <i class="ti ti-x me-2"></i>Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

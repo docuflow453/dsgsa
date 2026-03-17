@@ -16,35 +16,26 @@
 
       <!-- Navigation Links & User Menu -->
       <div class="collapse navbar-collapse" id="navbarNav">
-        <!-- Center Navigation Links -->
-        <ul class="navbar-nav mx-auto">
-          <li class="nav-item dropdown" ngbDropdown>
-            <a class="nav-link dropdown-toggle" ngbDropdownToggle>
-              Products
-            </a>
-            <div class="dropdown-menu" ngbDropdownMenu>
-              <a class="dropdown-item" [routerLink]="['/events']">Events</a>
-              <a class="dropdown-item" [routerLink]="['/entries']">Entries</a>
-              <a class="dropdown-item" [routerLink]="['/results']">Results</a>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/pricing']">Pricing</a>
-          </li>
-          <li class="nav-item dropdown" ngbDropdown>
-            <a class="nav-link dropdown-toggle" ngbDropdownToggle>
-              Resources
-            </a>
-            <div class="dropdown-menu" ngbDropdownMenu>
-              <a class="dropdown-item" [routerLink]="['/help']">Help Center</a>
-              <a class="dropdown-item" [routerLink]="['/docs']">Documentation</a>
-              <a class="dropdown-item" [routerLink]="['/contact']">Contact</a>
-            </div>
-          </li>
-        </ul>
+        <!-- Spacer to push items to the right -->
+        <div class="navbar-nav me-auto"></div>
 
-        <!-- Right Side: User Menu -->
-        <div class="navbar-nav ms-auto">
+        <!-- Right Side: Utility Items & User Menu -->
+        <div class="navbar-nav ms-auto d-flex align-items-center">
+          <!-- Calendar -->
+          <a class="nav-link" [routerLink]="['./entries']" title="Calendar" ngbTooltip="View Calendar">
+            <i class="ti ti-calendar"></i>
+          </a>
+
+          <!-- Basket/Cart -->
+          <a class="nav-link position-relative" [routerLink]="['./basket']" title="Basket" ngbTooltip="View Basket">
+            <i class="ti ti-shopping-cart"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" *ngIf="basketCount > 0">
+              {{ basketCount }}
+              <span class="visually-hidden">items in basket</span>
+            </span>
+          </a>
+
+          <!-- User Dropdown -->
           <div class="nav-item dropdown" ngbDropdown>
             <a class="nav-link dropdown-toggle d-flex align-items-center user-menu-toggle" ngbDropdownToggle>
               <i class="ti ti-user-circle me-2"></i>
@@ -54,11 +45,11 @@
               <a class="dropdown-item" [routerLink]="['./profile']">
                 <i class="ti ti-user me-2"></i>Account
               </a>
-              <a class="dropdown-item" [routerLink]="['./profile']">
-                <i class="ti ti-building me-2"></i>Organisation
+              <a class="dropdown-item" [routerLink]="['./clubs']">
+                <i class="ti ti-building me-2"></i>Clubs
               </a>
-              <a class="dropdown-item" [routerLink]="['./profile']">
-                <i class="ti ti-file-text me-2"></i>Quotes
+              <a class="dropdown-item" [routerLink]="['./horses']">
+                <i class="ti ti-horse me-2"></i>Horses
               </a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" (click)="logout()">
@@ -66,28 +57,20 @@
               </a>
             </div>
           </div>
-          <a class="nav-link" href="#" title="Theme">
+
+          <!-- Theme Toggle -->
+          <a class="nav-link" href="#" title="Theme" ngbTooltip="Toggle Theme">
             <i class="ti ti-sun"></i>
           </a>
-          <a class="nav-link" href="#" title="Search">
+
+          <!-- Search -->
+          <a class="nav-link" href="#" title="Search" ngbTooltip="Search">
             <i class="ti ti-search"></i>
           </a>
         </div>
       </div>
     </div>
   </nav>
-
-  <!-- Breadcrumb -->
-  <div class="breadcrumb-bar bg-dark text-white">
-    <div class="centered-container">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb mb-0 py-2">
-          <li class="breadcrumb-item"><a [routerLink]="['/']" class="text-white-50">Home</a></li>
-          <li class="breadcrumb-item active text-white" aria-current="page">Dashboard</li>
-        </ol>
-      </nav>
-    </div>
-  </div>
 
   <!-- Main Container with Sidebar (Centered) -->
   <div class="layout-wrapper">
@@ -100,59 +83,59 @@
             <!-- ACCOUNT Section -->
             <div class="sidebar-section">
               <h6 class="sidebar-section-title text-uppercase text-muted px-3 py-2 mb-0">Account</h6>
-              <a [routerLink]="['./profile']" routerLinkActive="active" class="sidebar-link">
+              <a [routerLink]="['./profile']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="sidebar-link">
                 <i class="ti ti-user"></i>
                 <span>Account</span>
               </a>
-              <a [routerLink]="['./profile']" routerLinkActive="active" class="sidebar-link">
+              <a [routerLink]="['./clubs']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="sidebar-link">
                 <i class="ti ti-building"></i>
-                <span>Organisation</span>
+                <span>Clubs</span>
               </a>
-              <a [routerLink]="['./profile']" routerLinkActive="active" class="sidebar-link">
-                <i class="ti ti-file-text"></i>
-                <span>Quotes</span>
+              <a [routerLink]="['./horses']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="sidebar-link">
+                <i class="ti ti-horse"></i>
+                <span>Horses</span>
               </a>
-              <a (click)="logout()" class="sidebar-link">
-                <i class="ti ti-logout"></i>
-                <span>Sign out</span>
+              <a [routerLink]="['./security']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="sidebar-link">
+                <i class="ti ti-lock"></i>
+                <span>Security</span>
+              </a>
+              <a [routerLink]="['./two-factor']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="sidebar-link">
+                <i class="ti ti-shield-check"></i>
+                <span>Two Factor</span>
               </a>
             </div>
 
             <!-- BILLING Section -->
             <div class="sidebar-section">
               <h6 class="sidebar-section-title text-uppercase text-muted px-3 py-2 mb-0">Billing</h6>
-              <a [routerLink]="['./pricing']" routerLinkActive="active" class="sidebar-link">
-                <i class="ti ti-tag"></i>
-                <span>Pricing plan</span>
-              </a>
-              <a [routerLink]="['./transactions']" routerLinkActive="active" class="sidebar-link">
+              <a [routerLink]="['./transactions']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="sidebar-link">
                 <i class="ti ti-credit-card"></i>
-                <span>Payment methods</span>
+                <span>Transactions</span>
               </a>
-              <a [routerLink]="['./transactions']" routerLinkActive="active" class="sidebar-link">
-                <i class="ti ti-shopping-cart"></i>
-                <span>Orders</span>
+              <a [routerLink]="['./memberships']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="sidebar-link">
+                <i class="ti ti-tag"></i>
+                <span>Memberships</span>
               </a>
-              <a [routerLink]="['./invoices']" routerLinkActive="active" class="sidebar-link">
+              <a [routerLink]="['./invoices']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="sidebar-link">
                 <i class="ti ti-file-invoice"></i>
                 <span>Invoices</span>
               </a>
             </div>
 
-            <!-- LISTS Section -->
+            <!-- ENTRIES Section -->
             <div class="sidebar-section">
-              <h6 class="sidebar-section-title text-uppercase text-muted px-3 py-2 mb-0">Lists</h6>
-              <a [routerLink]="['./entries']" routerLinkActive="active" class="sidebar-link">
-                <i class="ti ti-search"></i>
-                <span>Technology lookups</span>
+              <h6 class="sidebar-section-title text-uppercase text-muted px-3 py-2 mb-0">Entries</h6>
+              <a [routerLink]="['./entries']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="sidebar-link">
+                <i class="ti ti-calendar"></i>
+                <span>Upcoming</span>
               </a>
-              <a [routerLink]="['./horses']" routerLinkActive="active" class="sidebar-link">
+              <a [routerLink]="['./results']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="sidebar-link">
+                <i class="ti ti-trophy"></i>
+                <span>Results</span>
+              </a>
+              <a [routerLink]="['./riding-order']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="sidebar-link">
                 <i class="ti ti-list"></i>
-                <span>Lead lists</span>
-              </a>
-              <a [routerLink]="['./notifications']" routerLinkActive="active" class="sidebar-link">
-                <i class="ti ti-mail"></i>
-                <span>Email verifications</span>
+                <span>Riding Order</span>
               </a>
             </div>
           </nav>

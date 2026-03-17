@@ -1,0 +1,136 @@
+// Security Page Styles
+.security-page {
+  // Page Header
+  .page-header {
+    h1 {
+      color: #1f2937;
+      font-weight: 600;
+    }
+  }
+
+  // Card Styling
+  .card {
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    .card-header {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 1rem 1.5rem;
+
+      h5 {
+        color: #1f2937;
+        font-weight: 600;
+      }
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+  }
+
+  // Form Styling
+  .form-label {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+  }
+
+  .input-group {
+    .btn-outline-secondary {
+      border-color: #d1d5db;
+      color: #6b7280;
+
+      &:hover {
+        background-color: #f3f4f6;
+        border-color: #9ca3af;
+        color: #374151;
+      }
+
+      i {
+        font-size: 1.125rem;
+      }
+    }
+  }
+
+  // Password Requirements List
+  .list-group-item {
+    border: none;
+    transition: all 0.2s ease;
+
+    i {
+      font-size: 1.125rem;
+    }
+
+    &.text-success {
+      font-weight: 500;
+
+      i {
+        color: #10b981;
+      }
+    }
+
+    &.text-muted {
+      i {
+        color: #d1d5db;
+      }
+    }
+  }
+
+  // Password Strength Progress Bar
+  .progress {
+    background-color: #e5e7eb;
+    border-radius: 4px;
+
+    .progress-bar {
+      transition: width 0.3s ease, background-color 0.3s ease;
+    }
+  }
+
+  // Alert Styling
+  .alert {
+    border-radius: 0.5rem;
+    border: none;
+
+    &.alert-success {
+      background-color: #d1fae5;
+      color: #065f46;
+
+      i {
+        color: #10b981;
+      }
+    }
+
+    &.alert-danger {
+      background-color: #fee2e2;
+      color: #991b1b;
+
+      i {
+        color: #ef4444;
+      }
+    }
+  }
+
+  // Button Styling
+  .btn-primary {
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    .card-body {
+      padding: 1rem;
+    }
+
+    .d-flex.gap-2 {
+      flex-direction: column;
+
+      .btn {
+        width: 100%;
+      }
+    }
+  }
+}
+

@@ -1,0 +1,180 @@
+// Two Factor Authentication Page Styles
+.two-factor-page {
+  // Page Header
+  .page-header {
+    h1 {
+      color: #1f2937;
+      font-weight: 600;
+    }
+  }
+
+  // Card Styling
+  .card {
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    .card-header {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 1rem 1.5rem;
+
+      h5 {
+        color: #1f2937;
+        font-weight: 600;
+      }
+
+      &.bg-primary {
+        h5 {
+          color: white;
+        }
+      }
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+  }
+
+  // QR Code
+  .qr-code {
+    max-width: 200px;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background: white;
+  }
+
+  // Backup Codes Grid
+  .backup-codes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+
+    .backup-code {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.375rem;
+      padding: 0.75rem;
+      text-align: center;
+
+      code {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #1f2937;
+        background: transparent;
+      }
+    }
+  }
+
+  // Badge Styling
+  .badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.375rem 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  // Alert Styling
+  .alert {
+    border-radius: 0.5rem;
+    border: none;
+
+    &.alert-success {
+      background-color: #d1fae5;
+      color: #065f46;
+
+      i {
+        color: #10b981;
+      }
+    }
+
+    &.alert-danger {
+      background-color: #fee2e2;
+      color: #991b1b;
+
+      i {
+        color: #ef4444;
+      }
+    }
+
+    &.alert-warning {
+      background-color: #fef3c7;
+      color: #92400e;
+
+      i {
+        color: #f59e0b;
+      }
+    }
+
+    &.alert-info {
+      background-color: #dbeafe;
+      color: #1e40af;
+
+      i {
+        color: #3b82f6;
+      }
+
+      code {
+        background-color: white;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        font-weight: 600;
+      }
+    }
+  }
+
+  // Form Switch
+  .form-check-input {
+    cursor: pointer;
+    width: 3rem;
+    height: 1.5rem;
+
+    &:checked {
+      background-color: #2563eb;
+      border-color: #2563eb;
+    }
+  }
+
+  // List Group
+  .list-group-item {
+    border-left: none;
+    border-right: none;
+
+    &:first-child {
+      border-top: none;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  // Device Icon
+  .ti-device-laptop {
+    font-size: 1.25rem;
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    .card-body {
+      padding: 1rem;
+    }
+
+    .backup-codes-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .d-flex.gap-2 {
+      flex-direction: column;
+
+      .btn {
+        width: 100%;
+      }
+    }
+
+    .qr-code {
+      max-width: 150px;
+    }
+  }
+}
+

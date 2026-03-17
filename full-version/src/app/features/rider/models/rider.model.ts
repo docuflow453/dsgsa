@@ -123,3 +123,78 @@ export interface Result {
   totalCompetitors?: number;
 }
 
+export interface Club {
+  id: string;
+  name: string;
+  abbreviation?: string;
+  province: string;
+  city: string;
+  contactPerson?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  website?: string;
+  status: 'Active' | 'Inactive';
+  memberCount?: number;
+}
+
+export interface RiderClub {
+  id: string;
+  riderId: string;
+  clubId: string;
+  club: Club;
+  isPrimary: boolean;
+  affiliatedDate: Date;
+  status: 'Active' | 'Inactive';
+}
+
+export interface MembershipType {
+  id: string;
+  name: string;
+  code: string;
+  description?: string;
+  isActive: boolean;
+}
+
+export interface Year {
+  id: string;
+  title: string;
+  startDate: Date;
+  endDate: Date;
+  isActive: boolean;
+}
+
+export interface Subscription {
+  id: string;
+  name: string;
+  description: string;
+  fee: number;
+  yearId: string;
+  yearTitle: string;
+  membershipIds: string[];
+  membershipNames: string[];
+  isOfficial: boolean;
+  isRecreational: boolean;
+  isActive: boolean;
+}
+
+export interface SaefMembership {
+  id: string;
+  riderId: string;
+  riderName: string;
+  yearId: string;
+  yearTitle: string;
+  approvedAt?: Date;
+  approvedBy?: string;
+  approvedByName?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  status: 'Pending' | 'Active' | 'Expired';
+}
+
+export interface MembershipApplication {
+  membershipTypeId: string;
+  subscriptionId?: string;
+  yearId: string;
+  acceptTerms: boolean;
+}
+

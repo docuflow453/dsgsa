@@ -1,14 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 import {
   Rider,
   Horse,
   Entry,
   Transaction,
   DashboardStats,
-  Result
+  Result,
+  Club,
+  RiderClub,
+  MembershipType,
+  Year,
+  Subscription,
+  SaefMembership,
+  MembershipApplication
 } from '../models/rider.model';
 
 /**
@@ -96,6 +103,58 @@ export class RiderService {
    */
   processPayment(transactionId: string): Observable<any> {
     return this.http.post(`${this.API_URL}/payments/${transactionId}/process`, {});
+  }
+
+  /**
+   * Get rider's affiliated clubs
+   */
+  getRiderClubs(): Observable<RiderClub[]> {
+    // TODO: Replace with actual API call
+    return this.mockRiderClubs();
+  }
+
+  /**
+   * Search available clubs (for typeahead)
+   */
+  searchClubs(term: string): Observable<Club[]> {
+    // TODO: Replace with actual API call
+    return this.mockAvailableClubs().pipe(
+      map(clubs => clubs.filter(club =>
+        club.name.toLowerCase().includes(term.toLowerCase()) ||
+        (club.abbreviation && club.abbreviation.toLowerCase().includes(term.toLowerCase())) ||
+        club.city.toLowerCase().includes(term.toLowerCase()) ||
+        club.province.toLowerCase().includes(term.toLowerCase())
+      ))
+    );
+  }
+
+  /**
+   * Get all available clubs
+   */
+  getAvailableClubs(): Observable<Club[]> {
+    // TODO: Replace with actual API call
+    return this.mockAvailableClubs();
+  }
+
+  /**
+   * Add club affiliation
+   */
+  addClubAffiliation(clubId: string, isPrimary: boolean = false): Observable<RiderClub> {
+    return this.http.post<RiderClub>(`${this.API_URL}/clubs`, { clubId, isPrimary });
+  }
+
+  /**
+   * Remove club affiliation
+   */
+  removeClubAffiliation(riderClubId: string): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/clubs/${riderClubId}`);
+  }
+
+  /**
+   * Set primary club
+   */
+  setPrimaryClub(riderClubId: string): Observable<RiderClub> {
+    return this.http.put<RiderClub>(`${this.API_URL}/clubs/${riderClubId}/primary`, {});
   }
 
   /**
@@ -238,6 +297,143 @@ export class RiderService {
 
   private mockResults(): Observable<Result[]> {
     return of([]).pipe(delay(300));
+  }
+
+  private mockRiderClubs(): Observable<RiderClub[]> {
+    const riderClubs: RiderClub[] = [
+      {
+        id: 'rc-1',
+        riderId: '1',
+        clubId: 'club-1',
+        club: {
+          id: 'club-1',
+          name: 'Central Mounted Police Equestrian Club',
+          abbreviation: 'CMP',
+          province: 'Gauteng',
+          city: 'Johannesburg',
+          contactPerson: 'Sarah Mitchell',
+          contactEmail: 'sarah.mitchell@shyft.com',
+          contactPhone: '011 234 5678',
+          website: 'https://cmp-equestrian.co.za',
+          status: 'Active',
+          memberCount: 145
+        },
+        isPrimary: true,
+        affiliatedDate: new Date('2023-01-15'),
+        status: 'Active'
+      }
+    ];
+    return of(riderClubs).pipe(delay(300));
+  }
+
+  private mockAvailableClubs(): Observable<Club[]> {
+    const clubs: Club[] = [
+      {
+        id: 'club-1',
+        name: 'Central Mounted Police Equestrian Club',
+        abbreviation: 'CMP',
+        province: 'Gauteng',
+        city: 'Johannesburg',
+        contactPerson: 'Sarah Mitchell',
+        contactEmail: 'sarah.mitchell@shyft.com',
+        contactPhone: '011 234 5678',
+        website: 'https://cmp-equestrian.co.za',
+        status: 'Active',
+        memberCount: 145
+      },
+      {
+        id: 'club-2',
+        name: 'Kyalami Equestrian Park',
+        abbreviation: 'KEP',
+        province: 'Gauteng',
+        city: 'Midrand',
+        contactPerson: 'Michael Thompson',
+        contactEmail: 'michael.thompson@byteorbit.com',
+        contactPhone: '011 567 8901',
+        website: 'https://kyalami-equestrian.co.za',
+        status: 'Active',
+        memberCount: 230
+      },
+      {
+        id: 'club-3',
+        name: 'Inanda Polo Club',
+        abbreviation: 'IPC',
+        province: 'Gauteng',
+        city: 'Sandton',
+        contactPerson: 'Emma Wilson',
+        contactEmail: 'emma.wilson@shyft.com',
+        contactPhone: '011 234 9876',
+        website: 'https://inanda-polo.co.za',
+        status: 'Active',
+        memberCount: 180
+      },
+      {
+        id: 'club-4',
+        name: 'Summerveld Equestrian Centre',
+        abbreviation: 'SEC',
+        province: 'KwaZulu-Natal',
+        city: 'Pietermaritzburg',
+        contactPerson: 'David Roberts',
+        contactEmail: 'david.roberts@byteorbit.com',
+        contactPhone: '033 123 4567',
+        website: 'https://summerveld-ec.co.za',
+        status: 'Active',
+        memberCount: 95
+      },
+      {
+        id: 'club-5',
+        name: 'Cape Town Dressage Group',
+        abbreviation: 'CTDG',
+        province: 'Western Cape',
+        city: 'Cape Town',
+        contactPerson: 'Lisa Anderson',
+        contactEmail: 'lisa.anderson@shyft.com',
+        contactPhone: '021 456 7890',
+        website: 'https://ctdg.co.za',
+        status: 'Active',
+        memberCount: 210
+      },
+      {
+        id: 'club-6',
+        name: 'Stellenbosch Riding Club',
+        abbreviation: 'SRC',
+        province: 'Western Cape',
+        city: 'Stellenbosch',
+        contactPerson: 'James van der Merwe',
+        contactEmail: 'james.vandermerwe@byteorbit.com',
+        contactPhone: '021 887 6543',
+        website: 'https://stellenbosch-riding.co.za',
+        status: 'Active',
+        memberCount: 120
+      },
+      {
+        id: 'club-7',
+        name: 'Durban Equestrian Centre',
+        abbreviation: 'DEC',
+        province: 'KwaZulu-Natal',
+        city: 'Durban',
+        contactPerson: 'Rachel Naidoo',
+        contactEmail: 'rachel.naidoo@shyft.com',
+        contactPhone: '031 765 4321',
+        website: 'https://durban-equestrian.co.za',
+        status: 'Active',
+        memberCount: 165
+      },
+      {
+        id: 'club-8',
+        name: 'Pretoria Dressage Academy',
+        abbreviation: 'PDA',
+        province: 'Gauteng',
+        city: 'Pretoria',
+        contactPerson: 'Peter Botha',
+        contactEmail: 'peter.botha@byteorbit.com',
+        contactPhone: '012 345 6789',
+        website: 'https://pretoria-dressage.co.za',
+        status: 'Active',
+        memberCount: 140
+      }
+    ];
+    return of(clubs).pipe(delay(300));
   }
 }
 

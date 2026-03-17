@@ -45,6 +45,21 @@ export const RIDER_ROUTES: Routes = [
         path: 'horses',
         loadComponent: () => import('./pages/horses/horses.component').then(m => m.HorsesComponent),
         title: 'My Horses - DSRiding'
+      },
+      {
+        path: 'clubs',
+        loadComponent: () => import('./pages/clubs/clubs.component').then(m => m.ClubsComponent),
+        title: 'My Clubs - DSRiding'
+      },
+      {
+        path: 'security',
+        loadComponent: () => import('./pages/security/security.component').then(m => m.SecurityComponent),
+        title: 'Security Settings - DSRiding'
+      },
+      {
+        path: 'two-factor',
+        loadComponent: () => import('./pages/two-factor/two-factor.component').then(m => m.TwoFactorComponent),
+        title: 'Two-Factor Authentication - DSRiding'
       }
     ]
   }

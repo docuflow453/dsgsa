@@ -1,0 +1,185 @@
+<!-- Clubs Page -->
+<div class="clubs-page">
+  <!-- Page Header -->
+  <div class="page-header mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h1 class="h3 mb-1">My Clubs</h1>
+        <p class="text-muted mb-0">Manage your club affiliations</p>
+      </div>
+      <button 
+        class="btn btn-primary" 
+        (click)="toggleAddForm()"
+        *ngIf="!showAddForm">
+        <i class="ti ti-plus me-2"></i>Add Club
+      </button>
+    </div>
+  </div>
+
+  <!-- Add Club Form -->
+  <div class="card mb-4" *ngIf="showAddForm">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">
+        <i class="ti ti-building me-2"></i>Add Club Affiliation
+      </h5>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="addClub()">
+        <!-- Club Search (Typeahead) -->
+        <div class="mb-3">
+          <label for="clubSearch" class="form-label">Search for a Club</label>
+          <input
+            id="clubSearch"
+            type="text"
+            class="form-control"
+            [(ngModel)]="searchModel"
+            [ngbTypeahead]="search"
+            [resultFormatter]="formatter"
+            [inputFormatter]="formatter"
+            (selectItem)="onClubSelect($event)"
+            placeholder="Type to search clubs by name, abbreviation, city, or province..."
+            name="clubSearch"
+            autocomplete="off"
+          />
+          <small class="form-text text-muted">
+            Start typing to search from available clubs
+          </small>
+        </div>
+
+        <!-- Selected Club Display -->
+        <div class="alert alert-info" *ngIf="selectedClub">
+          <h6 class="alert-heading mb-2">
+            <i class="ti ti-check-circle me-2"></i>Selected Club
+          </h6>
+          <p class="mb-1"><strong>{{ selectedClub.name }}</strong> ({{ selectedClub.abbreviation }})</p>
+          <p class="mb-1 small">
+            <i class="ti ti-map-pin me-1"></i>{{ selectedClub.city }}, {{ selectedClub.province }}
+          </p>
+          <p class="mb-0 small" *ngIf="selectedClub.contactPerson">
+            <i class="ti ti-user me-1"></i>Contact: {{ selectedClub.contactPerson }}
+          </p>
+        </div>
+
+        <!-- Error Message -->
+        <div class="alert alert-danger" *ngIf="errorMessage">
+          <i class="ti ti-alert-circle me-2"></i>{{ errorMessage }}
+        </div>
+
+        <!-- Primary Club Checkbox -->
+        <div class="mb-3 form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="isPrimary"
+            [(ngModel)]="isPrimary"
+            name="isPrimary"
+          />
+          <label class="form-check-label" for="isPrimary">
+            Set as primary club
+          </label>
+          <small class="form-text text-muted d-block">
+            Your primary club will be used for official registrations
+          </small>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="d-flex gap-2">
+          <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="!selectedClub || submitting">
+            <span *ngIf="!submitting">
+              <i class="ti ti-check me-2"></i>Add Club
+            </span>
+            <span *ngIf="submitting">
+              <span class="spinner-border spinner-border-sm me-2"></span>Adding...
+            </span>
+          </button>
+          <button 
+            type="button" 
+            class="btn btn-secondary"
+            (click)="toggleAddForm()"
+            [disabled]="submitting">
+            <i class="ti ti-x me-2"></i>Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="text-center py-5" *ngIf="loading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text-muted mt-3">Loading your clubs...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state text-center py-5" *ngIf="!loading && riderClubs.length === 0 && !showAddForm">
+    <div class="empty-icon mb-3">
+      <i class="ti ti-building" style="font-size: 4rem; color: #cbd5e1;"></i>
+    </div>
+    <h4 class="mb-2">No Club Affiliations</h4>
+    <p class="text-muted mb-4">You are not currently affiliated with any clubs.</p>
+    <button class="btn btn-primary" (click)="toggleAddForm()">
+      <i class="ti ti-plus me-2"></i>Add Your First Club
+    </button>
+  </div>
+
+  <!-- Clubs List -->
+  <div class="clubs-list" *ngIf="!loading && riderClubs.length > 0">
+    <div class="row g-3">
+      <div class="col-md-6 col-lg-4" *ngFor="let riderClub of riderClubs">
+        <div class="card club-card h-100" [class.primary-club]="riderClub.isPrimary">
+          <!-- Primary Badge -->
+          <div class="card-header bg-primary text-white" *ngIf="riderClub.isPrimary">
+            <small class="mb-0">
+              <i class="ti ti-star me-1"></i>Primary Club
+            </small>
+          </div>
+
+          <div class="card-body">
+            <!-- Club Name -->
+            <h5 class="card-title mb-1">{{ riderClub.club.name }}</h5>
+            <p class="text-muted small mb-3">{{ riderClub.club.abbreviation }}</p>
+
+            <!-- Club Details -->
+            <div class="club-details mb-3">
+              <p class="mb-1 small">
+                <i class="ti ti-map-pin me-2 text-muted"></i>
+                {{ riderClub.club.city }}, {{ riderClub.club.province }}
+              </p>
+              <p class="mb-1 small" *ngIf="riderClub.club.contactPerson">
+                <i class="ti ti-user me-2 text-muted"></i>
+                {{ riderClub.club.contactPerson }}
+              </p>
+              <p class="mb-0 small text-muted">
+                <i class="ti ti-calendar me-2"></i>
+                Affiliated since {{ riderClub.affiliatedDate | date:'MMM yyyy' }}
+              </p>
+            </div>
+
+            <!-- Actions -->
+            <div class="d-flex gap-2">
+              <button
+                class="btn btn-sm btn-outline-primary flex-fill"
+                (click)="setPrimary(riderClub)"
+                *ngIf="!riderClub.isPrimary"
+                title="Set as primary club">
+                <i class="ti ti-star me-1"></i>Set Primary
+              </button>
+              <button
+                class="btn btn-sm btn-outline-danger"
+                (click)="removeClub(riderClub)"
+                title="Remove affiliation">
+                <i class="ti ti-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

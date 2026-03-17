@@ -22,6 +22,7 @@ export class RiderLayoutComponent implements OnInit {
   riderProfile: Rider | null = null;
   sidebarCollapsed = false;
   currentYear = new Date().getFullYear();
+  basketCount = 0; // TODO: Connect to actual basket service
 
   constructor(
     private authService: AuthService,
@@ -38,6 +39,11 @@ export class RiderLayoutComponent implements OnInit {
     this.riderService.getProfile().subscribe(profile => {
       this.riderProfile = profile;
     });
+
+    // TODO: Subscribe to basket service to get item count
+    // this.basketService.getItemCount().subscribe(count => {
+    //   this.basketCount = count;
+    // });
   }
 
   toggleSidebar(): void {

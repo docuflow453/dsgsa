@@ -1,0 +1,149 @@
+// Clubs Page Styles
+.clubs-page {
+  // Page Header
+  .page-header {
+    h1 {
+      color: #1f2937;
+      font-weight: 600;
+    }
+  }
+
+  // Empty State
+  .empty-state {
+    background: white;
+    border-radius: 0.5rem;
+    padding: 3rem 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    .empty-icon {
+      i {
+        opacity: 0.3;
+      }
+    }
+
+    h4 {
+      color: #374151;
+      font-weight: 600;
+    }
+  }
+
+  // Club Card
+  .club-card {
+    transition: all 0.3s ease;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+
+    &.primary-club {
+      border-color: #2563eb;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+    }
+
+    .card-header {
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+      small {
+        font-weight: 600;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    .card-title {
+      color: #1f2937;
+      font-weight: 600;
+      font-size: 1.125rem;
+    }
+
+    .club-details {
+      p {
+        color: #6b7280;
+        
+        i {
+          width: 20px;
+          display: inline-block;
+        }
+      }
+    }
+
+    .btn-outline-primary {
+      &:hover {
+        background-color: #2563eb;
+        border-color: #2563eb;
+        color: white;
+      }
+    }
+
+    .btn-outline-danger {
+      &:hover {
+        background-color: #dc2626;
+        border-color: #dc2626;
+        color: white;
+      }
+    }
+  }
+
+  // Add Club Form
+  .card {
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    .card-header {
+      h5 {
+        font-weight: 600;
+      }
+    }
+  }
+
+  // Typeahead Dropdown Styling
+  ::ng-deep {
+    .dropdown-menu {
+      max-height: 300px;
+      overflow-y: auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border: 1px solid #e5e7eb;
+
+      .dropdown-item {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+
+        &:hover,
+        &.active {
+          background-color: #f3f4f6;
+          color: #1f2937;
+        }
+      }
+    }
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    .page-header {
+      .d-flex {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 1rem;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+
+    .club-card {
+      .d-flex {
+        flex-direction: column;
+
+        .btn {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
