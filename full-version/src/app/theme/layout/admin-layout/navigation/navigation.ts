@@ -25,6 +25,127 @@ export interface NavigationItem {
 }
 
 export const NavigationItems: NavigationItem[] = [
+  // Rider Dashboard (for RIDER role)
+  {
+    id: 'rider-dashboard',
+    title: 'My Dashboard',
+    type: 'group',
+    classes: 'first-group',
+    icon: 'icon-navigation',
+    role: [Role.Rider],
+    children: [
+      {
+        id: 'rider-home',
+        title: 'Dashboard',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/my/dashboard',
+        icon: 'dashboard',
+        breadcrumbs: false,
+        role: [Role.Rider]
+      },
+      {
+        id: 'rider-profile',
+        title: 'My Profile',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/my/profile',
+        icon: 'user',
+        breadcrumbs: false,
+        role: [Role.Rider]
+      },
+      {
+        id: 'rider-horses',
+        title: 'My Horses',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/my/horses',
+        icon: 'trophy',
+        breadcrumbs: false,
+        role: [Role.Rider]
+      },
+      {
+        id: 'rider-entries',
+        title: 'My Entries',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/my/entries',
+        icon: 'file-text',
+        breadcrumbs: false,
+        role: [Role.Rider]
+      },
+      {
+        id: 'rider-transactions',
+        title: 'Transactions',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/my/transactions',
+        icon: 'dollar',
+        breadcrumbs: false,
+        role: [Role.Rider]
+      },
+      {
+        id: 'rider-invoices',
+        title: 'Invoices',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/my/invoices',
+        icon: 'file-invoice',
+        breadcrumbs: false,
+        role: [Role.Rider]
+      }
+    ]
+  },
+  {
+    id: 'rider-account',
+    title: 'Account',
+    type: 'group',
+    icon: 'icon-navigation',
+    role: [Role.Rider],
+    children: [
+      {
+        id: 'rider-clubs',
+        title: 'My Clubs',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/my/clubs',
+        icon: 'team',
+        breadcrumbs: false,
+        role: [Role.Rider]
+      },
+      {
+        id: 'rider-memberships',
+        title: 'Memberships',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/my/memberships',
+        icon: 'idcard',
+        breadcrumbs: false,
+        role: [Role.Rider]
+      },
+      {
+        id: 'rider-security',
+        title: 'Security',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/my/security',
+        icon: 'lock',
+        breadcrumbs: false,
+        role: [Role.Rider]
+      },
+      {
+        id: 'rider-two-factor',
+        title: 'Two-Factor Auth',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/my/two-factor',
+        icon: 'safety',
+        breadcrumbs: false,
+        role: [Role.Rider]
+      }
+    ]
+  },
+  // Admin Dashboard (for ADMIN and USER roles)
   {
     id: 'Dashboard',
     title: 'Dashboard',

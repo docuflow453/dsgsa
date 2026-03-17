@@ -54,7 +54,8 @@ export class AuthLoginComponent implements OnInit {
   // Roles and selection logic unchanged here...
   roles: Roles[] = [
     { name: 'Admin', email: 'admin@gmail.com', password: 'Admin@123', role: 'Admin' },
-    { name: 'User', email: 'user@gmail.com', password: 'User@123', role: 'User' }
+    { name: 'User', email: 'user@gmail.com', password: 'User@123', role: 'User' },
+    { name: 'Rider', email: 'rider@gmail.com', password: 'Rider@123', role: 'Rider' }
   ];
 
   selectedRole = this.roles[0];

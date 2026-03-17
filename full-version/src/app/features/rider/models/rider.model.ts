@@ -191,10 +191,47 @@ export interface SaefMembership {
   status: 'Pending' | 'Active' | 'Expired';
 }
 
+export interface MembershipType {
+  id: string;
+  name: string;
+  code: string;
+  description?: string;
+  isActive: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
 export interface MembershipApplication {
   membershipTypeId: string;
   subscriptionId?: string;
   yearId: string;
   acceptTerms: boolean;
+}
+
+export interface InvoiceItem {
+  id: string;
+  description: string;
+  quantity: number;
+  unitPrice: number;
+  total: number;
+}
+
+export interface Invoice {
+  id: string;
+  invoiceNumber: string;
+  riderId: string;
+  riderName: string;
+  issueDate: Date;
+  dueDate: Date;
+  status: 'Draft' | 'Pending' | 'Paid' | 'Overdue' | 'Cancelled';
+  items: InvoiceItem[];
+  subtotal: number;
+  tax: number;
+  total: number;
+  paidAmount: number;
+  paidDate?: Date;
+  paymentMethod?: string;
+  notes?: string;
+  type: 'Membership' | 'Entry Fee' | 'Subscription' | 'Other';
 }
 

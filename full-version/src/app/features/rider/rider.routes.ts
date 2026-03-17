@@ -2,17 +2,16 @@ import { Routes } from '@angular/router';
 import { authGuard } from '../../core/guards/auth.guard';
 import { roleGuard } from '../../core/guards/role.guard';
 import { UserRole } from '../../core/models/user.model';
-import { RiderLayoutComponent } from './rider-layout/rider-layout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 /**
  * Rider Routes - Lazy loaded rider feature routes
  * All routes require authentication and RIDER role
+ * Uses AdminLayout (parent route in app-routing.module.ts)
  */
 export const RIDER_ROUTES: Routes = [
   {
     path: '',
-    component: RiderLayoutComponent,
     canActivate: [authGuard, roleGuard],
     data: { roles: [UserRole.RIDER] },
     children: [
@@ -60,6 +59,16 @@ export const RIDER_ROUTES: Routes = [
         path: 'two-factor',
         loadComponent: () => import('./pages/two-factor/two-factor.component').then(m => m.TwoFactorComponent),
         title: 'Two-Factor Authentication - DSRiding'
+      },
+      {
+        path: 'memberships',
+        loadComponent: () => import('./pages/memberships/memberships.component').then(m => m.MembershipsComponent),
+        title: 'SAEF Memberships - DSRiding'
+      },
+      {
+        path: 'invoices',
+        loadComponent: () => import('./pages/invoices/invoices.component').then(m => m.InvoicesComponent),
+        title: 'Invoices - DSRiding'
       }
     ]
   }

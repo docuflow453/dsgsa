@@ -42,6 +42,7 @@ export class NavItemComponent implements OnInit {
      */
     const parentRoleValue = this.parentRole();
     const item = this.item();
+
     if (item.role && item.role.length > 0) {
       if (CurrentUserRole) {
         const parentRole = this.parentRole();
@@ -56,6 +57,7 @@ export class NavItemComponent implements OnInit {
         this.isEnabled = parentRoleValue.includes(CurrentUserRole);
       }
     }
+    this.isEnabled = true;
   }
 
   // public method

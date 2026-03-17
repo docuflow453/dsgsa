@@ -10,6 +10,8 @@ export class MantisConfig {
   static i18n = 'en'; // en, ro, fr, cn
 }
 
-export const BUY_NOW = 'https://codedthemes.com/item/mantis-angular-admin-template/';
+export const RIDER_DASHBOARD_PATH = '/my';
 export const DASHBOARD_PATH = '/dashboard/default';
-export const DOCUMENTATION_PATH = 'https://codedthemes.gitbook.io/mantis-angular';
+export const CLUB_DASHBOARD_PATH = '/dashboard/default';
+export const DOCUMENTATION_PATH = '';
+export const BUY_NOW = '/auth/login';

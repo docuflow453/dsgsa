@@ -15,7 +15,8 @@ import {
   Year,
   Subscription,
   SaefMembership,
-  MembershipApplication
+  MembershipApplication,
+  Invoice
 } from '../models/rider.model';
 
 /**
@@ -163,6 +164,69 @@ export class RiderService {
   updatePassword(data: { currentPassword: string; newPassword: string }): Observable<any> {
     // TODO: Replace with actual API call
     return of({ success: true, message: 'Password updated successfully' }).pipe(delay(300));
+  }
+
+  /**
+   * Get rider's SAEF memberships
+   */
+  getSaefMemberships(riderId?: string, year?: string): Observable<SaefMembership[]> {
+    // TODO: Replace with actual API call
+    return this.mockSaefMemberships(riderId, year);
+  }
+
+  /**
+   * Get available membership types
+   */
+  getMembershipTypes(): Observable<MembershipType[]> {
+    // TODO: Replace with actual API call
+    return this.mockMembershipTypes();
+  }
+
+  /**
+   * Get available years
+   */
+  getYears(): Observable<Year[]> {
+    // TODO: Replace with actual API call
+    return this.mockYears();
+  }
+
+  /**
+   * Get available subscriptions for a year
+   */
+  getSubscriptions(yearId: string): Observable<Subscription[]> {
+    // TODO: Replace with actual API call
+    return this.mockSubscriptions(yearId);
+  }
+
+  /**
+   * Submit membership application
+   */
+  submitMembershipApplication(application: MembershipApplication): Observable<SaefMembership> {
+    return this.http.post<SaefMembership>(`${this.API_URL}/saef-memberships`, application);
+  }
+
+  /**
+   * Get rider's invoices
+   */
+  getInvoices(riderId?: string, status?: string): Observable<Invoice[]> {
+    // TODO: Replace with actual API call
+    return this.mockInvoices(riderId, status);
+  }
+
+  /**
+   * Get invoice by ID
+   */
+  getInvoiceById(invoiceId: string): Observable<Invoice> {
+    return this.http.get<Invoice>(`${this.API_URL}/invoices/${invoiceId}`);
+  }
+
+  /**
+   * Download invoice PDF
+   */
+  downloadInvoice(invoiceId: string): Observable<Blob> {
+    return this.http.get(`${this.API_URL}/invoices/${invoiceId}/download`, {
+      responseType: 'blob'
+    });
   }
 
   /**
@@ -434,6 +498,290 @@ export class RiderService {
       }
     ];
     return of(clubs).pipe(delay(300));
+  }
+
+  private mockSaefMemberships(riderId?: string, year?: string): Observable<SaefMembership[]> {
+    const currentYear = new Date().getFullYear();
+    const memberships: SaefMembership[] = [];
+
+    // Mock: No active membership for current year (to show empty state)
+    // Uncomment below to test with active membership
+    /*
+    memberships.push({
+      id: 'sm-1',
+      riderId: '1',
+      riderName: 'Jane Smith',
+      yearId: 'year-2026',
+      yearTitle: '2026',
+      approvedAt: new Date('2026-01-15'),
+      approvedBy: 'admin-1',
+      approvedByName: 'Admin User',
+      createdAt: new Date('2026-01-10'),
+      updatedAt: new Date('2026-01-15'),
+      status: 'Active'
+    });
+    */
+
+    return of(memberships).pipe(delay(300));
+  }
+
+  private mockMembershipTypes(): Observable<MembershipType[]> {
+    const types: MembershipType[] = [
+      {
+        id: 'mt-1',
+        name: 'Pony Rider Competitive',
+        code: 'PONY_COMP',
+        description: 'For competitive pony riders',
+        isActive: true
+      },
+      {
+        id: 'mt-2',
+        name: 'Children Competitive',
+        code: 'CHILD_COMP',
+        description: 'For competitive children riders',
+        isActive: true
+      },
+      {
+        id: 'mt-3',
+        name: 'Junior Competitive',
+        code: 'JUNIOR_COMP',
+        description: 'For competitive junior riders',
+        isActive: true
+      },
+      {
+        id: 'mt-4',
+        name: 'Senior Competitive',
+        code: 'SENIOR_COMP',
+        description: 'For competitive senior riders',
+        isActive: true
+      },
+      {
+        id: 'mt-5',
+        name: 'Non-Graded Senior (Adult) Rider',
+        code: 'NON_GRADED_SENIOR',
+        description: 'For non-graded adult riders',
+        isActive: true
+      },
+      {
+        id: 'mt-6',
+        name: 'Non-Graded Pony/Child/Junior Rider',
+        code: 'NON_GRADED_YOUTH',
+        description: 'For non-graded youth riders',
+        isActive: true
+      },
+      {
+        id: 'mt-7',
+        name: 'Non-Participating Owner',
+        code: 'OWNER',
+        description: 'For horse owners who do not compete',
+        isActive: true
+      },
+      {
+        id: 'mt-8',
+        name: 'Official',
+        code: 'OFFICIAL',
+        description: 'For judges, stewards, and other officials',
+        isActive: true
+      }
+    ];
+    return of(types).pipe(delay(300));
+  }
+
+  private mockYears(): Observable<Year[]> {
+    const years: Year[] = [
+      {
+        id: 'year-2026',
+        title: '2026',
+        startDate: new Date('2026-01-01'),
+        endDate: new Date('2026-12-31'),
+        isActive: true
+      },
+      {
+        id: 'year-2027',
+        title: '2027',
+        startDate: new Date('2027-01-01'),
+        endDate: new Date('2027-12-31'),
+        isActive: false
+      }
+    ];
+    return of(years).pipe(delay(300));
+  }
+
+  private mockSubscriptions(yearId: string): Observable<Subscription[]> {
+    const subscriptions: Subscription[]  = [
+      {
+        id: 'sub-1',
+        name: 'Annual Membership - Competitive',
+        description: 'Full year competitive membership',
+        fee: 1500,
+        yearId: yearId,
+        yearTitle: '2026',
+        membershipIds: ['mt-1', 'mt-2', 'mt-3', 'mt-4'],
+        membershipNames: ['Pony Rider Competitive', 'Children Competitive', 'Junior Competitive', 'Senior Competitive'],
+        isOfficial: false,
+        isRecreational: false,
+        isActive: true
+      },
+      {
+        id: 'sub-2',
+        name: 'Annual Membership - Non-Graded',
+        description: 'Full year non-graded membership',
+        fee: 800,
+        yearId: yearId,
+        yearTitle: '2026',
+        membershipIds: ['mt-5', 'mt-6'],
+        membershipNames: ['Non-Graded Senior (Adult) Rider', 'Non-Graded Pony/Child/Junior Rider'],
+        isOfficial: false,
+        isRecreational: true,
+        isActive: true
+      },
+      {
+        id: 'sub-3',
+        name: 'Annual Membership - Owner',
+        description: 'Full year owner membership',
+        fee: 500,
+        yearId: yearId,
+        yearTitle: '2026',
+        membershipIds: ['mt-7'],
+        membershipNames: ['Non-Participating Owner'],
+        isOfficial: false,
+        isRecreational: false,
+        isActive: true
+      },
+      {
+        id: 'sub-4',
+        name: 'Annual Membership - Official',
+        description: 'Full year official membership',
+        fee: 1200,
+        yearId: yearId,
+        yearTitle: '2026',
+        membershipIds: ['mt-8'],
+        membershipNames: ['Official'],
+        isOfficial: true,
+        isRecreational: false,
+        isActive: true
+      }
+    ];
+    return of(subscriptions).pipe(delay(300));
+  }
+
+  private mockInvoices(riderId?: string, status?: string): Observable<Invoice[]> {
+    const invoices: Invoice[] = [
+      {
+        id: 'inv-1',
+        invoiceNumber: 'INV-2026-001',
+        riderId: '1',
+        riderName: 'Jane Smith',
+        issueDate: new Date('2026-01-15'),
+        dueDate: new Date('2026-02-15'),
+        status: 'Paid',
+        items: [
+          {
+            id: 'item-1',
+            description: 'SAEF Senior Competitive Membership - 2026',
+            quantity: 1,
+            unitPrice: 1500,
+            total: 1500
+          }
+        ],
+        subtotal: 1500,
+        tax: 225,
+        total: 1725,
+        paidAmount: 1725,
+        paidDate: new Date('2026-01-20'),
+        paymentMethod: 'Credit Card',
+        notes: 'Thank you for your membership renewal',
+        type: 'Membership'
+      },
+      {
+        id: 'inv-2',
+        invoiceNumber: 'INV-2026-002',
+        riderId: '1',
+        riderName: 'Jane Smith',
+        issueDate: new Date('2026-02-10'),
+        dueDate: new Date('2026-03-10'),
+        status: 'Pending',
+        items: [
+          {
+            id: 'item-2',
+            description: 'Entry Fee - Spring Dressage Championship',
+            quantity: 2,
+            unitPrice: 350,
+            total: 700
+          },
+          {
+            id: 'item-3',
+            description: 'Stable Fee - 2 days',
+            quantity: 2,
+            unitPrice: 150,
+            total: 300
+          }
+        ],
+        subtotal: 1000,
+        tax: 150,
+        total: 1150,
+        paidAmount: 0,
+        notes: 'Payment due before event date',
+        type: 'Entry Fee'
+      },
+      {
+        id: 'inv-3',
+        invoiceNumber: 'INV-2025-089',
+        riderId: '1',
+        riderName: 'Jane Smith',
+        issueDate: new Date('2025-11-20'),
+        dueDate: new Date('2025-12-20'),
+        status: 'Paid',
+        items: [
+          {
+            id: 'item-4',
+            description: 'Entry Fee - Winter Classic',
+            quantity: 1,
+            unitPrice: 400,
+            total: 400
+          }
+        ],
+        subtotal: 400,
+        tax: 60,
+        total: 460,
+        paidAmount: 460,
+        paidDate: new Date('2025-11-25'),
+        paymentMethod: 'EFT',
+        type: 'Entry Fee'
+      },
+      {
+        id: 'inv-4',
+        invoiceNumber: 'INV-2026-003',
+        riderId: '1',
+        riderName: 'Jane Smith',
+        issueDate: new Date('2026-02-01'),
+        dueDate: new Date('2026-01-25'),
+        status: 'Overdue',
+        items: [
+          {
+            id: 'item-5',
+            description: 'Annual Club Subscription - CMP',
+            quantity: 1,
+            unitPrice: 500,
+            total: 500
+          }
+        ],
+        subtotal: 500,
+        tax: 75,
+        total: 575,
+        paidAmount: 0,
+        notes: 'Payment overdue - please settle as soon as possible',
+        type: 'Subscription'
+      }
+    ];
+
+    // Filter by status if provided
+    let filteredInvoices = invoices;
+    if (status && status !== 'All') {
+      filteredInvoices = invoices.filter(inv => inv.status === status);
+    }
+
+    return of(filteredInvoices).pipe(delay(300));
   }
 }
 

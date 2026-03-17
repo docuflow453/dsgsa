@@ -1,0 +1,341 @@
+<!-- Memberships Page -->
+<div class="memberships-page">
+  <!-- Page Header -->
+  <div class="page-header mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h1 class="h3 mb-1">SAEF Memberships</h1>
+        <p class="text-muted mb-0">Manage your South African Equestrian Federation memberships</p>
+      </div>
+      <button 
+        class="btn btn-primary" 
+        (click)="startRenewal()"
+        *ngIf="!showWizard && !hasActiveMembership">
+        <i class="ti ti-plus me-2"></i>Apply for Membership
+      </button>
+      <button 
+        class="btn btn-primary" 
+        (click)="startRenewal()"
+        *ngIf="!showWizard && hasActiveMembership">
+        <i class="ti ti-refresh me-2"></i>Renew Membership
+      </button>
+    </div>
+  </div>
+
+  <!-- Success Message -->
+  <div class="alert alert-success alert-dismissible fade show" *ngIf="successMessage">
+    <i class="ti ti-check-circle me-2"></i>{{ successMessage }}
+    <button type="button" class="btn-close" (click)="clearSuccessMessage()"></button>
+  </div>
+
+  <!-- Loading State -->
+  <div class="text-center py-5" *ngIf="loading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text-muted mt-3">Loading your memberships...</p>
+  </div>
+
+  <!-- Active Membership Card -->
+  <div class="card mb-4" *ngIf="!loading && hasActiveMembership && !showWizard">
+    <div class="card-header bg-success text-white">
+      <h5 class="mb-0">
+        <i class="ti ti-id-badge me-2"></i>Active Membership - {{ currentYear }}
+      </h5>
+    </div>
+    <div class="card-body">
+      <div class="row" *ngIf="activeMembership">
+        <div class="col-md-6">
+          <h6 class="mb-3">Membership Details</h6>
+          <p class="mb-2">
+            <strong>Year:</strong> {{ activeMembership.yearTitle }}
+          </p>
+          <p class="mb-2">
+            <strong>Status:</strong> 
+            <span class="badge bg-success ms-2">{{ activeMembership.status }}</span>
+          </p>
+          <p class="mb-2" *ngIf="activeMembership.approvedAt">
+            <strong>Approved:</strong> {{ activeMembership.approvedAt | date:'MMM d, yyyy' }}
+          </p>
+          <p class="mb-0" *ngIf="activeMembership.approvedByName">
+            <strong>Approved By:</strong> {{ activeMembership.approvedByName }}
+          </p>
+        </div>
+        <div class="col-md-6">
+          <h6 class="mb-3">Validity Period</h6>
+          <p class="mb-2">
+            <i class="ti ti-calendar me-2 text-muted"></i>
+            Valid for the {{ activeMembership.yearTitle }} season
+          </p>
+          <p class="mb-0 text-muted small">
+            Your membership allows you to participate in SAEF-sanctioned events throughout the year.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state text-center py-5" *ngIf="!loading && !hasActiveMembership && !showWizard">
+    <div class="empty-icon mb-3">
+      <i class="ti ti-id-badge" style="font-size: 4rem; color: #cbd5e1;"></i>
+    </div>
+    <h4 class="mb-2">No Active Membership for {{ currentYear }}</h4>
+    <p class="text-muted mb-4">
+      You don't have an active SAEF membership for the current year.<br>
+      Apply now to participate in sanctioned events.
+    </p>
+    <button class="btn btn-primary btn-lg" (click)="startRenewal()">
+      <i class="ti ti-plus me-2"></i>Apply for Membership
+    </button>
+  </div>
+
+  <!-- Renewal Wizard -->
+  <div class="wizard-container" *ngIf="showWizard">
+    <!-- Wizard Progress -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="wizard-steps">
+          <div class="wizard-step" [class.active]="currentStep === 'type'" [class.completed]="currentStep !== 'type'">
+            <div class="step-number">1</div>
+            <div class="step-label">Select Type</div>
+          </div>
+          <div class="wizard-line" [class.completed]="currentStep === 'review' || currentStep === 'subscription'"></div>
+          <div class="wizard-step" [class.active]="currentStep === 'subscription'" [class.completed]="currentStep === 'review'">
+            <div class="step-number">2</div>
+            <div class="step-label">Subscription</div>
+          </div>
+          <div class="wizard-line" [class.completed]="currentStep === 'review'"></div>
+          <div class="wizard-step" [class.active]="currentStep === 'review'">
+            <div class="step-number">3</div>
+            <div class="step-label">Review</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div class="alert alert-danger alert-dismissible fade show" *ngIf="errorMessage">
+      <i class="ti ti-alert-circle me-2"></i>{{ errorMessage }}
+      <button type="button" class="btn-close" (click)="clearErrorMessage()"></button>
+    </div>
+
+    <!-- Step 1: Select Membership Type -->
+    <div class="card" *ngIf="currentStep === 'type'">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">
+          <i class="ti ti-list me-2"></i>Step 1: Select Membership Type
+        </h5>
+      </div>
+      <div class="card-body">
+        <p class="mb-4">Choose the membership type that best suits your needs:</p>
+
+        <!-- Loading State -->
+        <div class="text-center py-4" *ngIf="loadingTypes">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+
+        <!-- Membership Types Grid -->
+        <div class="row g-3" *ngIf="!loadingTypes">
+          <div class="col-md-6" *ngFor="let type of membershipTypes">
+            <div 
+              class="membership-type-card"
+              [class.selected]="selectedMembershipType?.id === type.id"
+              (click)="selectMembershipType(type)">
+              <div class="d-flex align-items-start">
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">{{ type.name }}</h6>
+                  <p class="text-muted small mb-0">{{ type.description }}</p>
+                </div>
+                <div class="check-icon" *ngIf="selectedMembershipType?.id === type.id">
+                  <i class="ti ti-check-circle"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="d-flex gap-2 mt-4">
+          <button
+            class="btn btn-primary"
+            (click)="nextToSubscription()"
+            [disabled]="!selectedMembershipType">
+            <i class="ti ti-arrow-right me-2"></i>Next: Select Subscription
+          </button>
+          <button
+            class="btn btn-outline-secondary"
+            (click)="cancelWizard()">
+            <i class="ti ti-x me-2"></i>Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Select Subscription -->
+    <div class="card" *ngIf="currentStep === 'subscription'">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">
+          <i class="ti ti-credit-card me-2"></i>Step 2: Select Subscription Type
+        </h5>
+      </div>
+      <div class="card-body">
+        <p class="mb-4">Choose your subscription plan:</p>
+
+        <!-- Loading State -->
+        <div class="text-center py-4" *ngIf="loadingSubscriptions">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+
+        <!-- Subscriptions Grid -->
+        <div class="row g-3" *ngIf="!loadingSubscriptions">
+          <div class="col-md-6" *ngFor="let subscription of subscriptions">
+            <div
+              class="subscription-card"
+              [class.selected]="selectedSubscription?.id === subscription.id"
+              (click)="selectSubscription(subscription)">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <h6 class="mb-0">{{ subscription.name }}</h6>
+                <div class="check-icon" *ngIf="selectedSubscription?.id === subscription.id">
+                  <i class="ti ti-check-circle"></i>
+                </div>
+              </div>
+              <p class="text-muted small mb-2">{{ subscription.description }}</p>
+              <div class="price">
+                <span class="currency">R</span>
+                <span class="amount">{{ subscription.fee }}</span>
+                <span class="period">/year</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- No Subscriptions Available -->
+        <div class="alert alert-warning" *ngIf="!loadingSubscriptions && subscriptions.length === 0">
+          <i class="ti ti-alert-triangle me-2"></i>
+          No subscription plans available for the selected membership type.
+        </div>
+
+        <!-- Actions -->
+        <div class="d-flex gap-2 mt-4">
+          <button
+            class="btn btn-primary"
+            (click)="nextToReview()"
+            [disabled]="!selectedSubscription">
+            <i class="ti ti-arrow-right me-2"></i>Next: Review & Submit
+          </button>
+          <button
+            class="btn btn-outline-secondary"
+            (click)="backToType()">
+            <i class="ti ti-arrow-left me-2"></i>Back
+          </button>
+          <button
+            class="btn btn-outline-secondary"
+            (click)="cancelWizard()">
+            <i class="ti ti-x me-2"></i>Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Review & Submit -->
+    <div class="card" *ngIf="currentStep === 'review'">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">
+          <i class="ti ti-file-check me-2"></i>Step 3: Review & Submit
+        </h5>
+      </div>
+      <div class="card-body">
+        <h6 class="mb-3">Application Summary</h6>
+
+        <!-- Summary Details -->
+        <div class="summary-section mb-4">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="text-muted small">Membership Type</label>
+              <p class="mb-0 fw-bold">{{ selectedMembershipType?.name }}</p>
+              <p class="text-muted small mb-0">{{ selectedMembershipType?.description }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="text-muted small">Year</label>
+              <p class="mb-0 fw-bold">{{ selectedYear?.title }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="text-muted small">Subscription Plan</label>
+              <p class="mb-0 fw-bold">{{ selectedSubscription?.name }}</p>
+              <p class="text-muted small mb-0">{{ selectedSubscription?.description }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="text-muted small">Total Cost</label>
+              <p class="mb-0 fw-bold text-primary" style="font-size: 1.5rem;">
+                R {{ selectedSubscription?.fee }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terms and Conditions -->
+        <form [formGroup]="reviewForm">
+          <div class="alert alert-info mb-3">
+            <h6 class="alert-heading">
+              <i class="ti ti-info-circle me-2"></i>Important Information
+            </h6>
+            <ul class="mb-0 small">
+              <li>Your membership application will be reviewed by SAEF administrators</li>
+              <li>You will be notified via email once your application is approved</li>
+              <li>Membership is valid for the selected year only</li>
+              <li>Payment will be processed after approval</li>
+            </ul>
+          </div>
+
+          <div class="form-check mb-4">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="acceptTerms"
+              formControlName="acceptTerms"
+            />
+            <label class="form-check-label" for="acceptTerms">
+              I accept the <a href="#" target="_blank">terms and conditions</a> and confirm that all information provided is accurate
+            </label>
+          </div>
+
+          <!-- Actions -->
+          <div class="d-flex gap-2">
+            <button
+              type="button"
+              class="btn btn-success"
+              (click)="submitApplication()"
+              [disabled]="reviewForm.invalid || submitting">
+              <span *ngIf="!submitting">
+                <i class="ti ti-check me-2"></i>Submit Application
+              </span>
+              <span *ngIf="submitting">
+                <span class="spinner-border spinner-border-sm me-2"></span>Submitting...
+              </span>
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="backToSubscription()"
+              [disabled]="submitting">
+              <i class="ti ti-arrow-left me-2"></i>Back
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="cancelWizard()"
+              [disabled]="submitting">
+              <i class="ti ti-x me-2"></i>Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

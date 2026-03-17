@@ -1,0 +1,173 @@
+// Invoices Page Styles
+.invoices-page {
+  // Page Header
+  .page-header {
+    h1 {
+      color: #1f2937;
+      font-weight: 600;
+    }
+  }
+
+  // Summary Cards
+  .summary-card {
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .icon-wrapper {
+      width: 48px;
+      height: 48px;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      i {
+        font-size: 1.5rem;
+      }
+    }
+
+    h4 {
+      color: #1f2937;
+      font-weight: 700;
+    }
+  }
+
+  // Card Styling
+  .card {
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    .card-body {
+      padding: 1.5rem;
+    }
+  }
+
+  // Empty State
+  .empty-state {
+    background: white;
+    border-radius: 0.5rem;
+    padding: 3rem 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    .empty-icon {
+      i {
+        opacity: 0.3;
+      }
+    }
+
+    h4 {
+      color: #374151;
+      font-weight: 600;
+    }
+  }
+
+  // Invoice List
+  .invoices-list {
+    .card {
+      transition: all 0.3s ease;
+
+      &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+      }
+    }
+
+    .invoice-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 0.5rem;
+      background-color: #eff6ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      i {
+        font-size: 1.25rem;
+        color: #2563eb;
+      }
+    }
+
+    h6 {
+      color: #1f2937;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  // Filter Section
+  .form-label {
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .form-select {
+    border-color: #d1d5db;
+
+    &:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+    }
+  }
+
+  // Button Styling
+  .btn-outline-primary {
+    &:hover {
+      background-color: #2563eb;
+      border-color: #2563eb;
+      color: white;
+    }
+  }
+
+  .btn-outline-secondary {
+    &:hover {
+      background-color: #6b7280;
+      border-color: #6b7280;
+      color: white;
+    }
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    .summary-card {
+      margin-bottom: 1rem;
+    }
+
+    .invoices-list {
+      .card-body {
+        .row {
+          > div {
+            margin-bottom: 1rem;
+
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+
+      .d-flex.gap-2 {
+        flex-direction: column;
+
+        .btn {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+

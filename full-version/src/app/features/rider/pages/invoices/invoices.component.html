@@ -1,0 +1,169 @@
+<!-- Invoices Page -->
+<div class="invoices-page">
+  <!-- Page Header -->
+  <div class="page-header mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h1 class="h3 mb-1">Invoices</h1>
+        <p class="text-muted mb-0">View and manage your invoices</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card summary-card">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="icon-wrapper bg-warning-subtle">
+              <i class="ti ti-clock text-warning"></i>
+            </div>
+            <div class="ms-3">
+              <p class="text-muted mb-1 small">Pending Amount</p>
+              <h4 class="mb-0">R {{ getTotalPending() | number:'1.2-2' }}</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card summary-card">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="icon-wrapper bg-success-subtle">
+              <i class="ti ti-check-circle text-success"></i>
+            </div>
+            <div class="ms-3">
+              <p class="text-muted mb-1 small">Total Paid</p>
+              <h4 class="mb-0">R {{ getTotalPaid() | number:'1.2-2' }}</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card summary-card">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="icon-wrapper bg-danger-subtle">
+              <i class="ti ti-alert-circle text-danger"></i>
+            </div>
+            <div class="ms-3">
+              <p class="text-muted mb-1 small">Overdue Invoices</p>
+              <h4 class="mb-0">{{ getOverdueCount() }}</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col-md-3">
+          <label for="statusFilter" class="form-label mb-2">Filter by Status</label>
+          <select 
+            id="statusFilter"
+            class="form-select"
+            [(ngModel)]="selectedStatus"
+            (change)="onStatusChange()">
+            <option *ngFor="let status of statusOptions" [value]="status">
+              {{ status }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-9 text-end">
+          <p class="text-muted mb-0 small">
+            Showing {{ filteredInvoices.length }} of {{ invoices.length }} invoices
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="text-center py-5" *ngIf="loading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text-muted mt-3">Loading invoices...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state text-center py-5" *ngIf="!loading && filteredInvoices.length === 0">
+    <div class="empty-icon mb-3">
+      <i class="ti ti-file-invoice" style="font-size: 4rem; color: #cbd5e1;"></i>
+    </div>
+    <h4 class="mb-2">No Invoices Found</h4>
+    <p class="text-muted mb-0">
+      {{ selectedStatus === 'All' ? 'You don\'t have any invoices yet.' : 'No invoices with status: ' + selectedStatus }}
+    </p>
+  </div>
+
+  <!-- Invoices List -->
+  <div class="invoices-list" *ngIf="!loading && filteredInvoices.length > 0">
+    <div class="card mb-3" *ngFor="let invoice of filteredInvoices">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <!-- Invoice Info -->
+          <div class="col-md-6">
+            <div class="d-flex align-items-start">
+              <div class="invoice-icon me-3">
+                <i [class]="getTypeIcon(invoice.type)"></i>
+              </div>
+              <div>
+                <h6 class="mb-1">
+                  {{ invoice.invoiceNumber }}
+                  <span 
+                    class="badge ms-2"
+                    [class]="'bg-' + getStatusClass(invoice.status)">
+                    {{ invoice.status }}
+                  </span>
+                </h6>
+                <p class="text-muted small mb-1">
+                  <i class="ti ti-tag me-1"></i>{{ invoice.type }}
+                </p>
+                <p class="text-muted small mb-0">
+                  <i class="ti ti-calendar me-1"></i>
+                  Issued: {{ invoice.issueDate | date:'MMM d, yyyy' }} | 
+                  Due: {{ invoice.dueDate | date:'MMM d, yyyy' }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Amount Info -->
+          <div class="col-md-3 text-center">
+            <p class="text-muted small mb-1">Total Amount</p>
+            <h5 class="mb-0 text-primary">R {{ invoice.total | number:'1.2-2' }}</h5>
+            <p class="text-muted small mb-0" *ngIf="invoice.status === 'Paid'">
+              Paid: {{ invoice.paidDate | date:'MMM d, yyyy' }}
+            </p>
+          </div>
+
+          <!-- Actions -->
+          <div class="col-md-3 text-end">
+            <div class="d-flex gap-2 justify-content-end">
+              <button 
+                class="btn btn-sm btn-outline-primary"
+                (click)="viewInvoice(invoice)"
+                title="View Invoice">
+                <i class="ti ti-eye me-1"></i>View
+              </button>
+              <button 
+                class="btn btn-sm btn-outline-secondary"
+                (click)="downloadInvoice(invoice)"
+                title="Download PDF">
+                <i class="ti ti-download me-1"></i>Download
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

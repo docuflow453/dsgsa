@@ -14,6 +14,8 @@ export * from './pages/horses/horses.component';
 export * from './pages/clubs/clubs.component';
 export * from './pages/security/security.component';
 export * from './pages/two-factor/two-factor.component';
+export * from './pages/memberships/memberships.component';
+export * from './pages/invoices/invoices.component';
 
 // Services
 export * from './services/rider.service';

@@ -10,66 +10,44 @@ import { SimpleLayouts } from './theme/layout/simple-layout/simple-layout.compon
 import { Role } from './theme/shared/components/_helpers/role';
 
 const routes: Routes = [
+  // Default route - redirect to login
   {
     path: '',
-    component: GuestLayouts,
+    redirectTo: 'auth/login',
+    pathMatch: 'full'
+  },
+  // Authentication routes (public - no auth required)
+  {
+    path: 'auth',
+    loadChildren: () => import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES)
+  },
+  // Legacy auth routes (public - no auth required)
+  {
+    path: 'login',
+    loadComponent: () => import('./demo/pages/authentication/auth-login/auth-login.component').then((c) => c.AuthLoginComponent)
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./demo/pages/authentication/auth-register/auth-register.component').then((c) => c.AuthRegisterComponent)
+  },
+  {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./demo/pages/authentication/forgot-password/forgot-password.component').then((c) => c.ForgotPasswordComponent)
+  },
+  // All protected routes use AdminLayout
+  {
+    path: '',
+    component: AdminLayout,
+    // canActivateChild: [AuthGuardChild],
     children: [
-      {
-        path: '',
-        redirectTo: '',
-        pathMatch: 'full'
-      },
-      {
-        path: '',
-        loadComponent: () => import('./demo/pages/landing/landing.component').then((c) => c.LandingComponent)
-      },
-      {
-        path: 'login',
-        loadComponent: () => import('./demo/pages/authentication/auth-login/auth-login.component').then((c) => c.AuthLoginComponent)
-      },
-      {
-        path: 'register',
-        loadComponent: () =>
-          import('./demo/pages/authentication/auth-register/auth-register.component').then((c) => c.AuthRegisterComponent)
-      },
-      {
-        path: 'forgot-password',
-        loadComponent: () =>
-          import('./demo/pages/authentication/forgot-password/forgot-password.component').then((c) => c.ForgotPasswordComponent)
-      },
-      // New Auth Module (Angular 21 Standalone Components)
-      {
-        path: 'auth',
-        loadChildren: () => import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES)
-      },
-      // Rider Feature Module (My Dashboard)
+      // Rider routes (role: RIDER)
       {
         path: 'my',
         loadChildren: () => import('./features/rider/rider.routes').then((m) => m.RIDER_ROUTES)
       },
-      {
-        path: 'auth-old',
-        canActivateChild: [AuthGuardChild],
-        loadChildren: () => import('./demo/pages/authentication/authentication.module').then((m) => m.AuthenticationModule),
-        data: {
-          roles: [Role.Admin, Role.User]
-        }
-      },
-      {
-        path: 'maintenance',
-        canActivateChild: [AuthGuardChild],
-        loadChildren: () => import('./demo/pages/maintenance/maintenance.module').then((m) => m.MaintenanceModule),
-        data: {
-          roles: [Role.Admin, Role.User]
-        }
-      }
-    ]
-  },
-  {
-    path: '',
-    component: AdminLayout,
-    canActivateChild: [AuthGuardChild],
-    children: [
+      // Admin dashboard routes
       {
         path: 'dashboard',
         loadChildren: () => import('./demo/dashboard/dashboard.module').then((m) => m.DashboardModule),
