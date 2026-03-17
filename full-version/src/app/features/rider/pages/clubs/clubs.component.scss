@@ -1,12 +1,9 @@
+// Import shared page header styles
+@import '../../styles/shared-page-header.scss';
+
 // Clubs Page Styles
 .clubs-page {
-  // Page Header
-  .page-header {
-    h1 {
-      color: #1f2937;
-      font-weight: 600;
-    }
-  }
+  // Page header styles are now in shared-page-header.scss
 
   // Empty State
   .empty-state {

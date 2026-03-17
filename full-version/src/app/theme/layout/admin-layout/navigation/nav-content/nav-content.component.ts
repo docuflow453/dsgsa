@@ -50,7 +50,10 @@ import {
   ChromeOutline,
   RightOutline,
   ReadOutline,
-  LockOutline
+  LockOutline,
+  HeartOutline,
+  UsergroupAddOutline,
+  SafetyCertificateOutline
 } from '@ant-design/icons-angular/icons';
 
 @Component({
@@ -126,7 +129,10 @@ export class NavContentComponent implements AfterViewInit, OnInit {
         ChromeOutline,
         RightOutline,
         ReadOutline,
-        LockOutline
+        LockOutline,
+        HeartOutline,
+        UsergroupAddOutline,
+        SafetyCertificateOutline
       ]
     );
     this.prevDisabled = 'disabled';

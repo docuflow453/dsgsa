@@ -1,8 +1,10 @@
 <!-- Enhanced Profile Page with Tabbed Interface -->
 <div class="profile-page">
-  <div class="page-header mb-4">
-    <h2><i class="ti ti-user me-2"></i>My Profile</h2>
-    <p class="text-muted">Manage your account settings and preferences</p>
+  <div class="page-header mb-4 d-flex justify-content-between align-items-center">
+    <div>
+      <h2>My Profile</h2>
+      <p class="text-muted">Manage your account settings and preferences</p>
+    </div>
   </div>
 
   <!-- Success/Error Messages -->
@@ -255,157 +257,8 @@
           </ng-template>
         </li>
 
-        <!-- Tab 4: Security Settings -->
+        <!-- Tab 4: Profile Picture -->
         <li [ngbNavItem]="4">
-          <button ngbNavLink>
-            <i class="ti ti-lock me-2"></i>Security Settings
-          </button>
-          <ng-template ngbNavContent>
-            <form [formGroup]="securityForm" (ngSubmit)="onSubmitSecurity()">
-              <div class="alert alert-info mb-4">
-                <i class="ti ti-info-circle me-2"></i>
-                <strong>Password Requirements:</strong> Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number, and one special character.
-              </div>
-
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="currentPassword" class="form-label">Current Password <span class="text-danger">*</span></label>
-                  <input type="password" class="form-control" id="currentPassword" formControlName="currentPassword">
-                  <div *ngIf="hasError(securityForm, 'currentPassword', 'required')" class="text-danger small mt-1">
-                    Current password is required
-                  </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Last Password Change</label>
-                  <input type="text" class="form-control" [value]="lastPasswordChange | date:'medium'" readonly>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="newPassword" class="form-label">New Password <span class="text-danger">*</span></label>
-                  <input type="password" class="form-control" id="newPassword" formControlName="newPassword">
-                  <div *ngIf="hasError(securityForm, 'newPassword', 'required')" class="text-danger small mt-1">
-                    New password is required
-                  </div>
-                  <div *ngIf="hasError(securityForm, 'newPassword', 'minlength')" class="text-danger small mt-1">
-                    Password must be at least 8 characters
-                  </div>
-                  <div *ngIf="hasError(securityForm, 'newPassword', 'passwordStrength')" class="text-danger small mt-1">
-                    Password must contain uppercase, lowercase, number, and special character
-                  </div>
-
-                  <!-- Password Strength Indicator -->
-                  <div *ngIf="securityForm.get('newPassword')?.value" class="mt-2">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                      <small class="text-muted">Password Strength:</small>
-                      <small [class]="'fw-bold ' + (passwordStrength < 40 ? 'text-danger' : passwordStrength < 70 ? 'text-warning' : 'text-success')">
-                        {{ passwordStrengthLabel }}
-                      </small>
-                    </div>
-                    <div class="progress" style="height: 5px;">
-                      <div class="progress-bar" [ngClass]="getPasswordStrengthClass()" [style.width.%]="passwordStrength"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="confirmPassword" class="form-label">Confirm New Password <span class="text-danger">*</span></label>
-                  <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword">
-                  <div *ngIf="hasError(securityForm, 'confirmPassword', 'required')" class="text-danger small mt-1">
-                    Please confirm your password
-                  </div>
-                  <div *ngIf="securityForm.hasError('passwordMismatch') && securityForm.get('confirmPassword')?.touched" class="text-danger small mt-1">
-                    Passwords do not match
-                  </div>
-                </div>
-              </div>
-
-              <div class="d-flex justify-content-end mt-3">
-                <button type="submit" class="btn btn-primary" [disabled]="saving || securityForm.invalid">
-                  <span *ngIf="saving" class="spinner-border spinner-border-sm me-2" role="status"></span>
-                  <i *ngIf="!saving" class="ti ti-lock me-2"></i>
-                  {{ saving ? 'Changing...' : 'Change Password' }}
-                </button>
-              </div>
-            </form>
-          </ng-template>
-        </li>
-
-        <!-- Tab 5: Two-Factor Authentication -->
-        <li [ngbNavItem]="5">
-          <button ngbNavLink>
-            <i class="ti ti-shield me-2"></i>Two-Factor Authentication
-          </button>
-          <ng-template ngbNavContent>
-            <div class="alert alert-info mb-4">
-              <i class="ti ti-info-circle me-2"></i>
-              Two-factor authentication adds an extra layer of security to your account.
-            </div>
-
-            <div class="row">
-              <div class="col-md-6 mb-4">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Status</h5>
-                    <div class="d-flex align-items-center justify-content-between">
-                      <span>Two-Factor Authentication</span>
-                      <span [class]="'badge ' + (twoFactorEnabled ? 'bg-success' : 'bg-secondary')">
-                        {{ twoFactorEnabled ? 'Enabled' : 'Disabled' }}
-                      </span>
-                    </div>
-                    <div class="mt-3">
-                      <button *ngIf="!twoFactorEnabled" type="button" class="btn btn-primary" (click)="enable2FA()" [disabled]="saving">
-                        <i class="ti ti-shield-check me-2"></i>Enable 2FA
-                      </button>
-                      <button *ngIf="twoFactorEnabled" type="button" class="btn btn-danger" (click)="disable2FA()" [disabled]="saving">
-                        <i class="ti ti-shield-off me-2"></i>Disable 2FA
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- QR Code Setup (shown when enabling) -->
-              <div *ngIf="qrCodeUrl" class="col-md-6 mb-4">
-                <div class="card">
-                  <div class="card-body text-center">
-                    <h5 class="card-title">Scan QR Code</h5>
-                    <p class="text-muted small">Scan this QR code with your authenticator app</p>
-                    <img [src]="qrCodeUrl" alt="QR Code" class="img-fluid mb-3" style="max-width: 200px;">
-
-                    <form [formGroup]="twoFactorForm">
-                      <div class="mb-3">
-                        <label for="verificationCode" class="form-label">Enter Verification Code</label>
-                        <input type="text" class="form-control" id="verificationCode" formControlName="verificationCode" placeholder="6-digit code">
-                      </div>
-                      <button type="button" class="btn btn-success" (click)="verify2FACode()" [disabled]="saving">
-                        <i class="ti ti-check me-2"></i>Verify & Enable
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Backup Codes -->
-              <div *ngIf="backupCodes.length > 0" class="col-12">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Backup Codes</h5>
-                    <p class="text-muted small">Save these backup codes in a safe place. You can use them to access your account if you lose your device.</p>
-                    <div class="row">
-                      <div class="col-md-4 mb-2" *ngFor="let code of backupCodes">
-                        <code class="d-block p-2 bg-light">{{ code }}</code>
-                      </div>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary mt-3" (click)="downloadBackupCodes()">
-                      <i class="ti ti-download me-2"></i>Download Backup Codes
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ng-template>
-        </li>
-
-        <!-- Tab 6: Profile Picture -->
-        <li [ngbNavItem]="6">
           <button ngbNavLink>
             <i class="ti ti-camera me-2"></i>Profile Picture
           </button>
@@ -469,8 +322,8 @@
           </ng-template>
         </li>
 
-        <!-- Tab 7: Notification Preferences -->
-        <li [ngbNavItem]="7">
+        <!-- Tab 5: Notification Preferences -->
+        <li [ngbNavItem]="5">
           <button ngbNavLink>
             <i class="ti ti-bell me-2"></i>Notification Preferences
           </button>

@@ -1,0 +1,361 @@
+<!-- Show Holding Body Members Page -->
+<div class="shb-members-page">
+  <!-- Page Header -->
+  <div class="page-header mb-4 d-flex justify-content-between align-items-center">
+    <div>
+      <h2>Members</h2>
+      <p class="text-muted">Manage rider memberships and approvals</p>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+    <div class="toast" [class.show]="showToast" [class.bg-success]="toastType === 'success'" [class.bg-danger]="toastType === 'error'">
+      <div class="toast-body text-white">
+        <i class="ti" [class.ti-check]="toastType === 'success'" [class.ti-alert-circle]="toastType === 'error'" class="me-2"></i>
+        {{ toastMessage }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs and Search -->
+  <div class="card mb-4">
+    <div class="card-header bg-white">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <!-- Tabs -->
+        <ul class="nav nav-tabs card-header-tabs mb-0">
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="activeTab === 'approved'" (click)="setActiveTab('approved')" role="button">
+              <i class="ti ti-user-check me-2"></i>Approved Members
+              <span class="badge bg-success ms-2">{{ approvedMembers.length }}</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="activeTab === 'pending'" (click)="setActiveTab('pending')" role="button">
+              <i class="ti ti-clock me-2"></i>Pending Approvals
+              <span class="badge bg-warning ms-2">{{ pendingMembers.length }}</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Search -->
+        <div class="search-box">
+          <div class="input-group">
+            <span class="input-group-text bg-white">
+              <i class="ti ti-search"></i>
+            </span>
+            <input type="text" class="form-control" placeholder="Search members..." 
+              [(ngModel)]="searchQuery" (input)="searchMembers()">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Members Table -->
+  <div *ngIf="!loading" class="card">
+    <div class="card-body">
+      <!-- Empty State -->
+      <div *ngIf="paginatedMembers.length === 0" class="text-center text-muted py-5">
+        <i class="ti ti-users-off" style="font-size: 4rem; opacity: 0.3;"></i>
+        <p class="mt-3">
+          <span *ngIf="activeTab === 'approved'">No approved members yet</span>
+          <span *ngIf="activeTab === 'pending'">No pending approvals</span>
+        </p>
+      </div>
+
+      <!-- Members Table -->
+      <div *ngIf="paginatedMembers.length > 0" class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Email</th>
+              <th>Membership #</th>
+              <th>Horse(s)</th>
+              <th>Date Requested</th>
+              <th *ngIf="activeTab === 'approved'">Total Entries</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let member of paginatedMembers">
+              <!-- Member Info -->
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="member-avatar me-3">
+                    <img *ngIf="member.profileImage" [src]="member.profileImage" [alt]="member.firstName">
+                    <div *ngIf="!member.profileImage" class="avatar-placeholder">
+                      {{ member.firstName.charAt(0) }}{{ member.lastName.charAt(0) }}
+                    </div>
+                  </div>
+                  <div>
+                    <strong>{{ member.firstName }} {{ member.lastName }}</strong>
+                    <br>
+                    <small class="text-muted">{{ member.phone }}</small>
+                  </div>
+                </div>
+              </td>
+              <td>{{ member.email }}</td>
+              <td><span class="badge bg-primary">{{ member.membershipNumber }}</span></td>
+              <td>
+                <span class="text-truncate d-inline-block" style="max-width: 200px;" [title]="getHorseNames(member)">
+                  {{ getHorseNames(member) }}
+                </span>
+              </td>
+              <td>{{ formatDate(member.dateRequested) }}</td>
+              <td *ngIf="activeTab === 'approved'">{{ member.totalEntries }}</td>
+              <td>
+                <!-- Pending Actions -->
+                <div *ngIf="activeTab === 'pending'" class="d-flex gap-2">
+                  <button class="btn btn-sm btn-success" (click)="openApprovalModal(member)" title="Approve">
+                    <i class="ti ti-check"></i>
+                  </button>
+                  <button class="btn btn-sm btn-danger" (click)="openRejectionModal(member)" title="Reject">
+                    <i class="ti ti-x"></i>
+                  </button>
+                </div>
+
+                <!-- Approved Actions -->
+                <div *ngIf="activeTab === 'approved'" class="d-flex gap-2">
+                  <button class="btn btn-sm btn-outline-primary" (click)="openDetailsModal(member)" title="View Details">
+                    <i class="ti ti-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="openRemoveModal(member)" title="Remove">
+                    <i class="ti ti-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div *ngIf="totalPages > 1" class="d-flex justify-content-between align-items-center mt-4">
+        <div class="text-muted">
+          Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to 
+          {{ Math.min(currentPage * itemsPerPage, activeTab === 'approved' ? filteredApprovedMembers.length : filteredPendingMembers.length) }} 
+          of {{ activeTab === 'approved' ? filteredApprovedMembers.length : filteredPendingMembers.length }} members
+        </div>
+        <nav>
+          <ul class="pagination mb-0">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" (click)="changePage(currentPage - 1)" role="button">Previous</a>
+            </li>
+            <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" 
+              [class.active]="currentPage === i + 1">
+              <a class="page-link" (click)="changePage(i + 1)" role="button">{{ i + 1 }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" (click)="changePage(currentPage + 1)" role="button">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Approval Modal -->
+<div class="modal fade" [class.show]="showApprovalModal" [style.display]="showApprovalModal ? 'block' : 'none'" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="ti ti-user-check me-2"></i>Approve Member</h5>
+        <button type="button" class="btn-close" (click)="closeAllModals()" [disabled]="processingAction"></button>
+      </div>
+      <div class="modal-body" *ngIf="selectedMember">
+        <div class="text-center mb-4">
+          <div class="member-avatar-large mx-auto mb-3">
+            <img *ngIf="selectedMember.profileImage" [src]="selectedMember.profileImage" [alt]="selectedMember.firstName">
+            <div *ngIf="!selectedMember.profileImage" class="avatar-placeholder-large">
+              {{ selectedMember.firstName.charAt(0) }}{{ selectedMember.lastName.charAt(0) }}
+            </div>
+          </div>
+          <h5>{{ selectedMember.firstName }} {{ selectedMember.lastName }}</h5>
+          <p class="text-muted mb-0">{{ selectedMember.email }}</p>
+        </div>
+        <div class="member-details">
+          <div class="detail-row">
+            <strong>Membership Number:</strong>
+            <span>{{ selectedMember.membershipNumber }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Phone:</strong>
+            <span>{{ selectedMember.phone }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Horses:</strong>
+            <span>{{ getHorseNames(selectedMember) }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Date Requested:</strong>
+            <span>{{ formatDate(selectedMember.dateRequested) }}</span>
+          </div>
+        </div>
+        <div class="alert alert-info mt-3">
+          <i class="ti ti-info-circle me-2"></i>
+          Are you sure you want to approve this member? They will be granted access to your competitions.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeAllModals()" [disabled]="processingAction">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-success" (click)="confirmApproval()" [disabled]="processingAction">
+          <span *ngIf="!processingAction"><i class="ti ti-check me-2"></i>Confirm Approval</span>
+          <span *ngIf="processingAction">
+            <span class="spinner-border spinner-border-sm me-2"></span>Processing...
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" [class.show]="showApprovalModal" *ngIf="showApprovalModal" (click)="closeAllModals()"></div>
+
+<!-- Rejection Modal -->
+<div class="modal fade" [class.show]="showRejectionModal" [style.display]="showRejectionModal ? 'block' : 'none'" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="ti ti-x me-2"></i>Reject Member</h5>
+        <button type="button" class="btn-close" (click)="closeAllModals()" [disabled]="processingAction"></button>
+      </div>
+      <div class="modal-body" *ngIf="selectedMember">
+        <p>You are about to reject the membership request from:</p>
+        <div class="alert alert-warning">
+          <strong>{{ selectedMember.firstName }} {{ selectedMember.lastName }}</strong><br>
+          <small>{{ selectedMember.email }}</small>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Reason for Rejection <span class="text-danger">*</span></label>
+          <textarea class="form-control" rows="4" [(ngModel)]="rejectionReason"
+            placeholder="Please provide a reason for rejecting this member..." [disabled]="processingAction"></textarea>
+          <small class="text-muted">This reason will be sent to the member via email.</small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeAllModals()" [disabled]="processingAction">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-danger" (click)="confirmRejection()"
+          [disabled]="processingAction || !rejectionReason.trim()">
+          <span *ngIf="!processingAction"><i class="ti ti-x me-2"></i>Confirm Rejection</span>
+          <span *ngIf="processingAction">
+            <span class="spinner-border spinner-border-sm me-2"></span>Processing...
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" [class.show]="showRejectionModal" *ngIf="showRejectionModal" (click)="closeAllModals()"></div>
+
+<!-- Remove Member Modal -->
+<div class="modal fade" [class.show]="showRemoveModal" [style.display]="showRemoveModal ? 'block' : 'none'" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="ti ti-trash me-2"></i>Remove Member</h5>
+        <button type="button" class="btn-close" (click)="closeAllModals()" [disabled]="processingAction"></button>
+      </div>
+      <div class="modal-body" *ngIf="selectedMember">
+        <div class="alert alert-danger">
+          <i class="ti ti-alert-triangle me-2"></i>
+          <strong>Warning:</strong> This action cannot be undone.
+        </div>
+        <p>Are you sure you want to remove the following member?</p>
+        <div class="member-info-box">
+          <strong>{{ selectedMember.firstName }} {{ selectedMember.lastName }}</strong><br>
+          <small class="text-muted">{{ selectedMember.email }}</small><br>
+          <small class="text-muted">{{ selectedMember.membershipNumber }}</small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeAllModals()" [disabled]="processingAction">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-danger" (click)="confirmRemoval()" [disabled]="processingAction">
+          <span *ngIf="!processingAction"><i class="ti ti-trash me-2"></i>Remove Member</span>
+          <span *ngIf="processingAction">
+            <span class="spinner-border spinner-border-sm me-2"></span>Processing...
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" [class.show]="showRemoveModal" *ngIf="showRemoveModal" (click)="closeAllModals()"></div>
+
+<!-- Member Details Modal -->
+<div class="modal fade" [class.show]="showDetailsModal" [style.display]="showDetailsModal ? 'block' : 'none'" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="ti ti-user me-2"></i>Member Details</h5>
+        <button type="button" class="btn-close" (click)="closeAllModals()"></button>
+      </div>
+      <div class="modal-body" *ngIf="selectedMember">
+        <div class="row">
+          <div class="col-md-4 text-center mb-4">
+            <div class="member-avatar-large mx-auto mb-3">
+              <img *ngIf="selectedMember.profileImage" [src]="selectedMember.profileImage" [alt]="selectedMember.firstName">
+              <div *ngIf="!selectedMember.profileImage" class="avatar-placeholder-large">
+                {{ selectedMember.firstName.charAt(0) }}{{ selectedMember.lastName.charAt(0) }}
+              </div>
+            </div>
+            <h5>{{ selectedMember.firstName }} {{ selectedMember.lastName }}</h5>
+            <span class="badge bg-success">{{ selectedMember.membershipNumber }}</span>
+          </div>
+          <div class="col-md-8">
+            <h6 class="mb-3">Contact Information</h6>
+            <div class="detail-row">
+              <strong>Email:</strong>
+              <span>{{ selectedMember.email }}</span>
+            </div>
+            <div class="detail-row">
+              <strong>Phone:</strong>
+              <span>{{ selectedMember.phone }}</span>
+            </div>
+            <div class="detail-row">
+              <strong>Date Approved:</strong>
+              <span>{{ formatDate(selectedMember.dateApproved!) }}</span>
+            </div>
+            <div class="detail-row">
+              <strong>Total Entries:</strong>
+              <span>{{ selectedMember.totalEntries }}</span>
+            </div>
+            <div class="detail-row">
+              <strong>Last Activity:</strong>
+              <span>{{ formatDate(selectedMember.lastActivity) }}</span>
+            </div>
+
+            <h6 class="mt-4 mb-3">Horses</h6>
+            <div class="horses-list">
+              <div *ngFor="let horse of selectedMember.horses" class="horse-item">
+                <i class="ti ti-horse me-2"></i>
+                <strong>{{ horse.name }}</strong> ({{ horse.registeredName }})
+                <br>
+                <small class="text-muted ms-4">{{ horse.breed }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeAllModals()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" [class.show]="showDetailsModal" *ngIf="showDetailsModal" (click)="closeAllModals()"></div>
+

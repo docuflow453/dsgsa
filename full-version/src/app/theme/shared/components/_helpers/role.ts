@@ -5,5 +5,6 @@ export enum Role {
   Club = 'Club',
   Provincial = 'Provincial',
   SAEF = 'SAEF',
-  Official = 'Official'
+  Official = 'Official',
+  ShowHoldingBody = 'ShowHoldingBody'
 }

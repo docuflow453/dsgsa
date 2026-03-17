@@ -1,17 +1,9 @@
+// Import shared page header styles
+@import '../../styles/shared-page-header.scss';
+
 // Enhanced Profile Page Styles with Tabbed Interface
 .profile-page {
-  .page-header {
-    h2 {
-      color: #2563eb;
-      font-weight: 600;
-      font-size: 2rem;
-    }
-
-    p {
-      color: #6c757d;
-      font-size: 1rem;
-    }
-  }
+  // Page header styles are now in shared-page-header.scss
 
   .card {
     border: none;

@@ -10,9 +10,11 @@ import { Transaction, DashboardStats } from '../../models/rider.model';
   imports: [CommonModule, RouterModule],
   template: `
     <div class="transactions-page">
-      <div class="page-header mb-4">
-        <h2>Transactions</h2>
-        <p class="text-muted">View your payment history and pending payments</p>
+      <div class="page-header mb-4 d-flex justify-content-between align-items-center">
+        <div>
+          <h2>Transactions</h2>
+          <p class="text-muted">View your payment history and pending payments</p>
+        </div>
       </div>
 
       <div class="row mb-4">

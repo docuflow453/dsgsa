@@ -60,7 +60,7 @@ export const NavigationItems: NavigationItem[] = [
         type: 'item',
         classes: 'nav-item',
         url: '/my/horses',
-        icon: 'trophy',
+        icon: 'heart',
         breadcrumbs: false,
         role: [Role.Rider]
       },
@@ -90,7 +90,7 @@ export const NavigationItems: NavigationItem[] = [
         type: 'item',
         classes: 'nav-item',
         url: '/my/invoices',
-        icon: 'file-invoice',
+        icon: 'file-text',
         breadcrumbs: false,
         role: [Role.Rider]
       }
@@ -109,7 +109,7 @@ export const NavigationItems: NavigationItem[] = [
         type: 'item',
         classes: 'nav-item',
         url: '/my/clubs',
-        icon: 'team',
+        icon: 'usergroup-add',
         breadcrumbs: false,
         role: [Role.Rider]
       },
@@ -139,9 +139,50 @@ export const NavigationItems: NavigationItem[] = [
         type: 'item',
         classes: 'nav-item',
         url: '/my/two-factor',
-        icon: 'safety',
+        icon: 'safety-certificate',
         breadcrumbs: false,
         role: [Role.Rider]
+      }
+    ]
+  },
+  // Show Holding Body Dashboard (for SHOW_HOLDING_BODY role)
+  {
+    id: 'shb-dashboard',
+    title: 'Show Holding Body',
+    type: 'group',
+    classes: 'first-group',
+    icon: 'icon-navigation',
+    role: [Role.ShowHoldingBody],
+    children: [
+      {
+        id: 'shb-home',
+        title: 'Dashboard',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/shb/dashboard',
+        icon: 'dashboard',
+        breadcrumbs: false,
+        role: [Role.ShowHoldingBody]
+      },
+      {
+        id: 'shb-profile',
+        title: 'My Profile',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/shb/profile',
+        icon: 'user',
+        breadcrumbs: false,
+        role: [Role.ShowHoldingBody]
+      },
+      {
+        id: 'shb-members',
+        title: 'Members',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/shb/members',
+        icon: 'team',
+        breadcrumbs: false,
+        role: [Role.ShowHoldingBody]
       }
     ]
   },

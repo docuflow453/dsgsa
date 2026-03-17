@@ -47,6 +47,11 @@ const routes: Routes = [
         path: 'my',
         loadChildren: () => import('./features/rider/rider.routes').then((m) => m.RIDER_ROUTES)
       },
+      // Show Holding Body routes (role: SHOW_HOLDING_BODY)
+      {
+        path: 'shb',
+        loadChildren: () => import('./features/show-holding-body/show-holding-body.routes').then((m) => m.SHOW_HOLDING_BODY_ROUTES)
+      },
       // Admin dashboard routes
       {
         path: 'dashboard',

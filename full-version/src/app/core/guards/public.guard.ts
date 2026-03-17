@@ -21,22 +21,23 @@ export const publicGuard: CanActivateFn = (route, state) => {
   if (!user) {
     return true;
   }
-
+  console.log('User roles:', user.roles);
+  console.log(user.roles.includes(UserRole.SHOW_HOLDING_BODY));
   // Redirect based on primary role (highest priority first)
   if (user.roles.includes(UserRole.ADMIN)) {
     router.navigate(['/dashboard/default']);
   } else if (user.roles.includes(UserRole.SAEF)) {
-    router.navigate(['/dashboard/default']);
+    router.navigate(['/saef/dashobard']);
   } else if (user.roles.includes(UserRole.PROVINCIAL)) {
-    router.navigate(['/dashboard/default']);
+    router.navigate(['/provincial/dashboard']);
   } else if (user.roles.includes(UserRole.CLUB)) {
-    router.navigate(['/dashboard/default']);
-  } else if (user.roles.includes(UserRole.OFFICIAL)) {
-    router.navigate(['/dashboard/default']);
+    router.navigate(['/clubs/dashboard']);
+  } else if (user.roles.includes(UserRole.SHOW_HOLDING_BODY)) {
+    router.navigate(['/shb/dashboard']);
   } else if (user.roles.includes(UserRole.RIDER)) {
     router.navigate(['/my/dashboard']);
   } else {
-    router.navigate(['/dashboard/default']);
+    router.navigate(['/']);
   }
 
   return false;

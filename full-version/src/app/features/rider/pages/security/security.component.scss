@@ -1,32 +1,9 @@
+// Import shared page header styles
+@import '../../styles/shared-page-header.scss';
+
 // Security Page Styles
 .security-page {
-  // Page Header
-  .page-header {
-    h1 {
-      color: #1f2937;
-      font-weight: 600;
-    }
-  }
-
-  // Card Styling
-  .card {
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-
-    .card-header {
-      border-bottom: 1px solid #e5e7eb;
-      padding: 1rem 1.5rem;
-
-      h5 {
-        color: #1f2937;
-        font-weight: 600;
-      }
-    }
-
-    .card-body {
-      padding: 1.5rem;
-    }
-  }
+  // Page header and card styles are now in shared-page-header.scss
 
   // Form Styling
   .form-label {

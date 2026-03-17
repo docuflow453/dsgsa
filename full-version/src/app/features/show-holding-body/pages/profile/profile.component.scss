@@ -1,0 +1,175 @@
+// Import shared page header styles
+@import '../../../rider/styles/shared-page-header.scss';
+
+// Show Holding Body Profile Page Styles
+.shb-profile-page {
+  // Tab Content
+  .tab-content {
+    animation: fadeIn 0.3s ease;
+
+    h5 {
+      color: #1f2937;
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+
+    h6 {
+      color: #374151;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+  }
+
+  // Form Elements
+  .form-label {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+
+    .text-danger {
+      color: #ef4444;
+    }
+  }
+
+  .form-control,
+  .form-select {
+    border-color: #d1d5db;
+    padding: 0.625rem 0.875rem;
+
+    &:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+    }
+  }
+
+  // Notification Settings
+  .notification-settings {
+    .form-check {
+      padding: 1rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.5rem;
+      background-color: #f9fafb;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: #f3f4f6;
+        border-color: #d1d5db;
+      }
+
+      .form-check-input {
+        width: 3rem;
+        height: 1.5rem;
+        cursor: pointer;
+
+        &:checked {
+          background-color: #2563eb;
+          border-color: #2563eb;
+        }
+
+        &:focus {
+          box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+        }
+      }
+
+      .form-check-label {
+        cursor: pointer;
+        margin-left: 0.5rem;
+
+        strong {
+          color: #1f2937;
+          font-size: 0.9375rem;
+          display: block;
+          margin-bottom: 0.25rem;
+        }
+
+        p {
+          font-size: 0.875rem;
+          line-height: 1.4;
+        }
+      }
+    }
+  }
+
+  // Tabs Navigation
+  .nav-tabs {
+    border-bottom: 2px solid #e5e7eb;
+
+    .nav-link {
+      border: none;
+      color: #6b7280;
+      font-weight: 500;
+      padding: 0.875rem 1.25rem;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s ease;
+
+      i {
+        font-size: 1.125rem;
+      }
+
+      &:hover {
+        color: #2563eb;
+        background-color: #f9fafb;
+      }
+
+      &.active {
+        color: #2563eb;
+        border-bottom-color: #2563eb;
+        background-color: transparent;
+      }
+    }
+  }
+
+  // Alert Styling
+  .alert {
+    border-radius: 0.5rem;
+    border: none;
+
+    &.alert-info {
+      background-color: #eff6ff;
+      color: #1e40af;
+
+      i {
+        color: #2563eb;
+      }
+    }
+  }
+
+  // Action Buttons
+  .btn {
+    padding: 0.625rem 1.25rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+
+    i {
+      font-size: 1.125rem;
+    }
+
+    &.btn-primary {
+      &:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      }
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Fade In Animation
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

@@ -8,7 +8,7 @@
         <ul class="nav nav-tabs admin-role d-block">
           <div class="row g-2">
             @for (role of roles; track role.role) {
-              <div class="col-sm-6">
+              <div class="col-sm-2">
                 <li class="nav-item">
                   <a href="javascript:" class="nav-link" [class.active]="selectedRole === role" (click)="onSelectRole(role)">
                     {{ role.name }}

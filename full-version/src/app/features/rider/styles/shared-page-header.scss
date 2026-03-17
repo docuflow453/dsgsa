@@ -1,0 +1,153 @@
+// Shared Page Header Styles for Rider Pages
+// Professional, consistent header design across all rider pages
+
+.page-header {
+  margin-bottom: 2rem;
+
+  // Header with button layout
+  &.header-with-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  // Heading styles
+  h1, h2 {
+    color: #1f2937;
+    font-weight: 700;
+    font-size: 1.875rem; // 30px
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    line-height: 1.2;
+
+    i {
+      font-size: 2rem;
+      margin-right: 0.75rem;
+      color: #2563eb;
+    }
+  }
+
+  h1.h3, h2.h3 {
+    font-size: 1.75rem; // 28px
+  }
+
+  // Subheading/description
+  p {
+    color: #6b7280;
+    font-size: 1rem;
+    margin-bottom: 0;
+    line-height: 1.5;
+
+    &.text-muted {
+      color: #6b7280;
+    }
+  }
+
+  // Action button styling
+  .btn {
+    white-space: nowrap;
+    font-weight: 500;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+
+    i {
+      font-size: 1.125rem;
+    }
+
+    &.btn-primary {
+      background-color: #2563eb;
+      border-color: #2563eb;
+      box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3);
+
+      &:hover {
+        background-color: #1d4ed8;
+        border-color: #1d4ed8;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        transform: translateY(-1px);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    &.header-with-action {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    h1, h2 {
+      font-size: 1.5rem; // 24px
+
+      i {
+        font-size: 1.625rem;
+        margin-right: 0.5rem;
+      }
+    }
+
+    p {
+      font-size: 0.9375rem; // 15px
+    }
+
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+// Card header consistency
+.card {
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+
+  .card-header {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 1rem 1.5rem;
+
+    h5, h6 {
+      color: #1f2937;
+      font-weight: 600;
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+
+      i {
+        margin-right: 0.5rem;
+        color: #2563eb;
+      }
+    }
+
+    &.bg-white {
+      background-color: #ffffff;
+    }
+
+    &.bg-primary,
+    &.bg-success,
+    &.bg-info,
+    &.bg-warning,
+    &.bg-danger {
+      h5, h6 {
+        color: #ffffff;
+
+        i {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+

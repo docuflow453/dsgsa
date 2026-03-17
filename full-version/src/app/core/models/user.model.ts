@@ -8,7 +8,7 @@ export enum UserRole {
   CLUB = 'CLUB',
   PROVINCIAL = 'PROVINCIAL',
   SAEF = 'SAEF',
-  OFFICIAL = 'OFFICIAL',
+  SHOW_HOLDING_BODY = 'SHB',
   ADMIN = 'ADMIN'
 }
 
