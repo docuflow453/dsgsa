@@ -1,0 +1,265 @@
+<!-- Competition Detail Page -->
+<div class="competition-detail-page">
+  <!-- Toast Notification -->
+  <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+    <div class="toast" [class.show]="showToast" [class.bg-success]="toastType === 'success'" [class.bg-danger]="toastType === 'error'">
+      <div class="toast-body text-white">
+        <i class="ti" [class.ti-check]="toastType === 'success'" [class.ti-alert-circle]="toastType === 'error'" class="me-2"></i>
+        {{ toastMessage }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Competition Detail Content -->
+  <div *ngIf="!loading && competition" class="competition-detail-content">
+    <!-- Page Header -->
+    <div class="page-header mb-4">
+      <div class="d-flex justify-content-between align-items-start">
+        <div class="flex-grow-1">
+          <button class="btn btn-link text-muted p-0 mb-2" (click)="backToList()">
+            <i class="ti ti-arrow-left me-2"></i>Back to Competitions
+          </button>
+          <h2 class="mb-2">{{ competition.name || 'New Competition' }}</h2>
+          <div class="d-flex align-items-center gap-3 flex-wrap">
+            <span class="badge" [ngClass]="getStatusBadgeClass(competition.status)">
+              {{ competition.status | titlecase }}
+            </span>
+            <span class="text-muted">
+              <i class="ti ti-calendar me-1"></i>
+              {{ formatDate(competition.startDate) }}
+              <span *ngIf="competition.startDate !== competition.endDate">
+                - {{ formatDate(competition.endDate) }}
+              </span>
+            </span>
+            <span class="text-muted">
+              <i class="ti ti-map-pin me-1"></i>
+              {{ competition.venue }}, {{ competition.city }}
+            </span>
+          </div>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-primary">
+            <i class="ti ti-edit me-2"></i>Edit
+          </button>
+          <button class="btn btn-primary">
+            <i class="ti ti-device-floppy me-2"></i>Save
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+      <div class="col-md-3 col-sm-6 mb-3">
+        <div class="stat-card">
+          <div class="stat-icon bg-primary-light">
+            <i class="ti ti-list text-primary"></i>
+          </div>
+          <div class="stat-content">
+            <h3>{{ competition.totalClasses }}</h3>
+            <p class="text-muted mb-0">Classes</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 mb-3">
+        <div class="stat-card">
+          <div class="stat-icon bg-success-light">
+            <i class="ti ti-users text-success"></i>
+          </div>
+          <div class="stat-content">
+            <h3>{{ competition.totalEntries }}</h3>
+            <p class="text-muted mb-0">Entries</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 mb-3">
+        <div class="stat-card">
+          <div class="stat-icon bg-warning-light">
+            <i class="ti ti-credit-card text-warning"></i>
+          </div>
+          <div class="stat-content">
+            <h3>{{ formatCurrency(competition.totalRevenue) }}</h3>
+            <p class="text-muted mb-0">Revenue</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 mb-3">
+        <div class="stat-card">
+          <div class="stat-icon bg-info-light">
+            <i class="ti ti-calendar-event text-info"></i>
+          </div>
+          <div class="stat-content">
+            <h3>{{ competition.closingDate ? formatDate(competition.closingDate) : 'N/A' }}</h3>
+            <p class="text-muted mb-0">Closing Date</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vertical Tabs Layout -->
+    <div class="row">
+      <!-- Left Sidebar - Vertical Tabs -->
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <div class="card-body p-0">
+            <div class="vertical-tabs">
+              <a *ngFor="let tab of tabs" 
+                class="vertical-tab-item" 
+                [class.active]="activeTab === tab.id"
+                (click)="setActiveTab(tab.id)"
+                role="button">
+                <i class="ti {{ tab.icon }} me-2"></i>
+                {{ tab.label }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Content Area - Tab Content -->
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-body">
+            <!-- Overview Tab -->
+            <div *ngIf="activeTab === 'overview'" class="tab-content-section">
+              <h4 class="mb-4">Competition Overview</h4>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Competition Name</label>
+                  <input type="text" class="form-control" [(ngModel)]="competition.name" placeholder="Enter competition name">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Status</label>
+                  <select class="form-select" [(ngModel)]="competition.status">
+                    <option value="draft">Draft</option>
+                    <option value="published">Published</option>
+                    <option value="ongoing">Ongoing</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <label class="form-label">Description</label>
+                  <textarea class="form-control" rows="4" [(ngModel)]="competition.description"
+                    placeholder="Enter competition description"></textarea>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Venue</label>
+                  <input type="text" class="form-control" [(ngModel)]="competition.venue" placeholder="Enter venue name">
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">City</label>
+                  <input type="text" class="form-control" [(ngModel)]="competition.city" placeholder="City">
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">Province</label>
+                  <input type="text" class="form-control" [(ngModel)]="competition.province" placeholder="Province">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Contact Email</label>
+                  <input type="email" class="form-control" [(ngModel)]="competition.contactEmail" placeholder="entries@example.com">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Contact Phone</label>
+                  <input type="tel" class="form-control" [(ngModel)]="competition.contactPhone" placeholder="+27 21 555 0123">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Maximum Entries</label>
+                  <input type="number" class="form-control" [(ngModel)]="competition.maxEntries" placeholder="200">
+                </div>
+              </div>
+            </div>
+
+            <!-- Dates Tab -->
+            <div *ngIf="activeTab === 'dates'" class="tab-content-section">
+              <h4 class="mb-4">Competition Dates</h4>
+              <p class="text-muted">Manage competition dates and schedules</p>
+              <div class="alert alert-info">
+                <i class="ti ti-info-circle me-2"></i>
+                This section will allow you to manage competition dates, class schedules, and timings.
+              </div>
+            </div>
+
+            <!-- Extras Tab -->
+            <div *ngIf="activeTab === 'extras'" class="tab-content-section">
+              <h4 class="mb-4">Competition Extras</h4>
+              <p class="text-muted">Manage extras specific to this competition (stabling, bedding, feed, etc.)</p>
+              <div class="alert alert-info">
+                <i class="ti ti-info-circle me-2"></i>
+                Add and configure extras that riders can purchase for this competition.
+              </div>
+            </div>
+
+            <!-- Levies Tab -->
+            <div *ngIf="activeTab === 'levies'" class="tab-content-section">
+              <h4 class="mb-4">Competition Levies</h4>
+              <p class="text-muted">Manage levies and fees for this competition</p>
+              <div class="alert alert-info">
+                <i class="ti ti-info-circle me-2"></i>
+                Configure levies that will be applied to entries in this competition.
+              </div>
+            </div>
+
+            <!-- Documents Tab -->
+            <div *ngIf="activeTab === 'documents'" class="tab-content-section">
+              <h4 class="mb-4">Competition Documents</h4>
+              <p class="text-muted">Upload and manage competition documents (schedules, maps, rules)</p>
+              <div class="alert alert-info">
+                <i class="ti ti-info-circle me-2"></i>
+                Upload important documents for riders to download.
+              </div>
+            </div>
+
+            <!-- Classes Tab -->
+            <div *ngIf="activeTab === 'classes'" class="tab-content-section">
+              <h4 class="mb-4">Competition Classes</h4>
+              <p class="text-muted">Create and manage competition classes/divisions</p>
+              <div class="alert alert-info">
+                <i class="ti ti-info-circle me-2"></i>
+                Define the classes available for this competition.
+              </div>
+            </div>
+
+            <!-- Transactions Tab -->
+            <div *ngIf="activeTab === 'transactions'" class="tab-content-section">
+              <h4 class="mb-4">Financial Transactions</h4>
+              <p class="text-muted">View all financial transactions for this competition</p>
+              <div class="alert alert-info">
+                <i class="ti ti-info-circle me-2"></i>
+                Track all payments and refunds related to this competition.
+              </div>
+            </div>
+
+            <!-- Entries Tab -->
+            <div *ngIf="activeTab === 'entries'" class="tab-content-section">
+              <h4 class="mb-4">Competition Entries</h4>
+              <p class="text-muted">View and manage rider entries for this competition</p>
+              <div class="alert alert-info">
+                <i class="ti ti-info-circle me-2"></i>
+                Manage all rider entries and their status.
+              </div>
+            </div>
+
+            <!-- Riding Order Tab -->
+            <div *ngIf="activeTab === 'riding-order'" class="tab-content-section">
+              <h4 class="mb-4">Riding Order</h4>
+              <p class="text-muted">Manage and publish riding orders for classes</p>
+              <div class="alert alert-info">
+                <i class="ti ti-info-circle me-2"></i>
+                Create and publish the riding order for each class.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

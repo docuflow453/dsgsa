@@ -1,4 +1,4 @@
-@if (!item().hidden) {
+@if (!item().hidden && isEnabled) {
   <!-- Horizontal Layout -->
   @if (themeLayout === 'horizontal') {
     <li
@@ -6,9 +6,7 @@
       data-username="mantis dashboard"
       class="nav-item coded-hasmenu"
       [routerLinkActive]="['active']"
-      [ngClass]="{ disabled: !isEnabled }"
       [ngClass]="item().groupClasses"
-      ngbTooltip="{{ !isEnabled ? 'You do not have permission to access this page ' : '' }}"
     >
       <a [routerLinkActive]="['active']" href="javascript:" class="arrow-edge nav-link">
         <ng-container *ngTemplateOutlet="itemContent"></ng-container>
@@ -22,13 +20,11 @@
     <li
       class="nav-item coded-hasmenu"
       [routerLinkActive]="['active']"
-      ngbTooltip="{{ !isEnabled ? 'You do not have permission to access this page ' : '' }}"
     >
       <a
         [routerLinkActive]="['active']"
         href="javascript:"
         class="nav-link"
-        [ngClass]="{ disabled: !isEnabled }"
         (click)="navCollapse($event)"
       >
         <ng-container *ngTemplateOutlet="itemContent"></ng-container>
@@ -40,7 +36,7 @@
   <!-- Compact Layout -->
   @if (themeLayout === 'compact') {
     <li data-username="mantis dashboard" class="nav-item coded-hasmenu" [routerLinkActive]="['active']" (click)="subMenuCollapse(item())">
-      <a class="nav-link" [ngClass]="{ disabled: !isEnabled }">
+      <a class="nav-link">
         <ng-container *ngTemplateOutlet="itemContent"></ng-container>
       </a>
       <ng-container *ngTemplateOutlet="subMenuContent"></ng-container>

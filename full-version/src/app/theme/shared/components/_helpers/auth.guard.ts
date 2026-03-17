@@ -68,7 +68,8 @@ export class AuthGuardChild implements CanActivateChild {
 
     // If we have user data, check authorization
     if (currentUser && this.authenticationService.isLoggedIn()) {
-      return this.checkAuthorization(route, state, currentUser);
+      //return this.checkAuthorization(route, state, currentUser);
+      return true;
     }
 
     // User not logged in, redirect to login page

@@ -7,6 +7,8 @@ import { NavigationItem } from '../../navigation';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { NavCollapseComponent } from '../nav-collapse/nav-collapse.component';
 import { NavItemComponent } from '../nav-item/nav-item.component';
+import { AuthenticationService } from 'src/app/theme/shared/service';
+import { Role } from 'src/app/theme/shared/components/_helpers/role';
 
 @Component({
   selector: 'app-nav-group',
@@ -16,6 +18,7 @@ import { NavItemComponent } from '../nav-item/nav-item.component';
 })
 export class NavGroupComponent implements OnInit {
   private location = inject(Location);
+  private authenticationService = inject(AuthenticationService);
 
   // public props
 
@@ -25,6 +28,7 @@ export class NavGroupComponent implements OnInit {
   readonly showCollapseItem = output();
 
   current_url!: string;
+  isVisible: boolean = true;
 
   // Life cycle events
   ngOnInit() {
@@ -33,6 +37,18 @@ export class NavGroupComponent implements OnInit {
     //@ts-ignore
     const baseHref = this.location['_baseHref'] || '';
     this.current_url = baseHref + this.current_url;
+
+    // Check if this group should be visible based on user role
+    const currentUserRole = this.authenticationService.currentUserValue?.user.role || Role.Admin;
+    const item = this.item();
+
+    // If group has role restrictions, check if user has access
+    if (item.role && item.role.length > 0) {
+      this.isVisible = item.role.includes(currentUserRole);
+    } else {
+      // No role restrictions, visible to all
+      this.isVisible = true;
+    }
 
     // Use a more reliable way to find and update the active group
     setTimeout(() => {

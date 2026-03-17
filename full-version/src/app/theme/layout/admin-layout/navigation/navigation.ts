@@ -180,13 +180,453 @@ export const NavigationItems: NavigationItem[] = [
         type: 'item',
         classes: 'nav-item',
         url: '/shb/members',
-        icon: 'team',
+        icon: 'usergroup-add',
         breadcrumbs: false,
         role: [Role.ShowHoldingBody]
+      },
+      {
+        id: 'shb-competitions',
+        title: 'Competitions',
+        type: 'collapse',
+        icon: 'trophy',
+        role: [Role.ShowHoldingBody],
+        children: [
+          {
+            id: 'shb-competitions-list',
+            title: 'Competitions',
+            type: 'item',
+            url: '/shb/competitions',
+            breadcrumbs: false,
+            role: [Role.ShowHoldingBody]
+          },
+          {
+            id: 'shb-extras',
+            title: 'Extras',
+            type: 'item',
+            url: '/shb/extras',
+            breadcrumbs: false,
+            role: [Role.ShowHoldingBody]
+          },
+          {
+            id: 'shb-levies',
+            title: 'Levies',
+            type: 'item',
+            url: '/shb/levies',
+            breadcrumbs: false,
+            role: [Role.ShowHoldingBody]
+          },
+          {
+            id: 'shb-arenas',
+            title: 'Arenas',
+            type: 'item',
+            url: '/shb/arenas',
+            breadcrumbs: false,
+            role: [Role.ShowHoldingBody]
+          },
+          {
+            id: 'shb-payment-methods',
+            title: 'Payment Methods',
+            type: 'item',
+            url: '/shb/payment-methods',
+            breadcrumbs: false,
+            role: [Role.ShowHoldingBody]
+          }
+        ]
       }
     ]
   },
-  // Admin Dashboard (for ADMIN and USER roles)
+  // Admin Navigation (for ADMIN role)
+  {
+    id: 'admin-dashboard',
+    title: 'Administration',
+    type: 'group',
+    classes: 'first-group',
+    icon: 'icon-navigation',
+    role: [Role.Admin],
+    children: [
+      {
+        id: 'admin-home',
+        title: 'Dashboard',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/admin/dashboard',
+        icon: 'dashboard',
+        breadcrumbs: false,
+        role: [Role.Admin]
+      },
+      {
+        id: 'admin-members-management',
+        title: 'Members Management',
+        type: 'collapse',
+        icon: 'users',
+        role: [Role.Admin],
+        children: [
+          {
+            id: 'admin-members',
+            title: 'Members',
+            type: 'item',
+            url: '/admin/members',
+            icon: 'user',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-administrators',
+            title: 'Administrators',
+            type: 'item',
+            url: '/admin/administrators',
+            icon: 'shield',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-show-holding-bodies',
+            title: 'Show Holding Bodies',
+            type: 'item',
+            url: '/admin/show-holding-bodies',
+            icon: 'building',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-clubs',
+            title: 'Clubs',
+            type: 'item',
+            url: '/admin/clubs',
+            icon: 'users-group',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-judges',
+            title: 'Judges',
+            type: 'item',
+            url: '/admin/judges',
+            icon: 'gavel',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-horses',
+            title: 'Horses',
+            type: 'item',
+            url: '/admin/horses',
+            icon: 'horse-toy',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          }
+        ]
+      },
+      {
+        id: 'admin-membership-settings',
+        title: 'Membership Settings',
+        type: 'collapse',
+        icon: 'id-badge',
+        role: [Role.Admin],
+        children: [
+          {
+            id: 'admin-membership-types',
+            title: 'Membership Types',
+            type: 'item',
+            url: '/admin/membership-settings/types',
+            icon: 'cards',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          }
+        ]
+      },
+      {
+        id: 'admin-documents',
+        title: 'Documents',
+        type: 'collapse',
+        icon: 'file-text',
+        role: [Role.Admin],
+        children: [
+          {
+            id: 'admin-dressage-documents',
+            title: 'Dressage Documents',
+            type: 'item',
+            url: '/admin/documents/dressage',
+            icon: 'file-description',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          }
+        ]
+      },
+      {
+        id: 'admin-horse-settings',
+        title: 'Horse Settings',
+        type: 'collapse',
+        icon: 'horse',
+        role: [Role.Admin],
+        children: [
+          {
+            id: 'admin-horse-grades',
+            title: 'Grades',
+            type: 'item',
+            url: '/admin/horse-settings/grades',
+            icon: 'stairs',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-horse-breeds',
+            title: 'Breeds',
+            type: 'item',
+            url: '/admin/horse-settings/breeds',
+            icon: 'dna',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-horse-colors',
+            title: 'Colors',
+            type: 'item',
+            url: '/admin/horse-settings/colors',
+            icon: 'palette',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          }
+        ]
+      },
+      {
+        id: 'admin-grading-tests',
+        title: 'Grading and Tests',
+        type: 'collapse',
+        icon: 'award',
+        role: [Role.Admin],
+        children: [
+          {
+            id: 'admin-grading-grades',
+            title: 'Grades',
+            type: 'item',
+            url: '/admin/grading/grades',
+            icon: 'certificate',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-class-types',
+            title: 'Class Types',
+            type: 'item',
+            url: '/admin/grading/class-types',
+            icon: 'category',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-upgrade-points',
+            title: 'Upgrade Points',
+            type: 'item',
+            url: '/admin/grading/upgrade-points',
+            icon: 'arrow-up-circle',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-grading-points',
+            title: 'Grading Points',
+            type: 'item',
+            url: '/admin/grading/grading-points',
+            icon: 'star',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-grade-sequences',
+            title: 'Grade Sequences',
+            type: 'item',
+            url: '/admin/grading/grade-sequences',
+            icon: 'list-numbers',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-rule-groups',
+            title: 'Rule Groups',
+            type: 'item',
+            url: '/admin/grading/rule-groups',
+            icon: 'folder',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-rules-management',
+            title: 'Rules Management',
+            type: 'item',
+            url: '/admin/grading/rules',
+            icon: 'book',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          }
+        ]
+      },
+      {
+        id: 'admin-shows',
+        title: 'Shows',
+        type: 'collapse',
+        icon: 'trophy',
+        role: [Role.Admin],
+        children: [
+          {
+            id: 'admin-all-shows',
+            title: 'All Shows',
+            type: 'item',
+            url: '/admin/shows',
+            icon: 'list',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-past-shows',
+            title: 'Past Shows',
+            type: 'item',
+            url: '/admin/shows/past',
+            icon: 'history',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-upcoming-shows',
+            title: 'Upcoming Shows',
+            type: 'item',
+            url: '/admin/shows/upcoming',
+            icon: 'calendar-event',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          }
+        ]
+      },
+      {
+        id: 'admin-email',
+        title: 'Email',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/admin/email',
+        icon: 'mail',
+        breadcrumbs: false,
+        role: [Role.Admin]
+      },
+      {
+        id: 'admin-reports',
+        title: 'Reports',
+        type: 'collapse',
+        icon: 'chart-bar',
+        role: [Role.Admin],
+        children: [
+          {
+            id: 'admin-membership-by-type',
+            title: 'Membership by Type',
+            type: 'item',
+            url: '/admin/reports/membership-by-type',
+            icon: 'chart-pie',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-members-report',
+            title: 'Members Report',
+            type: 'item',
+            url: '/admin/reports/members',
+            icon: 'report',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-horse-ages',
+            title: 'Horse Ages',
+            type: 'item',
+            url: '/admin/reports/horse-ages',
+            icon: 'calendar-stats',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-recreation-members',
+            title: 'Recreation Members',
+            type: 'item',
+            url: '/admin/reports/recreation-members',
+            icon: 'users',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-judges-report',
+            title: 'Judges',
+            type: 'item',
+            url: '/admin/reports/judges',
+            icon: 'clipboard-list',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-temporary-memberships',
+            title: 'Temporary Memberships',
+            type: 'item',
+            url: '/admin/reports/temporary-memberships',
+            icon: 'clock',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          }
+        ]
+      },
+      {
+        id: 'admin-settings',
+        title: 'Settings',
+        type: 'collapse',
+        icon: 'settings',
+        role: [Role.Admin],
+        children: [
+          {
+            id: 'admin-schools',
+            title: 'Schools',
+            type: 'item',
+            url: '/admin/settings/schools',
+            icon: 'school',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-provinces',
+            title: 'Provinces',
+            type: 'item',
+            url: '/admin/settings/provinces',
+            icon: 'map-pin',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-districts',
+            title: 'Districts',
+            type: 'item',
+            url: '/admin/settings/districts',
+            icon: 'map',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-accounting-periods',
+            title: 'Accounting Periods',
+            type: 'item',
+            url: '/admin/settings/accounting-periods',
+            icon: 'calendar-time',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-vat-codes',
+            title: 'VAT Codes',
+            type: 'item',
+            url: '/admin/settings/vat-codes',
+            icon: 'receipt-tax',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          }
+        ]
+      }
+    ]
+  },
+  // Demo Admin Dashboard (for ADMIN and USER roles)
   {
     id: 'Dashboard',
     title: 'Dashboard',

@@ -35,20 +35,30 @@ export class NavCollapseComponent implements OnInit {
     const currentUserRole = this.authenticationService.currentUserValue?.user.role || Role.Admin;
     const parentRoleValue = this.parentRole();
     const item = this.item();
+
+    // Default to enabled
+    this.isEnabled = true;
+
     if (item.role && item.role.length > 0) {
+      // Item has specific roles defined
       if (currentUserRole) {
         const parentRole = this.parentRole();
         const allowedFromParent = item.isMainParent || (parentRole && parentRole.length > 0 && parentRole.includes(currentUserRole));
         if (allowedFromParent) {
+          // Check if current user role is in the item's allowed roles
           this.isEnabled = item.role.includes(currentUserRole);
+        } else {
+          // Parent doesn't allow this role
+          this.isEnabled = false;
         }
       }
     } else if (parentRoleValue && parentRoleValue.length > 0) {
-      // If item.role is empty, check parentRole
+      // If item.role is empty, inherit from parent role
       if (currentUserRole) {
         this.isEnabled = parentRoleValue.includes(currentUserRole);
       }
     }
+    // If no roles defined at all (item.role and parentRole both empty), item is enabled for all users
   }
 
   // Method to handle the collapse of the navigation menu

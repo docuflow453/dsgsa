@@ -7,6 +7,7 @@ import { form, Field } from '@angular/forms/signals';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { AuthenticationService } from 'src/app/theme/shared/service/authentication.service';
 import { DASHBOARD_PATH } from 'src/app/app-config';
+import { Role } from 'src/app/theme/shared/components/_helpers/role';
 
 import { IconService } from '@ant-design/icons-angular';
 import { EyeInvisibleOutline, EyeOutline } from '@ant-design/icons-angular/icons';
@@ -54,7 +55,7 @@ export class AuthLoginComponent implements OnInit {
   // Roles and selection logic unchanged here...
   roles: Roles[] = [
     { name: 'Admin', email: 'admin@gmail.com', password: 'Admin@123', role: 'Admin' },
-    { name: 'SHB', email: 'admin@gmail.com', password: 'Admin@123', role: 'SHB' },
+    { name: 'SHB', email: 'admin@gmail.com', password: 'Admin@123', role: 'ShowHoldingBody' },
     { name: 'Club', email: 'admin@gmail.com', password: 'Admin@123', role: 'Club' },
     { name: 'Province', email: 'admin@gmail.com', password: 'Admin@123', role: 'Province' },
     { name: 'Rider', email: 'admin@gmail.com', password: 'Admin@123', role: 'Rider' }
@@ -73,8 +74,10 @@ export class AuthLoginComponent implements OnInit {
 
     // Redirect if already logged in
     if (window.location.pathname !== '/auth/login') {
-      if (this.authenticationService.currentUserValue) {
-        this.router.navigate([DASHBOARD_PATH]);
+      const user = this.authenticationService.currentUserValue;
+      if (user && user.user && user.user.role) {
+        const dashboardPath = this.getRoleDashboardPath(user.user.role);
+        this.router.navigate([dashboardPath]);
       }
     }
   }
@@ -95,6 +98,35 @@ export class AuthLoginComponent implements OnInit {
     return val.email.trim() !== '' && val.password.trim() !== '';
   }
 
+  /**
+   * Get role-specific dashboard path
+   * Redirects users to their appropriate dashboard based on their role
+   */
+  private getRoleDashboardPath(role: Role): string {
+    // Map role to dashboard path
+    console.log(role)
+    const _role = this.selectedRole.role;
+    switch (_role) {
+      case Role.Admin:
+        return '/dashboard/default';
+      case Role.SAEF:
+        return '/saef/dashboard';
+      case Role.Provincial:
+        return '/provincial/dashboard';
+      case Role.Club:
+        return '/clubs/dashboard';
+      case Role.ShowHoldingBody:
+        return '/shb/dashboard';
+      case Role.Rider:
+        return '/my/dashboard';
+      case Role.Official:
+        return '/official/dashboard';
+      default:
+        // Default fallback
+        return DASHBOARD_PATH;
+    }
+  }
+
   onSubmit() {
     this.submitted = true;
 
@@ -107,9 +139,26 @@ export class AuthLoginComponent implements OnInit {
 
     const { email, password } = this.loginForm().value();
 
-    this.authenticationService.login(email, password).subscribe({
+    // Pass the selected role to the authentication service for test persona
+    const selectedRoleEnum = this.selectedRole.role as Role;
+
+    this.authenticationService.login(email, password, selectedRoleEnum).subscribe({
       next: () => {
-        this.router.navigate([DASHBOARD_PATH]);
+        // Get the current user and redirect to their role-specific dashboard
+        const user = this.authenticationService.currentUserValue;
+        console.log('✅ Login successful, user:', user);
+        console.log('🎯 Selected role:', this.selectedRole);
+        if (user && user.user && user.user.role) {
+          console.log('📍 User role:', user.user.role);
+          const dashboardPath = this.getRoleDashboardPath(user.user.role);
+          console.log('🚀 Navigating to:', dashboardPath);
+          this.router.navigate([dashboardPath]);
+        } else {
+          // Fallback to default dashboard if user or role not available
+          const dashboardPath = this.getRoleDashboardPath({} as Role);
+          // this.router.navigate([DASHBOARD_PATH]);
+          this.router.navigate([dashboardPath]);
+        }
       },
       error: (error) => {
         this.error = error;

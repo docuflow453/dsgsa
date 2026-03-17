@@ -288,6 +288,292 @@ export class ShowHoldingBodyService {
     };
     return of(data).pipe(delay(300));
   }
+
+  // Competition Management Methods
+  getCompetitions(): Observable<any[]> {
+    const mockCompetitions = [
+      {
+        id: 'comp-001',
+        name: 'Spring Dressage Championship 2026',
+        startDate: new Date('2026-04-15'),
+        endDate: new Date('2026-04-17'),
+        venue: 'Cape Town Equestrian Centre',
+        city: 'Cape Town',
+        province: 'Western Cape',
+        status: 'published',
+        totalClasses: 24,
+        totalEntries: 156,
+        totalRevenue: 234500.00,
+        createdAt: new Date('2026-01-10'),
+        updatedAt: new Date('2026-03-05')
+      },
+      {
+        id: 'comp-002',
+        name: 'Winter Classic Dressage Show',
+        startDate: new Date('2026-06-20'),
+        endDate: new Date('2026-06-21'),
+        venue: 'Stellenbosch Riding Academy',
+        city: 'Stellenbosch',
+        province: 'Western Cape',
+        status: 'draft',
+        totalClasses: 18,
+        totalEntries: 0,
+        totalRevenue: 0,
+        createdAt: new Date('2026-02-15'),
+        updatedAt: new Date('2026-03-10')
+      },
+      {
+        id: 'comp-003',
+        name: 'Autumn Dressage Festival',
+        startDate: new Date('2026-03-10'),
+        endDate: new Date('2026-03-12'),
+        venue: 'Durbanville Equestrian Park',
+        city: 'Durbanville',
+        province: 'Western Cape',
+        status: 'ongoing',
+        totalClasses: 20,
+        totalEntries: 142,
+        totalRevenue: 198750.00,
+        createdAt: new Date('2025-12-01'),
+        updatedAt: new Date('2026-03-09')
+      },
+      {
+        id: 'comp-004',
+        name: 'Summer Dressage Spectacular',
+        startDate: new Date('2025-12-15'),
+        endDate: new Date('2025-12-17'),
+        venue: 'Cape Town Equestrian Centre',
+        city: 'Cape Town',
+        province: 'Western Cape',
+        status: 'completed',
+        totalClasses: 22,
+        totalEntries: 168,
+        totalRevenue: 287600.00,
+        createdAt: new Date('2025-09-20'),
+        updatedAt: new Date('2025-12-18')
+      }
+    ];
+    return of(mockCompetitions).pipe(delay(500));
+  }
+
+  getCompetitionById(id: string): Observable<any> {
+    const mockCompetition = {
+      id: id,
+      name: 'Spring Dressage Championship 2026',
+      startDate: new Date('2026-04-15'),
+      endDate: new Date('2026-04-17'),
+      venue: 'Cape Town Equestrian Centre',
+      city: 'Cape Town',
+      province: 'Western Cape',
+      status: 'published',
+      totalClasses: 24,
+      totalEntries: 156,
+      totalRevenue: 234500.00,
+      createdAt: new Date('2026-01-10'),
+      updatedAt: new Date('2026-03-05'),
+      description: 'Annual spring championship featuring all levels of dressage competition',
+      contactEmail: 'entries@ctequestrian.co.za',
+      contactPhone: '+27 21 555 0123',
+      closingDate: new Date('2026-04-08'),
+      maxEntries: 200
+    };
+    return of(mockCompetition).pipe(delay(300));
+  }
+
+  deleteCompetition(id: string): Observable<any> {
+    return of({ success: true, message: 'Competition deleted successfully' }).pipe(delay(500));
+  }
+
+  // Extras Management Methods
+  getExtras(): Observable<any[]> {
+    const mockExtras = [
+      {
+        id: 'extra-001',
+        name: 'Stable per night',
+        description: 'Overnight stabling for one horse',
+        price: 150.00,
+        category: 'stabling',
+        isActive: true,
+        createdAt: new Date('2026-01-10'),
+        updatedAt: new Date('2026-03-01')
+      },
+      {
+        id: 'extra-002',
+        name: 'Hay bale',
+        description: 'Premium quality hay bale',
+        price: 85.00,
+        category: 'feed',
+        isActive: true,
+        createdAt: new Date('2026-01-10'),
+        updatedAt: new Date('2026-02-15')
+      },
+      {
+        id: 'extra-003',
+        name: 'Shavings bedding',
+        description: 'Wood shavings bedding per bag',
+        price: 65.00,
+        category: 'bedding',
+        isActive: true,
+        createdAt: new Date('2026-01-10'),
+        updatedAt: new Date('2026-02-20')
+      },
+      {
+        id: 'extra-004',
+        name: 'Grooming service',
+        description: 'Professional grooming service',
+        price: 200.00,
+        category: 'services',
+        isActive: true,
+        createdAt: new Date('2026-01-15'),
+        updatedAt: new Date('2026-03-05')
+      },
+      {
+        id: 'extra-005',
+        name: 'Veterinary check',
+        description: 'Pre-competition veterinary inspection',
+        price: 350.00,
+        category: 'services',
+        isActive: false,
+        createdAt: new Date('2026-01-20'),
+        updatedAt: new Date('2026-02-28')
+      }
+    ];
+    return of(mockExtras).pipe(delay(500));
+  }
+
+  createExtra(data: any): Observable<any> {
+    return of({ success: true, message: 'Extra created successfully', data }).pipe(delay(500));
+  }
+
+  updateExtra(id: string, data: any): Observable<any> {
+    return of({ success: true, message: 'Extra updated successfully', data }).pipe(delay(500));
+  }
+
+  deleteExtra(id: string): Observable<any> {
+    return of({ success: true, message: 'Extra deleted successfully' }).pipe(delay(500));
+  }
+
+  // Levies Management Methods
+  getLevies(): Observable<any[]> {
+    const mockLevies = [
+      {
+        id: 'levy-001',
+        name: 'SAEF Levy',
+        description: 'South African Equestrian Federation levy per entry',
+        amount: 25.00,
+        type: 'fixed',
+        applicableTo: 'entry',
+        isActive: true,
+        createdAt: new Date('2026-01-10'),
+        updatedAt: new Date('2026-03-01')
+      },
+      {
+        id: 'levy-002',
+        name: 'Provincial Levy',
+        description: 'Provincial association levy',
+        amount: 15.00,
+        type: 'fixed',
+        applicableTo: 'entry',
+        isActive: true,
+        createdAt: new Date('2026-01-10'),
+        updatedAt: new Date('2026-02-15')
+      },
+      {
+        id: 'levy-003',
+        name: 'Administration Fee',
+        description: 'Competition administration fee',
+        amount: 5,
+        type: 'percentage',
+        applicableTo: 'competition',
+        isActive: true,
+        createdAt: new Date('2026-01-15'),
+        updatedAt: new Date('2026-03-05')
+      }
+    ];
+    return of(mockLevies).pipe(delay(500));
+  }
+
+  createLevy(data: any): Observable<any> {
+    return of({ success: true, message: 'Levy created successfully', data }).pipe(delay(500));
+  }
+
+  updateLevy(id: string, data: any): Observable<any> {
+    return of({ success: true, message: 'Levy updated successfully', data }).pipe(delay(500));
+  }
+
+  deleteLevy(id: string): Observable<any> {
+    return of({ success: true, message: 'Levy deleted successfully' }).pipe(delay(500));
+  }
+
+  // Arenas Management Methods
+  getArenas(): Observable<any[]> {
+    const mockArenas = [
+      {
+        id: 'arena-001',
+        name: 'Main Arena',
+        description: 'Primary competition arena with premium surface',
+        size: '60m x 20m',
+        surface: 'Sand and fiber mix',
+        capacity: 500,
+        isActive: true,
+        createdAt: new Date('2026-01-10'),
+        updatedAt: new Date('2026-03-01')
+      },
+      {
+        id: 'arena-002',
+        name: 'Practice Arena',
+        description: 'Warm-up and practice arena',
+        size: '40m x 20m',
+        surface: 'Sand',
+        capacity: 200,
+        isActive: true,
+        createdAt: new Date('2026-01-10'),
+        updatedAt: new Date('2026-02-15')
+      }
+    ];
+    return of(mockArenas).pipe(delay(500));
+  }
+
+  createArena(data: any): Observable<any> {
+    return of({ success: true, message: 'Arena created successfully', data }).pipe(delay(500));
+  }
+
+  updateArena(id: string, data: any): Observable<any> {
+    return of({ success: true, message: 'Arena updated successfully', data }).pipe(delay(500));
+  }
+
+  deleteArena(id: string): Observable<any> {
+    return of({ success: true, message: 'Arena deleted successfully' }).pipe(delay(500));
+  }
+
+  // Payment Methods Management
+  getPaymentMethods(): Observable<any[]> {
+    const mockPaymentMethods = [
+      {
+        id: 'pm-001',
+        name: 'Electronic Funds Transfer (EFT)',
+        description: 'Direct bank transfer',
+        isActive: true,
+        processingFee: 0,
+        createdAt: new Date('2026-01-10'),
+        updatedAt: new Date('2026-03-01')
+      },
+      {
+        id: 'pm-002',
+        name: 'Credit Card',
+        description: 'Visa, Mastercard payments',
+        isActive: true,
+        processingFee: 2.5,
+        createdAt: new Date('2026-01-10'),
+        updatedAt: new Date('2026-02-15')
+      }
+    ];
+    return of(mockPaymentMethods).pipe(delay(500));
+  }
+
+  updatePaymentMethod(id: string, data: any): Observable<any> {
+    return of({ success: true, message: 'Payment method updated successfully', data }).pipe(delay(500));
+  }
 }
 
 

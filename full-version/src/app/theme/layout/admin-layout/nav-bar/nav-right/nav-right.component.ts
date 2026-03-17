@@ -107,7 +107,7 @@ export class NavRightComponent implements OnInit {
       children: [
         {
           title: 'Login',
-          url: '/auth/login'
+          url: '/login'
         },
         {
           title: 'Register',

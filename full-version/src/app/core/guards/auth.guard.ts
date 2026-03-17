@@ -14,8 +14,9 @@ export const authGuard: CanActivateFn = (route, state) => {
     return true;
   }
 
+  console.log('Auth Guard');
   // Store the attempted URL for redirecting after login
-  router.navigate(['/auth/login'], { 
+  router.navigate(['/login'], {
     queryParams: { returnUrl: state.url }
   });
   

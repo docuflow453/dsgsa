@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
+import { UserRole } from '../../../core/models/user.model';
 
 /**
  * Login Component - User authentication
@@ -44,6 +45,30 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls;
   }
 
+  /**
+   * Get role-specific dashboard path
+   * Redirects users to their appropriate dashboard based on their role
+   */
+  private getRoleDashboardPath(roles: UserRole[]): string {
+    // Check roles in priority order (highest priority first)
+    if (roles.includes(UserRole.ADMIN)) {
+      return '/dashboard/default';
+    } else if (roles.includes(UserRole.SAEF)) {
+      return '/saef/dashboard';
+    } else if (roles.includes(UserRole.PROVINCIAL)) {
+      return '/provincial/dashboard';
+    } else if (roles.includes(UserRole.CLUB)) {
+      return '/clubs/dashboard';
+    } else if (roles.includes(UserRole.SHOW_HOLDING_BODY)) {
+      return '/shb/dashboard';
+    } else if (roles.includes(UserRole.RIDER)) {
+      return '/my/dashboard';
+    } else {
+      // Default fallback
+      return '/dashboard/default';
+    }
+  }
+
   onSubmit(): void {
     // Reset error message
     this.errorMessage = '';
@@ -61,11 +86,18 @@ export class LoginComponent implements OnInit {
 
     // Call auth service
     const { email, password, rememberMe } = this.loginForm.value;
-    
+
     this.authService.login({ email, password, rememberMe }).subscribe({
       next: (response) => {
-        // Success - redirect to return URL
-        this.router.navigate([this.returnUrl]);
+        // Get the current user and redirect to their role-specific dashboard
+        const user = this.authService.currentUserValue;
+        if (user && user.roles && user.roles.length > 0) {
+          const dashboardPath = this.getRoleDashboardPath(user.roles);
+          this.router.navigate([dashboardPath]);
+        } else {
+          // Fallback to return URL or default dashboard
+          this.router.navigate([this.returnUrl]);
+        }
       },
       error: (error) => {
         // Error - display message

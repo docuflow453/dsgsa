@@ -43,21 +43,29 @@ export class NavItemComponent implements OnInit {
     const parentRoleValue = this.parentRole();
     const item = this.item();
 
+    // Default to enabled
+    this.isEnabled = true;
+
     if (item.role && item.role.length > 0) {
+      // Item has specific roles defined
       if (CurrentUserRole) {
         const parentRole = this.parentRole();
         const allowedFromParent = item.isMainParent || (parentRole && parentRole.length > 0 && parentRole.includes(CurrentUserRole));
         if (allowedFromParent) {
+          // Check if current user role is in the item's allowed roles
           this.isEnabled = item.role.includes(CurrentUserRole);
+        } else {
+          // Parent doesn't allow this role
+          this.isEnabled = false;
         }
       }
     } else if (parentRoleValue && parentRoleValue.length > 0) {
-      // If item.role is empty, check parentRole
+      // If item.role is empty, inherit from parent role
       if (CurrentUserRole) {
         this.isEnabled = parentRoleValue.includes(CurrentUserRole);
       }
     }
-    this.isEnabled = true;
+    // If no roles defined at all (item.role and parentRole both empty), item is enabled for all users
   }
 
   // public method

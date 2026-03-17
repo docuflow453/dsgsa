@@ -1,4 +1,4 @@
-@if (!item().hidden) {
+@if (!item().hidden && isVisible) {
   <li class="nav-item coded-menu-caption" [ngClass]="item().classes">
     <label>{{ item().title | translate }}</label>
   </li>

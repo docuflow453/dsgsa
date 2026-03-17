@@ -21,8 +21,7 @@ export const publicGuard: CanActivateFn = (route, state) => {
   if (!user) {
     return true;
   }
-  console.log('User roles:', user.roles);
-  console.log(user.roles.includes(UserRole.SHOW_HOLDING_BODY));
+  console.log('Public Guard');
   // Redirect based on primary role (highest priority first)
   if (user.roles.includes(UserRole.ADMIN)) {
     router.navigate(['/dashboard/default']);

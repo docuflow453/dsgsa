@@ -1,0 +1,212 @@
+<!-- Competition List Page -->
+<div class="competition-list-page">
+  <!-- Page Header -->
+  <div class="page-header mb-4 d-flex justify-content-between align-items-center">
+    <div>
+      <h2>Competitions</h2>
+      <p class="text-muted">Manage your dressage competitions</p>
+    </div>
+    <button class="btn btn-primary" (click)="createCompetition()">
+      <i class="ti ti-plus me-2"></i>Create Competition
+    </button>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+    <div class="toast" [class.show]="showToast" [class.bg-success]="toastType === 'success'" [class.bg-danger]="toastType === 'error'">
+      <div class="toast-body text-white">
+        <i class="ti" [class.ti-check]="toastType === 'success'" [class.ti-alert-circle]="toastType === 'error'" class="me-2"></i>
+        {{ toastMessage }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters and Search -->
+  <div class="card mb-4">
+    <div class="card-header bg-white">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <!-- Status Filter -->
+        <div class="d-flex gap-2 align-items-center">
+          <label class="mb-0 me-2">Status:</label>
+          <select class="form-select form-select-sm" [(ngModel)]="statusFilter" (change)="searchCompetitions()" style="width: auto;">
+            <option value="all">All Statuses</option>
+            <option value="draft">Draft</option>
+            <option value="published">Published</option>
+            <option value="ongoing">Ongoing</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        <!-- Search -->
+        <div class="search-box">
+          <div class="input-group">
+            <span class="input-group-text bg-white">
+              <i class="ti ti-search"></i>
+            </span>
+            <input type="text" class="form-control" placeholder="Search competitions..." 
+              [(ngModel)]="searchQuery" (input)="searchCompetitions()">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Competitions Table -->
+  <div *ngIf="!loading" class="card">
+    <div class="card-body">
+      <!-- Empty State -->
+      <div *ngIf="paginatedCompetitions.length === 0" class="text-center text-muted py-5">
+        <i class="ti ti-trophy-off" style="font-size: 4rem; opacity: 0.3;"></i>
+        <p class="mt-3">
+          <span *ngIf="searchQuery || statusFilter !== 'all'">No competitions found matching your filters</span>
+          <span *ngIf="!searchQuery && statusFilter === 'all'">No competitions yet. Create your first competition!</span>
+        </p>
+        <button *ngIf="!searchQuery && statusFilter === 'all'" class="btn btn-primary mt-2" (click)="createCompetition()">
+          <i class="ti ti-plus me-2"></i>Create Competition
+        </button>
+      </div>
+
+      <!-- Competitions Table -->
+      <div *ngIf="paginatedCompetitions.length > 0" class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Competition Name</th>
+              <th>Dates</th>
+              <th>Venue</th>
+              <th>Status</th>
+              <th>Classes</th>
+              <th>Entries</th>
+              <th>Revenue</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let competition of paginatedCompetitions" (click)="viewCompetition(competition)" style="cursor: pointer;">
+              <!-- Competition Name -->
+              <td>
+                <div>
+                  <strong>{{ competition.name }}</strong>
+                  <br>
+                  <small class="text-muted">Created {{ formatDate(competition.createdAt) }}</small>
+                </div>
+              </td>
+              <!-- Dates -->
+              <td>
+                <div>
+                  {{ formatDate(competition.startDate) }}
+                  <span *ngIf="competition.startDate !== competition.endDate">
+                    <br><small class="text-muted">to {{ formatDate(competition.endDate) }}</small>
+                  </span>
+                </div>
+              </td>
+              <!-- Venue -->
+              <td>
+                <div>
+                  {{ competition.venue }}
+                  <br>
+                  <small class="text-muted">{{ competition.city }}, {{ competition.province }}</small>
+                </div>
+              </td>
+              <!-- Status -->
+              <td>
+                <span class="badge" [ngClass]="getStatusBadgeClass(competition.status)">
+                  {{ competition.status | titlecase }}
+                </span>
+              </td>
+              <!-- Classes -->
+              <td class="text-center">{{ competition.totalClasses }}</td>
+              <!-- Entries -->
+              <td class="text-center">{{ competition.totalEntries }}</td>
+              <!-- Revenue -->
+              <td>{{ formatCurrency(competition.totalRevenue) }}</td>
+              <!-- Actions -->
+              <td>
+                <div class="d-flex gap-2" (click)="$event.stopPropagation()">
+                  <button class="btn btn-sm btn-outline-primary" (click)="editCompetition(competition)" title="Edit">
+                    <i class="ti ti-edit"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="openDeleteModal(competition)" title="Delete">
+                    <i class="ti ti-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div *ngIf="totalPages > 1" class="d-flex justify-content-between align-items-center mt-4">
+        <div class="text-muted">
+          Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to
+          {{ Math.min(currentPage * itemsPerPage, filteredCompetitions.length) }}
+          of {{ filteredCompetitions.length }} competitions
+        </div>
+        <nav>
+          <ul class="pagination mb-0">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" (click)="changePage(currentPage - 1)" role="button">Previous</a>
+            </li>
+            <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
+              [class.active]="currentPage === i + 1">
+              <a class="page-link" (click)="changePage(i + 1)" role="button">{{ i + 1 }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" (click)="changePage(currentPage + 1)" role="button">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" [class.show]="showDeleteModal" [style.display]="showDeleteModal ? 'block' : 'none'" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="ti ti-trash me-2"></i>Delete Competition</h5>
+        <button type="button" class="btn-close" (click)="closeDeleteModal()" [disabled]="processingAction"></button>
+      </div>
+      <div class="modal-body" *ngIf="selectedCompetition">
+        <div class="alert alert-danger">
+          <i class="ti ti-alert-triangle me-2"></i>
+          <strong>Warning:</strong> This action cannot be undone.
+        </div>
+        <p>Are you sure you want to delete the following competition?</p>
+        <div class="competition-info-box p-3 bg-light rounded">
+          <strong>{{ selectedCompetition.name }}</strong><br>
+          <small class="text-muted">{{ formatDate(selectedCompetition.startDate) }} - {{ selectedCompetition.venue }}</small><br>
+          <small class="text-muted">{{ selectedCompetition.totalEntries }} entries, {{ selectedCompetition.totalClasses }} classes</small>
+        </div>
+        <p class="mt-3 text-danger">
+          <strong>Note:</strong> All associated data including entries, classes, and transactions will be permanently deleted.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeDeleteModal()" [disabled]="processingAction">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()" [disabled]="processingAction">
+          <span *ngIf="!processingAction"><i class="ti ti-trash me-2"></i>Delete Competition</span>
+          <span *ngIf="processingAction">
+            <span class="spinner-border spinner-border-sm me-2"></span>Deleting...
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" [class.show]="showDeleteModal" *ngIf="showDeleteModal" (click)="closeDeleteModal()"></div>
+
+
