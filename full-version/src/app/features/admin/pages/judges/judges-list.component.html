@@ -1,0 +1,271 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardClass="table-card" [padding]="0">
+      <!-- Custom Header with Title and Button -->
+      <div class="card-header" card-header>
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <h5 class="mb-0">Judges</h5>
+          <button type="button" class="btn btn-primary" (click)="createJudge()">
+            <i class="ti ti-plus"></i> Add Judge
+          </button>
+        </div>
+      </div>
+
+      <form class="dt-responsive">
+        <!-- Top Controls: Page Size, Filters, and Search -->
+        <div class="dataTable-top">
+          <div class="row g-3 align-items-center">
+            <!-- Page Size Selector -->
+            <div class="col-auto">
+              <select
+                class="form-select"
+                title="select item per page"
+                style="width: auto"
+                name="pageSize"
+                [(ngModel)]="service.pageSize"
+              >
+                <option [ngValue]="5">5 items per page</option>
+                <option [ngValue]="10">10 items per page</option>
+                <option [ngValue]="15">15 items per page</option>
+                <option [ngValue]="25">25 items per page</option>
+                <option [ngValue]="50">50 items per page</option>
+              </select>
+            </div>
+
+            <!-- Status Filter -->
+            <div class="col-auto">
+              <select class="form-select" name="statusFilter" [(ngModel)]="service.statusFilter" style="width: auto">
+                <option value="">All Statuses</option>
+                @for (status of statuses; track status) {
+                  <option [value]="status">{{ status }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Reset Filters Button -->
+            <div class="col-auto">
+              <button type="button" class="btn btn-outline-secondary" (click)="resetFilters()">
+                <i class="ti ti-refresh"></i> Reset
+              </button>
+            </div>
+
+            <!-- Search Box -->
+            <div class="col-auto ms-auto">
+              <div class="dataTable-search d-flex align-items-center">
+                <input
+                  id="table-complete-search"
+                  type="text"
+                  class="form-control"
+                  name="searchTerm"
+                  [(ngModel)]="service.searchTerm"
+                  placeholder="Search by name, license, type..."
+                  style="min-width: 300px"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive dt-responsive">
+          @if (loading$ | async) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          } @else {
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">IMAGE</th>
+                  <th scope="col">NAME</th>
+                  <th scope="col">TYPE</th>
+                  <th scope="col">LICENSE NUMBER</th>
+                  <th scope="col">STATUS</th>
+                  <th scope="col">LOCATION</th>
+                  <th scope="col">DATE CREATED</th>
+                  <th scope="col" class="text-center">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (judge of judges$ | async; track judge.id) {
+                  <tr>
+                    <!-- Image -->
+                    <td>
+                      <div class="d-flex align-items-center">
+                        @if (judge.image) {
+                          <img src="{{ judge.image }}" alt="judge" class="img-radius wid-40" />
+                        } @else {
+                          <div class="avtar avtar-s bg-light-primary">
+                            <i class="ti ti-gavel f-20"></i>
+                          </div>
+                        }
+                      </div>
+                    </td>
+
+                    <!-- Name -->
+                    <td>
+                      <h6 class="mb-0">
+                        <ngb-highlight [result]="getFullName(judge)" [term]="service.searchTerm"></ngb-highlight>
+                      </h6>
+                      <p class="text-muted f-12 mb-0">
+                        <i class="ti ti-mail me-1"></i>
+                        {{ judge.email }}
+                      </p>
+                      @if (judge.specialization) {
+                        <p class="text-muted f-11 mb-0">
+                          <i class="ti ti-award me-1"></i>
+                          {{ judge.specialization }}
+                        </p>
+                      }
+                    </td>
+
+                    <!-- Type -->
+                    <td>
+                      <span [class]="getJudgeTypeClass(judge.judgeType)">
+                        <ngb-highlight [result]="judge.judgeType" [term]="service.searchTerm"></ngb-highlight>
+                      </span>
+                      @if (judge.yearsOfExperience) {
+                        <p class="text-muted f-11 mb-0 mt-1">
+                          {{ judge.yearsOfExperience }} years exp.
+                        </p>
+                      }
+                    </td>
+
+                    <!-- License Number -->
+                    <td>
+                      <ngb-highlight [result]="judge.licenseNumber" [term]="service.searchTerm"></ngb-highlight>
+                    </td>
+
+                    <!-- Status -->
+                    <td>
+                      <span [class]="getStatusClass(judge.status)">{{ judge.status }}</span>
+                    </td>
+
+                    <!-- Location -->
+                    <td>
+                      @if (judge.city && judge.province) {
+                        <div>
+                          <span class="d-block">{{ judge.city }}</span>
+                          <span class="text-muted f-12">{{ judge.province }}</span>
+                        </div>
+                      } @else {
+                        <span class="text-muted">-</span>
+                      }
+                    </td>
+
+                    <!-- Date Created -->
+                    <td>{{ judge.dateCreated | date: 'MMM dd, yyyy' }}</td>
+
+                    <!-- Actions -->
+                    <td class="text-center">
+                      <div class="btn-group" role="group">
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-link-secondary avtar-xs"
+                          (click)="viewJudge(judge)"
+                          title="View Details"
+                        >
+                          <i class="ti ti-eye f-18"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-link-primary avtar-xs"
+                          (click)="editJudge(judge)"
+                          title="Edit Judge"
+                        >
+                          <i class="ti ti-edit f-18"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-link-danger avtar-xs"
+                          (click)="openDeleteModal(deleteModal, judge)"
+                          title="Delete Judge"
+                        >
+                          <i class="ti ti-trash f-18"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="8" class="text-center py-5">
+                      <div class="text-muted">
+                        <i class="ti ti-gavel f-40 d-block mb-2"></i>
+                        <p class="mb-0">No Judges found</p>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+
+        <!-- Pagination -->
+        <div class="datatable-bottom">
+          <div class="datatable-info">
+            Showing {{ (service.page - 1) * service.pageSize + 1 }} to
+            {{ service.page * service.pageSize > (total$ | async)! ? (total$ | async)! : service.page * service.pageSize }} of
+            {{ total$ | async }} entries
+          </div>
+          <ngb-pagination
+            [collectionSize]="(total$ | async)!"
+            [(page)]="service.page"
+            [pageSize]="service.pageSize"
+            class="table-pagination"
+          ></ngb-pagination>
+        </div>
+      </form>
+    </app-card>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Delete Judge</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    @if (selectedJudge) {
+      <div class="judge-info-box mb-3">
+        <div class="d-flex align-items-center">
+          @if (selectedJudge.image) {
+            <img src="{{ selectedJudge.image }}" alt="judge" class="img-radius wid-40 me-3" />
+          } @else {
+            <div class="avtar avtar-s bg-light-primary me-3">
+              <i class="ti ti-gavel f-20"></i>
+            </div>
+          }
+          <div>
+            <h6 class="mb-0">{{ getFullName(selectedJudge) }}</h6>
+            <p class="text-muted f-12 mb-0">{{ selectedJudge.licenseNumber }}</p>
+            <p class="text-muted f-11 mb-0">
+              <span [class]="getJudgeTypeClass(selectedJudge.judgeType)">{{ selectedJudge.judgeType }}</span>
+              @if (selectedJudge.specialization) {
+                <span class="ms-2">• {{ selectedJudge.specialization }}</span>
+              }
+            </p>
+            @if (selectedJudge.city && selectedJudge.province) {
+              <p class="text-muted f-11 mb-0">
+                <i class="ti ti-map-pin me-1"></i>
+                {{ selectedJudge.city }}, {{ selectedJudge.province }}
+              </p>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-danger">
+        <i class="ti ti-alert-triangle me-2"></i>
+        <strong>Warning:</strong> This action cannot be undone. Are you sure you want to permanently delete this Judge?
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteJudge()">Delete Judge</button>
+  </div>
+</ng-template>
+

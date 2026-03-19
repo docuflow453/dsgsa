@@ -1,0 +1,324 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="Administrators List" cardClass="table-card" [padding]="0">
+      <form class="dt-responsive">
+        <!-- Top Controls: Page Size, Filters, and Search -->
+        <div class="dataTable-top">
+          <div class="row g-3 align-items-center">
+            <!-- Page Size Selector -->
+            <div class="col-auto">
+              <select
+                class="form-select"
+                title="select item per page"
+                style="width: auto"
+                name="pageSize"
+                [(ngModel)]="service.pageSize"
+              >
+                <option [ngValue]="5">5 items per page</option>
+                <option [ngValue]="10">10 items per page</option>
+                <option [ngValue]="15">15 items per page</option>
+                <option [ngValue]="25">25 items per page</option>
+                <option [ngValue]="50">50 items per page</option>
+              </select>
+            </div>
+
+            <!-- Role Filter -->
+            <div class="col-auto">
+              <select class="form-select" name="roleFilter" [(ngModel)]="service.roleFilter" style="width: auto">
+                <option value="">All Roles</option>
+                @for (role of uniqueRoles; track role) {
+                  <option [value]="role">{{ role }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Status Filter -->
+            <div class="col-auto">
+              <select class="form-select" name="statusFilter" [(ngModel)]="service.statusFilter" style="width: auto">
+                <option value="">All Statuses</option>
+                @for (status of uniqueStatuses; track status) {
+                  <option [value]="status">{{ status }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Reset Filters Button -->
+            <div class="col-auto">
+              <button type="button" class="btn btn-outline-secondary" (click)="resetFilters()">
+                <i class="ti ti-refresh"></i> Reset
+              </button>
+            </div>
+
+            <!-- Search Box -->
+            <div class="col-auto ms-auto">
+              <div class="dataTable-search d-flex align-items-center">
+                <input
+                  id="table-complete-search"
+                  type="text"
+                  class="form-control"
+                  name="searchTerm"
+                  [(ngModel)]="service.searchTerm"
+                  placeholder="Search by name, email, role..."
+                  style="min-width: 300px"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive dt-responsive">
+          @if (loading$ | async) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          } @else {
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">USER INFO</th>
+                  <th scope="col">COUNTRY</th>
+                  <th scope="col">ROLE</th>
+                  <th scope="col">STATUS</th>
+                  <th scope="col">DATE JOINED</th>
+                  <th scope="col" class="text-center">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (administrator of administrators$ | async; track administrator.id) {
+                  <tr>
+                    <!-- User Info -->
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                          <img src="{{ administrator.profileImage }}" alt="user image" class="img-radius wid-40" />
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                          <h6 class="mb-0">
+                            <ngb-highlight [result]="getFullName(administrator)" [term]="service.searchTerm"></ngb-highlight>
+                          </h6>
+                          <p class="text-muted f-12 mb-0">
+                            <ngb-highlight [result]="administrator.email" [term]="service.searchTerm"></ngb-highlight>
+                          </p>
+                          @if (administrator.department) {
+                            <p class="text-muted f-11 mb-0">
+                              <i class="ti ti-building-community me-1"></i>
+                              {{ administrator.department }}
+                            </p>
+                          }
+                        </div>
+                      </div>
+                    </td>
+
+                    <!-- Country -->
+                    <td>
+                      <span class="me-1">{{ getCountryFlag(administrator.countryCode) }}</span>
+                      {{ administrator.country }}
+                    </td>
+
+                    <!-- Role -->
+                    <td>
+                      <span [class]="getRoleClass(administrator.role)">{{ administrator.role }}</span>
+                    </td>
+
+                    <!-- Status -->
+                    <td>
+                      <span [class]="getStatusClass(administrator.status)">{{ administrator.status }}</span>
+                    </td>
+
+                    <!-- Date Joined -->
+                    <td>{{ administrator.dateJoined | date: 'MMM dd, yyyy' }}</td>
+
+                    <!-- Actions -->
+                    <td class="text-center">
+                      <div class="btn-group" role="group">
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-link-secondary avtar-xs"
+                          (click)="viewAdministrator(administrator)"
+                          title="View Details"
+                        >
+                          <i class="ti ti-eye f-18"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-link-primary avtar-xs"
+                          (click)="editAdministrator(administrator)"
+                          title="Edit Administrator"
+                        >
+                          <i class="ti ti-edit f-18"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-link-warning avtar-xs"
+                          (click)="openChangePasswordModal(changePasswordModal, administrator)"
+                          title="Change Password"
+                        >
+                          <i class="ti ti-key f-18"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-icon avtar-xs"
+                          [class.btn-link-danger]="!administrator.isBanned"
+                          [class.btn-link-success]="administrator.isBanned"
+                          (click)="openBanModal(banModal, administrator)"
+                          [title]="administrator.isBanned ? 'Unban Administrator' : 'Ban Administrator'"
+                        >
+                          <i class="ti f-18" [class.ti-lock]="!administrator.isBanned" [class.ti-lock-open]="administrator.isBanned"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-link-danger avtar-xs"
+                          (click)="openDeleteModal(deleteModal, administrator)"
+                          title="Delete Administrator"
+                        >
+                          <i class="ti ti-trash f-18"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="6" class="text-center py-5">
+                      <div class="text-muted">
+                        <i class="ti ti-users f-40 d-block mb-2"></i>
+                        <p class="mb-0">No administrators found</p>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+
+        <!-- Pagination -->
+        <div class="datatable-bottom">
+          <div class="datatable-info">
+            Showing {{ (service.page - 1) * service.pageSize + 1 }} to
+            {{ service.page * service.pageSize > (total$ | async)! ? (total$ | async)! : service.page * service.pageSize }} of
+            {{ total$ | async }} entries
+          </div>
+          <ngb-pagination
+            [collectionSize]="(total$ | async)!"
+            [(page)]="service.page"
+            [pageSize]="service.pageSize"
+            class="table-pagination"
+          ></ngb-pagination>
+        </div>
+      </form>
+    </app-card>
+  </div>
+</div>
+
+<!-- Change Password Modal -->
+<ng-template #changePasswordModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Change Password</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    @if (selectedAdministrator) {
+      <div class="administrator-info-box mb-3">
+        <div class="d-flex align-items-center">
+          <img src="{{ selectedAdministrator.profileImage }}" alt="user image" class="img-radius wid-40 me-3" />
+          <div>
+            <h6 class="mb-0">{{ getFullName(selectedAdministrator) }}</h6>
+            <p class="text-muted f-12 mb-0">{{ selectedAdministrator.email }}</p>
+            <p class="text-muted f-11 mb-0">
+              <span [class]="getRoleClass(selectedAdministrator.role)">{{ selectedAdministrator.role }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <form>
+        <div class="mb-3">
+          <label for="newPassword" class="form-label">New Password</label>
+          <input type="password" class="form-control" id="newPassword" placeholder="Enter new password" />
+        </div>
+        <div class="mb-3">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm new password" />
+        </div>
+      </form>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="changePassword()">Change Password</button>
+  </div>
+</ng-template>
+
+<!-- Ban/Unban Modal -->
+<ng-template #banModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ selectedAdministrator?.isBanned ? 'Unban Administrator' : 'Ban Administrator' }}</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    @if (selectedAdministrator) {
+      <div class="administrator-info-box mb-3">
+        <div class="d-flex align-items-center">
+          <img src="{{ selectedAdministrator.profileImage }}" alt="user image" class="img-radius wid-40 me-3" />
+          <div>
+            <h6 class="mb-0">{{ getFullName(selectedAdministrator) }}</h6>
+            <p class="text-muted f-12 mb-0">{{ selectedAdministrator.email }}</p>
+            <p class="text-muted f-11 mb-0">
+              <span [class]="getRoleClass(selectedAdministrator.role)">{{ selectedAdministrator.role }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      @if (selectedAdministrator.isBanned) {
+        <p>Are you sure you want to <strong class="text-success">unban</strong> this administrator? They will regain access to the system.</p>
+      } @else {
+        <p>Are you sure you want to <strong class="text-danger">ban</strong> this administrator? They will lose access to the system.</p>
+      }
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button
+      type="button"
+      [class]="selectedAdministrator?.isBanned ? 'btn btn-success' : 'btn btn-danger'"
+      (click)="toggleBanStatus()"
+    >
+      {{ selectedAdministrator?.isBanned ? 'Unban Administrator' : 'Ban Administrator' }}
+    </button>
+  </div>
+</ng-template>
+
+<!-- Delete Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Delete Administrator</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    @if (selectedAdministrator) {
+      <div class="administrator-info-box mb-3">
+        <div class="d-flex align-items-center">
+          <img src="{{ selectedAdministrator.profileImage }}" alt="user image" class="img-radius wid-40 me-3" />
+          <div>
+            <h6 class="mb-0">{{ getFullName(selectedAdministrator) }}</h6>
+            <p class="text-muted f-12 mb-0">{{ selectedAdministrator.email }}</p>
+            <p class="text-muted f-11 mb-0">
+              <span [class]="getRoleClass(selectedAdministrator.role)">{{ selectedAdministrator.role }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-danger">
+        <i class="ti ti-alert-triangle me-2"></i>
+        <strong>Warning:</strong> This action cannot be undone. Are you sure you want to permanently delete this administrator?
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteAdministrator()">Delete Administrator</button>
+  </div>
+</ng-template>
+

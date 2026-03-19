@@ -1,0 +1,31 @@
+/**
+ * District Detail Component Styles
+ */
+
+// Section headers
+h5.text-primary {
+  font-weight: 600;
+}
+
+// Form labels
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+}
+
+// Links
+a {
+  text-decoration: none;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Badge sizing
+.badge.fs-5 {
+  font-size: 1.25rem !important;
+  padding: 0.5rem 1rem;
+}
+

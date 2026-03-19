@@ -10,6 +10,7 @@ import { TwoFactorAuthComponent } from './two-factor-auth/two-factor-auth.compon
 /**
  * Auth Routes - Lazy loaded authentication routes
  * All routes use publicGuard to redirect authenticated users
+ * Note: /auth/login redirects to /login for consistency
  */
 export const AUTH_ROUTES: Routes = [
   {
@@ -19,13 +20,13 @@ export const AUTH_ROUTES: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'login',
+        redirectTo: '/login',
         pathMatch: 'full'
       },
       {
         path: 'login',
-        component: LoginComponent,
-        title: 'Login - DSRiding'
+        redirectTo: '/login',
+        pathMatch: 'full'
       },
       {
         path: 'register',

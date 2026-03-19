@@ -1,0 +1,94 @@
+/**
+ * Documents List Component Styles
+ * Professional styling for the Documents List page
+ */
+
+// Custom card header
+.card-header {
+  background-color: #fff;
+  border-bottom: 1px solid #dee2e6;
+  padding: 1rem 1.25rem;
+
+  h5 {
+    color: #495057;
+    font-weight: 600;
+    font-size: 1.125rem;
+  }
+}
+
+// Table row hover effect
+.table tbody tr {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: rgba(70, 128, 255, 0.05);
+  }
+}
+
+// Action buttons styling
+.btn-group {
+  .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+
+    i {
+      font-size: 1rem;
+    }
+  }
+}
+
+// File type icon styling
+.ti-file-type-pdf,
+.ti-file-type-doc,
+.ti-file-type-docx,
+.ti-file-type-xls,
+.ti-file-type-xlsx,
+.ti-file-type-jpg,
+.ti-file-type-png,
+.ti-file-type-zip {
+  font-size: 1.5rem;
+}
+
+// Badge styling
+.badge {
+  font-weight: 500;
+  padding: 0.35em 0.65em;
+}
+
+// Empty state styling
+.ti-file-off {
+  opacity: 0.3;
+}
+
+// Search input focus
+.input-group:focus-within {
+  .input-group-text {
+    border-color: #4680ff;
+    background-color: #4680ff;
+    color: white;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .dataTable-top,
+  .dataTable-bottom {
+    .row {
+      > div {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+
+    .btn {
+      border-radius: 0.25rem !important;
+      margin-bottom: 0.25rem;
+    }
+  }
+}
+

@@ -188,7 +188,7 @@ export const NavigationItems: NavigationItem[] = [
         id: 'shb-competitions',
         title: 'Competitions',
         type: 'collapse',
-        icon: 'trophy',
+        icon: 'award',
         role: [Role.ShowHoldingBody],
         children: [
           {
@@ -256,9 +256,9 @@ export const NavigationItems: NavigationItem[] = [
       },
       {
         id: 'admin-members-management',
-        title: 'Members Management',
+        title: 'Members',
         type: 'collapse',
-        icon: 'users',
+        icon: 'usergroup-add',
         role: [Role.Admin],
         children: [
           {
@@ -275,7 +275,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Administrators',
             type: 'item',
             url: '/admin/administrators',
-            icon: 'shield',
+            icon: 'safety-certificate',
             breadcrumbs: false,
             role: [Role.Admin]
           },
@@ -284,7 +284,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Show Holding Bodies',
             type: 'item',
             url: '/admin/show-holding-bodies',
-            icon: 'building',
+            icon: 'shop',
             breadcrumbs: false,
             role: [Role.Admin]
           },
@@ -293,7 +293,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Clubs',
             type: 'item',
             url: '/admin/clubs',
-            icon: 'users-group',
+            icon: 'usergroup-add',
             breadcrumbs: false,
             role: [Role.Admin]
           },
@@ -302,7 +302,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Judges',
             type: 'item',
             url: '/admin/judges',
-            icon: 'gavel',
+            icon: 'solution',
             breadcrumbs: false,
             role: [Role.Admin]
           },
@@ -311,53 +311,27 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Horses',
             type: 'item',
             url: '/admin/horses',
-            icon: 'horse-toy',
+            icon: 'heart',
             breadcrumbs: false,
             role: [Role.Admin]
           }
         ]
       },
       {
-        id: 'admin-membership-settings',
-        title: 'Membership Settings',
-        type: 'collapse',
-        icon: 'id-badge',
-        role: [Role.Admin],
-        children: [
-          {
-            id: 'admin-membership-types',
-            title: 'Membership Types',
-            type: 'item',
-            url: '/admin/membership-settings/types',
-            icon: 'cards',
-            breadcrumbs: false,
-            role: [Role.Admin]
-          }
-        ]
-      },
-      {
-        id: 'admin-documents',
-        title: 'Documents',
-        type: 'collapse',
+        id: 'admin-dressage-documents',
+        title: 'Dressage Documents',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/admin/documents',
         icon: 'file-text',
-        role: [Role.Admin],
-        children: [
-          {
-            id: 'admin-dressage-documents',
-            title: 'Dressage Documents',
-            type: 'item',
-            url: '/admin/documents/dressage',
-            icon: 'file-description',
-            breadcrumbs: false,
-            role: [Role.Admin]
-          }
-        ]
+        breadcrumbs: false,
+        role: [Role.Admin]
       },
       {
         id: 'admin-horse-settings',
         title: 'Horse Settings',
         type: 'collapse',
-        icon: 'horse',
+        icon: 'heart',
         role: [Role.Admin],
         children: [
           {
@@ -365,7 +339,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Grades',
             type: 'item',
             url: '/admin/horse-settings/grades',
-            icon: 'stairs',
+            icon: 'rise',
             breadcrumbs: false,
             role: [Role.Admin]
           },
@@ -374,7 +348,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Breeds',
             type: 'item',
             url: '/admin/horse-settings/breeds',
-            icon: 'dna',
+            icon: 'branches',
             breadcrumbs: false,
             role: [Role.Admin]
           },
@@ -383,7 +357,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Colors',
             type: 'item',
             url: '/admin/horse-settings/colors',
-            icon: 'palette',
+            icon: 'bg-colors',
             breadcrumbs: false,
             role: [Role.Admin]
           }
@@ -393,7 +367,7 @@ export const NavigationItems: NavigationItem[] = [
         id: 'admin-grading-tests',
         title: 'Grading and Tests',
         type: 'collapse',
-        icon: 'award',
+        icon: 'gold',
         role: [Role.Admin],
         children: [
           {
@@ -401,7 +375,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Grades',
             type: 'item',
             url: '/admin/grading/grades',
-            icon: 'certificate',
+            icon: 'gold',
             breadcrumbs: false,
             role: [Role.Admin]
           },
@@ -410,7 +384,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Class Types',
             type: 'item',
             url: '/admin/grading/class-types',
-            icon: 'category',
+            icon: 'appstore',
             breadcrumbs: false,
             role: [Role.Admin]
           },
@@ -419,7 +393,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Upgrade Points',
             type: 'item',
             url: '/admin/grading/upgrade-points',
-            icon: 'arrow-up-circle',
+            icon: 'rise',
             breadcrumbs: false,
             role: [Role.Admin]
           },
@@ -437,7 +411,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Grade Sequences',
             type: 'item',
             url: '/admin/grading/grade-sequences',
-            icon: 'list-numbers',
+            icon: 'ordered-list',
             breadcrumbs: false,
             role: [Role.Admin]
           },
@@ -455,47 +429,21 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Rules Management',
             type: 'item',
             url: '/admin/grading/rules',
-            icon: 'book',
+            icon: 'read',
             breadcrumbs: false,
             role: [Role.Admin]
           }
         ]
       },
       {
-        id: 'admin-shows',
-        title: 'Shows',
-        type: 'collapse',
-        icon: 'trophy',
-        role: [Role.Admin],
-        children: [
-          {
-            id: 'admin-all-shows',
-            title: 'All Shows',
-            type: 'item',
-            url: '/admin/shows',
-            icon: 'list',
-            breadcrumbs: false,
-            role: [Role.Admin]
-          },
-          {
-            id: 'admin-past-shows',
-            title: 'Past Shows',
-            type: 'item',
-            url: '/admin/shows/past',
-            icon: 'history',
-            breadcrumbs: false,
-            role: [Role.Admin]
-          },
-          {
-            id: 'admin-upcoming-shows',
-            title: 'Upcoming Shows',
-            type: 'item',
-            url: '/admin/shows/upcoming',
-            icon: 'calendar-event',
-            breadcrumbs: false,
-            role: [Role.Admin]
-          }
-        ]
+        id: 'admin-competitions',
+        title: 'Competitions',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/admin/competitions',
+        icon: 'award',
+        breadcrumbs: false,
+        role: [Role.Admin]
       },
       {
         id: 'admin-email',
@@ -511,7 +459,7 @@ export const NavigationItems: NavigationItem[] = [
         id: 'admin-reports',
         title: 'Reports',
         type: 'collapse',
-        icon: 'chart-bar',
+        icon: 'file-text',
         role: [Role.Admin],
         children: [
           {
@@ -519,7 +467,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Membership by Type',
             type: 'item',
             url: '/admin/reports/membership-by-type',
-            icon: 'chart-pie',
+            icon: 'pie-chart',
             breadcrumbs: false,
             role: [Role.Admin]
           },
@@ -528,7 +476,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Members Report',
             type: 'item',
             url: '/admin/reports/members',
-            icon: 'report',
+            icon: 'file-text',
             breadcrumbs: false,
             role: [Role.Admin]
           },
@@ -537,16 +485,16 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Horse Ages',
             type: 'item',
             url: '/admin/reports/horse-ages',
-            icon: 'calendar-stats',
+            icon: 'calendar',
             breadcrumbs: false,
             role: [Role.Admin]
           },
           {
-            id: 'admin-recreation-members',
-            title: 'Recreation Members',
+            id: 'admin-recreational-members',
+            title: 'Recreational Members',
             type: 'item',
-            url: '/admin/reports/recreation-members',
-            icon: 'users',
+            url: '/admin/reports/recreational-members',
+            icon: 'team',
             breadcrumbs: false,
             role: [Role.Admin]
           },
@@ -555,7 +503,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Judges',
             type: 'item',
             url: '/admin/reports/judges',
-            icon: 'clipboard-list',
+            icon: 'profile',
             breadcrumbs: false,
             role: [Role.Admin]
           },
@@ -564,7 +512,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Temporary Memberships',
             type: 'item',
             url: '/admin/reports/temporary-memberships',
-            icon: 'clock',
+            icon: 'clock-circle',
             breadcrumbs: false,
             role: [Role.Admin]
           }
@@ -574,9 +522,27 @@ export const NavigationItems: NavigationItem[] = [
         id: 'admin-settings',
         title: 'Settings',
         type: 'collapse',
-        icon: 'settings',
+        icon: 'setting',
         role: [Role.Admin],
         children: [
+          {
+            id: 'admin-years',
+            title: 'Years',
+            type: 'item',
+            url: '/admin/settings/years',
+            icon: 'calendar-event',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
+          {
+            id: 'admin-membership-types',
+            title: 'Membership Types',
+            type: 'item',
+            url: '/admin/settings/membership-types',
+            icon: 'id',
+            breadcrumbs: false,
+            role: [Role.Admin]
+          },
           {
             id: 'admin-schools',
             title: 'Schools',
@@ -587,20 +553,11 @@ export const NavigationItems: NavigationItem[] = [
             role: [Role.Admin]
           },
           {
-            id: 'admin-provinces',
-            title: 'Provinces',
-            type: 'item',
-            url: '/admin/settings/provinces',
-            icon: 'map-pin',
-            breadcrumbs: false,
-            role: [Role.Admin]
-          },
-          {
             id: 'admin-districts',
             title: 'Districts',
             type: 'item',
             url: '/admin/settings/districts',
-            icon: 'map',
+            icon: 'map-pin',
             breadcrumbs: false,
             role: [Role.Admin]
           },
@@ -609,7 +566,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Accounting Periods',
             type: 'item',
             url: '/admin/settings/accounting-periods',
-            icon: 'calendar-time',
+            icon: 'calendar-stats',
             breadcrumbs: false,
             role: [Role.Admin]
           },

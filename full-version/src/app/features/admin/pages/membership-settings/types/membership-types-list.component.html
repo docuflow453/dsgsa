@@ -1,0 +1,292 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardClass="table-card" [padding]="0">
+      <!-- Custom Header with Title and Button -->
+      <div class="card-header" card-header>
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <h5 class="mb-0">Membership Types</h5>
+          <button type="button" class="btn btn-primary" (click)="createMembershipType()">
+            <i class="ti ti-plus"></i> Add Membership Type
+          </button>
+        </div>
+      </div>
+
+      <form class="dt-responsive">
+        <!-- Top Controls: Page Size, Filters, and Search -->
+        <div class="dataTable-top">
+          <div class="row g-3 align-items-center">
+            <!-- Page Size Selector -->
+            <div class="col-auto">
+              <select
+                class="form-select"
+                title="select item per page"
+                style="width: auto"
+                name="pageSize"
+                [(ngModel)]="service.pageSize"
+              >
+                <option [ngValue]="5">5 items per page</option>
+                <option [ngValue]="10">10 items per page</option>
+                <option [ngValue]="15">15 items per page</option>
+                <option [ngValue]="25">25 items per page</option>
+                <option [ngValue]="50">50 items per page</option>
+              </select>
+            </div>
+
+            <!-- Status Filter -->
+            <div class="col-auto">
+              <select class="form-select" name="statusFilter" [(ngModel)]="service.statusFilter" style="width: auto">
+                <option value="">All Statuses</option>
+                @for (status of statuses; track status) {
+                  <option [value]="status">{{ status }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Rule Group Filter -->
+            <div class="col-auto">
+              <select class="form-select" name="ruleGroupFilter" [(ngModel)]="service.ruleGroupFilter" style="width: auto">
+                <option value="">All Rule Groups</option>
+                @for (ruleGroup of ruleGroups; track ruleGroup) {
+                  <option [value]="ruleGroup">{{ ruleGroup }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Reset Filters Button -->
+            <div class="col-auto">
+              <button type="button" class="btn btn-outline-secondary" (click)="resetFilters()">
+                <i class="ti ti-refresh"></i> Reset
+              </button>
+            </div>
+
+            <!-- Search Box -->
+            <div class="col-auto ms-auto">
+              <div class="dataTable-search d-flex align-items-center">
+                <input
+                  id="table-complete-search"
+                  type="text"
+                  class="form-control"
+                  name="searchTerm"
+                  [(ngModel)]="service.searchTerm"
+                  placeholder="Search by name, description, fee..."
+                  style="min-width: 300px"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive dt-responsive">
+          @if (loading$ | async) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          } @else {
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">NAME</th>
+                  <th scope="col">DESCRIPTION</th>
+                  <th scope="col">RULE GROUP</th>
+                  <th scope="col">FEE</th>
+                  <th scope="col">STATUS</th>
+                  <th scope="col">DURATION</th>
+                  <th scope="col">DATE CREATED</th>
+                  <th scope="col" class="text-center">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (membershipType of membershipTypes$ | async; track membershipType.id) {
+                  <tr>
+                    <!-- Name -->
+                    <td>
+                      <h6 class="mb-0">
+                        <ngb-highlight [result]="membershipType.name" [term]="service.searchTerm"></ngb-highlight>
+                      </h6>
+                      @if (membershipType.renewalRequired) {
+                        <span class="badge bg-light-info f-10 mt-1">Renewal Required</span>
+                      }
+                    </td>
+
+                    <!-- Description -->
+                    <td>
+                      <p class="text-muted f-12 mb-0" style="max-width: 300px;">
+                        <ngb-highlight [result]="membershipType.description" [term]="service.searchTerm"></ngb-highlight>
+                      </p>
+                      @if (membershipType.benefits && membershipType.benefits.length > 0) {
+                        <p class="text-muted f-11 mb-0 mt-1">
+                          <i class="ti ti-check me-1"></i>
+                          {{ membershipType.benefits.length }} benefits
+                        </p>
+                      }
+                    </td>
+
+                    <!-- Rule Group -->
+                    <td>
+                      <span [class]="getRuleGroupClass(membershipType.ruleGroup)">
+                        <ngb-highlight [result]="membershipType.ruleGroup" [term]="service.searchTerm"></ngb-highlight>
+                      </span>
+                      @if (membershipType.maxMembers) {
+                        <p class="text-muted f-11 mb-0 mt-1">
+                          Max: {{ membershipType.maxMembers }} members
+                        </p>
+                      }
+                    </td>
+
+                    <!-- Fee -->
+                    <td>
+                      <h6 class="mb-0">
+                        <ngb-highlight [result]="(membershipType.fee | currency: 'ZAR')" [term]="service.searchTerm"></ngb-highlight>
+                      </h6>
+                      @if (membershipType.discountEligible) {
+                        <span class="badge bg-light-success f-10 mt-1">Discount Eligible</span>
+                      }
+                    </td>
+
+                    <!-- Status -->
+                    <td>
+                      <span [class]="getStatusClass(membershipType.status)">{{ membershipType.status }}</span>
+                    </td>
+
+                    <!-- Duration -->
+                    <td>
+                      @if (membershipType.duration && membershipType.duration > 0) {
+                        <span>{{ membershipType.duration }} month{{ membershipType.duration > 1 ? 's' : '' }}</span>
+                      } @else {
+                        <span class="text-muted">Lifetime</span>
+                      }
+                    </td>
+
+                    <!-- Date Created -->
+                    <td>{{ membershipType.dateCreated | date: 'MMM dd, yyyy' }}</td>
+
+                    <!-- Actions -->
+                    <td class="text-center">
+                      <div class="btn-group" role="group">
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-link-secondary avtar-xs"
+                          (click)="viewMembershipType(membershipType)"
+                          title="View Details"
+                        >
+                          <i class="ti ti-eye f-18"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-link-primary avtar-xs"
+                          (click)="editMembershipType(membershipType)"
+                          title="Edit Membership Type"
+                        >
+                          <i class="ti ti-edit f-18"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-link-danger avtar-xs"
+                          (click)="openDeleteModal(deleteModal, membershipType)"
+                          title="Delete Membership Type"
+                        >
+                          <i class="ti ti-trash f-18"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="8" class="text-center py-5">
+                      <div class="text-muted">
+                        <i class="ti ti-id-badge f-40 d-block mb-2"></i>
+                        <p class="mb-0">No Membership Types found</p>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+
+        <!-- Pagination -->
+        <div class="datatable-bottom">
+          <div class="datatable-info">
+            Showing {{ (service.page - 1) * service.pageSize + 1 }} to
+            {{ service.page * service.pageSize > (total$ | async)! ? (total$ | async)! : service.page * service.pageSize }} of
+            {{ total$ | async }} entries
+          </div>
+          <ngb-pagination
+            [collectionSize]="(total$ | async)!"
+            [(page)]="service.page"
+            [pageSize]="service.pageSize"
+            class="table-pagination"
+          ></ngb-pagination>
+        </div>
+      </form>
+    </app-card>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Delete Membership Type</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    @if (selectedMembershipType) {
+      <div class="membership-type-info-box mb-3">
+        <div class="d-flex align-items-start">
+          <div class="avtar avtar-s bg-light-primary me-3">
+            <i class="ti ti-id-badge f-20"></i>
+          </div>
+          <div class="flex-grow-1">
+            <h6 class="mb-1">{{ selectedMembershipType.name }}</h6>
+            <p class="text-muted f-12 mb-2">{{ selectedMembershipType.description }}</p>
+            <div class="d-flex flex-wrap gap-2 mb-2">
+              <span [class]="getRuleGroupClass(selectedMembershipType.ruleGroup)">{{ selectedMembershipType.ruleGroup }}</span>
+              <span [class]="getStatusClass(selectedMembershipType.status)">{{ selectedMembershipType.status }}</span>
+              @if (selectedMembershipType.renewalRequired) {
+                <span class="badge bg-light-info">Renewal Required</span>
+              }
+              @if (selectedMembershipType.discountEligible) {
+                <span class="badge bg-light-success">Discount Eligible</span>
+              }
+            </div>
+            <p class="text-muted f-11 mb-1">
+              <i class="ti ti-currency-dollar me-1"></i>
+              <strong>Fee:</strong> {{ selectedMembershipType.fee | currency: 'ZAR' }}
+            </p>
+            @if (selectedMembershipType.duration && selectedMembershipType.duration > 0) {
+              <p class="text-muted f-11 mb-1">
+                <i class="ti ti-calendar me-1"></i>
+                <strong>Duration:</strong> {{ selectedMembershipType.duration }} month{{ selectedMembershipType.duration > 1 ? 's' : '' }}
+              </p>
+            }
+            @if (selectedMembershipType.maxMembers) {
+              <p class="text-muted f-11 mb-1">
+                <i class="ti ti-users me-1"></i>
+                <strong>Max Members:</strong> {{ selectedMembershipType.maxMembers }}
+              </p>
+            }
+            @if (selectedMembershipType.benefits && selectedMembershipType.benefits.length > 0) {
+              <p class="text-muted f-11 mb-0">
+                <i class="ti ti-check me-1"></i>
+                <strong>Benefits:</strong> {{ selectedMembershipType.benefits.length }} included
+              </p>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-danger">
+        <i class="ti ti-alert-triangle me-2"></i>
+        <strong>Warning:</strong> This action cannot be undone. Are you sure you want to permanently delete this Membership Type?
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteMembershipType()">Delete Membership Type</button>
+  </div>
+</ng-template>
+

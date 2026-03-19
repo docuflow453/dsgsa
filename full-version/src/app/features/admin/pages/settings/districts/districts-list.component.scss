@@ -1,0 +1,32 @@
+/**
+ * Districts List Component Styles
+ */
+
+// Table hover effect
+.table-hover tbody tr:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+// Action buttons
+.btn-group-sm .btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+// Badge styles
+.badge {
+  font-weight: 500;
+  padding: 0.35rem 0.65rem;
+}
+
+// Search input
+.dataTable-search input {
+  border-radius: 0.25rem;
+}
+
+// Empty state
+.text-muted i {
+  opacity: 0.5;
+}
+

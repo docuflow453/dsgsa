@@ -69,7 +69,7 @@ export class ContactUsComponent implements OnInit, OnDestroy {
       support: [
         {
           support_link: 'Blog',
-          url: 'https://blog.codedthemes.com/'
+          url: 'https://www.dressagesa.com/'
         },
         {
           support_link: 'Documentation',
@@ -81,7 +81,7 @@ export class ContactUsComponent implements OnInit, OnDestroy {
         },
         {
           support_link: 'Support',
-          url: 'https://codedthemes.support-hub.io/'
+          url: 'https://www.dressagesa.com/'
         }
       ]
     },
@@ -90,19 +90,19 @@ export class ContactUsComponent implements OnInit, OnDestroy {
       support: [
         {
           support_link: 'License',
-          url: 'https://codedthemes.com/license//'
+          url: 'https://www.dressagesa.com/license/'
         },
         {
           support_link: 'Refund Policy',
-          url: 'https://codedthemes.com/terms-and-conditions/'
+          url: 'https://www.dressagesa.com/terms-and-conditions/'
         },
         {
           support_link: 'Submit a Request',
-          url: 'https://codedthemes.com/contact/'
+          url: 'https://www.dressagesa.com/contact/'
         },
         {
           support_link: 'Affiliate',
-          url: 'https://codedthemes.com/affiliate/'
+          url: 'https://www.dressagesa.com/affiliate/'
         }
       ]
     },
@@ -111,7 +111,7 @@ export class ContactUsComponent implements OnInit, OnDestroy {
       support: [
         {
           support_link: 'CodeIgniter',
-          url: 'https://codedthemes.com/item/mantis-codeigniter-admin-template/'
+          url: 'https://www.dressagesa.com/item/mantis-codeigniter-admin-template/'
         },
         {
           support_link: 'React MUI',
@@ -123,15 +123,15 @@ export class ContactUsComponent implements OnInit, OnDestroy {
         },
         {
           support_link: 'Bootstrap 5',
-          url: 'https://codedthemes.com/item/mantis-bootstrap-admin-dashboard/'
+          url: 'https://www.dressagesa.com/item/mantis-bootstrap-admin-dashboard/'
         },
         {
           support_link: '.Net',
-          url: 'https://codedthemes.com/item/mantis-dotnet-bootstrap-dashboard-template/'
+          url: 'https://www.dressagesa.com/item/mantis-dotnet-bootstrap-dashboard-template/'
         },
         {
           support_link: 'Vue',
-          url: 'https://codedthemes.com/item/mantis-vue-admin-template/'
+          url: 'https://www.dressagesa.com/item/mantis-vue-admin-template/'
         }
       ]
     },
@@ -140,23 +140,23 @@ export class ContactUsComponent implements OnInit, OnDestroy {
       support: [
         {
           support_link: 'Berry Angular',
-          url: 'https://codedthemes.com/item/berry-angular-admin-dashboard-template/'
+          url: 'https://www.dressagesa.com/item/berry-angular-admin-dashboard-template/'
         },
         {
           support_link: 'Free Berry Angular',
-          url: 'https://codedthemes.com/item/berry-angular-free-admin-template/'
+          url: 'https://www.dressagesa.com/item/berry-angular-free-admin-template/'
         },
         {
           support_link: 'Angular Bundle',
-          url: 'https://codedthemes.com/item/angular-mega-bundle/'
+          url: 'https://www.dressagesa.com/item/angular-mega-bundle/'
         },
         {
           support_link: 'Big Bundle',
-          url: 'https://codedthemes.com/item/big-bundle/'
+          url: 'https://www.dressagesa.com/item/big-bundle/'
         },
         {
           support_link: 'Figma UI Kits',
-          url: 'https://codedthemes.com/item/category/templates/figma/'
+          url: 'https://www.dressagesa.com/item/category/templates/figma/'
         }
       ]
     }

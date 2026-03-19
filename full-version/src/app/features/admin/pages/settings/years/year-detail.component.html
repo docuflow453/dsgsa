@@ -1,0 +1,111 @@
+<div class="row" *ngIf="year">
+  <div class="col-sm-12">
+    <app-card>
+      <div class="card-header" card-header>
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <h5 class="mb-0">
+            <i class="ti ti-calendar-event me-2"></i>Year Details
+          </h5>
+          <div class="btn-group">
+            <button type="button" class="btn btn-outline-secondary" (click)="goBack()">
+              <i class="ti ti-arrow-left"></i> Back
+            </button>
+            <button type="button" class="btn btn-primary" (click)="editYear()">
+              <i class="ti ti-edit"></i> Edit
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-danger"
+              (click)="openDeleteModal(deleteModal)"
+              [disabled]="year.isCurrent"
+            >
+              <i class="ti ti-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="text-muted d-block mb-1">Year</label>
+            <h4 class="mb-0">
+              {{ year.year }}
+              <span *ngIf="year.isCurrent" class="badge bg-primary ms-2">Current</span>
+            </h4>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="text-muted d-block mb-1">Status</label>
+            <span class="badge" [ngClass]="getStatusClass(year.status)">
+              {{ year.status }}
+            </span>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <label class="text-muted d-block mb-1">Name</label>
+            <p class="mb-0">{{ year.name }}</p>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <label class="text-muted d-block mb-1">Description</label>
+            <p class="mb-0">{{ year.description || 'No description provided' }}</p>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="text-muted d-block mb-1">Start Date</label>
+            <p class="mb-0">{{ year.startDate | date: 'MMMM d, y' }}</p>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="text-muted d-block mb-1">End Date</label>
+            <p class="mb-0">{{ year.endDate | date: 'MMMM d, y' }}</p>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="text-muted d-block mb-1">Competitions</label>
+            <p class="mb-0">{{ year.competitionsCount || 0 }}</p>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="text-muted d-block mb-1">Memberships</label>
+            <p class="mb-0">{{ year.membershipsCount || 0 }}</p>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="text-muted d-block mb-1">Registration Status</label>
+            <p class="mb-0">
+              <span *ngIf="year.registrationOpen" class="badge bg-success">Open</span>
+              <span *ngIf="!year.registrationOpen" class="badge bg-secondary">Closed</span>
+            </p>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="text-muted d-block mb-1">Date Created</label>
+            <p class="mb-0">{{ year.dateCreated | date: 'MMMM d, y' }}</p>
+          </div>
+
+          <div class="col-md-12 mb-3" *ngIf="year.notes">
+            <label class="text-muted d-block mb-1">Notes</label>
+            <p class="mb-0">{{ year.notes }}</p>
+          </div>
+        </div>
+      </div>
+    </app-card>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Confirm Delete</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete <strong>{{ year?.name }}</strong>?</p>
+    <p class="text-muted mb-0">This action cannot be undone.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteYear()">Delete</button>
+  </div>
+</ng-template>
+

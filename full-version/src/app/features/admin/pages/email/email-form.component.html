@@ -1,0 +1,242 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card [cardTitle]="pageTitle">
+      <div class="card-header-right" card-header-right>
+        <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
+          <i class="ti ti-arrow-left"></i> Back
+        </button>
+      </div>
+
+      <div class="card-body">
+        <form [formGroup]="emailForm" (ngSubmit)="sendEmail()">
+          <!-- Email Information Section -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h5 class="mb-3">Email Information</h5>
+            </div>
+
+            <!-- Subject -->
+            <div class="col-md-12 mb-3">
+              <label for="subject" class="form-label">
+                Subject <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="subject"
+                formControlName="subject"
+                placeholder="Enter email subject"
+                maxlength="200"
+                [class.is-invalid]="hasError('subject', 'required') || hasError('subject', 'maxlength')"
+              />
+              @if (hasError('subject', 'required') || hasError('subject', 'maxlength')) {
+                <div class="invalid-feedback">{{ getErrorMessage('subject') }}</div>
+              }
+              <small class="form-text text-muted">{{ emailForm.get('subject')?.value?.length || 0 }}/200 characters</small>
+            </div>
+
+            <!-- Content -->
+            <div class="col-md-12 mb-3">
+              <label for="content" class="form-label">
+                Email Content <span class="text-danger">*</span>
+              </label>
+              <textarea
+                class="form-control"
+                id="content"
+                formControlName="content"
+                rows="10"
+                placeholder="Enter email content (HTML supported)"
+                [class.is-invalid]="hasError('content', 'required')"
+              ></textarea>
+              @if (hasError('content', 'required')) {
+                <div class="invalid-feedback">{{ getErrorMessage('content') }}</div>
+              }
+              <small class="form-text text-muted">
+                You can use HTML tags for formatting (e.g., &lt;h2&gt;, &lt;p&gt;, &lt;strong&gt;, &lt;ul&gt;, etc.)
+              </small>
+            </div>
+          </div>
+
+          <!-- Recipients Section -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h5 class="mb-3">Recipients</h5>
+            </div>
+
+            <!-- Send To -->
+            <div class="col-md-6 mb-3">
+              <label for="sentTo" class="form-label">
+                Send To <span class="text-danger">*</span>
+              </label>
+              <select
+                class="form-select"
+                id="sentTo"
+                formControlName="sentTo"
+                [class.is-invalid]="hasError('sentTo', 'required')"
+              >
+                <option value="">Select recipient group</option>
+                @for (group of recipientGroups; track group) {
+                  <option [value]="group">{{ group }}</option>
+                }
+              </select>
+              @if (hasError('sentTo', 'required')) {
+                <div class="invalid-feedback">{{ getErrorMessage('sentTo') }}</div>
+              }
+            </div>
+
+            <!-- Recipient Count & View Recipients -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Total Recipients</label>
+              <div class="d-flex align-items-center">
+                <div class="alert alert-info mb-0 flex-grow-1 me-2">
+                  <i class="ti ti-users me-2"></i>
+                  <strong>{{ getRecipientCount() }}</strong> recipients will receive this email
+                </div>
+                @if (getRecipientCount() > 0) {
+                  <button type="button" class="btn btn-outline-primary" (click)="openRecipientsModal(recipientsModal)">
+                    <i class="ti ti-eye"></i> View
+                  </button>
+                }
+              </div>
+            </div>
+
+            <!-- Sent By (Read-only) -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Sent By</label>
+              <input type="text" class="form-control" [value]="currentUser.name + ' (' + currentUser.email + ')'" readonly />
+            </div>
+          </div>
+
+          <!-- Email Settings Section -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h5 class="mb-3">Email Settings</h5>
+            </div>
+
+            <!-- Email Type -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">
+                Email Type <span class="text-danger">*</span>
+              </label>
+              <div class="d-flex gap-3">
+                @for (type of emailTypes; track type) {
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      [id]="'emailType' + type"
+                      formControlName="emailType"
+                      [value]="type"
+                    />
+                    <label class="form-check-label" [for]="'emailType' + type">
+                      @if (type === 'General') {
+                        <i class="ti ti-mail text-primary me-1"></i>
+                      } @else if (type === 'Important') {
+                        <i class="ti ti-alert-circle text-danger me-1"></i>
+                      } @else if (type === 'Marketing') {
+                        <i class="ti ti-speakerphone text-success me-1"></i>
+                      }
+                      {{ type }}
+                    </label>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Attachments Section -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h5 class="mb-3">Attachments</h5>
+            </div>
+
+            <div class="col-md-12 mb-3">
+              <label for="fileUpload" class="form-label">Attach Documents</label>
+              <input
+                type="file"
+                class="form-control"
+                id="fileUpload"
+                multiple
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
+                (change)="onFileSelected($event)"
+              />
+              <small class="form-text text-muted">Supported formats: PDF, DOC, DOCX, XLS, XLSX, JPG, PNG</small>
+            </div>
+
+            <!-- Attached Files List -->
+            @if (attachments.length > 0) {
+              <div class="col-md-12">
+                <div class="card bg-light">
+                  <div class="card-body">
+                    <h6 class="mb-3">Attached Files ({{ attachments.length }})</h6>
+                    <div class="row">
+                      @for (attachment of attachments; track attachment.id; let i = $index) {
+                        <div class="col-md-6 mb-2">
+                          <div class="d-flex align-items-center justify-content-between p-2 border rounded">
+                            <div class="d-flex align-items-center">
+                              <i class="ti ti-file me-2"></i>
+                              <div>
+                                <div class="fw-bold">{{ attachment.fileName }}</div>
+                                <small class="text-muted">{{ formatFileSize(attachment.fileSize) }}</small>
+                              </div>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeAttachment(i)">
+                              <i class="ti ti-x"></i>
+                            </button>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Form Actions -->
+          <div class="row">
+            <div class="col-12">
+              <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
+                  <i class="ti ti-x"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-outline-primary" (click)="saveAsDraft()">
+                  <i class="ti ti-device-floppy"></i> Save as Draft
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="emailForm.invalid">
+                  <i class="ti ti-send"></i> Send Email
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </app-card>
+  </div>
+</div>
+
+<!-- Recipients Modal -->
+<ng-template #recipientsModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Email Recipients</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="alert alert-info">
+      <i class="ti ti-info-circle me-2"></i>
+      <strong>{{ getRecipientCount() }}</strong> recipients will receive this email
+    </div>
+    <h6 class="mb-3">Recipient Email Addresses:</h6>
+    <div class="list-group">
+      @for (email of getRecipientEmails(); track email) {
+        <div class="list-group-item">
+          <i class="ti ti-mail me-2"></i>{{ email }}
+        </div>
+      }
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
+  </div>
+</ng-template>
+

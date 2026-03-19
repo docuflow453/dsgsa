@@ -1,0 +1,178 @@
+<div class="row" *ngIf="school">
+  <div class="col-sm-12">
+    <app-card>
+      <div class="card-header" card-header>
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <h5 class="mb-0">
+            <i class="ti ti-school me-2"></i>School Details
+          </h5>
+          <div class="btn-group">
+            <button type="button" class="btn btn-outline-secondary" (click)="goBack()">
+              <i class="ti ti-arrow-left"></i> Back
+            </button>
+            <button type="button" class="btn btn-primary" (click)="editSchool()">
+              <i class="ti ti-edit"></i> Edit
+            </button>
+            <button type="button" class="btn btn-outline-danger" (click)="openDeleteModal(deleteModal)">
+              <i class="ti ti-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <!-- School Name -->
+          <div class="col-md-8 mb-3">
+            <label class="text-muted d-block mb-1">School Name</label>
+            <h4 class="mb-0">{{ school.name }}</h4>
+          </div>
+
+          <!-- Status -->
+          <div class="col-md-4 mb-3">
+            <label class="text-muted d-block mb-1">Status</label>
+            <span class="badge" [ngClass]="getStatusClass(school.status)">
+              {{ school.status }}
+            </span>
+          </div>
+
+          <!-- Type -->
+          <div class="col-md-6 mb-3">
+            <label class="text-muted d-block mb-1">Type</label>
+            <span class="badge" [ngClass]="getTypeClass(school.type)">
+              {{ school.type }}
+            </span>
+          </div>
+
+          <!-- Date Created -->
+          <div class="col-md-6 mb-3">
+            <label class="text-muted d-block mb-1">Date Created</label>
+            <p class="mb-0">{{ school.dateCreated | date: 'MMMM d, y' }}</p>
+          </div>
+
+          <!-- Description -->
+          <div class="col-md-12 mb-3" *ngIf="school.description">
+            <label class="text-muted d-block mb-1">Description</label>
+            <p class="mb-0">{{ school.description }}</p>
+          </div>
+
+          <!-- Contact Information Section -->
+          <div class="col-md-12 mt-3 mb-2">
+            <h5 class="text-primary">
+              <i class="ti ti-user me-2"></i>Contact Information
+            </h5>
+            <hr />
+          </div>
+
+          <!-- Contact Person -->
+          <div class="col-md-6 mb-3">
+            <label class="text-muted d-block mb-1">Contact Person</label>
+            <p class="mb-0">{{ school.contactPerson }}</p>
+          </div>
+
+          <!-- Email -->
+          <div class="col-md-6 mb-3">
+            <label class="text-muted d-block mb-1">Email</label>
+            <p class="mb-0">
+              <a href="mailto:{{ school.email }}">{{ school.email }}</a>
+            </p>
+          </div>
+
+          <!-- Phone -->
+          <div class="col-md-6 mb-3">
+            <label class="text-muted d-block mb-1">Phone</label>
+            <p class="mb-0">
+              <a href="tel:{{ school.phone }}">{{ school.phone }}</a>
+            </p>
+          </div>
+
+          <!-- Website -->
+          <div class="col-md-6 mb-3" *ngIf="school.website">
+            <label class="text-muted d-block mb-1">Website</label>
+            <p class="mb-0">
+              <a [href]="school.website" target="_blank">{{ school.website }}</a>
+            </p>
+          </div>
+
+          <!-- Location Section -->
+          <div class="col-md-12 mt-3 mb-2">
+            <h5 class="text-primary">
+              <i class="ti ti-map-pin me-2"></i>Location
+            </h5>
+            <hr />
+          </div>
+
+          <!-- Address -->
+          <div class="col-md-12 mb-3">
+            <label class="text-muted d-block mb-1">Address</label>
+            <p class="mb-0">{{ school.address }}</p>
+          </div>
+
+          <!-- City -->
+          <div class="col-md-4 mb-3">
+            <label class="text-muted d-block mb-1">City</label>
+            <p class="mb-0">{{ school.city }}</p>
+          </div>
+
+          <!-- Province -->
+          <div class="col-md-4 mb-3">
+            <label class="text-muted d-block mb-1">Province</label>
+            <p class="mb-0">{{ school.province }}</p>
+          </div>
+
+          <!-- Postal Code -->
+          <div class="col-md-4 mb-3">
+            <label class="text-muted d-block mb-1">Postal Code</label>
+            <p class="mb-0">{{ school.postalCode }}</p>
+          </div>
+
+          <!-- Facility Information Section -->
+          <div class="col-md-12 mt-3 mb-2">
+            <h5 class="text-primary">
+              <i class="ti ti-building me-2"></i>Facility Information
+            </h5>
+            <hr />
+          </div>
+
+          <!-- Instructor Count -->
+          <div class="col-md-4 mb-3" *ngIf="school.instructorCount">
+            <label class="text-muted d-block mb-1">Instructors</label>
+            <p class="mb-0">{{ school.instructorCount }}</p>
+          </div>
+
+          <!-- Student Capacity -->
+          <div class="col-md-4 mb-3" *ngIf="school.studentCapacity">
+            <label class="text-muted d-block mb-1">Student Capacity</label>
+            <p class="mb-0">{{ school.studentCapacity }}</p>
+          </div>
+
+          <!-- Facilities -->
+          <div class="col-md-12 mb-3" *ngIf="school.facilities && school.facilities.length > 0">
+            <label class="text-muted d-block mb-1">Facilities</label>
+            <div class="d-flex flex-wrap gap-2">
+              <span *ngFor="let facility of school.facilities" class="badge bg-light-info">
+                {{ facility }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </app-card>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Confirm Delete</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete <strong>{{ school?.name }}</strong>?</p>
+    <p class="text-muted mb-0">This action cannot be undone.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteSchool()">Delete</button>
+  </div>
+</ng-template>
+

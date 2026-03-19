@@ -345,7 +345,7 @@ export class LandingComponent implements OnInit, OnDestroy {
       support: [
         {
           support_link: 'Blog',
-          url: 'https://blog.codedthemes.com/'
+          url: 'https://www.dressagesa.com/'
         },
         {
           support_link: 'Documentation',
@@ -357,7 +357,7 @@ export class LandingComponent implements OnInit, OnDestroy {
         },
         {
           support_link: 'Support',
-          url: 'https://codedthemes.support-hub.io/'
+          url: 'https://www.dressagesa.com/'
         },
         {
           support_link: 'Discord',
@@ -370,19 +370,19 @@ export class LandingComponent implements OnInit, OnDestroy {
       support: [
         {
           support_link: 'License',
-          url: 'https://codedthemes.com/license'
+          url: 'https://www.dressagesa.com/license'
         },
         {
           support_link: 'Refund Policy',
-          url: 'https://codedthemes.com/terms-and-conditions'
+          url: 'https://www.dressagesa.com/terms-and-conditions'
         },
         {
           support_link: 'Submit a Request',
-          url: 'https://codedthemes.com/contact'
+          url: 'https://www.dressagesa.com/contact'
         },
         {
           support_link: 'Affiliate',
-          url: 'https://codedthemes.com/affiliate'
+          url: 'https://www.dressagesa.com/affiliate'
         }
       ]
     },
@@ -391,7 +391,7 @@ export class LandingComponent implements OnInit, OnDestroy {
       support: [
         {
           support_link: 'CodeIgniter',
-          url: 'https://codedthemes.com/item/mantis-codeigniter-admin-template'
+          url: 'https://www.dressagesa.com/item/mantis-codeigniter-admin-template'
         },
         {
           support_link: 'React MUI',
@@ -399,19 +399,19 @@ export class LandingComponent implements OnInit, OnDestroy {
         },
         {
           support_link: 'Angular',
-          url: 'https://codedthemes.com/item/mantis-angular-admin-template'
+          url: 'https://www.dressagesa.com/item/mantis-angular-admin-template'
         },
         {
           support_link: 'Bootstrap 5',
-          url: 'https://codedthemes.com/item/mantis-bootstrap-admin-dashboard'
+          url: 'https://www.dressagesa.com/item/mantis-bootstrap-admin-dashboard'
         },
         {
           support_link: '.Net',
-          url: 'https://codedthemes.com/item/mantis-dotnet-bootstrap-dashboard-template'
+          url: 'https://www.dressagesa.com/item/mantis-dotnet-bootstrap-dashboard-template'
         },
         {
           support_link: 'Vue',
-          url: 'https://codedthemes.com/item/mantis-vue-admin-template'
+          url: 'https://www.dressagesa.com/item/mantis-vue-admin-template'
         }
       ]
     },
@@ -444,25 +444,25 @@ export class LandingComponent implements OnInit, OnDestroy {
 
   socialLinks = [
     {
-      link: 'https://www.instagram.com/codedthemes',
+      link: 'https://www.instagram.com/dressagesa',
       title: 'instagram',
       icon: 'instagram',
       theme: 'outline'
     },
     {
-      link: 'https://x.com/codedthemes',
+      link: 'https://x.com/dressagesa',
       title: 'twitter',
       icon: 'twitter',
       theme: 'outline'
     },
     {
-      link: 'https://in.linkedin.com/company/codedthemes',
+      link: 'https://www.linkedin.com/company/dressage-south-africa',
       title: 'linkedin',
       icon: 'linkedin',
       theme: 'outline'
     },
     {
-      link: 'https://www.facebook.com/codedthemes',
+      link: 'https://www.facebook.com/dressagesa',
       title: 'facebook',
       icon: 'facebook',
       theme: 'outline'
@@ -474,7 +474,7 @@ export class LandingComponent implements OnInit, OnDestroy {
       theme: 'outline'
     },
     {
-      link: 'https://github.com/codedthemes',
+      link: 'https://www.dressagesa.com/',
       title: 'Github',
       icon: 'github',
       theme: 'outline'

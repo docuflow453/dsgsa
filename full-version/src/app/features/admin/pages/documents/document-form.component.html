@@ -1,0 +1,292 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card [cardTitle]="pageTitle">
+      <!-- Back Button -->
+      <div class="mb-3">
+        <button type="button" class="btn btn-link btn-sm p-0" (click)="onCancel()">
+          <i class="ti ti-arrow-left"></i> Back to Documents
+        </button>
+      </div>
+
+      <form [formGroup]="documentForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <!-- Basic Information -->
+          <div class="col-md-12">
+            <h5 class="mb-3">Basic Information</h5>
+          </div>
+
+          <!-- Document Name -->
+          <div class="col-md-6 mb-3">
+            <label for="name" class="form-label">
+              Document Name <span class="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              formControlName="name"
+              placeholder="Enter document name"
+              [class.is-invalid]="hasError('name', 'required') || hasError('name', 'minlength')"
+            />
+            @if (hasError('name', 'required') || hasError('name', 'minlength')) {
+              <div class="invalid-feedback">{{ getErrorMessage('name') }}</div>
+            }
+          </div>
+
+          <!-- Document Type -->
+          <div class="col-md-6 mb-3">
+            <label for="type" class="form-label">
+              Document Type <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" id="type" formControlName="type" [class.is-invalid]="hasError('type', 'required')">
+              @for (type of types; track type) {
+                <option [value]="type">{{ type }}</option>
+              }
+            </select>
+            @if (hasError('type', 'required')) {
+              <div class="invalid-feedback">{{ getErrorMessage('type') }}</div>
+            }
+          </div>
+
+          <!-- Description -->
+          <div class="col-md-12 mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              class="form-control"
+              id="description"
+              formControlName="description"
+              rows="3"
+              placeholder="Enter document description"
+            ></textarea>
+          </div>
+
+          <!-- Status -->
+          <div class="col-md-6 mb-3">
+            <label for="status" class="form-label">
+              Status <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" id="status" formControlName="status" [class.is-invalid]="hasError('status', 'required')">
+              @for (status of statuses; track status) {
+                <option [value]="status">{{ status }}</option>
+              }
+            </select>
+            @if (hasError('status', 'required')) {
+              <div class="invalid-feedback">{{ getErrorMessage('status') }}</div>
+            }
+          </div>
+
+          <!-- Category -->
+          <div class="col-md-6 mb-3">
+            <label for="category" class="form-label">Category</label>
+            <input
+              type="text"
+              class="form-control"
+              id="category"
+              formControlName="category"
+              placeholder="e.g., Dressage Tests, Forms"
+            />
+          </div>
+
+          <!-- File Information -->
+          <div class="col-md-12 mt-3">
+            <h5 class="mb-3">File Information</h5>
+          </div>
+
+          <!-- File Upload (for new documents) -->
+          @if (!isEditMode) {
+            <div class="col-md-12 mb-3">
+              <label for="fileUpload" class="form-label">
+                Upload File <span class="text-danger">*</span>
+              </label>
+              <input
+                type="file"
+                class="form-control"
+                id="fileUpload"
+                (change)="onFileSelected($event)"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.png,.zip"
+              />
+              <small class="form-text text-muted">
+                Accepted formats: PDF, DOC, DOCX, XLS, XLSX, JPG, PNG, ZIP
+              </small>
+            </div>
+          }
+
+          <!-- File Name -->
+          <div class="col-md-6 mb-3">
+            <label for="fileName" class="form-label">
+              File Name <span class="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              id="fileName"
+              formControlName="fileName"
+              placeholder="e.g., document.pdf"
+              [class.is-invalid]="hasError('fileName', 'required')"
+              [readonly]="!isEditMode"
+            />
+            @if (hasError('fileName', 'required')) {
+              <div class="invalid-feedback">{{ getErrorMessage('fileName') }}</div>
+            }
+          </div>
+
+          <!-- File Type -->
+          <div class="col-md-3 mb-3">
+            <label for="fileType" class="form-label">
+              File Type <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" id="fileType" formControlName="fileType" [class.is-invalid]="hasError('fileType', 'required')">
+              @for (fileType of fileTypes; track fileType) {
+                <option [value]="fileType">{{ fileType }}</option>
+              }
+            </select>
+            @if (hasError('fileType', 'required')) {
+              <div class="invalid-feedback">{{ getErrorMessage('fileType') }}</div>
+            }
+          </div>
+
+          <!-- File Size -->
+          <div class="col-md-3 mb-3">
+            <label for="fileSize" class="form-label">
+              File Size (bytes) <span class="text-danger">*</span>
+            </label>
+            <input
+              type="number"
+              class="form-control"
+              id="fileSize"
+              formControlName="fileSize"
+              placeholder="0"
+              [class.is-invalid]="hasError('fileSize', 'required') || hasError('fileSize', 'min')"
+              [readonly]="!isEditMode"
+            />
+            @if (hasError('fileSize', 'required') || hasError('fileSize', 'min')) {
+              <div class="invalid-feedback">{{ getErrorMessage('fileSize') }}</div>
+            }
+          </div>
+
+          <!-- File URL -->
+          <div class="col-md-6 mb-3">
+            <label for="fileUrl" class="form-label">File URL</label>
+            <input
+              type="text"
+              class="form-control"
+              id="fileUrl"
+              formControlName="fileUrl"
+              placeholder="/documents/..."
+            />
+          </div>
+
+          <!-- Version -->
+          <div class="col-md-3 mb-3">
+            <label for="version" class="form-label">Version</label>
+            <input
+              type="text"
+              class="form-control"
+              id="version"
+              formControlName="version"
+              placeholder="e.g., 1.0, 2024.1"
+            />
+          </div>
+
+          <!-- Visibility -->
+          <div class="col-md-3 mb-3">
+            <label class="form-label d-block">Visibility</label>
+            <div class="form-check form-switch mt-2">
+              <input class="form-check-input" type="checkbox" id="isPublic" formControlName="isPublic" />
+              <label class="form-check-label" for="isPublic">Public Document</label>
+            </div>
+          </div>
+
+          <!-- Tags -->
+          <div class="col-md-6 mb-3">
+            <label for="tags" class="form-label">Tags</label>
+            <input
+              type="text"
+              class="form-control"
+              id="tags"
+              formControlName="tags"
+              placeholder="Comma-separated tags"
+            />
+            <small class="form-text text-muted">Separate tags with commas (e.g., Preliminary, Test 1A, Official)</small>
+          </div>
+
+          <!-- Expiry Date -->
+          <div class="col-md-6 mb-3">
+            <label for="expiryDate" class="form-label">Expiry Date</label>
+            <input type="date" class="form-control" id="expiryDate" formControlName="expiryDate" />
+            <small class="form-text text-muted">Leave blank if document doesn't expire</small>
+          </div>
+
+          <!-- Metadata -->
+          <div class="col-md-12 mt-3">
+            <h5 class="mb-3">Metadata (Optional)</h5>
+          </div>
+
+          <!-- Author -->
+          <div class="col-md-6 mb-3">
+            <label for="metadataAuthor" class="form-label">Author</label>
+            <input
+              type="text"
+              class="form-control"
+              id="metadataAuthor"
+              formControlName="metadataAuthor"
+              placeholder="e.g., SAEF Administration"
+            />
+          </div>
+
+          <!-- Language -->
+          <div class="col-md-6 mb-3">
+            <label for="metadataLanguage" class="form-label">Language</label>
+            <input
+              type="text"
+              class="form-control"
+              id="metadataLanguage"
+              formControlName="metadataLanguage"
+              placeholder="e.g., English"
+            />
+          </div>
+
+          <!-- Pages -->
+          <div class="col-md-6 mb-3">
+            <label for="metadataPages" class="form-label">Number of Pages</label>
+            <input
+              type="number"
+              class="form-control"
+              id="metadataPages"
+              formControlName="metadataPages"
+              placeholder="0"
+              min="0"
+            />
+          </div>
+
+          <!-- Keywords -->
+          <div class="col-md-6 mb-3">
+            <label for="metadataKeywords" class="form-label">Keywords</label>
+            <input
+              type="text"
+              class="form-control"
+              id="metadataKeywords"
+              formControlName="metadataKeywords"
+              placeholder="Comma-separated keywords"
+            />
+            <small class="form-text text-muted">Separate keywords with commas</small>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="col-md-12 mt-4">
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary" [disabled]="documentForm.invalid">
+                <i class="ti ti-device-floppy me-1"></i>
+                {{ isEditMode ? 'Update Document' : 'Create Document' }}
+              </button>
+              <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+                <i class="ti ti-x me-1"></i> Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </app-card>
+  </div>
+</div>
+

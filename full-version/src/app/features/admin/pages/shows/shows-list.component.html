@@ -1,0 +1,302 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardClass="table-card" [padding]="0">
+      <!-- Custom Header with Tabs -->
+      <div class="card-header" card-header>
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <!-- Tab Navigation -->
+          <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs card-header-tabs" (navChange)="onTabChange($event.nextId)">
+            <li [ngbNavItem]="1">
+              <button ngbNavLink>
+                <i class="ti ti-calendar-event me-1"></i>
+                Upcoming
+              </button>
+            </li>
+            <li [ngbNavItem]="2">
+              <button ngbNavLink>
+                <i class="ti ti-calendar-check me-1"></i>
+                Active
+              </button>
+            </li>
+            <li [ngbNavItem]="3">
+              <button ngbNavLink>
+                <i class="ti ti-calendar-time me-1"></i>
+                Past
+              </button>
+            </li>
+          </ul>
+
+          <!-- Add New Button -->
+          <button type="button" class="btn btn-primary btn-sm" (click)="createShow()">
+            <i class="ti ti-plus"></i> Add Competition
+          </button>
+        </div>
+      </div>
+
+      <form class="dt-responsive">
+        <!-- Top Controls: Page Size, Filters, and Search -->
+        <div class="dataTable-top">
+          <div class="row g-3 align-items-center">
+            <!-- Page Size Selector -->
+            <div class="col-auto">
+              <select
+                class="form-select"
+                title="select item per page"
+                style="width: auto"
+                name="pageSize"
+                [(ngModel)]="service.pageSize"
+              >
+                <option [ngValue]="5">5 items per page</option>
+                <option [ngValue]="10">10 items per page</option>
+                <option [ngValue]="15">15 items per page</option>
+                <option [ngValue]="25">25 items per page</option>
+                <option [ngValue]="50">50 items per page</option>
+              </select>
+            </div>
+
+            <!-- Level Filter -->
+            <div class="col-auto">
+              <select class="form-select" name="levelFilter" [(ngModel)]="service.levelFilter" style="width: auto">
+                <option value="">All Levels</option>
+                @for (level of levels; track level) {
+                  <option [value]="level">{{ level }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Reset Filters Button -->
+            <div class="col-auto">
+              <button type="button" class="btn btn-outline-secondary" (click)="resetFilters()">
+                <i class="ti ti-refresh"></i> Reset
+              </button>
+            </div>
+
+            <!-- Search Box -->
+            <div class="col-auto ms-auto">
+              <div class="dataTable-search d-flex align-items-center">
+                <input
+                  id="table-complete-search"
+                  type="text"
+                  class="form-control"
+                  name="searchTerm"
+                  [(ngModel)]="service.searchTerm"
+                  placeholder="Search by name, venue, location..."
+                  style="min-width: 300px"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive dt-responsive">
+          @if (loading$ | async) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          } @else {
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">NAME</th>
+                  <th scope="col">SHOW HOLDING BODY</th>
+                  <th scope="col">DATES</th>
+                  <th scope="col">ENTRY CLOSING</th>
+                  <th scope="col">LEVEL</th>
+                  <th scope="col">STATUS</th>
+                  <th scope="col">ENTRIES</th>
+                  <th scope="col" class="text-center">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (show of shows$ | async; track show.id) {
+                  <tr>
+                    <!-- Name -->
+                    <td>
+                      <h6 class="mb-0">
+                        <ngb-highlight [result]="show.name" [term]="service.searchTerm"></ngb-highlight>
+                      </h6>
+                      <p class="text-muted f-12 mb-0">
+                        <i class="ti ti-map-pin me-1"></i>
+                        <ngb-highlight [result]="show.venue" [term]="service.searchTerm"></ngb-highlight>
+                      </p>
+                      @if (show.city && show.province) {
+                        <p class="text-muted f-11 mb-0">
+                          <ngb-highlight [result]="show.city + ', ' + show.province" [term]="service.searchTerm"></ngb-highlight>
+                        </p>
+                      }
+                    </td>
+
+                    <!-- Show Holding Body -->
+                    <td>
+                      <ngb-highlight [result]="show.showHoldingBody" [term]="service.searchTerm"></ngb-highlight>
+                    </td>
+
+                    <!-- Dates -->
+                    <td>
+                      <div>
+                        <span class="d-block">{{ show.startDate | date: 'MMM dd, yyyy' }}</span>
+                        @if (show.startDate.getTime() !== show.endDate.getTime()) {
+                          <span class="text-muted f-12">to {{ show.endDate | date: 'MMM dd, yyyy' }}</span>
+                        }
+                      </div>
+                    </td>
+
+                    <!-- Entry Closing Date -->
+                    <td>
+                      <div>
+                        <span class="d-block">{{ show.entryClosingDate | date: 'MMM dd, yyyy' }}</span>
+                        @if (isClosingSoon(show) && show.status === 'Open') {
+                          <span class="badge bg-light-warning f-10 mt-1">
+                            <i class="ti ti-clock me-1"></i>
+                            {{ getDaysUntilClosing(show) }} days left
+                          </span>
+                        }
+                      </div>
+                    </td>
+
+                    <!-- Level -->
+                    <td>
+                      <span [class]="getLevelClass(show.level)">{{ show.level }}</span>
+                    </td>
+
+                    <!-- Status -->
+                    <td>
+                      <span [class]="getStatusClass(show.status)">{{ show.status }}</span>
+                    </td>
+
+                    <!-- Entries -->
+                    <td>
+                      @if (show.currentEntries !== undefined && show.maxEntries) {
+                        <div>
+                          <span class="d-block">{{ show.currentEntries }} / {{ show.maxEntries }}</span>
+                          <div class="progress mt-1" style="height: 4px;">
+                            <div
+                              class="progress-bar"
+                              [class.bg-success]="(show.currentEntries / show.maxEntries) < 0.7"
+                              [class.bg-warning]="(show.currentEntries / show.maxEntries) >= 0.7 && (show.currentEntries / show.maxEntries) < 0.9"
+                              [class.bg-danger]="(show.currentEntries / show.maxEntries) >= 0.9"
+                              [style.width.%]="(show.currentEntries / show.maxEntries) * 100"
+                            ></div>
+                          </div>
+                        </div>
+                      } @else {
+                        <span class="text-muted">-</span>
+                      }
+                    </td>
+
+                    <!-- Actions -->
+                    <td class="text-center">
+                      <div class="btn-group" role="group">
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-link-secondary avtar-xs"
+                          (click)="viewShow(show)"
+                          title="View Details"
+                        >
+                          <i class="ti ti-eye f-18"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-link-primary avtar-xs"
+                          (click)="editShow(show)"
+                          title="Edit Show"
+                        >
+                          <i class="ti ti-edit f-18"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-link-danger avtar-xs"
+                          (click)="openDeleteModal(deleteModal, show)"
+                          title="Delete Show"
+                        >
+                          <i class="ti ti-trash f-18"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="8" class="text-center py-5">
+                      <div class="text-muted">
+                        <i class="ti ti-trophy f-40 d-block mb-2"></i>
+                        <p class="mb-0">No Shows found</p>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+
+        <!-- Pagination -->
+        <div class="datatable-bottom">
+          <div class="datatable-info">
+            Showing {{ (service.page - 1) * service.pageSize + 1 }} to
+            {{ service.page * service.pageSize > (total$ | async)! ? (total$ | async)! : service.page * service.pageSize }} of
+            {{ total$ | async }} entries
+          </div>
+          <ngb-pagination
+            [collectionSize]="(total$ | async)!"
+            [(page)]="service.page"
+            [pageSize]="service.pageSize"
+            class="table-pagination"
+          ></ngb-pagination>
+        </div>
+      </form>
+    </app-card>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Delete Show</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    @if (selectedShow) {
+      <div class="show-info-box mb-3">
+        <div class="d-flex align-items-start">
+          <div class="avtar avtar-s bg-light-primary me-3">
+            <i class="ti ti-trophy f-20"></i>
+          </div>
+          <div class="flex-grow-1">
+            <h6 class="mb-1">{{ selectedShow.name }}</h6>
+            <p class="text-muted f-12 mb-2">{{ selectedShow.showHoldingBody }}</p>
+            <div class="d-flex flex-wrap gap-2 mb-2">
+              <span [class]="getStatusClass(selectedShow.status)">{{ selectedShow.status }}</span>
+              <span [class]="getLevelClass(selectedShow.level)">{{ selectedShow.level }}</span>
+            </div>
+            <p class="text-muted f-11 mb-1">
+              <i class="ti ti-calendar me-1"></i>
+              <strong>Dates:</strong> {{ selectedShow.startDate | date: 'MMM dd, yyyy' }} - {{ selectedShow.endDate | date: 'MMM dd, yyyy' }}
+            </p>
+            <p class="text-muted f-11 mb-1">
+              <i class="ti ti-map-pin me-1"></i>
+              <strong>Venue:</strong> {{ selectedShow.venue }}
+            </p>
+            @if (selectedShow.currentEntries !== undefined && selectedShow.maxEntries) {
+              <p class="text-muted f-11 mb-0">
+                <i class="ti ti-users me-1"></i>
+                <strong>Entries:</strong> {{ selectedShow.currentEntries }} / {{ selectedShow.maxEntries }}
+              </p>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-danger">
+        <i class="ti ti-alert-triangle me-2"></i>
+        <strong>Warning:</strong> This action cannot be undone. Are you sure you want to permanently delete this Show?
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteShow()">Delete Show</button>
+  </div>
+</ng-template>
+

@@ -1,0 +1,218 @@
+<div class="row">
+  <div class="col-sm-12">
+    @if (email) {
+      <!-- Header Card -->
+      <app-card cardTitle="Email Details" [padding]="0">
+        <div class="card-header-right" card-header-right>
+          <button type="button" class="btn btn-outline-secondary me-2" (click)="goBack()">
+            <i class="ti ti-arrow-left"></i> Back to List
+          </button>
+          @if (email.status !== 'Archived') {
+            <button type="button" class="btn btn-primary me-2" (click)="resendEmail()">
+              <i class="ti ti-send"></i> Resend
+            </button>
+            <button type="button" class="btn btn-outline-warning" (click)="archiveEmail()">
+              <i class="ti ti-archive"></i> Archive
+            </button>
+          }
+        </div>
+
+        <div class="card-body">
+          <!-- Email Header Information -->
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <div class="d-flex align-items-start mb-3">
+                <div class="avtar avtar-l bg-light-primary me-3">
+                  <i class="ti ti-mail f-28"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h3 class="mb-2">{{ email.subject }}</h3>
+                  <div class="d-flex flex-wrap gap-2 mb-2">
+                    <span [class]="getEmailTypeBadgeClass(email.emailType)">{{ email.emailType }}</span>
+                    <span [class]="getStatusBadgeClass(email.status)">{{ email.status }}</span>
+                    @if (email.hasAttachments) {
+                      <span class="badge bg-light-info">
+                        <i class="ti ti-paperclip me-1"></i>{{ email.attachments.length }} Attachment(s)
+                      </span>
+                    }
+                  </div>
+                  <div class="text-muted">
+                    <i class="ti ti-user me-1"></i>Sent by: <strong>{{ email.sentBy }}</strong> ({{ email.sentByEmail }})
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Email Details Grid -->
+          <div class="row">
+            <!-- Basic Information -->
+            <div class="col-12 mb-3">
+              <h5 class="mb-3">Email Information</h5>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-item">
+                <label class="text-muted f-12 mb-1">Date Sent</label>
+                <p class="mb-0">
+                  @if (email.dateSent) {
+                    <i class="ti ti-calendar me-1"></i>
+                    {{ email.dateSent | date: 'MMMM dd, yyyy HH:mm' }}
+                  } @else {
+                    <span class="text-muted">Not sent yet (Draft)</span>
+                  }
+                </p>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-item">
+                <label class="text-muted f-12 mb-1">Date Created</label>
+                <p class="mb-0">
+                  <i class="ti ti-calendar-plus me-1"></i>
+                  {{ email.dateCreated | date: 'MMMM dd, yyyy HH:mm' }}
+                </p>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-item">
+                <label class="text-muted f-12 mb-1">Sent To</label>
+                <p class="mb-0">
+                  <span class="badge bg-light-info">{{ email.sentTo }}</span>
+                </p>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-item">
+                <label class="text-muted f-12 mb-1">Total Recipients</label>
+                <p class="mb-0">
+                  <i class="ti ti-users me-1"></i>
+                  <strong>{{ email.recipientCount }}</strong> recipients
+                  @if (email.recipientEmails.length > 0) {
+                    <button type="button" class="btn btn-sm btn-link p-0 ms-2" (click)="toggleRecipients()">
+                      {{ showRecipients ? 'Hide' : 'View' }} List
+                    </button>
+                  }
+                </p>
+              </div>
+            </div>
+
+            <!-- Recipients List (Collapsible) -->
+            @if (showRecipients && email.recipientEmails.length > 0) {
+              <div class="col-12 mb-3">
+                <div class="card bg-light">
+                  <div class="card-body">
+                    <h6 class="mb-3">Recipient Email Addresses</h6>
+                    <div class="row">
+                      @for (recipientEmail of email.recipientEmails; track recipientEmail) {
+                        <div class="col-md-4 mb-2">
+                          <small>{{ recipientEmail }}</small>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <!-- Attachments -->
+            @if (email.hasAttachments && email.attachments.length > 0) {
+              <div class="col-12 mb-3 mt-3">
+                <h5 class="mb-3">Attachments</h5>
+              </div>
+
+              @for (attachment of email.attachments; track attachment.id) {
+                <div class="col-md-6 mb-3">
+                  <div class="card">
+                    <div class="card-body d-flex align-items-center">
+                      <div class="avtar avtar-m bg-light-primary me-3">
+                        <i class="ti ti-file"></i>
+                      </div>
+                      <div class="flex-grow-1">
+                        <h6 class="mb-1">{{ attachment.fileName }}</h6>
+                        <small class="text-muted">{{ formatFileSize(attachment.fileSize) }}</small>
+                      </div>
+                      <a [href]="attachment.url" download class="btn btn-sm btn-outline-primary">
+                        <i class="ti ti-download"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              }
+            }
+
+            <!-- Delivery Statistics -->
+            @if (email.deliveryStats && email.status === 'Sent') {
+              <div class="col-12 mb-3 mt-3">
+                <h5 class="mb-3">Delivery Statistics</h5>
+              </div>
+
+
+              <div class="col-md-3 mb-3">
+                <div class="card bg-light-success">
+                  <div class="card-body text-center">
+                    <h3 class="mb-1">{{ email.deliveryStats.delivered }}</h3>
+                    <p class="mb-0 text-muted">Delivered ({{ getDeliveryRate() }}%)</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <div class="card bg-light-danger">
+                  <div class="card-body text-center">
+                    <h3 class="mb-1">{{ email.deliveryStats.failed }}</h3>
+                    <p class="mb-0 text-muted">Failed</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <div class="card bg-light-info">
+                  <div class="card-body text-center">
+                    <h3 class="mb-1">{{ email.deliveryStats.opened }}</h3>
+                    <p class="mb-0 text-muted">Opened ({{ getOpenRate() }}%)</p>
+                  </div>
+                </div>
+              </div>
+
+              @if (email.deliveryStats.clicked > 0) {
+                <div class="col-md-3 mb-3">
+                  <div class="card bg-light-warning">
+                    <div class="card-body text-center">
+                      <h3 class="mb-1">{{ email.deliveryStats.clicked }}</h3>
+                      <p class="mb-0 text-muted">Clicked</p>
+                    </div>
+                  </div>
+                </div>
+              }
+            }
+
+            <!-- Email Content -->
+            <div class="col-12 mb-3 mt-3">
+              <h5 class="mb-3">Email Content</h5>
+            </div>
+
+            <div class="col-12 mb-3">
+              <div class="card">
+                <div class="card-body email-content" [innerHTML]="getSanitizedContent()"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </app-card>
+    } @else {
+      <app-card cardTitle="Email Not Found">
+        <div class="card-body text-center py-5">
+          <i class="ti ti-mail-off f-40 text-muted d-block mb-3"></i>
+          <h5>Email Not Found</h5>
+          <p class="text-muted">The requested email could not be found.</p>
+          <button type="button" class="btn btn-primary" (click)="goBack()">
+            <i class="ti ti-arrow-left"></i> Back to List
+          </button>
+        </div>
+      </app-card>
+    }
+  </div>
+</div>

@@ -1,0 +1,35 @@
+/**
+ * School Form Component Styles
+ */
+
+// Section headers
+h5.text-primary {
+  font-weight: 600;
+}
+
+// Form labels
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+// Required field indicator
+.text-danger {
+  font-weight: 600;
+}
+
+// Facility badges
+.badge.bg-light-info {
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
+  
+  i {
+    font-size: 0.75rem;
+  }
+}
+
+// Form actions
+.gap-2 {
+  gap: 0.5rem !important;
+}
+

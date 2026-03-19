@@ -1,0 +1,395 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card [cardTitle]="pageTitle">
+      <div class="card-header-right" card-header-right>
+        <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
+          <i class="ti ti-arrow-left"></i> Back to List
+        </button>
+      </div>
+
+      <div class="card-body">
+        <form [formGroup]="showForm" (ngSubmit)="onSubmit()">
+          <!-- Basic Information Section -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h5 class="mb-3">Basic Information</h5>
+            </div>
+
+            <!-- Show Name -->
+            <div class="col-md-6 mb-3">
+              <label for="name" class="form-label">
+                Show Name <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                formControlName="name"
+                placeholder="Enter show name"
+                [class.is-invalid]="hasError('name', 'required') || hasError('name', 'minlength')"
+              />
+              @if (hasError('name', 'required') || hasError('name', 'minlength')) {
+                <div class="invalid-feedback">{{ getErrorMessage('name') }}</div>
+              }
+            </div>
+
+            <!-- Show Holding Body -->
+            <div class="col-md-6 mb-3">
+              <label for="showHoldingBody" class="form-label">
+                Show Holding Body <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="showHoldingBody"
+                formControlName="showHoldingBody"
+                placeholder="Enter show holding body"
+                [class.is-invalid]="hasError('showHoldingBody', 'required')"
+              />
+              @if (hasError('showHoldingBody', 'required')) {
+                <div class="invalid-feedback">{{ getErrorMessage('showHoldingBody') }}</div>
+              }
+            </div>
+
+            <!-- Venue -->
+            <div class="col-md-6 mb-3">
+              <label for="venue" class="form-label">
+                Venue <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="venue"
+                formControlName="venue"
+                placeholder="Enter venue name"
+                [class.is-invalid]="hasError('venue', 'required')"
+              />
+              @if (hasError('venue', 'required')) {
+                <div class="invalid-feedback">{{ getErrorMessage('venue') }}</div>
+              }
+            </div>
+
+            <!-- City -->
+            <div class="col-md-3 mb-3">
+              <label for="city" class="form-label">
+                City <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="city"
+                formControlName="city"
+                placeholder="Enter city"
+                [class.is-invalid]="hasError('city', 'required')"
+              />
+              @if (hasError('city', 'required')) {
+                <div class="invalid-feedback">{{ getErrorMessage('city') }}</div>
+              }
+            </div>
+
+            <!-- Province -->
+            <div class="col-md-3 mb-3">
+              <label for="province" class="form-label">
+                Province <span class="text-danger">*</span>
+              </label>
+              <select
+                class="form-select"
+                id="province"
+                formControlName="province"
+                [class.is-invalid]="hasError('province', 'required')"
+              >
+                <option value="">Select Province</option>
+                @for (province of provinces; track province) {
+                  <option [value]="province">{{ province }}</option>
+                }
+              </select>
+              @if (hasError('province', 'required')) {
+                <div class="invalid-feedback">{{ getErrorMessage('province') }}</div>
+              }
+            </div>
+
+            <!-- Description -->
+            <div class="col-12 mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea
+                class="form-control"
+                id="description"
+                formControlName="description"
+                rows="3"
+                placeholder="Enter show description"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Dates Section -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h5 class="mb-3">Dates</h5>
+            </div>
+
+            <!-- Start Date -->
+            <div class="col-md-4 mb-3">
+              <label for="startDate" class="form-label">
+                Start Date <span class="text-danger">*</span>
+              </label>
+              <input
+                type="date"
+                class="form-control"
+                id="startDate"
+                formControlName="startDate"
+                [class.is-invalid]="hasError('startDate', 'required')"
+              />
+              @if (hasError('startDate', 'required')) {
+                <div class="invalid-feedback">{{ getErrorMessage('startDate') }}</div>
+              }
+            </div>
+
+            <!-- End Date -->
+            <div class="col-md-4 mb-3">
+              <label for="endDate" class="form-label">
+                End Date <span class="text-danger">*</span>
+              </label>
+              <input
+                type="date"
+                class="form-control"
+                id="endDate"
+                formControlName="endDate"
+                [class.is-invalid]="hasError('endDate', 'required')"
+              />
+              @if (hasError('endDate', 'required')) {
+                <div class="invalid-feedback">{{ getErrorMessage('endDate') }}</div>
+              }
+            </div>
+
+            <!-- Entry Closing Date -->
+            <div class="col-md-4 mb-3">
+              <label for="entryClosingDate" class="form-label">
+                Entry Closing Date <span class="text-danger">*</span>
+              </label>
+              <input
+                type="date"
+                class="form-control"
+                id="entryClosingDate"
+                formControlName="entryClosingDate"
+                [class.is-invalid]="hasError('entryClosingDate', 'required')"
+              />
+              @if (hasError('entryClosingDate', 'required')) {
+                <div class="invalid-feedback">{{ getErrorMessage('entryClosingDate') }}</div>
+              }
+            </div>
+          </div>
+
+          <!-- Competition Details Section -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h5 class="mb-3">Competition Details</h5>
+            </div>
+
+            <!-- Status -->
+            <div class="col-md-3 mb-3">
+              <label for="status" class="form-label">
+                Status <span class="text-danger">*</span>
+              </label>
+              <select
+                class="form-select"
+                id="status"
+                formControlName="status"
+                [class.is-invalid]="hasError('status', 'required')"
+              >
+                @for (status of statuses; track status) {
+                  <option [value]="status">{{ status }}</option>
+                }
+              </select>
+              @if (hasError('status', 'required')) {
+                <div class="invalid-feedback">{{ getErrorMessage('status') }}</div>
+              }
+            </div>
+
+            <!-- Level -->
+            <div class="col-md-3 mb-3">
+              <label for="level" class="form-label">
+                Level <span class="text-danger">*</span>
+              </label>
+              <select
+                class="form-select"
+                id="level"
+                formControlName="level"
+                [class.is-invalid]="hasError('level', 'required')"
+              >
+                @for (level of levels; track level) {
+                  <option [value]="level">{{ level }}</option>
+                }
+              </select>
+              @if (hasError('level', 'required')) {
+                <div class="invalid-feedback">{{ getErrorMessage('level') }}</div>
+              }
+            </div>
+
+            <!-- Entry Fee -->
+            <div class="col-md-3 mb-3">
+              <label for="entryFee" class="form-label">
+                Entry Fee (ZAR) <span class="text-danger">*</span>
+              </label>
+              <input
+                type="number"
+                class="form-control"
+                id="entryFee"
+                formControlName="entryFee"
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+                [class.is-invalid]="hasError('entryFee', 'required') || hasError('entryFee', 'min')"
+              />
+              @if (hasError('entryFee', 'required') || hasError('entryFee', 'min')) {
+                <div class="invalid-feedback">{{ getErrorMessage('entryFee') }}</div>
+              }
+            </div>
+
+            <!-- Active Status -->
+            <div class="col-md-3 mb-3">
+              <label class="form-label d-block">Active Status</label>
+              <div class="form-check form-switch mt-2">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="isActive"
+                  formControlName="isActive"
+                />
+                <label class="form-check-label" for="isActive">
+                  Active
+                </label>
+              </div>
+            </div>
+
+            <!-- Max Entries -->
+            <div class="col-md-6 mb-3">
+              <label for="maxEntries" class="form-label">
+                Maximum Entries <span class="text-danger">*</span>
+              </label>
+              <input
+                type="number"
+                class="form-control"
+                id="maxEntries"
+                formControlName="maxEntries"
+                placeholder="100"
+                min="1"
+                [class.is-invalid]="hasError('maxEntries', 'required') || hasError('maxEntries', 'min')"
+              />
+              @if (hasError('maxEntries', 'required') || hasError('maxEntries', 'min')) {
+                <div class="invalid-feedback">{{ getErrorMessage('maxEntries') }}</div>
+              }
+            </div>
+
+            <!-- Current Entries -->
+            <div class="col-md-6 mb-3">
+              <label for="currentEntries" class="form-label">Current Entries</label>
+              <input
+                type="number"
+                class="form-control"
+                id="currentEntries"
+                formControlName="currentEntries"
+                placeholder="0"
+                min="0"
+                [class.is-invalid]="hasError('currentEntries', 'min')"
+              />
+              @if (hasError('currentEntries', 'min')) {
+                <div class="invalid-feedback">{{ getErrorMessage('currentEntries') }}</div>
+              }
+            </div>
+          </div>
+
+          <!-- Contact Information Section -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h5 class="mb-3">Contact Information</h5>
+            </div>
+
+            <!-- Contact Email -->
+            <div class="col-md-6 mb-3">
+              <label for="contactEmail" class="form-label">
+                Contact Email <span class="text-danger">*</span>
+              </label>
+              <input
+                type="email"
+                class="form-control"
+                id="contactEmail"
+                formControlName="contactEmail"
+                placeholder="contact@example.com"
+                [class.is-invalid]="hasError('contactEmail', 'required') || hasError('contactEmail', 'email')"
+              />
+              @if (hasError('contactEmail', 'required') || hasError('contactEmail', 'email')) {
+                <div class="invalid-feedback">{{ getErrorMessage('contactEmail') }}</div>
+              }
+            </div>
+
+            <!-- Contact Phone -->
+            <div class="col-md-6 mb-3">
+              <label for="contactPhone" class="form-label">
+                Contact Phone <span class="text-danger">*</span>
+              </label>
+              <input
+                type="tel"
+                class="form-control"
+                id="contactPhone"
+                formControlName="contactPhone"
+                placeholder="+27 XX XXX XXXX"
+                [class.is-invalid]="hasError('contactPhone', 'required')"
+              />
+              @if (hasError('contactPhone', 'required')) {
+                <div class="invalid-feedback">{{ getErrorMessage('contactPhone') }}</div>
+              }
+            </div>
+          </div>
+
+          <!-- Additional Information Section -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h5 class="mb-3">Additional Information</h5>
+            </div>
+
+            <!-- Judges -->
+            <div class="col-md-6 mb-3">
+              <label for="judges" class="form-label">Judges</label>
+              <textarea
+                class="form-control"
+                id="judges"
+                formControlName="judges"
+                rows="3"
+                placeholder="Enter judge names separated by commas"
+              ></textarea>
+              <small class="form-text text-muted">Separate multiple judges with commas</small>
+            </div>
+
+            <!-- Classes -->
+            <div class="col-md-6 mb-3">
+              <label for="classes" class="form-label">Competition Classes</label>
+              <textarea
+                class="form-control"
+                id="classes"
+                formControlName="classes"
+                rows="3"
+                placeholder="Enter class names separated by commas"
+              ></textarea>
+              <small class="form-text text-muted">Separate multiple classes with commas</small>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="row">
+            <div class="col-12">
+              <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
+                  <i class="ti ti-x"></i> Cancel
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="showForm.invalid">
+                  <i class="ti ti-device-floppy"></i> {{ isEditMode ? 'Update' : 'Create' }} Show
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </app-card>
+  </div>
+</div>
+

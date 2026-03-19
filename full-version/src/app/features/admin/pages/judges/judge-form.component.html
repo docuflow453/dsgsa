@@ -1,0 +1,256 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card [cardTitle]="pageTitle">
+      <div class="card-header-right" card-header-right>
+        <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
+          <i class="ti ti-arrow-left"></i> Back
+        </button>
+      </div>
+
+      <div class="card-body">
+        <form [formGroup]="judgeForm" (ngSubmit)="onSubmit()">
+          <!-- Basic Information Section -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h5 class="mb-3">Basic Information</h5>
+            </div>
+
+            <!-- First Name -->
+            <div class="col-md-6 mb-3">
+              <label for="firstName" class="form-label">
+                First Name <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="firstName"
+                formControlName="firstName"
+                placeholder="Enter first name"
+                [class.is-invalid]="hasError('firstName', 'required') || hasError('firstName', 'minlength')"
+              />
+              @if (hasError('firstName', 'required') || hasError('firstName', 'minlength')) {
+                <div class="invalid-feedback">{{ getErrorMessage('firstName') }}</div>
+              }
+            </div>
+
+            <!-- Last Name -->
+            <div class="col-md-6 mb-3">
+              <label for="lastName" class="form-label">
+                Last Name <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="lastName"
+                formControlName="lastName"
+                placeholder="Enter last name"
+                [class.is-invalid]="hasError('lastName', 'required') || hasError('lastName', 'minlength')"
+              />
+              @if (hasError('lastName', 'required') || hasError('lastName', 'minlength')) {
+                <div class="invalid-feedback">{{ getErrorMessage('lastName') }}</div>
+              }
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-6 mb-3">
+              <label for="email" class="form-label">
+                Email <span class="text-danger">*</span>
+              </label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                formControlName="email"
+                placeholder="Enter email address"
+                [class.is-invalid]="hasError('email', 'required') || hasError('email', 'email')"
+              />
+              @if (hasError('email', 'required') || hasError('email', 'email')) {
+                <div class="invalid-feedback">{{ getErrorMessage('email') }}</div>
+              }
+            </div>
+
+            <!-- Phone -->
+            <div class="col-md-6 mb-3">
+              <label for="phone" class="form-label">Phone</label>
+              <input
+                type="tel"
+                class="form-control"
+                id="phone"
+                formControlName="phone"
+                placeholder="Enter phone number"
+              />
+            </div>
+          </div>
+
+          <!-- Professional Information Section -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h5 class="mb-3">Professional Information</h5>
+            </div>
+
+            <!-- Judge Type -->
+            <div class="col-md-6 mb-3">
+              <label for="judgeType" class="form-label">
+                Judge Type <span class="text-danger">*</span>
+              </label>
+              <select
+                class="form-select"
+                id="judgeType"
+                formControlName="judgeType"
+                [class.is-invalid]="hasError('judgeType', 'required')"
+              >
+                <option value="">Select judge type</option>
+                @for (type of judgeTypes; track type) {
+                  <option [value]="type">{{ type }}</option>
+                }
+              </select>
+              @if (hasError('judgeType', 'required')) {
+                <div class="invalid-feedback">{{ getErrorMessage('judgeType') }}</div>
+              }
+            </div>
+
+            <!-- License Number -->
+            <div class="col-md-6 mb-3">
+              <label for="licenseNumber" class="form-label">
+                License Number <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="licenseNumber"
+                formControlName="licenseNumber"
+                placeholder="Enter license number"
+                [class.is-invalid]="hasError('licenseNumber', 'required') || hasError('licenseNumber', 'minlength')"
+              />
+              @if (hasError('licenseNumber', 'required') || hasError('licenseNumber', 'minlength')) {
+                <div class="invalid-feedback">{{ getErrorMessage('licenseNumber') }}</div>
+              }
+            </div>
+
+            <!-- Specialization -->
+            <div class="col-md-6 mb-3">
+              <label for="specialization" class="form-label">Specialization</label>
+              <select class="form-select" id="specialization" formControlName="specialization">
+                <option value="">Select specialization</option>
+                @for (spec of specializations; track spec) {
+                  <option [value]="spec">{{ spec }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Years of Experience -->
+            <div class="col-md-6 mb-3">
+              <label for="yearsOfExperience" class="form-label">Years of Experience</label>
+              <input
+                type="number"
+                class="form-control"
+                id="yearsOfExperience"
+                formControlName="yearsOfExperience"
+
+
+                placeholder="Enter years of experience"
+                min="0"
+                [class.is-invalid]="hasError('yearsOfExperience', 'min')"
+              />
+              @if (hasError('yearsOfExperience', 'min')) {
+                <div class="invalid-feedback">{{ getErrorMessage('yearsOfExperience') }}</div>
+              }
+            </div>
+
+            <!-- Certification Date -->
+            <div class="col-md-6 mb-3">
+              <label for="certificationDate" class="form-label">Certification Date</label>
+              <input type="date" class="form-control" id="certificationDate" formControlName="certificationDate" />
+            </div>
+
+            <!-- Status -->
+            <div class="col-md-6 mb-3">
+              <label for="status" class="form-label">
+                Status <span class="text-danger">*</span>
+              </label>
+              <select
+                class="form-select"
+                id="status"
+                formControlName="status"
+                [class.is-invalid]="hasError('status', 'required')"
+              >
+                @for (status of statuses; track status) {
+                  <option [value]="status">{{ status }}</option>
+                }
+              </select>
+              @if (hasError('status', 'required')) {
+                <div class="invalid-feedback">{{ getErrorMessage('status') }}</div>
+              }
+            </div>
+          </div>
+
+          <!-- Location Information Section -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h5 class="mb-3">Location Information</h5>
+            </div>
+
+            <!-- City -->
+            <div class="col-md-6 mb-3">
+              <label for="city" class="form-label">City</label>
+              <input type="text" class="form-control" id="city" formControlName="city" placeholder="Enter city" />
+            </div>
+
+            <!-- Province -->
+            <div class="col-md-6 mb-3">
+              <label for="province" class="form-label">Province</label>
+              <select class="form-select" id="province" formControlName="province">
+                <option value="">Select province</option>
+                @for (province of provinces; track province) {
+                  <option [value]="province">{{ province }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <!-- Additional Information Section -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h5 class="mb-3">Additional Information</h5>
+            </div>
+
+            <!-- Image URL -->
+            <div class="col-md-12 mb-3">
+              <label for="image" class="form-label">Image URL</label>
+              <input
+                type="text"
+                class="form-control"
+                id="image"
+                formControlName="image"
+                placeholder="Enter image URL (optional)"
+              />
+              <small class="form-text text-muted">Enter the URL of the judge's profile image</small>
+            </div>
+
+            <!-- Active Status -->
+            <div class="col-md-12 mb-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="isActive" formControlName="isActive" />
+                <label class="form-check-label" for="isActive"> Active </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="row">
+            <div class="col-12">
+              <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
+                  <i class="ti ti-x"></i> Cancel
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="judgeForm.invalid">
+                  <i class="ti ti-device-floppy"></i> {{ isEditMode ? 'Update' : 'Create' }} Judge
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </app-card>
+  </div>
+</div>

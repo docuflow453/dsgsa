@@ -73,13 +73,33 @@ export class NavCollapseComponent implements OnInit {
       parent = (parent as HTMLElement).parentElement!;
     }
 
+    // Find all ancestor menus that should remain open
+    const ancestorMenus: HTMLElement[] = [];
+    let currentAncestor: HTMLElement | null = parent.parentElement;
+
+    while (currentAncestor) {
+      if (currentAncestor.classList.contains('coded-hasmenu')) {
+        ancestorMenus.push(currentAncestor);
+      }
+      currentAncestor = currentAncestor.parentElement;
+    }
+
+    // Close only sibling menus (not ancestors or descendants)
     const sections = document.querySelectorAll('.coded-hasmenu');
     for (let i = 0; i < sections.length; i++) {
-      if (sections[i] !== parent) {
-        sections[i].classList.remove('coded-trigger');
+      const section = sections[i] as HTMLElement;
+
+      // Don't close if it's the clicked menu, an ancestor, or a descendant
+      const isClickedMenu = section === parent;
+      const isAncestor = ancestorMenus.includes(section);
+      const isDescendant = parent.contains(section);
+
+      if (!isClickedMenu && !isAncestor && !isDescendant) {
+        section.classList.remove('coded-trigger');
       }
     }
 
+    // Ensure all ancestor menus remain open
     let first_parent = parent.parentElement!;
     let pre_parent = ((parent as HTMLElement).parentElement as HTMLElement).parentElement!;
     if (first_parent.classList.contains('coded-hasmenu')) {
@@ -93,6 +113,8 @@ export class NavCollapseComponent implements OnInit {
         pre_parent = (((pre_parent as HTMLElement).parentElement as HTMLElement).parentElement as HTMLElement).parentElement!;
       } while (pre_parent.classList.contains('coded-submenu'));
     }
+
+    // Toggle the clicked menu
     parent.classList.toggle('coded-trigger');
   }
 

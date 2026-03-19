@@ -13,18 +13,18 @@ const routes: Routes = [
   // Default route - redirect to login
   {
     path: '',
-    redirectTo: 'auth/login',
+    redirectTo: 'login',
     pathMatch: 'full'
+  },
+  // Primary login route
+  {
+    path: 'login',
+    loadComponent: () => import('./demo/pages/authentication/auth-login/auth-login.component').then((c) => c.AuthLoginComponent)
   },
   // Authentication routes (public - no auth required)
   {
     path: 'auth',
     loadChildren: () => import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES)
-  },
-  // Legacy auth routes (public - no auth required)
-  {
-    path: 'login',
-    loadComponent: () => import('./demo/pages/authentication/auth-login/auth-login.component').then((c) => c.AuthLoginComponent)
   },
   {
     path: 'register',
@@ -51,6 +51,12 @@ const routes: Routes = [
       {
         path: 'shb',
         loadChildren: () => import('./features/show-holding-body/show-holding-body.routes').then((m) => m.SHOW_HOLDING_BODY_ROUTES)
+      },
+      // Admin routes (role: ADMIN)
+      {
+        path: 'admin',
+        loadChildren: () => import('./features/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
+        data: { roles: [Role.Admin] }
       },
       // Admin dashboard routes
       {

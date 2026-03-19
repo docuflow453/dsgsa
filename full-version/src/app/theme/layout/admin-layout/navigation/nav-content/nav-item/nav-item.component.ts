@@ -76,36 +76,60 @@ export class NavItemComponent implements OnInit {
         const parent = ele.parentElement as HTMLElement;
         const up_parent = ((parent.parentElement as HTMLElement).parentElement as HTMLElement).parentElement as HTMLElement;
         const last_parent = (up_parent.parentElement as HTMLElement).parentElement as HTMLElement;
-        if (last_parent.classList.contains('coded-submenu')) {
-          up_parent.classList.remove('coded-trigger');
-          up_parent.classList.remove('active');
+
+        // Check if this item is within a submenu (nested item)
+        const isNestedItem = last_parent.classList.contains('coded-submenu');
+
+        if (isNestedItem) {
+          // This is a submenu item - keep the parent menu open
+          // Find all parent menus that should remain open
+          const parentMenus: HTMLElement[] = [];
+          let currentParent: HTMLElement | null = parent;
+
+          while (currentParent) {
+            if (currentParent.classList.contains('coded-hasmenu')) {
+              parentMenus.push(currentParent);
+            }
+            currentParent = currentParent.parentElement;
+          }
+
+          // Close only menus that are NOT parents of this item
+          const sections = document.querySelectorAll('.coded-hasmenu');
+          for (let i = 0; i < sections.length; i++) {
+            const section = sections[i] as HTMLElement;
+            if (!parentMenus.includes(section)) {
+              section.classList.remove('active');
+              section.classList.remove('coded-trigger');
+            }
+          }
+
+          // Ensure all parent menus remain open
+          parentMenus.forEach(menu => {
+            menu.classList.add('coded-trigger');
+            menu.classList.add('active');
+          });
         } else {
+          // This is a top-level item - close all other menus
           const sections = document.querySelectorAll('.coded-hasmenu');
           for (let i = 0; i < sections.length; i++) {
             sections[i].classList.remove('active');
             sections[i].classList.remove('coded-trigger');
           }
-        }
 
-        if (parent.classList.contains('coded-hasmenu')) {
-          parent.classList.add('coded-trigger');
-          parent.classList.add('active');
-        } else if (up_parent.classList.contains('coded-hasmenu')) {
-          up_parent.classList.add('coded-trigger');
-          up_parent.classList.add('active');
-        } else if (last_parent.classList.contains('coded-hasmenu')) {
-          last_parent.classList.add('coded-trigger');
-          last_parent.classList.add('active');
+          if (parent.classList.contains('coded-hasmenu')) {
+            parent.classList.add('coded-trigger');
+            parent.classList.add('active');
+          } else if (up_parent.classList.contains('coded-hasmenu')) {
+            up_parent.classList.add('coded-trigger');
+            up_parent.classList.add('active');
+          } else if (last_parent.classList.contains('coded-hasmenu')) {
+            last_parent.classList.add('coded-trigger');
+            last_parent.classList.add('active');
+          }
         }
       }
     } else {
       setTimeout(() => {
-        const sections = document.querySelectorAll('.coded-hasmenu');
-        for (let i = 0; i < sections.length; i++) {
-          sections[i].classList.remove('active');
-          sections[i].classList.remove('coded-trigger');
-        }
-
         let current_url = this.location.path();
         // eslint-disable-next-line
         // @ts-ignore
@@ -116,15 +140,41 @@ export class NavItemComponent implements OnInit {
         }
         const link = "a.nav-link[ href='" + current_url + "' ]";
         const ele = document.querySelector(link);
+
         if (ele !== null && ele !== undefined) {
           const parent = ele.parentElement;
           const up_parent = parent?.parentElement?.parentElement;
           const last_parent = up_parent?.parentElement;
+
+          // Find all parent menus that should remain open
+          const parentMenus: HTMLElement[] = [];
+          let currentParent: HTMLElement | null = parent as HTMLElement;
+
+          while (currentParent) {
+            if (currentParent.classList.contains('coded-hasmenu')) {
+              parentMenus.push(currentParent);
+            }
+            currentParent = currentParent.parentElement;
+          }
+
+          // Close only menus that are NOT parents of the current item
+          const sections = document.querySelectorAll('.coded-hasmenu');
+          for (let i = 0; i < sections.length; i++) {
+            const section = sections[i] as HTMLElement;
+            if (!parentMenus.includes(section)) {
+              section.classList.remove('active');
+              section.classList.remove('coded-trigger');
+            }
+          }
+
+          // Ensure all parent menus remain open
           if (parent?.classList.contains('coded-hasmenu')) {
             parent.classList.add('active');
-          } else if (up_parent?.classList.contains('coded-hasmenu')) {
+          }
+          if (up_parent?.classList.contains('coded-hasmenu')) {
             up_parent.classList.add('active');
-          } else if (last_parent?.classList.contains('coded-hasmenu')) {
+          }
+          if (last_parent?.classList.contains('coded-hasmenu')) {
             last_parent.classList.add('active');
           }
         }

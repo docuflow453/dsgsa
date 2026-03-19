@@ -1,0 +1,212 @@
+<div class="row">
+  <div class="col-sm-12">
+    @if (judge) {
+      <!-- Header Card -->
+      <app-card cardTitle="Judge Details" [padding]="0">
+        <div class="card-header-right" card-header-right>
+          <button type="button" class="btn btn-outline-secondary me-2" (click)="goBack()">
+            <i class="ti ti-arrow-left"></i> Back to List
+          </button>
+          <button type="button" class="btn btn-primary me-2" (click)="editJudge()">
+            <i class="ti ti-edit"></i> Edit
+          </button>
+          <button type="button" class="btn btn-danger" (click)="openDeleteModal(deleteModal)">
+            <i class="ti ti-trash"></i> Delete
+          </button>
+        </div>
+
+        <div class="card-body">
+          <!-- Title and Status -->
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <div class="d-flex align-items-center mb-3">
+                <div class="avtar avtar-l bg-light-primary me-3">
+                  @if (judge.image) {
+                    <img [src]="judge.image" alt="{{ getFullName() }}" class="img-radius wid-60" />
+                  } @else {
+                    <i class="ti ti-gavel f-28"></i>
+                  }
+                </div>
+                <div>
+                  <h3 class="mb-1">{{ getFullName() }}</h3>
+                  <div class="d-flex flex-wrap gap-2">
+                    <span [class]="getStatusClass(judge.status)">{{ judge.status }}</span>
+                    <span [class]="getJudgeTypeClass(judge.judgeType)">{{ judge.judgeType }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Details Grid -->
+          <div class="row">
+            <!-- Contact Information -->
+            <div class="col-12 mb-3">
+              <h5 class="mb-3">Contact Information</h5>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-item">
+                <label class="text-muted f-12 mb-1">Email</label>
+                <p class="mb-0">
+                  <i class="ti ti-mail me-1"></i>
+                  <a href="mailto:{{ judge.email }}">{{ judge.email }}</a>
+                </p>
+              </div>
+            </div>
+
+            @if (judge.phone) {
+              <div class="col-md-6 mb-3">
+                <div class="detail-item">
+                  <label class="text-muted f-12 mb-1">Phone</label>
+                  <p class="mb-0">
+                    <i class="ti ti-phone me-1"></i>
+                    <a href="tel:{{ judge.phone }}">{{ judge.phone }}</a>
+                  </p>
+                </div>
+              </div>
+            }
+
+            <!-- Professional Information -->
+            <div class="col-12 mb-3 mt-3">
+              <h5 class="mb-3">Professional Information</h5>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-item">
+                <label class="text-muted f-12 mb-1">Judge Type</label>
+                <p class="mb-0">
+                  <span [class]="getJudgeTypeClass(judge.judgeType)">{{ judge.judgeType }}</span>
+                </p>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-item">
+                <label class="text-muted f-12 mb-1">License Number</label>
+                <p class="mb-0">
+                  <i class="ti ti-id me-1"></i>
+                  {{ judge.licenseNumber }}
+                </p>
+              </div>
+            </div>
+
+            @if (judge.specialization) {
+              <div class="col-md-6 mb-3">
+                <div class="detail-item">
+                  <label class="text-muted f-12 mb-1">Specialization</label>
+                  <p class="mb-0">
+                    <i class="ti ti-award me-1"></i>
+                    {{ judge.specialization }}
+                  </p>
+                </div>
+              </div>
+            }
+
+            @if (judge.yearsOfExperience) {
+              <div class="col-md-6 mb-3">
+                <div class="detail-item">
+                  <label class="text-muted f-12 mb-1">Years of Experience</label>
+                  <p class="mb-0">
+                    <i class="ti ti-clock me-1"></i>
+                    {{ judge.yearsOfExperience }} years
+                  </p>
+                </div>
+              </div>
+            }
+
+            @if (judge.certificationDate) {
+              <div class="col-md-6 mb-3">
+                <div class="detail-item">
+                  <label class="text-muted f-12 mb-1">Certification Date</label>
+                  <p class="mb-0">
+                    <i class="ti ti-certificate me-1"></i>
+                    {{ judge.certificationDate | date: 'MMMM dd, yyyy' }}
+                  </p>
+                </div>
+              </div>
+            }
+
+            <!-- Location Information -->
+            @if (judge.city || judge.province) {
+              <div class="col-12 mb-3 mt-3">
+                <h5 class="mb-3">Location</h5>
+              </div>
+
+              @if (judge.city && judge.province) {
+                <div class="col-md-6 mb-3">
+                  <div class="detail-item">
+                    <label class="text-muted f-12 mb-1">Location</label>
+                    <p class="mb-0">
+                      <i class="ti ti-map-pin me-1"></i>
+                      {{ judge.city }}, {{ judge.province }}
+                    </p>
+                  </div>
+                </div>
+              }
+            }
+
+
+
+
+            <!-- System Information -->
+            <div class="col-12 mb-3 mt-3">
+              <h5 class="mb-3">System Information</h5>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-item">
+                <label class="text-muted f-12 mb-1">Status</label>
+                <p class="mb-0">
+                  <span [class]="getStatusClass(judge.status)">{{ judge.status }}</span>
+                </p>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-item">
+                <label class="text-muted f-12 mb-1">Date Created</label>
+                <p class="mb-0">
+                  <i class="ti ti-calendar-plus me-1"></i>
+                  {{ judge.dateCreated | date: 'MMMM dd, yyyy' }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </app-card>
+    } @else {
+      <app-card cardTitle="Judge Not Found">
+        <div class="card-body text-center py-5">
+          <i class="ti ti-alert-circle f-40 text-muted d-block mb-3"></i>
+          <h5>Judge Not Found</h5>
+          <p class="text-muted">The requested judge could not be found.</p>
+          <button type="button" class="btn btn-primary" (click)="goBack()">
+            <i class="ti ti-arrow-left"></i> Back to List
+          </button>
+        </div>
+      </app-card>
+    }
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Delete Judge</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    @if (judge) {
+      <div class="alert alert-danger">
+        <i class="ti ti-alert-triangle me-2"></i>
+        <strong>Warning:</strong> This action cannot be undone. Are you sure you want to permanently delete
+        <strong>{{ getFullName() }}</strong>?
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteJudge()">Delete Judge</button>
+  </div>
+</ng-template>

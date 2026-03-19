@@ -1,0 +1,42 @@
+/**
+ * Membership Type Form Component Styles
+ */
+
+.benefits-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.benefit-item {
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #e9ecef !important;
+  }
+}
+
+.form-label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.form-check-label {
+  font-weight: 400;
+}
+
+// Invalid feedback styling
+.invalid-feedback {
+  display: block;
+  margin-top: 0.25rem;
+}
+
+// Button styling
+.btn-link-danger {
+  color: #dc3545;
+  padding: 0.25rem 0.5rem;
+
+  &:hover {
+    color: #bb2d3b;
+  }
+}
+

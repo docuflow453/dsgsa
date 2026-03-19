@@ -1,0 +1,261 @@
+<div class="row">
+  <div class="col-sm-12">
+    @if (show) {
+      <!-- Header Card -->
+      <app-card cardTitle="Show Details" [padding]="0">
+        <div class="card-header-right" card-header-right>
+          <button type="button" class="btn btn-outline-secondary me-2" (click)="goBack()">
+            <i class="ti ti-arrow-left"></i> Back to List
+          </button>
+          <button type="button" class="btn btn-primary me-2" (click)="editShow()">
+            <i class="ti ti-edit"></i> Edit
+          </button>
+          <button type="button" class="btn btn-danger" (click)="openDeleteModal(deleteModal)">
+            <i class="ti ti-trash"></i> Delete
+          </button>
+        </div>
+
+        <div class="card-body">
+          <!-- Title and Status -->
+          <div class="row mb-4">
+            <div class="col-md-8">
+              <div class="d-flex align-items-center mb-3">
+                <div class="avtar avtar-l bg-light-primary me-3">
+                  <i class="ti ti-trophy f-28"></i>
+                </div>
+                <div>
+                  <h3 class="mb-1">{{ show.name }}</h3>
+                  <div class="d-flex flex-wrap gap-2">
+                    <span [class]="getStatusClass(show.status)">{{ show.status }}</span>
+                    <span [class]="getLevelClass(show.level)">{{ show.level }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 text-md-end">
+              @if (show.entryFee) {
+                <h2 class="text-primary mb-0">{{ show.entryFee | currency: 'ZAR' }}</h2>
+                <p class="text-muted f-12 mb-0">Entry Fee</p>
+              }
+            </div>
+          </div>
+
+          <!-- Description -->
+          @if (show.description) {
+            <div class="row mb-4">
+              <div class="col-12">
+                <h5 class="mb-2">Description</h5>
+                <p class="text-muted">{{ show.description }}</p>
+              </div>
+            </div>
+          }
+
+          <!-- Details Grid -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="detail-item">
+                <label class="text-muted f-12 mb-1">Show Holding Body</label>
+                <p class="mb-0">
+                  <i class="ti ti-building me-1"></i>
+                  {{ show.showHoldingBody }}
+                </p>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-item">
+                <label class="text-muted f-12 mb-1">Venue</label>
+                <p class="mb-0">
+                  <i class="ti ti-map-pin me-1"></i>
+                  {{ show.venue }}
+                </p>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-item">
+                <label class="text-muted f-12 mb-1">Show Dates</label>
+                <p class="mb-0">
+                  <i class="ti ti-calendar me-1"></i>
+                  {{ show.startDate | date: 'MMMM dd, yyyy' }}
+                  @if (show.startDate.getTime() !== show.endDate.getTime()) {
+                    <span> - {{ show.endDate | date: 'MMMM dd, yyyy' }}</span>
+                  }
+                </p>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-item">
+                <label class="text-muted f-12 mb-1">Entry Closing Date</label>
+                <p class="mb-0">
+                  <i class="ti ti-calendar-event me-1"></i>
+                  {{ show.entryClosingDate | date: 'MMMM dd, yyyy' }}
+                </p>
+              </div>
+            </div>
+
+            @if (show.city && show.province) {
+              <div class="col-md-6 mb-3">
+                <div class="detail-item">
+                  <label class="text-muted f-12 mb-1">Location</label>
+                  <p class="mb-0">
+                    <i class="ti ti-map-2 me-1"></i>
+                    {{ show.city }}, {{ show.province }}
+                  </p>
+                </div>
+              </div>
+            }
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-item">
+                <label class="text-muted f-12 mb-1">Status</label>
+                <p class="mb-0">
+                  <span [class]="getStatusClass(show.status)">{{ show.status }}</span>
+                </p>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-item">
+                <label class="text-muted f-12 mb-1">Level</label>
+                <p class="mb-0">
+                  <span [class]="getLevelClass(show.level)">{{ show.level }}</span>
+                </p>
+              </div>
+            </div>
+
+            @if (show.maxEntries) {
+              <div class="col-md-6 mb-3">
+                <div class="detail-item">
+                  <label class="text-muted f-12 mb-1">Entries</label>
+                  <p class="mb-0">
+                    <i class="ti ti-users me-1"></i>
+                    {{ show.currentEntries || 0 }} / {{ show.maxEntries }}
+                    <span class="text-muted f-11">
+                      ({{ ((show.currentEntries || 0) / show.maxEntries * 100).toFixed(0) }}% full)
+                    </span>
+                  </p>
+                  <div class="progress mt-2" style="height: 6px;">
+                    <div
+                      class="progress-bar"
+                      [class.bg-success]="((show.currentEntries || 0) / show.maxEntries) < 0.7"
+                      [class.bg-warning]="((show.currentEntries || 0) / show.maxEntries) >= 0.7 && ((show.currentEntries || 0) / show.maxEntries) < 0.9"
+                      [class.bg-danger]="((show.currentEntries || 0) / show.maxEntries) >= 0.9"
+                      [style.width.%]="((show.currentEntries || 0) / show.maxEntries) * 100"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            }
+
+            @if (show.contactEmail) {
+              <div class="col-md-6 mb-3">
+                <div class="detail-item">
+                  <label class="text-muted f-12 mb-1">Contact Email</label>
+                  <p class="mb-0">
+                    <i class="ti ti-mail me-1"></i>
+                    <a href="mailto:{{ show.contactEmail }}">{{ show.contactEmail }}</a>
+                  </p>
+                </div>
+              </div>
+            }
+
+            @if (show.contactPhone) {
+              <div class="col-md-6 mb-3">
+                <div class="detail-item">
+                  <label class="text-muted f-12 mb-1">Contact Phone</label>
+                  <p class="mb-0">
+                    <i class="ti ti-phone me-1"></i>
+                    <a href="tel:{{ show.contactPhone }}">{{ show.contactPhone }}</a>
+                  </p>
+                </div>
+              </div>
+            }
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-item">
+                <label class="text-muted f-12 mb-1">Date Created</label>
+                <p class="mb-0">
+                  <i class="ti ti-calendar-plus me-1"></i>
+                  {{ show.dateCreated | date: 'MMMM dd, yyyy' }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </app-card>
+
+      <!-- Judges Card -->
+      @if (show.judges && show.judges.length > 0) {
+        <app-card cardTitle="Judges" class="mt-3">
+          <div class="card-body">
+            <div class="row">
+              @for (judge of show.judges; track judge) {
+                <div class="col-md-6 mb-2">
+                  <div class="d-flex align-items-center">
+                    <div class="avtar avtar-s bg-light-primary me-2">
+                      <i class="ti ti-gavel f-18"></i>
+                    </div>
+                    <span>{{ judge }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </app-card>
+      }
+
+      <!-- Classes Card -->
+      @if (show.classes && show.classes.length > 0) {
+        <app-card cardTitle="Competition Classes" class="mt-3">
+          <div class="card-body">
+            <div class="row">
+              @for (class of show.classes; track class) {
+                <div class="col-md-4 mb-2">
+                  <div class="d-flex align-items-center">
+                    <i class="ti ti-check text-success me-2"></i>
+                    <span>{{ class }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </app-card>
+      }
+    } @else {
+      <app-card cardTitle="Show Not Found">
+        <div class="card-body text-center py-5">
+          <i class="ti ti-alert-circle f-40 text-muted d-block mb-3"></i>
+          <h5>Show Not Found</h5>
+          <p class="text-muted">The requested show could not be found.</p>
+          <button type="button" class="btn btn-primary" (click)="goBack()">
+            <i class="ti ti-arrow-left"></i> Back to List
+          </button>
+        </div>
+      </app-card>
+    }
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Delete Show</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    @if (show) {
+      <div class="alert alert-danger">
+        <i class="ti ti-alert-triangle me-2"></i>
+        <strong>Warning:</strong> This action cannot be undone. Are you sure you want to permanently delete
+        <strong>{{ show.name }}</strong>?
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteShow()">Delete Show</button>
+  </div>
+</ng-template>
+

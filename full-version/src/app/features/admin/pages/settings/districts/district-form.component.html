@@ -1,0 +1,337 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card [cardTitle]="isEditMode ? 'Edit District' : 'Add District'">
+      @if (loading && isEditMode) {
+        <div class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      } @else {
+        <form [formGroup]="districtForm" (ngSubmit)="onSubmit()">
+          <!-- Basic Information -->
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-primary mb-3">Basic Information</h5>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="name" class="form-label">District Name <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  formControlName="name"
+                  placeholder="Enter district name"
+                  [class.is-invalid]="submitted && f['name'].errors"
+                />
+                @if (submitted && f['name'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['name'].errors['required']) {
+                      <div>District name is required</div>
+                    }
+                    @if (f['name'].errors['minlength']) {
+                      <div>District name must be at least 3 characters</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="code" class="form-label">District Code <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="code"
+                  formControlName="code"
+                  placeholder="e.g., GTN, WCP"
+                  [class.is-invalid]="submitted && f['code'].errors"
+                />
+                @if (submitted && f['code'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['code'].errors['required']) {
+                      <div>District code is required</div>
+                    }
+                    @if (f['code'].errors['minlength'] || f['code'].errors['maxlength']) {
+                      <div>District code must be 2-5 characters</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="province" class="form-label">Province <span class="text-danger">*</span></label>
+                <select
+                  class="form-select"
+                  id="province"
+                  formControlName="province"
+                  [class.is-invalid]="submitted && f['province'].errors"
+                >
+                  <option value="">Select Province</option>
+                  @for (province of provinces; track province) {
+                    <option [value]="province">{{ province }}</option>
+                  }
+                </select>
+                @if (submitted && f['province'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Province is required</div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+                <select
+                  class="form-select"
+                  id="status"
+                  formControlName="status"
+                  [class.is-invalid]="submitted && f['status'].errors"
+                >
+                  @for (status of statuses; track status) {
+                    <option [value]="status">{{ status }}</option>
+                  }
+                </select>
+                @if (submitted && f['status'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Status is required</div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea
+                  class="form-control"
+                  id="description"
+                  formControlName="description"
+                  rows="3"
+                  placeholder="Enter district description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <!-- Contact Information -->
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-primary mb-3">Contact Information</h5>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="contactPerson" class="form-label">Contact Person <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="contactPerson"
+                  formControlName="contactPerson"
+                  placeholder="Enter contact person name"
+                  [class.is-invalid]="submitted && f['contactPerson'].errors"
+                />
+                @if (submitted && f['contactPerson'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Contact person is required</div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  formControlName="email"
+                  placeholder="email@dressagesa.com"
+                  [class.is-invalid]="submitted && f['email'].errors"
+                />
+                @if (submitted && f['email'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['email'].errors['required']) {
+                      <div>Email is required</div>
+                    }
+                    @if (f['email'].errors['email']) {
+                      <div>Please enter a valid email address</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="phone" class="form-label">Phone <span class="text-danger">*</span></label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="phone"
+                  formControlName="phone"
+                  placeholder="+27 12 345 6789"
+                  [class.is-invalid]="submitted && f['phone'].errors"
+                />
+                @if (submitted && f['phone'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['phone'].errors['required']) {
+                      <div>Phone is required</div>
+                    }
+                    @if (f['phone'].errors['pattern']) {
+                      <div>Please enter a valid phone number</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="website" class="form-label">Website</label>
+                <input
+                  type="url"
+                  class="form-control"
+                  id="website"
+                  formControlName="website"
+                  placeholder="https://www.example.co.za"
+                  [class.is-invalid]="submitted && f['website'].errors"
+                />
+                @if (submitted && f['website'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Please enter a valid URL (must start with http:// or https://)</div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <!-- Location Information -->
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-primary mb-3">Location</h5>
+            </div>
+
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label for="address" class="form-label">Address</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="address"
+                  formControlName="address"
+                  placeholder="Enter street address"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="city" class="form-label">City</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="city"
+                  formControlName="city"
+                  placeholder="Enter city"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="postalCode" class="form-label">Postal Code</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="postalCode"
+                  formControlName="postalCode"
+                  placeholder="0000"
+                  maxlength="4"
+                  [class.is-invalid]="submitted && f['postalCode'].errors"
+                />
+                @if (submitted && f['postalCode'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Postal code must be 4 digits</div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <!-- Statistics (Edit Mode Only) -->
+          @if (isEditMode) {
+            <div class="row">
+              <div class="col-12">
+                <h5 class="text-primary mb-3">Statistics</h5>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="clubsCount" class="form-label">Number of Clubs</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="clubsCount"
+                    formControlName="clubsCount"
+                    min="0"
+                    readonly
+                  />
+                  <small class="text-muted">This field is automatically calculated</small>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="membersCount" class="form-label">Number of Members</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="membersCount"
+                    formControlName="membersCount"
+                    min="0"
+                    readonly
+                  />
+                  <small class="text-muted">This field is automatically calculated</small>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-4" />
+          }
+
+          <!-- Form Actions -->
+          <div class="row">
+            <div class="col-12">
+              <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-outline-secondary" (click)="onCancel()" [disabled]="loading">
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="loading">
+                  @if (loading) {
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  }
+                  {{ isEditMode ? 'Update District' : 'Create District' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      }
+    </app-card>
+  </div>
+</div>
+

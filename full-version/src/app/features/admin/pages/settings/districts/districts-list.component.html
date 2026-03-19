@@ -1,0 +1,258 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardClass="table-card" [padding]="0">
+      <div class="card-header" card-header>
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <h5 class="mb-0">Districts List</h5>
+          <button type="button" class="btn btn-primary" (click)="createDistrict()">
+            <i class="ti ti-plus"></i> Add District
+          </button>
+        </div>
+      </div>
+
+      <form class="dt-responsive">
+        <!-- Top Controls: Page Size, Filters, and Search -->
+        <div class="dataTable-top">
+          <div class="row g-3 align-items-center">
+            <!-- Page Size Selector -->
+            <div class="col-auto">
+              <select
+                class="form-select"
+                title="select item per page"
+                style="width: auto"
+                name="pageSize"
+                [(ngModel)]="service.pageSize"
+              >
+                <option [ngValue]="5">5 items per page</option>
+                <option [ngValue]="10">10 items per page</option>
+                <option [ngValue]="15">15 items per page</option>
+                <option [ngValue]="25">25 items per page</option>
+                <option [ngValue]="50">50 items per page</option>
+              </select>
+            </div>
+
+            <!-- Status Filter -->
+            <div class="col-auto">
+              <select class="form-select" name="statusFilter" [(ngModel)]="service.statusFilter" style="width: auto">
+                <option value="">All Statuses</option>
+                @for (status of statuses; track status) {
+                  <option [value]="status">{{ status }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Province Filter -->
+            <div class="col-auto">
+              <select class="form-select" name="provinceFilter" [(ngModel)]="service.provinceFilter" style="width: auto">
+                <option value="">All Provinces</option>
+                @for (province of provinces; track province) {
+                  <option [value]="province">{{ province }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Reset Filters Button -->
+            <div class="col-auto">
+              <button type="button" class="btn btn-outline-secondary" (click)="resetFilters()">
+                <i class="ti ti-refresh"></i> Reset
+              </button>
+            </div>
+
+            <!-- Search Box -->
+            <div class="col-auto ms-auto">
+              <div class="dataTable-search d-flex align-items-center">
+                <input
+                  id="table-complete-search"
+                  type="text"
+                  class="form-control"
+                  name="searchTerm"
+                  [(ngModel)]="service.searchTerm"
+                  placeholder="Search by name, code, contact..."
+                  style="min-width: 300px"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive dt-responsive">
+          @if (loading$ | async) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          } @else {
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col" sortable="name" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    DISTRICT NAME
+                  </th>
+                  <th scope="col" sortable="code" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    CODE
+                  </th>
+                  <th scope="col" sortable="province" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    PROVINCE
+                  </th>
+                  <th scope="col" sortable="contactPerson" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    CONTACT PERSON
+                  </th>
+                  <th scope="col" sortable="clubsCount" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    CLUBS
+                  </th>
+                  <th scope="col" sortable="membersCount" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    MEMBERS
+                  </th>
+                  <th scope="col" sortable="status" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    STATUS
+                  </th>
+                  <th scope="col" sortable="dateCreated" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    DATE CREATED
+                  </th>
+                  <th scope="col" class="text-center">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (district of districts$ | async; track district.id) {
+                  <tr>
+                    <!-- District Name -->
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                          <h6 class="mb-0">
+                            <ngb-highlight [result]="district.name" [term]="service.searchTerm"></ngb-highlight>
+                          </h6>
+                          <p class="text-muted f-12 mb-0">
+                            <ngb-highlight [result]="district.email" [term]="service.searchTerm"></ngb-highlight>
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+
+                    <!-- Code -->
+                    <td>
+                      <span class="badge bg-light-primary">
+                        <ngb-highlight [result]="district.code" [term]="service.searchTerm"></ngb-highlight>
+                      </span>
+                    </td>
+
+                    <!-- Province -->
+                    <td>
+                      <ngb-highlight [result]="district.province" [term]="service.searchTerm"></ngb-highlight>
+                    </td>
+
+                    <!-- Contact Person -->
+                    <td>
+                      <ngb-highlight [result]="district.contactPerson" [term]="service.searchTerm"></ngb-highlight>
+                      <p class="text-muted f-12 mb-0">{{ district.phone }}</p>
+                    </td>
+
+                    <!-- Clubs Count -->
+                    <td class="text-center">
+                      <span class="badge bg-light-info">{{ district.clubsCount || 0 }}</span>
+                    </td>
+
+                    <!-- Members Count -->
+                    <td class="text-center">
+                      <span class="badge bg-light-warning">{{ district.membersCount || 0 }}</span>
+                    </td>
+
+                    <!-- Status -->
+                    <td>
+                      <span [ngClass]="getStatusClass(district.status)">{{ district.status }}</span>
+                    </td>
+
+                    <!-- Date Created -->
+                    <td>{{ district.dateCreated | date: 'dd MMM yyyy' }}</td>
+
+                    <!-- Actions -->
+                    <td class="text-center">
+                      <div class="btn-group btn-group-sm" role="group">
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary"
+                          (click)="viewDistrict(district)"
+                          title="View Details"
+                        >
+                          <i class="ti ti-eye"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-outline-primary"
+                          (click)="editDistrict(district)"
+                          title="Edit District"
+                        >
+                          <i class="ti ti-edit"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-outline-danger"
+                          (click)="openDeleteModal(deleteModal, district)"
+                          title="Delete District"
+                        >
+                          <i class="ti ti-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="9" class="text-center py-5">
+                      <div class="text-muted">
+                        <i class="ti ti-folder-off" style="font-size: 3rem"></i>
+                        <p class="mt-2">No districts found</p>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+
+        <!-- Pagination -->
+        <div class="dataTable-bottom">
+          <div class="row align-items-center">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTable-info">
+                Showing {{ (service.page - 1) * service.pageSize + 1 }} to
+                {{ (service.page - 1) * service.pageSize + (districts$ | async)!.length }} of {{ total$ | async }} entries
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-7">
+              <div class="dataTable-pagination">
+                <ngb-pagination
+                  [collectionSize]="(total$ | async)!"
+                  [(page)]="service.page"
+                  [pageSize]="service.pageSize"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [boundaryLinks]="true"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </app-card>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Confirm Delete</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete the district <strong>{{ selectedDistrict?.name }}</strong>?</p>
+    <p class="text-muted">This action cannot be undone.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteDistrict()">Delete</button>
+  </div>
+</ng-template>
+

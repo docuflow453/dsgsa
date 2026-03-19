@@ -1,0 +1,67 @@
+/**
+ * Document Form Component Styles
+ * Professional styling for the Document Form page
+ */
+
+// Back button styling
+.btn-link {
+  text-decoration: none;
+  color: #6c757d;
+
+  &:hover {
+    color: #4680ff;
+  }
+}
+
+// Form section headers
+h5 {
+  color: #495057;
+  font-weight: 600;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 0.5rem;
+}
+
+// Required field indicator
+.text-danger {
+  font-weight: 600;
+}
+
+// Form labels
+.form-label {
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+// Form controls
+.form-control,
+.form-select {
+  &:focus {
+    border-color: #4680ff;
+    box-shadow: 0 0 0 0.2rem rgba(70, 128, 255, 0.25);
+  }
+}
+
+// Switch styling
+.form-check-input {
+  &:checked {
+    background-color: #4680ff;
+    border-color: #4680ff;
+  }
+
+  &:focus {
+    border-color: #4680ff;
+    box-shadow: 0 0 0 0.2rem rgba(70, 128, 255, 0.25);
+  }
+}
+
+// Help text
+.form-text {
+  font-size: 0.875rem;
+}
+
+// Button spacing
+.d-flex.gap-2 {
+  gap: 0.5rem;
+}
+

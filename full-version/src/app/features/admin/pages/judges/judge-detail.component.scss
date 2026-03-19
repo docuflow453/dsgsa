@@ -1,0 +1,68 @@
+/**
+ * Judge Detail Component Styles
+ * Professional styling for the Judge Detail page
+ */
+
+// Detail item styling
+.detail-item {
+  label {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  p {
+    font-size: 0.9375rem;
+    color: #495057;
+
+    a {
+      color: #4680ff;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// Badge styling
+.badge {
+  padding: 0.35rem 0.65rem;
+  font-weight: 500;
+  font-size: 0.75rem;
+  border-radius: 0.25rem;
+}
+
+// Avatar styling
+.avtar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.img-radius {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+// Section headers
+h5 {
+  color: #495057;
+  font-weight: 600;
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 0.5rem;
+}
+
+// Modal styling
+.modal-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+}
+

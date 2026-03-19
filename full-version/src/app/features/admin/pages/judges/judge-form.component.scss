@@ -1,0 +1,120 @@
+/**
+ * Judge Form Component Styles
+ * Professional styling for the Judge Form page
+ */
+
+// Form section headers
+h5 {
+  color: #495057;
+  font-weight: 600;
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+// Form labels
+.form-label {
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 0.5rem;
+
+  .text-danger {
+    color: #dc3545;
+  }
+}
+
+// Form controls
+.form-control,
+.form-select {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9375rem;
+
+  &:focus {
+    border-color: #4680ff;
+    box-shadow: 0 0 0 0.2rem rgba(70, 128, 255, 0.25);
+  }
+
+  &.is-invalid {
+    border-color: #dc3545;
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+  }
+}
+
+// Invalid feedback
+.invalid-feedback {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #dc3545;
+}
+
+// Form check (checkbox)
+.form-check {
+  padding-left: 1.5rem;
+
+  .form-check-input {
+    margin-top: 0.25rem;
+    cursor: pointer;
+
+    &:checked {
+      background-color: #4680ff;
+      border-color: #4680ff;
+    }
+  }
+
+  .form-check-label {
+    cursor: pointer;
+    font-weight: 500;
+    color: #495057;
+  }
+}
+
+// Form text (help text)
+.form-text {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin-top: 0.25rem;
+}
+
+// Button styling
+.btn {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border-radius: 0.25rem;
+
+  i {
+    margin-right: 0.25rem;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
+}
+
+// Gap utility for button groups
+.gap-2 {
+  gap: 0.5rem;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .d-flex.justify-content-end {
+    flex-direction: column;
+
+    .btn {
+      width: 100%;
+      margin-bottom: 0.5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+

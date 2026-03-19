@@ -1,0 +1,42 @@
+/**
+ * Membership Type Detail Component Styles
+ */
+
+.detail-item {
+  label {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  p {
+    font-size: 0.9375rem;
+    font-weight: 500;
+  }
+}
+
+.avtar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.badge {
+  padding: 0.35rem 0.65rem;
+  font-weight: 500;
+  font-size: 0.75rem;
+  border-radius: 0.25rem;
+}
+
+// Modal styling
+.modal-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+}
+

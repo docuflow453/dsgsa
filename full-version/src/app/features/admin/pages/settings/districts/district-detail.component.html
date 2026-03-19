@@ -1,0 +1,155 @@
+<div class="row">
+  <div class="col-sm-12">
+    @if (loading) {
+      <div class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    } @else if (district) {
+      <app-card cardTitle="District Details">
+        <div card-header class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">District Details</h5>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-secondary" (click)="goBack()">
+              <i class="ti ti-arrow-left"></i> Back
+            </button>
+            <button type="button" class="btn btn-primary" (click)="editDistrict()">
+              <i class="ti ti-edit"></i> Edit
+            </button>
+            <button type="button" class="btn btn-danger" (click)="openDeleteModal(deleteModal)">
+              <i class="ti ti-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Basic Information -->
+          <div class="col-md-6">
+            <h5 class="text-primary mb-3">Basic Information</h5>
+            <div class="mb-3">
+              <label class="form-label text-muted">District Name</label>
+              <p class="fw-semibold">{{ district.name }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted">District Code</label>
+              <p><span class="badge bg-light-primary">{{ district.code }}</span></p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted">Province</label>
+              <p class="fw-semibold">{{ district.province }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted">Status</label>
+              <p><span [ngClass]="getStatusClass(district.status)">{{ district.status }}</span></p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted">Date Created</label>
+              <p>{{ district.dateCreated | date: 'dd MMMM yyyy' }}</p>
+            </div>
+            @if (district.description) {
+              <div class="mb-3">
+                <label class="form-label text-muted">Description</label>
+                <p>{{ district.description }}</p>
+              </div>
+            }
+          </div>
+
+          <!-- Contact Information -->
+          <div class="col-md-6">
+            <h5 class="text-primary mb-3">Contact Information</h5>
+            <div class="mb-3">
+              <label class="form-label text-muted">Contact Person</label>
+              <p class="fw-semibold">{{ district.contactPerson }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted">Email</label>
+              <p>
+                <a [href]="'mailto:' + district.email">{{ district.email }}</a>
+              </p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted">Phone</label>
+              <p>
+                <a [href]="'tel:' + district.phone">{{ district.phone }}</a>
+              </p>
+            </div>
+            @if (district.website) {
+              <div class="mb-3">
+                <label class="form-label text-muted">Website</label>
+                <p>
+                  <a [href]="district.website" target="_blank">{{ district.website }}</a>
+                </p>
+              </div>
+            }
+          </div>
+        </div>
+
+        <hr class="my-4" />
+
+        <div class="row">
+          <!-- Location Information -->
+          <div class="col-md-6">
+            <h5 class="text-primary mb-3">Location</h5>
+            @if (district.address) {
+              <div class="mb-3">
+                <label class="form-label text-muted">Address</label>
+                <p>{{ district.address }}</p>
+              </div>
+            }
+            @if (district.city) {
+              <div class="mb-3">
+                <label class="form-label text-muted">City</label>
+                <p>{{ district.city }}</p>
+              </div>
+            }
+            @if (district.postalCode) {
+              <div class="mb-3">
+                <label class="form-label text-muted">Postal Code</label>
+                <p>{{ district.postalCode }}</p>
+              </div>
+            }
+          </div>
+
+          <!-- Statistics -->
+          <div class="col-md-6">
+            <h5 class="text-primary mb-3">Statistics</h5>
+            <div class="mb-3">
+              <label class="form-label text-muted">Number of Clubs</label>
+              <p><span class="badge bg-light-info fs-5">{{ district.clubsCount || 0 }}</span></p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted">Number of Members</label>
+              <p><span class="badge bg-light-warning fs-5">{{ district.membersCount || 0 }}</span></p>
+            </div>
+          </div>
+        </div>
+      </app-card>
+    } @else {
+      <app-card>
+        <div class="text-center py-5">
+          <i class="ti ti-alert-circle text-danger" style="font-size: 3rem"></i>
+          <p class="mt-3">District not found</p>
+          <button type="button" class="btn btn-primary" (click)="goBack()">Go Back</button>
+        </div>
+      </app-card>
+    }
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Confirm Delete</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete the district <strong>{{ district?.name }}</strong>?</p>
+    <p class="text-muted">This action cannot be undone.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteDistrict()">Delete</button>
+  </div>
+</ng-template>
+

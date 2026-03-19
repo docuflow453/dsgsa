@@ -1,0 +1,299 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card>
+      <div class="card-header" card-header>
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <h5 class="mb-0">
+            <i class="ti ti-school me-2"></i>{{ pageTitle }}
+          </h5>
+          <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+            <i class="ti ti-arrow-left"></i> Back to List
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="schoolForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <!-- Basic Information Section -->
+            <div class="col-md-12 mb-3">
+              <h5 class="text-primary">
+                <i class="ti ti-info-circle me-2"></i>Basic Information
+              </h5>
+              <hr />
+            </div>
+
+            <!-- School Name -->
+            <div class="col-md-8 mb-3">
+              <label for="name" class="form-label">School Name <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                formControlName="name"
+                placeholder="Enter school name"
+                [class.is-invalid]="submitted && f['name'].errors"
+              />
+              <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+                <div *ngIf="f['name'].errors['required']">School name is required</div>
+                <div *ngIf="f['name'].errors['minlength']">School name must be at least 3 characters</div>
+              </div>
+            </div>
+
+            <!-- Type -->
+            <div class="col-md-4 mb-3">
+              <label for="type" class="form-label">Type <span class="text-danger">*</span></label>
+              <select
+                class="form-select"
+                id="type"
+                formControlName="type"
+                [class.is-invalid]="submitted && f['type'].errors"
+              >
+                <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+              </select>
+              <div *ngIf="submitted && f['type'].errors" class="invalid-feedback">
+                <div *ngIf="f['type'].errors['required']">Type is required</div>
+              </div>
+            </div>
+
+            <!-- Status -->
+            <div class="col-md-4 mb-3">
+              <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+              <select
+                class="form-select"
+                id="status"
+                formControlName="status"
+                [class.is-invalid]="submitted && f['status'].errors"
+              >
+                <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+              </select>
+              <div *ngIf="submitted && f['status'].errors" class="invalid-feedback">
+                <div *ngIf="f['status'].errors['required']">Status is required</div>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="col-md-12 mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea
+                class="form-control"
+                id="description"
+                formControlName="description"
+                rows="3"
+                placeholder="Enter school description"
+              ></textarea>
+            </div>
+
+            <!-- Contact Information Section -->
+            <div class="col-md-12 mt-3 mb-3">
+              <h5 class="text-primary">
+                <i class="ti ti-user me-2"></i>Contact Information
+              </h5>
+              <hr />
+            </div>
+
+            <!-- Contact Person -->
+            <div class="col-md-6 mb-3">
+              <label for="contactPerson" class="form-label">Contact Person <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                id="contactPerson"
+                formControlName="contactPerson"
+                placeholder="Enter contact person name"
+                [class.is-invalid]="submitted && f['contactPerson'].errors"
+              />
+              <div *ngIf="submitted && f['contactPerson'].errors" class="invalid-feedback">
+                <div *ngIf="f['contactPerson'].errors['required']">Contact person is required</div>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-6 mb-3">
+              <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                formControlName="email"
+                placeholder="contact@example.com"
+                [class.is-invalid]="submitted && f['email'].errors"
+              />
+              <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                <div *ngIf="f['email'].errors['required']">Email is required</div>
+                <div *ngIf="f['email'].errors['email']">Please enter a valid email</div>
+              </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="col-md-6 mb-3">
+              <label for="phone" class="form-label">Phone <span class="text-danger">*</span></label>
+              <input
+                type="tel"
+                class="form-control"
+                id="phone"
+                formControlName="phone"
+                placeholder="+27 11 123 4567"
+                [class.is-invalid]="submitted && f['phone'].errors"
+              />
+              <div *ngIf="submitted && f['phone'].errors" class="invalid-feedback">
+                <div *ngIf="f['phone'].errors['required']">Phone is required</div>
+              </div>
+            </div>
+
+            <!-- Website -->
+            <div class="col-md-6 mb-3">
+              <label for="website" class="form-label">Website</label>
+              <input
+                type="url"
+                class="form-control"
+                id="website"
+                formControlName="website"
+                placeholder="https://www.example.com"
+              />
+            </div>
+
+            <!-- Location Section -->
+            <div class="col-md-12 mt-3 mb-3">
+              <h5 class="text-primary">
+                <i class="ti ti-map-pin me-2"></i>Location
+              </h5>
+              <hr />
+            </div>
+
+            <!-- Address -->
+            <div class="col-md-12 mb-3">
+              <label for="address" class="form-label">Address <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                id="address"
+                formControlName="address"
+                placeholder="Enter street address"
+                [class.is-invalid]="submitted && f['address'].errors"
+              />
+              <div *ngIf="submitted && f['address'].errors" class="invalid-feedback">
+                <div *ngIf="f['address'].errors['required']">Address is required</div>
+              </div>
+            </div>
+
+            <!-- City -->
+            <div class="col-md-4 mb-3">
+              <label for="city" class="form-label">City <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                id="city"
+                formControlName="city"
+                placeholder="Enter city"
+                [class.is-invalid]="submitted && f['city'].errors"
+              />
+              <div *ngIf="submitted && f['city'].errors" class="invalid-feedback">
+                <div *ngIf="f['city'].errors['required']">City is required</div>
+              </div>
+            </div>
+
+            <!-- Province -->
+            <div class="col-md-4 mb-3">
+              <label for="province" class="form-label">Province <span class="text-danger">*</span></label>
+              <select
+                class="form-select"
+                id="province"
+                formControlName="province"
+                [class.is-invalid]="submitted && f['province'].errors"
+              >
+                <option *ngFor="let province of provinces" [value]="province">{{ province }}</option>
+              </select>
+              <div *ngIf="submitted && f['province'].errors" class="invalid-feedback">
+                <div *ngIf="f['province'].errors['required']">Province is required</div>
+              </div>
+            </div>
+
+            <!-- Postal Code -->
+            <div class="col-md-4 mb-3">
+              <label for="postalCode" class="form-label">Postal Code <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                id="postalCode"
+                formControlName="postalCode"
+                placeholder="Enter postal code"
+                [class.is-invalid]="submitted && f['postalCode'].errors"
+              />
+              <div *ngIf="submitted && f['postalCode'].errors" class="invalid-feedback">
+                <div *ngIf="f['postalCode'].errors['required']">Postal code is required</div>
+              </div>
+            </div>
+
+            <!-- Facility Information Section -->
+            <div class="col-md-12 mt-3 mb-3">
+              <h5 class="text-primary">
+                <i class="ti ti-building me-2"></i>Facility Information
+              </h5>
+              <hr />
+            </div>
+
+            <!-- Instructor Count -->
+            <div class="col-md-6 mb-3">
+              <label for="instructorCount" class="form-label">Number of Instructors</label>
+              <input
+                type="number"
+                class="form-control"
+                id="instructorCount"
+                formControlName="instructorCount"
+                placeholder="Enter number of instructors"
+                min="0"
+              />
+            </div>
+
+            <!-- Student Capacity -->
+            <div class="col-md-6 mb-3">
+              <label for="studentCapacity" class="form-label">Student Capacity</label>
+              <input
+                type="number"
+                class="form-control"
+                id="studentCapacity"
+                formControlName="studentCapacity"
+                placeholder="Enter student capacity"
+                min="0"
+              />
+            </div>
+
+            <!-- Facilities -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Facilities</label>
+              <div class="input-group mb-2">
+                <select class="form-select" [(ngModel)]="newFacility" [ngModelOptions]="{ standalone: true }">
+                  <option value="">Select a facility...</option>
+                  <option *ngFor="let facility of availableFacilities" [value]="facility">{{ facility }}</option>
+                </select>
+                <button type="button" class="btn btn-primary" (click)="addFacility()" [disabled]="!newFacility">
+                  <i class="ti ti-plus"></i> Add
+                </button>
+              </div>
+              <div class="d-flex flex-wrap gap-2">
+                <span *ngFor="let facility of facilities; let i = index" class="badge bg-light-info">
+                  {{ facility }}
+                  <i class="ti ti-x ms-1" style="cursor: pointer" (click)="removeFacility(i)"></i>
+                </span>
+              </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="col-12">
+              <hr class="my-4" />
+              <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+                  <i class="ti ti-x"></i> Cancel
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  <i class="ti ti-device-floppy"></i> {{ isEditMode ? 'Update' : 'Create' }} School
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </app-card>
+  </div>
+</div>
+

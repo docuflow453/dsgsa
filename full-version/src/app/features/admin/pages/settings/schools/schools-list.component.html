@@ -1,0 +1,253 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardClass="table-card" [padding]="0">
+      <div class="card-header" card-header>
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <h5 class="mb-0">Schools List</h5>
+          <button type="button" class="btn btn-primary" (click)="createSchool()">
+            <i class="ti ti-plus"></i> Add School
+          </button>
+        </div>
+      </div>
+
+      <form class="dt-responsive">
+        <!-- Top Controls: Page Size, Filters, and Search -->
+        <div class="dataTable-top">
+          <div class="row g-3 align-items-center">
+            <!-- Page Size Selector -->
+            <div class="col-auto">
+              <select
+                class="form-select"
+                title="select item per page"
+                style="width: auto"
+                name="pageSize"
+                [(ngModel)]="service.pageSize"
+              >
+                <option [ngValue]="5">5 items per page</option>
+                <option [ngValue]="10">10 items per page</option>
+                <option [ngValue]="15">15 items per page</option>
+                <option [ngValue]="25">25 items per page</option>
+                <option [ngValue]="50">50 items per page</option>
+              </select>
+            </div>
+
+            <!-- Status Filter -->
+            <div class="col-auto">
+              <select class="form-select" name="statusFilter" [(ngModel)]="service.statusFilter" style="width: auto">
+                <option value="">All Statuses</option>
+                @for (status of statuses; track status) {
+                  <option [value]="status">{{ status }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Type Filter -->
+            <div class="col-auto">
+              <select class="form-select" name="typeFilter" [(ngModel)]="service.typeFilter" style="width: auto">
+                <option value="">All Types</option>
+                @for (type of types; track type) {
+                  <option [value]="type">{{ type }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Province Filter -->
+            <div class="col-auto">
+              <select class="form-select" name="provinceFilter" [(ngModel)]="service.provinceFilter" style="width: auto">
+                <option value="">All Provinces</option>
+                @for (province of provinces; track province) {
+                  <option [value]="province">{{ province }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Reset Filters Button -->
+            <div class="col-auto">
+              <button type="button" class="btn btn-outline-secondary" (click)="resetFilters()">
+                <i class="ti ti-refresh"></i> Reset
+              </button>
+            </div>
+
+            <!-- Search Box -->
+            <div class="col-auto ms-auto">
+              <div class="dataTable-search d-flex align-items-center">
+                <input
+                  id="table-complete-search"
+                  type="text"
+                  class="form-control"
+                  name="searchTerm"
+                  [(ngModel)]="service.searchTerm"
+                  placeholder="Search by name, contact, email..."
+                  style="min-width: 300px"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive dt-responsive">
+          @if (loading$ | async) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          } @else {
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col" sortable="name" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    SCHOOL NAME
+                  </th>
+                  <th scope="col" sortable="type" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    TYPE
+                  </th>
+                  <th scope="col" sortable="contactPerson" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    CONTACT PERSON
+                  </th>
+                  <th scope="col" sortable="city" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    LOCATION
+                  </th>
+                  <th scope="col" sortable="status" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    STATUS
+                  </th>
+                  <th scope="col" sortable="dateCreated" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    DATE CREATED
+                  </th>
+                  <th scope="col" class="text-center">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (school of schools$ | async; track school.id) {
+                  <tr>
+                    <!-- School Name -->
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                          <h6 class="mb-0">
+                            <ngb-highlight [result]="school.name" [term]="service.searchTerm"></ngb-highlight>
+                          </h6>
+                          <p class="text-muted f-12 mb-0">
+                            <ngb-highlight [result]="school.email" [term]="service.searchTerm"></ngb-highlight>
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+
+                    <!-- Type -->
+                    <td>
+                      <span [class]="getTypeClass(school.type)">{{ school.type }}</span>
+                    </td>
+
+                    <!-- Contact Person -->
+                    <td>
+                      <ngb-highlight [result]="school.contactPerson" [term]="service.searchTerm"></ngb-highlight>
+                      <p class="text-muted f-12 mb-0">{{ school.phone }}</p>
+                    </td>
+
+                    <!-- Location -->
+                    <td>
+                      <ngb-highlight [result]="school.city" [term]="service.searchTerm"></ngb-highlight>
+                      <p class="text-muted f-12 mb-0">{{ school.province }}</p>
+                    </td>
+
+                    <!-- Status -->
+                    <td>
+                      <span [class]="getStatusClass(school.status)">{{ school.status }}</span>
+                    </td>
+
+                    <!-- Date Created -->
+                    <td>{{ school.dateCreated | date: 'MMM dd, yyyy' }}</td>
+
+                    <!-- Actions -->
+                    <td class="text-center">
+                      <div class="btn-group" role="group">
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-link-secondary avtar-xs"
+                          (click)="viewSchool(school)"
+                          title="View Details"
+                        >
+                          <i class="ti ti-eye f-18"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-link-primary avtar-xs"
+                          (click)="editSchool(school)"
+                          title="Edit School"
+                        >
+                          <i class="ti ti-edit f-18"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-icon btn-link-danger avtar-xs"
+                          (click)="openDeleteModal(deleteModal, school)"
+                          title="Delete School"
+                        >
+                          <i class="ti ti-trash f-18"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="7" class="text-center py-5">
+                      <div class="text-muted">
+                        <i class="ti ti-school f-40 d-block mb-2"></i>
+                        <p class="mb-0">No schools found</p>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+
+        <!-- Pagination -->
+        <div class="dataTable-bottom">
+          <div class="row align-items-center">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTable-info">
+                @if (total$ | async; as total) {
+                  Showing {{ (service.page - 1) * service.pageSize + 1 }} to
+                  {{ service.page * service.pageSize > total ? total : service.page * service.pageSize }} of {{ total }} entries
+                }
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-7">
+              <div class="dataTable-pagination">
+                <ngb-pagination
+                  [collectionSize]="(total$ | async)!"
+                  [(page)]="service.page"
+                  [pageSize]="service.pageSize"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [boundaryLinks]="true"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </app-card>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Confirm Delete</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete <strong>{{ selectedSchool?.name }}</strong>?</p>
+    <p class="text-muted mb-0">This action cannot be undone.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteSchool()">Delete</button>
+  </div>
+</ng-template>
+

@@ -1,0 +1,122 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card>
+      <div class="card-header" card-header>
+        <h5 class="mb-0">
+          <i class="ti ti-calendar-event me-2"></i>{{ pageTitle }}
+        </h5>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="yearForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Year <span class="text-danger">*</span></label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="year"
+                placeholder="Enter year (e.g., 2026)"
+                [class.is-invalid]="submitted && yearForm.get('year')?.invalid"
+              />
+              <div class="invalid-feedback" *ngIf="submitted && yearForm.get('year')?.invalid">
+                Please enter a valid year between 2020 and 2100
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Name <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="name"
+                placeholder="Enter year name (e.g., 2026 Season)"
+                [class.is-invalid]="submitted && yearForm.get('name')?.invalid"
+              />
+              <div class="invalid-feedback" *ngIf="submitted && yearForm.get('name')?.invalid">
+                Name is required
+              </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Description</label>
+              <textarea
+                class="form-control"
+                formControlName="description"
+                rows="3"
+                placeholder="Enter description"
+              ></textarea>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Start Date <span class="text-danger">*</span></label>
+              <input
+                type="date"
+                class="form-control"
+                formControlName="startDate"
+                [class.is-invalid]="submitted && yearForm.get('startDate')?.invalid"
+              />
+              <div class="invalid-feedback" *ngIf="submitted && yearForm.get('startDate')?.invalid">
+                Start date is required
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">End Date <span class="text-danger">*</span></label>
+              <input
+                type="date"
+                class="form-control"
+                formControlName="endDate"
+                [class.is-invalid]="submitted && yearForm.get('endDate')?.invalid"
+              />
+              <div class="invalid-feedback" *ngIf="submitted && yearForm.get('endDate')?.invalid">
+                End date is required
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Status <span class="text-danger">*</span></label>
+              <select class="form-select" formControlName="status">
+                <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label d-block">Registration</label>
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  formControlName="registrationOpen"
+                  id="registrationOpen"
+                />
+                <label class="form-check-label" for="registrationOpen">
+                  Registration Open
+                </label>
+              </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Notes</label>
+              <textarea
+                class="form-control"
+                formControlName="notes"
+                rows="3"
+                placeholder="Enter any additional notes"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2 mt-3">
+            <button type="button" class="btn btn-secondary" (click)="cancel()">
+              <i class="ti ti-x"></i> Cancel
+            </button>
+            <button type="submit" class="btn btn-primary">
+              <i class="ti ti-check"></i> {{ isEditMode ? 'Update' : 'Create' }} Year
+            </button>
+          </div>
+        </form>
+      </div>
+    </app-card>
+  </div>
+</div>
+

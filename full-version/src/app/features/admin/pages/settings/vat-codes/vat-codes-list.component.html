@@ -1,0 +1,125 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardClass="table-card" [padding]="0">
+      <!-- Custom Header with Title and Add Button -->
+      <div class="card-header" card-header>
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <h5 class="mb-0">
+            <i class="ti ti-receipt-tax me-2"></i>VAT Codes
+          </h5>
+          <button type="button" class="btn btn-primary" (click)="createVATCode()">
+            <i class="ti ti-plus"></i> Add VAT Code
+          </button>
+        </div>
+      </div>
+
+      <!-- Search and Filter Section -->
+      <div class="card-body border-bottom">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-group">
+              <span class="input-group-text"><i class="ti ti-search"></i></span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search VAT codes..."
+                [(ngModel)]="searchText"
+                (ngModelChange)="filterVATCodes()"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VAT Codes Table -->
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Name</th>
+              <th>Rate</th>
+              <th>Status</th>
+              <th>Applicable To</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let code of filteredVATCodes" (click)="viewVATCode(code)" style="cursor: pointer">
+              <td>
+                <strong>{{ code.code }}</strong>
+                <span *ngIf="code.isDefault" class="badge bg-primary ms-2">Default</span>
+              </td>
+              <td>{{ code.name }}</td>
+              <td>{{ code.rate }}%</td>
+              <td>
+                <span class="badge" [ngClass]="getStatusClass(code.status)">
+                  {{ code.status }}
+                </span>
+              </td>
+              <td>
+                <small class="text-muted">
+                  <span *ngIf="code.applicableToMemberships" class="badge bg-light-info me-1">Memberships</span>
+                  <span *ngIf="code.applicableToCompetitions" class="badge bg-light-warning">Competitions</span>
+                  <span *ngIf="!code.applicableToMemberships && !code.applicableToCompetitions">-</span>
+                </small>
+              </td>
+              <td class="text-end" (click)="$event.stopPropagation()">
+                <div class="btn-group" role="group">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    (click)="viewVATCode(code)"
+                    title="View Details"
+                  >
+                    <i class="ti ti-eye"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    (click)="editVATCode(code)"
+                    title="Edit"
+                  >
+                    <i class="ti ti-edit"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="openDeleteModal(deleteModal, code)"
+                    title="Delete"
+                    [disabled]="code.isDefault"
+                  >
+                    <i class="ti ti-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="filteredVATCodes.length === 0">
+              <td colspan="6" class="text-center py-4">
+                <i class="ti ti-receipt-off" style="font-size: 3rem; opacity: 0.3;"></i>
+                <p class="text-muted mt-2">No VAT codes found</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Confirm Delete</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete <strong>{{ selectedVATCode?.name }}</strong>?</p>
+    <p class="text-muted mb-0">This action cannot be undone.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteVATCode()">Delete</button>
+  </div>
+</ng-template>
+

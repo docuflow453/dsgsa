@@ -1,0 +1,45 @@
+/**
+ * Schools List Component Styles
+ */
+
+// Ensure table rows have hover effect
+.table-hover tbody tr:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+// Action buttons styling
+.btn-group {
+  .btn-icon {
+    padding: 0.25rem 0.5rem;
+    
+    i {
+      font-size: 1.125rem;
+    }
+  }
+}
+
+// Empty state styling
+.text-muted {
+  i {
+    opacity: 0.5;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .dataTable-top {
+    .row {
+      .col-auto {
+        width: 100%;
+        margin-bottom: 0.5rem;
+        
+        .form-select,
+        .form-control {
+          width: 100% !important;
+        }
+      }
+    }
+  }
+}
+
