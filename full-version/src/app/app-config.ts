@@ -11,7 +11,7 @@ export class MantisConfig {
 }
 
 export const RIDER_DASHBOARD_PATH = '/my';
-export const DASHBOARD_PATH = '/dashboard/default';
-export const CLUB_DASHBOARD_PATH = '/dashboard/default';
+export const DASHBOARD_PATH = '/admin/dashboard';
+export const CLUB_DASHBOARD_PATH = '/admin/dashboard';
 export const DOCUMENTATION_PATH = '';
 export const BUY_NOW = '/login';

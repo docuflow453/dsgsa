@@ -7,6 +7,15 @@ import { Routes } from '@angular/router';
 import { Role } from '../../theme/shared/components/_helpers/role';
 
 export const ADMIN_ROUTES: Routes = [
+  // Admin Dashboard
+  {
+    path: 'dashboard',
+    loadComponent: () => import('../../demo/dashboard/default/default.component').then((c) => c.DefaultComponent),
+    data: {
+      title: 'Dashboard',
+      roles: [Role.Admin]
+    }
+  },
   {
     path: 'members',
     loadComponent: () => import('./pages/members/member-list.component').then((c) => c.MemberListComponent),

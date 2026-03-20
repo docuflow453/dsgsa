@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
   private getRoleDashboardPath(roles: UserRole[]): string {
     // Check roles in priority order (highest priority first)
     if (roles.includes(UserRole.ADMIN)) {
-      return '/dashboard/default';
+      return '/admin/dashboard';
     } else if (roles.includes(UserRole.SAEF)) {
       return '/saef/dashboard';
     } else if (roles.includes(UserRole.PROVINCIAL)) {
@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
       return '/my/dashboard';
     } else {
       // Default fallback
-      return '/dashboard/default';
+      return '/admin/dashboard';
     }
   }
 

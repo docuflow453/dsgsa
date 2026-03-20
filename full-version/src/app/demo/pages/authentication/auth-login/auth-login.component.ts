@@ -108,7 +108,7 @@ export class AuthLoginComponent implements OnInit {
     const _role = this.selectedRole.role;
     switch (_role) {
       case Role.Admin:
-        return '/dashboard/default';
+        return '/admin/dashboard';
       case Role.SAEF:
         return '/saef/dashboard';
       case Role.Provincial:

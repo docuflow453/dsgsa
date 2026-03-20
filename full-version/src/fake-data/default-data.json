@@ -1,82 +1,82 @@
 [
   {
-    "id": "84564564",
-    "name": "Camera Lens",
-    "quantity": "40",
-    "status": "Rejected",
-    "status_type": "text-danger",
-    "amount": "$40,570"
-  },
-  {
-    "id": "84564786",
-    "name": "Laptop",
-    "quantity": "300",
-    "status": "Pending",
-    "status_type": "text-warning",
-    "amount": "$180,139"
-  },
-  {
-    "id": "84564522",
-    "name": "Mobile",
-    "quantity": "355",
-    "status": "Approved",
+    "id": "COMP-2026-001",
+    "name": "Spring Championships - Gauteng",
+    "quantity": "142",
+    "status": "Confirmed",
     "status_type": "text-success",
-    "amount": "$50,139"
+    "amount": "R 42,600"
   },
   {
-    "id": "84564564",
-    "name": "Camera Lens",
-    "quantity": "40",
-    "status": "Rejected",
-    "status_type": "text-danger",
-    "amount": "$40,570"
-  },
-  {
-    "id": "84564786",
-    "name": "Laptop",
-    "quantity": "300",
+    "id": "COMP-2026-002",
+    "name": "Provincial Dressage Series - KZN",
+    "quantity": "98",
     "status": "Pending",
     "status_type": "text-warning",
-    "amount": "$180,139"
+    "amount": "R 29,400"
   },
   {
-    "id": "84564522",
-    "name": "Mobile",
-    "quantity": "355",
-    "status": "Approved",
+    "id": "COMP-2026-003",
+    "name": "Winter Qualifier - Western Cape",
+    "quantity": "156",
+    "status": "Confirmed",
     "status_type": "text-success",
-    "amount": "$50,139"
+    "amount": "R 46,800"
   },
   {
-    "id": "84564564",
-    "name": "Camera Lens",
-    "quantity": "40",
-    "status": "Rejected",
+    "id": "COMP-2026-004",
+    "name": "Young Horse Championships",
+    "quantity": "67",
+    "status": "Cancelled",
     "status_type": "text-danger",
-    "amount": "$40,570"
+    "amount": "R 20,100"
   },
   {
-    "id": "84564786",
-    "name": "Laptop",
-    "quantity": "300",
-    "status": "Pending",
-    "status_type": "text-warning",
-    "amount": "$180,139"
-  },
-  {
-    "id": "84564522",
-    "name": "Mobile",
-    "quantity": "355",
-    "status": "Approved",
+    "id": "COMP-2026-005",
+    "name": "National Dressage Festival",
+    "quantity": "234",
+    "status": "Confirmed",
     "status_type": "text-success",
-    "amount": "$50,139"
+    "amount": "R 70,200"
   },
   {
-    "id": "84564786",
-    "name": "Laptop",
-    "quantity": "300",
+    "id": "COMP-2026-006",
+    "name": "Regional Training Show - Free State",
+    "quantity": "45",
     "status": "Pending",
     "status_type": "text-warning",
-    "amount": "$180,139"
+    "amount": "R 13,500"
+  },
+  {
+    "id": "COMP-2026-007",
+    "name": "Grand Prix Invitational",
+    "quantity": "28",
+    "status": "Confirmed",
+    "status_type": "text-success",
+    "amount": "R 14,000"
+  },
+  {
+    "id": "COMP-2026-008",
+    "name": "Para-Equestrian Championships",
+    "quantity": "34",
+    "status": "Confirmed",
+    "status_type": "text-success",
+    "amount": "R 10,200"
+  },
+  {
+    "id": "COMP-2026-009",
+    "name": "Autumn Classic - Eastern Cape",
+    "quantity": "89",
+    "status": "Pending",
+    "status_type": "text-warning",
+    "amount": "R 26,700"
+  },
+  {
+    "id": "COMP-2026-010",
+    "name": "Summer Series Finale",
+    "quantity": "178",
+    "status": "Confirmed",
+    "status_type": "text-success",
+    "amount": "R 53,400"
   }
 ]

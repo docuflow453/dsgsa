@@ -28,17 +28,17 @@
   </div>
 
   <div class="col-md-12 col-xl-8">
-    <h5 class="mb-3">Recent Orders</h5>
+    <h5 class="mb-3">Recent Competition Entries</h5>
     <div class="card tbl-card">
       <div class="table-responsive">
         <table class="table table-hover mb-0">
           <thead>
             <tr>
-              <th>TRACKING NO.</th>
-              <th>PRODUCT NAME</th>
+              <th>COMPETITION ID</th>
+              <th>COMPETITION NAME</th>
               <th>STATUS</th>
-              <th class="text-end">TOTAL ORDER</th>
-              <th class="text-end">TOTAL AMOUNT</th>
+              <th class="text-end">ENTRIES</th>
+              <th class="text-end">TOTAL REVENUE</th>
             </tr>
           </thead>
           <tbody>
@@ -71,7 +71,7 @@
     <app-sales-report-chart />
   </div>
   <div class="col-md-12 col-xl-4">
-    <h5 class="mb-3">Transaction History</h5>
+    <h5 class="mb-3">Recent Transactions</h5>
     <div class="card">
       <div class="list-group list-group-flush">
         @for (history of transaction; track history) {
@@ -99,19 +99,19 @@
       <div class="card-body">
         <div class="row justify-content-between">
           <div class="col-auto">
-            <h5>Help & Support Chat</h5>
-            <p class="mb-3">Typical replay within 5 min</p>
+            <h5>Admin Support</h5>
+            <p class="mb-3">Available 24/7 for assistance</p>
           </div>
           <div class="col-auto">
             <div class="user-group mb-3">
-              <img src="assets/images/user/avatar-1.jpg" alt="image" />
-              <img src="assets/images/user/avatar-2.jpg" alt="image" />
-              <img src="assets/images/user/avatar-3.jpg" alt="image" />
+              <img src="assets/images/user/avatar-1.jpg" alt="Admin Support" />
+              <img src="assets/images/user/avatar-2.jpg" alt="Technical Team" />
+              <img src="assets/images/user/avatar-3.jpg" alt="Competition Team" />
             </div>
           </div>
         </div>
         <div class="d-grid">
-          <div class="btn btn-primary">Need Help?</div>
+          <div class="btn btn-primary">Contact Support</div>
         </div>
       </div>
     </div>
