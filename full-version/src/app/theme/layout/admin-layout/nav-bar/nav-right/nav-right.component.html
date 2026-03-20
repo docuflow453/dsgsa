@@ -1,51 +1,4 @@
 <ul class="list-unstyled">
-  <li class="pc-h-item pc-mega-menu" ngbDropdown placement="auto">
-    <a href="javascript:" class="pc-head-link arrow-none me-0" ngbDropdownToggle>
-      <i antIcon type="windows" theme="outline"></i>
-    </a>
-    <div class="pc-h-dropdown pc-mega-dropdown" ngbDropdownMenu>
-      <div class="row g-0">
-        <div class="col-4 d-none d-sm-block">
-          <div class="col image-block">
-            <h2 class="text-white">Explore Components</h2>
-            <p class="text-white my-4">Try our pre made component pages to check how it feels and suits as per your need.</p>
-            <div class="row align-items-end">
-              <div class="col-auto">
-                <div class="btn btn btn-light">
-                  View All
-                  <i class="" antIcon theme="outline" type="arrow-right"></i>
-                </div>
-              </div>
-              <div class="col">
-                <img src="assets/images/mega-menu/chart.svg" alt="image" class="img-fluid img-charts" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-8">
-          <div class="row p-4">
-            @for (megaMenu of megaMenus; track megaMenu) {
-              <div class="col">
-                <h6 class="mega-title">{{ megaMenu.name }}</h6>
-                <ul class="pc-mega-list">
-                  @for (list of megaMenu.children; track list) {
-                    <div>
-                      <li>
-                        <a class="dropdown-item" [routerLink]="[list.url]" target="_blank">
-                          <span class="dot-badge"></span>
-                          {{ list.title }}
-                        </a>
-                      </li>
-                    </div>
-                  }
-                </ul>
-              </div>
-            }
-          </div>
-        </div>
-      </div>
-    </div>
-  </li>
   <li class="dropdown pc-h-item" ngbDropdown>
     <a href="javascript:" class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" ngbDropdownToggle>
       <i antIcon type="translation" theme="outline"></i>
@@ -105,49 +58,6 @@
                     <span class="float-end text-muted">{{ item.time }}</span>
                     <p class="text-body mb-0" [innerHTML]="item.message"></p>
                     <span class="text-muted">{{ item.date }}</span>
-                  </div>
-                </div>
-              </a>
-            }
-          </div>
-        </div>
-      </app-scrollbar>
-      <div class="dropdown-divider"></div>
-      <div class="text-center py-2">
-        <a class="btn btn-link link-primary py-0">View all</a>
-      </div>
-    </div>
-  </li>
-  <li class="pc-h-item" ngbDropdown #messageDrop="ngbDropdown">
-    <a href="javascript:" class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" ngbDropdownToggle>
-      <i antIcon type="mail" theme="outline"></i>
-    </a>
-    <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown" ngbDropdownMenu>
-      <div class="dropdown-header d-flex align-items-center justify-content-between">
-        <h5 class="m-0">Message</h5>
-        <a href="javascript:" (click)="messageDrop.close()" class="bg-transparent">
-          <i class="d-felx f-18 text-danger" antIcon theme="outline" type="close"></i>
-        </a>
-      </div>
-      <div class="dropdown-divider"></div>
-      <app-scrollbar [customStyle]="'280px'">
-        <div class="dropdown-header p-0 text-wrap header-notification-scroll">
-          <div class="list-group list-group-flush w-100">
-            @for (message of messageList; track message) {
-              <a class="list-group-item list-group-item-action">
-                <div class="d-flex">
-                  <div class="flex-shrink-0">
-                    <img src="{{ message.userImage }}" alt="user-image" class="user-avatar" />
-                  </div>
-                  <div class="flex-grow-1 ms-3">
-                    <span class="float-end text-muted">{{ message.timestamp }}</span>
-                    <p class="text-body mb-0">
-                      @if (message.boldText) {
-                        <b>{{ message.boldText }}</b>
-                      }
-                      {{ message.normalText }}
-                    </p>
-                    <span class="text-muted">{{ message.dateInfo }}</span>
                   </div>
                 </div>
               </a>

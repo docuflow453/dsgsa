@@ -1,7 +1,7 @@
 {
   "name": "mantis-angular-ng-bootstrap",
   "version": "2.4.0",
-  "author": "CodedThemes",
+  "author": "Dressage South Africa",
   "type": "module",
   "scripts": {
     "ng": "ng",

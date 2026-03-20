@@ -15,7 +15,7 @@ import { Horse } from '../../models/rider.model';
           <h2>My Horses</h2>
           <p class="text-muted">Manage your registered horses</p>
         </div>
-        <button class="btn btn-primary">
+        <button class="btn btn-primary" [routerLink]="['/my/horses/new']">
           <i class="ti ti-plus me-2"></i>Add New Horse
         </button>
       </div>
@@ -23,7 +23,7 @@ import { Horse } from '../../models/rider.model';
       <div *ngIf="horses.length === 0" class="text-center text-muted py-5">
         <i class="ti ti-horse-toy" style="font-size: 4rem; opacity: 0.3;"></i>
         <p class="mt-3">No horses registered yet</p>
-        <button class="btn btn-primary mt-2">
+        <button class="btn btn-primary mt-2" [routerLink]="['/my/horses/new']">
           <i class="ti ti-plus me-2"></i>Add Your First Horse
         </button>
       </div>
@@ -60,14 +60,11 @@ import { Horse } from '../../models/rider.model';
               </div>
             </div>
             <div class="horse-actions">
-              <button class="btn btn-sm btn-outline-primary me-2">
+              <button class="btn btn-sm btn-outline-primary me-2" [routerLink]="['/my/horses', horse.id]">
                 <i class="ti ti-eye"></i> View
               </button>
-              <button class="btn btn-sm btn-outline-secondary me-2">
+              <button class="btn btn-sm btn-outline-secondary me-2" [routerLink]="['/my/horses', horse.id, 'edit']">
                 <i class="ti ti-edit"></i> Edit
-              </button>
-              <button class="btn btn-sm btn-outline-info">
-                <i class="ti ti-file"></i> Documents
               </button>
             </div>
           </div>

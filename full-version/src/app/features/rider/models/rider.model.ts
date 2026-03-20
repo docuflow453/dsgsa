@@ -44,6 +44,39 @@ export interface Rider {
   profileImage?: string;
 }
 
+export interface HorseVaccination {
+  id: string;
+  horseId: string;
+  vaccinationType: string;
+  vaccinationDate: Date;
+  expiryDate?: Date;
+  batchNumber?: string;
+  veterinarian?: string;
+  notes?: string;
+}
+
+export interface HorseDocument {
+  id: string;
+  horseId: string;
+  documentType: 'Passport' | 'Registration' | 'Vaccination' | 'Medical' | 'Other';
+  title: string;
+  fileName: string;
+  fileUrl: string;
+  uploadDate: Date;
+  expiryDate?: Date;
+  notes?: string;
+}
+
+export interface HorseAffiliation {
+  id: string;
+  horseId: string;
+  organizationName: string;
+  registrationNumber: string;
+  registrationDate: Date;
+  expiryDate?: Date;
+  status: 'Active' | 'Expired' | 'Pending';
+}
+
 export interface Horse {
   id: string;
   riderId: string;
@@ -53,12 +86,21 @@ export interface Horse {
   dateOfBirth: Date;
   age?: number;
   gender: 'Gelding' | 'Mare' | 'Stallion';
+  color?: string;
+  height?: number;
   microchip: string;
   passportNumber: string;
   grade: string;
   status: 'Active' | 'Inactive' | 'Retired';
-  documents?: Document[];
+  vaccinations?: HorseVaccination[];
+  documents?: HorseDocument[];
+  affiliations?: HorseAffiliation[];
   imageUrl?: string;
+  sire?: string;
+  dam?: string;
+  breeder?: string;
+  owner?: string;
+  notes?: string;
 }
 
 export interface TestEntry {
@@ -233,5 +275,68 @@ export interface Invoice {
   paymentMethod?: string;
   notes?: string;
   type: 'Membership' | 'Entry Fee' | 'Subscription' | 'Other';
+}
+
+export interface Competition {
+  id: string;
+  name: string;
+  slug: string;
+  competitionType: 'dressage' | 'show_jumping' | 'eventing' | 'combined';
+  startDate: Date;
+  endDate: Date;
+  venue: string;
+  city: string;
+  province: string;
+  closingDate: Date;
+  status: 'draft' | 'published' | 'ongoing' | 'completed' | 'cancelled';
+  description?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  maxEntries?: number;
+  totalClasses?: number;
+  totalEntries?: number;
+}
+
+export interface CompetitionClass {
+  id: string;
+  competitionId: string;
+  name: string;
+  grade?: string;
+  classType?: string;
+  fee: number;
+  approximateStartTime?: string;
+  description?: string;
+  isActive: boolean;
+}
+
+export interface CompetitionExtra {
+  id: string;
+  competitionId: string;
+  name: string;
+  description?: string;
+  price: number;
+  quantity?: number;
+  isStable: boolean;
+  isActive: boolean;
+}
+
+export interface EntryWizardState {
+  competition?: Competition;
+  riderId?: string;
+  riderName?: string;
+  isCurrentUserRider: boolean;
+  horseId?: string;
+  horseName?: string;
+  selectedClasses: CompetitionClass[];
+  selectedExtras: { extra: CompetitionExtra; quantity: number }[];
+  totalAmount: number;
+}
+
+export interface CreateEntryRequest {
+  competitionId: string;
+  riderId: string;
+  horseId: string;
+  classes: string[];
+  extras?: { extraId: string; quantity: number }[];
 }
 

@@ -62,17 +62,74 @@ export class RiderService {
   }
 
   /**
+   * Get horse by ID
+   */
+  getHorseById(id: string): Observable<Horse> {
+    // TODO: Replace with actual API call
+    return this.mockHorses().pipe(
+      map(horses => {
+        const horse = horses.find(h => h.id === id);
+        if (!horse) {
+          throw new Error('Horse not found');
+        }
+        return horse;
+      })
+    );
+  }
+
+  /**
    * Add new horse
    */
   addHorse(horse: Partial<Horse>): Observable<Horse> {
-    return this.http.post<Horse>(`${this.API_URL}/horses`, horse);
+    // TODO: Replace with actual API call
+    const newHorse: Horse = {
+      id: `horse-${Date.now()}`,
+      riderId: '1',
+      name: horse.name || '',
+      registeredName: horse.registeredName || '',
+      breed: horse.breed || '',
+      dateOfBirth: horse.dateOfBirth || new Date(),
+      age: horse.age,
+      gender: horse.gender || 'Gelding',
+      color: horse.color,
+      height: horse.height,
+      microchip: horse.microchip || '',
+      passportNumber: horse.passportNumber || '',
+      grade: horse.grade || '',
+      status: horse.status || 'Active',
+      vaccinations: horse.vaccinations || [],
+      documents: horse.documents || [],
+      affiliations: horse.affiliations || [],
+      imageUrl: horse.imageUrl,
+      sire: horse.sire,
+      dam: horse.dam,
+      breeder: horse.breeder,
+      owner: horse.owner,
+      notes: horse.notes
+    };
+    return of(newHorse).pipe(delay(500));
   }
 
   /**
    * Update horse
    */
   updateHorse(id: string, horse: Partial<Horse>): Observable<Horse> {
-    return this.http.put<Horse>(`${this.API_URL}/horses/${id}`, horse);
+    // TODO: Replace with actual API call
+    return this.getHorseById(id).pipe(
+      map(existingHorse => ({
+        ...existingHorse,
+        ...horse
+      })),
+      delay(500)
+    );
+  }
+
+  /**
+   * Delete horse
+   */
+  deleteHorse(id: string): Observable<void> {
+    // TODO: Replace with actual API call
+    return of(void 0).pipe(delay(300));
   }
 
   /**
@@ -334,18 +391,379 @@ export class RiderService {
   private mockHorses(): Observable<Horse[]> {
     const horses: Horse[] = [
       {
-        id: '1',
+        id: 'horse-1',
         riderId: '1',
-        name: 'Starlight',
-        registeredName: 'SS Starlight',
+        name: 'Midnight Star',
+        registeredName: 'Blackwood Midnight Star',
+        breed: 'Hanoverian',
+        color: 'Black',
+        height: 16.2,
+        dateOfBirth: new Date('2015-04-12'),
+        age: 11,
+        gender: 'Mare',
+        microchip: '528210004567891',
+        passportNumber: 'FEI104HN45678',
+        grade: 'Medium',
+        status: 'Active',
+        sire: 'Donnerhall',
+        dam: 'Weltmeyer Lady',
+        breeder: 'Blackwood Stud Farm',
+        owner: 'Jane Smith',
+        imageUrl: 'assets/images/horses/horse-1.jpg',
+        vaccinations: [
+          {
+            id: 'vacc-1',
+            horseId: 'horse-1',
+            vaccinationType: 'African Horse Sickness',
+            vaccinationDate: new Date('2026-01-15'),
+            expiryDate: new Date('2027-01-15'),
+            batchNumber: 'AHS-2026-001',
+            veterinarian: 'Dr. Sarah Mitchell',
+            notes: 'Annual booster administered'
+          },
+          {
+            id: 'vacc-2',
+            horseId: 'horse-1',
+            vaccinationType: 'Equine Influenza',
+            vaccinationDate: new Date('2025-10-20'),
+            expiryDate: new Date('2026-10-20'),
+            batchNumber: 'EI-2025-456',
+            veterinarian: 'Dr. Sarah Mitchell'
+          }
+        ],
+        documents: [
+          {
+            id: 'doc-1',
+            horseId: 'horse-1',
+            documentType: 'Passport',
+            title: 'FEI Passport',
+            fileName: 'midnight-star-passport.pdf',
+            fileUrl: '/documents/midnight-star-passport.pdf',
+            uploadDate: new Date('2024-01-10')
+          },
+          {
+            id: 'doc-2',
+            horseId: 'horse-1',
+            documentType: 'Vaccination',
+            title: 'Vaccination Record 2026',
+            fileName: 'vaccination-record-2026.pdf',
+            fileUrl: '/documents/vaccination-record-2026.pdf',
+            uploadDate: new Date('2026-01-15'),
+            expiryDate: new Date('2027-01-15')
+          }
+        ],
+        affiliations: [
+          {
+            id: 'aff-1',
+            horseId: 'horse-1',
+            organizationName: 'South African Equestrian Federation',
+            registrationNumber: 'SAEF-2026-1234',
+            registrationDate: new Date('2026-01-01'),
+            expiryDate: new Date('2026-12-31'),
+            status: 'Active'
+          }
+        ],
+        notes: 'Excellent temperament, suitable for medium level dressage competitions'
+      },
+      {
+        id: 'horse-2',
+        riderId: '1',
+        name: 'Golden Dream',
+        registeredName: 'Sunridge Golden Dream',
         breed: 'Warmblood',
-        dateOfBirth: new Date('2016-03-15'),
+        color: 'Chestnut',
+        height: 16.0,
+        dateOfBirth: new Date('2017-06-22'),
+        age: 9,
+        gender: 'Gelding',
+        microchip: '528210004567892',
+        passportNumber: 'FEI104WB78901',
+        grade: 'Elementary',
+        status: 'Active',
+        sire: 'Rubinstein',
+        dam: 'Golden Glow',
+        breeder: 'Sunridge Equestrian',
+        owner: 'Jane Smith',
+        imageUrl: 'assets/images/horses/horse-2.jpg',
+        vaccinations: [
+          {
+            id: 'vacc-3',
+            horseId: 'horse-2',
+            vaccinationType: 'African Horse Sickness',
+            vaccinationDate: new Date('2026-02-10'),
+            expiryDate: new Date('2027-02-10'),
+            batchNumber: 'AHS-2026-002',
+            veterinarian: 'Dr. Michael Thompson'
+          }
+        ],
+        documents: [
+          {
+            id: 'doc-3',
+            horseId: 'horse-2',
+            documentType: 'Registration',
+            title: 'Warmblood Registration Certificate',
+            fileName: 'golden-dream-registration.pdf',
+            fileUrl: '/documents/golden-dream-registration.pdf',
+            uploadDate: new Date('2023-05-15')
+          }
+        ],
+        affiliations: [],
+        notes: 'Young and promising, progressing well in training'
+      },
+      {
+        id: 'horse-3',
+        riderId: '1',
+        name: 'Silver Shadow',
+        registeredName: 'Silverstone Shadow Dancer',
+        breed: 'Thoroughbred',
+        color: 'Grey',
+        height: 16.1,
+        dateOfBirth: new Date('2014-08-30'),
+        age: 12,
+        gender: 'Mare',
+        microchip: '528210004567893',
+        passportNumber: 'FEI104TB23456',
+        grade: 'Advanced',
+        status: 'Active',
+        sire: 'Silver Charm',
+        dam: 'Shadow Dancer',
+        breeder: 'Silverstone Stud',
+        owner: 'Jane Smith',
+        imageUrl: 'assets/images/horses/horse-3.jpg',
+        vaccinations: [
+          {
+            id: 'vacc-4',
+            horseId: 'horse-3',
+            vaccinationType: 'African Horse Sickness',
+            vaccinationDate: new Date('2025-12-05'),
+            expiryDate: new Date('2026-12-05'),
+            batchNumber: 'AHS-2025-789',
+            veterinarian: 'Dr. Emma Wilson',
+            notes: 'No adverse reactions'
+          },
+          {
+            id: 'vacc-5',
+            horseId: 'horse-3',
+            vaccinationType: 'Tetanus',
+            vaccinationDate: new Date('2025-11-20'),
+            expiryDate: new Date('2026-11-20'),
+            batchNumber: 'TET-2025-123',
+            veterinarian: 'Dr. Emma Wilson'
+          }
+        ],
+        documents: [],
+        affiliations: [
+          {
+            id: 'aff-2',
+            horseId: 'horse-3',
+            organizationName: 'South African Equestrian Federation',
+            registrationNumber: 'SAEF-2026-5678',
+            registrationDate: new Date('2026-01-01'),
+            expiryDate: new Date('2026-12-31'),
+            status: 'Active'
+          }
+        ],
+        notes: 'Experienced competition horse, excellent record in advanced dressage'
+      },
+      {
+        id: 'horse-4',
+        riderId: '1',
+        name: 'Royal Prince',
+        registeredName: 'Kingswood Royal Prince',
+        breed: 'Dutch Warmblood',
+        color: 'Bay',
+        height: 17.0,
+        dateOfBirth: new Date('2016-05-18'),
+        age: 10,
+        gender: 'Stallion',
+        microchip: '528210004567894',
+        passportNumber: 'FEI104DW34567',
+        grade: 'Medium',
+        status: 'Active',
+        sire: 'Jazz',
+        dam: 'Royal Lady',
+        breeder: 'Kingswood Stud',
+        owner: 'Jane Smith',
+        vaccinations: [
+          {
+            id: 'vacc-6',
+            horseId: 'horse-4',
+            vaccinationType: 'African Horse Sickness',
+            vaccinationDate: new Date('2026-01-25'),
+            expiryDate: new Date('2027-01-25'),
+            batchNumber: 'AHS-2026-003',
+            veterinarian: 'Dr. David Roberts'
+          }
+        ],
+        documents: [
+          {
+            id: 'doc-4',
+            horseId: 'horse-4',
+            documentType: 'Medical',
+            title: 'Pre-Purchase Veterinary Examination',
+            fileName: 'royal-prince-vet-exam.pdf',
+            fileUrl: '/documents/royal-prince-vet-exam.pdf',
+            uploadDate: new Date('2024-03-20')
+          }
+        ],
+        affiliations: [],
+        notes: 'Strong and athletic, excellent movement'
+      },
+      {
+        id: 'horse-5',
+        riderId: '1',
+        name: 'Bella Luna',
+        registeredName: 'Moonlight Bella Luna',
+        breed: 'Lusitano',
+        color: 'Palomino',
+        height: 15.3,
+        dateOfBirth: new Date('2018-03-10'),
         age: 8,
         gender: 'Mare',
-        microchip: '123456789012345',
-        passportNumber: 'SA-WB-2016-001',
-        grade: 'Medium',
-        status: 'Active'
+        microchip: '528210004567895',
+        passportNumber: 'FEI104LU56789',
+        grade: 'Preliminary',
+        status: 'Active',
+        sire: 'Lusitano Gold',
+        dam: 'Bella Donna',
+        breeder: 'Moonlight Stables',
+        owner: 'Jane Smith',
+        vaccinations: [],
+        documents: [],
+        affiliations: [],
+        notes: 'Beautiful mare with excellent potential, currently in training'
+      },
+      {
+        id: 'horse-6',
+        riderId: '1',
+        name: 'Thunder Storm',
+        registeredName: 'Stormridge Thunder',
+        breed: 'Quarter Horse',
+        color: 'Dun',
+        height: 15.2,
+        dateOfBirth: new Date('2012-11-05'),
+        age: 14,
+        gender: 'Gelding',
+        microchip: '528210004567896',
+        passportNumber: 'FEI104QH67890',
+        grade: 'Elementary',
+        status: 'Retired',
+        sire: 'Thunder Bolt',
+        dam: 'Storm Queen',
+        breeder: 'Stormridge Ranch',
+        owner: 'Jane Smith',
+        vaccinations: [
+          {
+            id: 'vacc-7',
+            horseId: 'horse-6',
+            vaccinationType: 'African Horse Sickness',
+            vaccinationDate: new Date('2025-11-10'),
+            expiryDate: new Date('2026-11-10'),
+            batchNumber: 'AHS-2025-456',
+            veterinarian: 'Dr. Lisa Anderson'
+          }
+        ],
+        documents: [],
+        affiliations: [],
+        notes: 'Retired from competition, now used for training purposes'
+      },
+      {
+        id: 'horse-7',
+        riderId: '1',
+        name: 'Diamond Dust',
+        registeredName: 'Crystal Diamond Dust',
+        breed: 'Oldenburg',
+        color: 'White',
+        height: 16.3,
+        dateOfBirth: new Date('2019-02-14'),
+        age: 7,
+        gender: 'Mare',
+        microchip: '528210004567897',
+        passportNumber: 'FEI104OL78901',
+        grade: 'Preliminary',
+        status: 'Inactive',
+        sire: 'Diamond King',
+        dam: 'Crystal Queen',
+        breeder: 'Crystal Stud Farm',
+        owner: 'Jane Smith',
+        vaccinations: [],
+        documents: [
+          {
+            id: 'doc-5',
+            horseId: 'horse-7',
+            documentType: 'Other',
+            title: 'Insurance Certificate',
+            fileName: 'diamond-dust-insurance.pdf',
+            fileUrl: '/documents/diamond-dust-insurance.pdf',
+            uploadDate: new Date('2025-06-01'),
+            expiryDate: new Date('2026-06-01')
+          }
+        ],
+        affiliations: [],
+        notes: 'Currently on break due to minor injury, expected to return to training soon'
+      },
+      {
+        id: 'horse-8',
+        riderId: '1',
+        name: 'Copper Flame',
+        registeredName: 'Firestone Copper Flame',
+        breed: 'Trakehner',
+        color: 'Sorrel',
+        height: 16.1,
+        dateOfBirth: new Date('2017-09-25'),
+        age: 9,
+        gender: 'Gelding',
+        microchip: '528210004567898',
+        passportNumber: 'FEI104TR89012',
+        grade: 'Elementary',
+        status: 'Active',
+        sire: 'Copper King',
+        dam: 'Flame Dancer',
+        breeder: 'Firestone Equestrian',
+        owner: 'Jane Smith',
+        vaccinations: [
+          {
+            id: 'vacc-8',
+            horseId: 'horse-8',
+            vaccinationType: 'African Horse Sickness',
+            vaccinationDate: new Date('2026-02-20'),
+            expiryDate: new Date('2027-02-20'),
+            batchNumber: 'AHS-2026-004',
+            veterinarian: 'Dr. Peter Botha'
+          },
+          {
+            id: 'vacc-9',
+            horseId: 'horse-8',
+            vaccinationType: 'Equine Influenza',
+            vaccinationDate: new Date('2026-02-20'),
+            expiryDate: new Date('2027-02-20'),
+            batchNumber: 'EI-2026-789',
+            veterinarian: 'Dr. Peter Botha'
+          }
+        ],
+        documents: [
+          {
+            id: 'doc-6',
+            horseId: 'horse-8',
+            documentType: 'Passport',
+            title: 'FEI Passport',
+            fileName: 'copper-flame-passport.pdf',
+            fileUrl: '/documents/copper-flame-passport.pdf',
+            uploadDate: new Date('2023-09-01')
+          }
+        ],
+        affiliations: [
+          {
+            id: 'aff-3',
+            horseId: 'horse-8',
+            organizationName: 'South African Equestrian Federation',
+            registrationNumber: 'SAEF-2026-9012',
+            registrationDate: new Date('2026-01-01'),
+            expiryDate: new Date('2026-12-31'),
+            status: 'Active'
+          }
+        ],
+        notes: 'Consistent performer, reliable in competitions'
       }
     ];
     return of(horses).pipe(delay(300));

@@ -420,23 +420,23 @@ export class LandingComponent implements OnInit, OnDestroy {
       support: [
         {
           support_link: 'Berry Angular',
-          url: 'https://codedthemes.com/item/berry-angular-admin-dashboard-template'
+          url: 'https://www.dressagesa.com/item/berry-angular-admin-dashboard-template'
         },
         {
           support_link: 'Free Berry Angular',
-          url: 'https://codedthemes.com/item/berry-angular-free-admin-template'
+          url: 'https://www.dressagesa.com/item/berry-angular-free-admin-template'
         },
         {
           support_link: 'Angular Bundle',
-          url: 'https://codedthemes.com/item/angular-mega-bundle'
+          url: 'https://www.dressagesa.com/item/angular-mega-bundle'
         },
         {
           support_link: 'Big Bundle',
-          url: 'https://codedthemes.com/item/big-bundle'
+          url: 'https://www.dressagesa.com/item/big-bundle'
         },
         {
           support_link: 'Figma UI Kits',
-          url: 'https://codedthemes.com/item/category/templates/figma-ui-kits'
+          url: 'https://www.dressagesa.com/item/category/templates/figma-ui-kits'
         }
       ]
     }

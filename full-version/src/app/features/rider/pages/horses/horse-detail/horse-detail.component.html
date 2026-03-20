@@ -1,0 +1,274 @@
+<!-- Horse Detail Page -->
+<div class="horse-detail-page">
+  <!-- Page Header -->
+  <div class="page-header mb-4 d-flex justify-content-between align-items-center">
+    <div>
+      <h2>{{ horse?.name || 'Horse Details' }}</h2>
+      <p class="text-muted">View and manage horse information</p>
+    </div>
+    <div>
+      <button class="btn btn-outline-secondary me-2" (click)="goBack()">
+        <i class="ti ti-arrow-left me-2"></i>Back to List
+      </button>
+      <button class="btn btn-primary" (click)="editHorse()">
+        <i class="ti ti-edit me-2"></i>Edit Horse
+      </button>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show">
+    <i class="ti ti-alert-circle me-2"></i>{{ errorMessage }}
+    <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3 text-muted">Loading horse details...</p>
+  </div>
+
+  <!-- Horse Details Content -->
+  <div *ngIf="!loading && horse" class="card">
+    <!-- Tabs Navigation -->
+    <div class="card-header bg-white">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)" role="button">
+            <i class="ti ti-horse me-2"></i>Profile
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)" role="button">
+            <i class="ti ti-building me-2"></i>Affiliations
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 3" (click)="setActiveTab(3)" role="button">
+            <i class="ti ti-vaccine me-2"></i>Vaccinations
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 4" (click)="setActiveTab(4)" role="button">
+            <i class="ti ti-file-text me-2"></i>Documents
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card-body">
+      <!-- Tab 1: Profile -->
+      <div *ngIf="activeTab === 1" class="tab-content">
+        <div class="row">
+          <!-- Horse Image -->
+          <div class="col-md-3 text-center mb-4">
+            <div class="horse-image-container">
+              <img *ngIf="horse.imageUrl" [src]="horse.imageUrl" alt="{{ horse.name }}" class="img-fluid rounded">
+              <div *ngIf="!horse.imageUrl" class="horse-placeholder">
+                <i class="ti ti-horse"></i>
+              </div>
+            </div>
+            <span class="badge mt-3" [ngClass]="getStatusBadgeClass(horse.status)">{{ horse.status }}</span>
+          </div>
+
+          <!-- Horse Information -->
+          <div class="col-md-9">
+            <h5 class="mb-4">Basic Information</h5>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label text-muted">Name</label>
+                <p class="fw-bold">{{ horse.name }}</p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label text-muted">Registered Name</label>
+                <p class="fw-bold">{{ horse.registeredName }}</p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label text-muted">Breed</label>
+                <p>{{ horse.breed }}</p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label text-muted">Gender</label>
+                <p>{{ horse.gender }}</p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label text-muted">Date of Birth</label>
+                <p>{{ formatDate(horse.dateOfBirth) }}</p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label text-muted">Age</label>
+                <p>{{ horse.age }} years</p>
+              </div>
+              <div class="col-md-6 mb-3" *ngIf="horse.color">
+                <label class="form-label text-muted">Color</label>
+                <p>{{ horse.color }}</p>
+              </div>
+              <div class="col-md-6 mb-3" *ngIf="horse.height">
+                <label class="form-label text-muted">Height</label>
+                <p>{{ horse.height }} hands</p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label text-muted">Microchip</label>
+                <p>{{ horse.microchip }}</p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label text-muted">Passport Number</label>
+                <p>{{ horse.passportNumber }}</p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label text-muted">Grade</label>
+                <p>{{ horse.grade }}</p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label text-muted">Status</label>
+                <p><span class="badge" [ngClass]="getStatusBadgeClass(horse.status)">{{ horse.status }}</span></p>
+              </div>
+            </div>
+
+            <h5 class="mb-3 mt-4" *ngIf="horse.sire || horse.dam || horse.breeder || horse.owner">Pedigree & Ownership</h5>
+            <div class="row" *ngIf="horse.sire || horse.dam || horse.breeder || horse.owner">
+              <div class="col-md-6 mb-3" *ngIf="horse.sire">
+                <label class="form-label text-muted">Sire</label>
+                <p>{{ horse.sire }}</p>
+              </div>
+              <div class="col-md-6 mb-3" *ngIf="horse.dam">
+                <label class="form-label text-muted">Dam</label>
+                <p>{{ horse.dam }}</p>
+              </div>
+              <div class="col-md-6 mb-3" *ngIf="horse.breeder">
+                <label class="form-label text-muted">Breeder</label>
+                <p>{{ horse.breeder }}</p>
+              </div>
+              <div class="col-md-6 mb-3" *ngIf="horse.owner">
+                <label class="form-label text-muted">Owner</label>
+                <p>{{ horse.owner }}</p>
+              </div>
+            </div>
+
+            <div *ngIf="horse.notes" class="mt-4">
+              <h5 class="mb-3">Notes</h5>
+              <p class="text-muted">{{ horse.notes }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Affiliations -->
+      <div *ngIf="activeTab === 2" class="tab-content">
+        <h5 class="mb-4">Organization Affiliations</h5>
+
+        <div *ngIf="!horse.affiliations || horse.affiliations.length === 0" class="text-center text-muted py-5">
+          <i class="ti ti-building" style="font-size: 3rem; opacity: 0.3;"></i>
+          <p class="mt-3">No affiliations registered</p>
+        </div>
+
+        <div *ngIf="horse.affiliations && horse.affiliations.length > 0" class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Organization</th>
+                <th>Registration Number</th>
+                <th>Registration Date</th>
+                <th>Expiry Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let affiliation of horse.affiliations">
+                <td>{{ affiliation.organizationName }}</td>
+                <td>{{ affiliation.registrationNumber }}</td>
+                <td>{{ formatDate(affiliation.registrationDate) }}</td>
+                <td>{{ affiliation.expiryDate ? formatDate(affiliation.expiryDate) : 'N/A' }}</td>
+                <td>
+                  <span class="badge" [ngClass]="getAffiliationStatusBadgeClass(affiliation.status)">
+                    {{ affiliation.status }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 3: Vaccinations -->
+      <div *ngIf="activeTab === 3" class="tab-content">
+        <h5 class="mb-4">Vaccination Records</h5>
+
+        <div *ngIf="!horse.vaccinations || horse.vaccinations.length === 0" class="text-center text-muted py-5">
+          <i class="ti ti-vaccine" style="font-size: 3rem; opacity: 0.3;"></i>
+          <p class="mt-3">No vaccination records found</p>
+        </div>
+
+        <div *ngIf="horse.vaccinations && horse.vaccinations.length > 0" class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Vaccination Type</th>
+                <th>Date</th>
+                <th>Expiry Date</th>
+                <th>Batch Number</th>
+                <th>Veterinarian</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let vaccination of horse.vaccinations">
+                <td>{{ vaccination.vaccinationType }}</td>
+                <td>{{ formatDate(vaccination.vaccinationDate) }}</td>
+                <td>{{ vaccination.expiryDate ? formatDate(vaccination.expiryDate) : 'N/A' }}</td>
+                <td>{{ vaccination.batchNumber || 'N/A' }}</td>
+                <td>{{ vaccination.veterinarian || 'N/A' }}</td>
+                <td>{{ vaccination.notes || '-' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 4: Documents -->
+      <div *ngIf="activeTab === 4" class="tab-content">
+        <h5 class="mb-4">Documents</h5>
+
+        <div *ngIf="!horse.documents || horse.documents.length === 0" class="text-center text-muted py-5">
+          <i class="ti ti-file-text" style="font-size: 3rem; opacity: 0.3;"></i>
+          <p class="mt-3">No documents uploaded</p>
+        </div>
+
+        <div *ngIf="horse.documents && horse.documents.length > 0" class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Title</th>
+                <th>Upload Date</th>
+                <th>Expiry Date</th>
+                <th>Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let document of horse.documents">
+                <td>
+                  <span class="badge bg-info">{{ document.documentType }}</span>
+                </td>
+                <td>{{ document.title }}</td>
+                <td>{{ formatDate(document.uploadDate) }}</td>
+                <td>{{ document.expiryDate ? formatDate(document.expiryDate) : 'N/A' }}</td>
+                <td>{{ document.notes || '-' }}</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary" (click)="downloadDocument(document.fileUrl)">
+                    <i class="ti ti-download"></i> Download
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -42,9 +42,44 @@ export const RIDER_ROUTES: Routes = [
         title: 'My Entries - DSRiding'
       },
       {
+        path: 'entries/competitions',
+        loadComponent: () => import('./pages/entries/competition-selection/competition-selection.component').then(m => m.CompetitionSelectionComponent),
+        title: 'Select Competition - DSRiding'
+      },
+      {
+        path: 'entries/entry-details/:slug',
+        loadComponent: () => import('./pages/entries/entry-details/entry-details.component').then(m => m.EntryDetailsComponent),
+        title: 'Entry Details - DSRiding'
+      },
+      {
+        path: 'entries/entry-extras',
+        loadComponent: () => import('./pages/entries/entry-extras/entry-extras.component').then(m => m.EntryExtrasComponent),
+        title: 'Competition Extras - DSRiding'
+      },
+      {
+        path: 'entries/entry-checkout',
+        loadComponent: () => import('./pages/entries/entry-checkout/entry-checkout.component').then(m => m.EntryCheckoutComponent),
+        title: 'Checkout - DSRiding'
+      },
+      {
         path: 'horses',
         loadComponent: () => import('./pages/horses/horses.component').then(m => m.HorsesComponent),
         title: 'My Horses - DSRiding'
+      },
+      {
+        path: 'horses/new',
+        loadComponent: () => import('./pages/horses/horse-form/horse-form.component').then(m => m.HorseFormComponent),
+        title: 'Add Horse - DSRiding'
+      },
+      {
+        path: 'horses/:id',
+        loadComponent: () => import('./pages/horses/horse-detail/horse-detail.component').then(m => m.HorseDetailComponent),
+        title: 'Horse Details - DSRiding'
+      },
+      {
+        path: 'horses/:id/edit',
+        loadComponent: () => import('./pages/horses/horse-form/horse-form.component').then(m => m.HorseFormComponent),
+        title: 'Edit Horse - DSRiding'
       },
       {
         path: 'clubs',

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { RiderService } from '../../services/rider.service';
 import { Entry } from '../../models/rider.model';
 
@@ -15,8 +15,8 @@ import { Entry } from '../../models/rider.model';
           <h2>My Entries</h2>
           <p class="text-muted">Manage your competition entries</p>
         </div>
-        <button class="btn btn-primary">
-          <i class="ti ti-plus me-2"></i>New Entry
+        <button class="btn btn-primary" (click)="navigateToOnlineEntry()">
+          <i class="ti ti-plus me-2"></i>Online Entry
         </button>
       </div>
 
@@ -85,7 +85,10 @@ export class EntriesComponent implements OnInit {
   upcomingEntries: Entry[] = [];
   pastEntries: Entry[] = [];
 
-  constructor(private riderService: RiderService) {}
+  constructor(
+    private riderService: RiderService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.riderService.getEntries().subscribe(entries => {
@@ -93,6 +96,10 @@ export class EntriesComponent implements OnInit {
       this.upcomingEntries = entries.filter(e => new Date(e.eventDate) >= now);
       this.pastEntries = entries.filter(e => new Date(e.eventDate) < now);
     });
+  }
+
+  navigateToOnlineEntry(): void {
+    this.router.navigate(['/my/entries/competitions']);
   }
 
   formatDate(date: Date): string {

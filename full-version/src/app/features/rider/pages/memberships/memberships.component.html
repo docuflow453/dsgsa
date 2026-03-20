@@ -1,25 +1,23 @@
 <!-- Memberships Page -->
 <div class="memberships-page">
   <!-- Page Header -->
-  <div class="page-header mb-4">
-    <div class="d-flex justify-content-between align-items-center">
-      <div>
-        <h1 class="h3 mb-1">SAEF Memberships</h1>
-        <p class="text-muted mb-0">Manage your South African Equestrian Federation memberships</p>
-      </div>
-      <button 
-        class="btn btn-primary" 
-        (click)="startRenewal()"
-        *ngIf="!showWizard && !hasActiveMembership">
-        <i class="ti ti-plus me-2"></i>Apply for Membership
-      </button>
-      <button 
-        class="btn btn-primary" 
-        (click)="startRenewal()"
-        *ngIf="!showWizard && hasActiveMembership">
-        <i class="ti ti-refresh me-2"></i>Renew Membership
-      </button>
+  <div class="page-header mb-4 d-flex justify-content-between align-items-center">
+    <div>
+      <h2>Dressage Memberships</h2>
+      <p class="text-muted">Manage your Dressage South Africa memberships</p>
     </div>
+    <button
+      class="btn btn-primary"
+      (click)="startRenewal()"
+      *ngIf="!showWizard && !hasActiveMembership">
+      <i class="ti ti-plus me-2"></i>Renew Membership
+    </button>
+    <button
+      class="btn btn-primary"
+      (click)="startRenewal()"
+      *ngIf="!showWizard && hasActiveMembership">
+      <i class="ti ti-refresh me-2"></i>Renew Membership
+    </button>
   </div>
 
   <!-- Success Message -->
@@ -40,7 +38,7 @@
   <div class="card mb-4" *ngIf="!loading && hasActiveMembership && !showWizard">
     <div class="card-header bg-success text-white">
       <h5 class="mb-0">
-        <i class="ti ti-id-badge me-2"></i>Active Membership - {{ currentYear }}
+        <i class="ti ti-id-badge me-2"></i>Active Dressage Membership - {{ currentYear }}
       </h5>
     </div>
     <div class="card-body">
@@ -51,7 +49,7 @@
             <strong>Year:</strong> {{ activeMembership.yearTitle }}
           </p>
           <p class="mb-2">
-            <strong>Status:</strong> 
+            <strong>Status:</strong>
             <span class="badge bg-success ms-2">{{ activeMembership.status }}</span>
           </p>
           <p class="mb-2" *ngIf="activeMembership.approvedAt">
@@ -68,7 +66,7 @@
             Valid for the {{ activeMembership.yearTitle }} season
           </p>
           <p class="mb-0 text-muted small">
-            Your membership allows you to participate in SAEF-sanctioned events throughout the year.
+            Your membership allows you to participate in Dressage SA-sanctioned events throughout the year.
           </p>
         </div>
       </div>
@@ -82,11 +80,11 @@
     </div>
     <h4 class="mb-2">No Active Membership for {{ currentYear }}</h4>
     <p class="text-muted mb-4">
-      You don't have an active SAEF membership for the current year.<br>
+      You don't have an active Dressage membership for the current year.<br>
       Apply now to participate in sanctioned events.
     </p>
     <button class="btn btn-primary btn-lg" (click)="startRenewal()">
-      <i class="ti ti-plus me-2"></i>Apply for Membership
+      <i class="ti ti-plus me-2"></i>Renew Membership
     </button>
   </div>
 
@@ -124,7 +122,7 @@
     <div class="card" *ngIf="currentStep === 'type'">
       <div class="card-header bg-primary text-white">
         <h5 class="mb-0">
-          <i class="ti ti-list me-2"></i>Step 1: Select Membership Type
+          <i class="ti ti-list me-2"></i>Step 1: Select Dressage Membership Type
         </h5>
       </div>
       <div class="card-body">
@@ -285,7 +283,7 @@
               <i class="ti ti-info-circle me-2"></i>Important Information
             </h6>
             <ul class="mb-0 small">
-              <li>Your membership application will be reviewed by SAEF administrators</li>
+              <li>Your membership application will be reviewed by Dressage SA administrators</li>
               <li>You will be notified via email once your application is approved</li>
               <li>Membership is valid for the selected year only</li>
               <li>Payment will be processed after approval</li>
