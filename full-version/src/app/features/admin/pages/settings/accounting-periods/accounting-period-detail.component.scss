@@ -1,0 +1,39 @@
+/**
+ * Accounting Period Detail Component Styles
+ */
+
+// Section headers
+h5.text-primary {
+  font-weight: 600;
+}
+
+// Form labels
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+}
+
+// Financial summary cards
+.card.bg-light-primary,
+.card.bg-light-success,
+.card.bg-light-danger,
+.card.bg-light-info {
+  border: none;
+  
+  .card-body {
+    padding: 1.25rem;
+    
+    h3 {
+      font-weight: 700;
+      font-size: 1.75rem;
+    }
+  }
+}
+
+// Badge sizing
+.badge.fs-5 {
+  font-size: 1.25rem !important;
+  padding: 0.5rem 1rem;
+}
+

@@ -1,0 +1,381 @@
+/**
+ * Grades List Mock Data
+ * Realistic test data for the Grades List feature
+ */
+
+import { Grade } from './grades-list-type';
+
+/**
+ * Mock Grades Data
+ * 12 realistic dressage grades based on FEI levels
+ */
+export const GRADES: Grade[] = [
+  {
+    id: 1,
+    name: 'Preliminary',
+    code: 'PRELIM',
+    level: 'Preliminary',
+    description: 'Entry level dressage for beginners',
+    status: 'Active',
+    dateCreated: new Date('2020-01-15'),
+    isActive: true,
+    minScore: 0,
+    maxScore: 100,
+    passingScore: 60,
+    color: '#28a745',
+    order: 1,
+    testsCount: 8,
+    ridersCount: 145,
+    requirements: [
+      'Basic walk, trot, and canter',
+      'Simple transitions',
+      '20m circles',
+      'Free walk on long rein'
+    ],
+    notes: 'Foundation level for all riders'
+  },
+  {
+    id: 2,
+    name: 'Novice',
+    code: 'NOV',
+    level: 'Novice',
+    description: 'Developing basic skills and balance',
+    status: 'Active',
+    dateCreated: new Date('2020-01-15'),
+    isActive: true,
+    minScore: 0,
+    maxScore: 100,
+    passingScore: 62,
+    color: '#20c997',
+    order: 2,
+    testsCount: 12,
+    ridersCount: 128,
+    requirements: [
+      'Working trot and canter',
+      'Lengthened strides',
+      '15m circles',
+      'Simple changes through trot'
+    ],
+    notes: 'Building on preliminary skills'
+  },
+  {
+    id: 3,
+    name: 'Elementary',
+    code: 'ELEM',
+    level: 'Elementary',
+    description: 'Introduction to collection and lateral work',
+    status: 'Active',
+    dateCreated: new Date('2020-01-15'),
+    isActive: true,
+    minScore: 0,
+    maxScore: 100,
+    passingScore: 63,
+    color: '#17a2b8',
+    order: 3,
+    testsCount: 10,
+    ridersCount: 98,
+    requirements: [
+      'Medium trot and canter',
+      'Leg yielding',
+      '10m circles',
+      'Counter canter',
+      'Simple changes'
+    ],
+    notes: 'Introduction to more advanced movements'
+  },
+  {
+    id: 4,
+    name: 'Medium',
+    code: 'MED',
+    level: 'Medium',
+    description: 'Developing collection and extension',
+    status: 'Active',
+    dateCreated: new Date('2020-01-15'),
+    isActive: true,
+    minScore: 0,
+    maxScore: 100,
+    passingScore: 64,
+    color: '#007bff',
+    order: 4,
+    testsCount: 9,
+    ridersCount: 76,
+    requirements: [
+      'Collected and extended gaits',
+      'Shoulder-in',
+      'Travers and renvers',
+      'Flying changes',
+      'Half-pass'
+    ],
+    notes: 'Significant collection required'
+  },
+  {
+    id: 5,
+    name: 'Advanced Medium',
+    code: 'ADVMED',
+    level: 'Advanced Medium',
+    description: 'Refinement of collection and lateral movements',
+    status: 'Active',
+    dateCreated: new Date('2020-01-15'),
+    isActive: true,
+    minScore: 0,
+    maxScore: 100,
+    passingScore: 65,
+    color: '#6610f2',
+    order: 5,
+    testsCount: 7,
+    ridersCount: 54,
+    requirements: [
+      'Confirmed flying changes',
+      'Half-pass in trot and canter',
+      'Extended walk, trot, canter',
+      'Pirouettes in walk',
+      'Counter canter serpentines'
+    ],
+    notes: 'Bridge to advanced levels'
+  },
+  {
+    id: 6,
+    name: 'Advanced',
+    code: 'ADV',
+    level: 'Advanced',
+    description: 'High level collection and precision',
+    status: 'Active',
+    dateCreated: new Date('2020-01-15'),
+    isActive: true,
+    minScore: 0,
+    maxScore: 100,
+    passingScore: 65,
+    color: '#6f42c1',
+    order: 6,
+    testsCount: 6,
+    ridersCount: 42,
+    requirements: [
+      'Sequence flying changes',
+      'Canter pirouettes',
+      'Piaffe and passage',
+      'Extended movements',
+      'High degree of collection'
+    ],
+    notes: 'Preparation for FEI levels'
+  },
+  {
+    id: 7,
+    name: 'Prix St Georges',
+    code: 'PSG',
+    level: 'Prix St Georges',
+    description: 'Entry level FEI competition',
+    status: 'Active',
+    dateCreated: new Date('2020-01-15'),
+    isActive: true,
+    minScore: 0,
+    maxScore: 100,
+    passingScore: 60,
+    color: '#e83e8c',
+    order: 7,
+    testsCount: 4,
+    ridersCount: 28,
+    requirements: [
+      'Piaffe and passage',
+      'Canter pirouettes',
+      'Flying changes every 3rd stride',
+      'Extended movements',
+      'Half-pass in all gaits'
+    ],
+    notes: 'First FEI level'
+  },
+  {
+    id: 8,
+    name: 'Intermediate I',
+    code: 'INT1',
+    level: 'Intermediate I',
+    description: 'Developing FEI skills',
+    status: 'Active',
+    dateCreated: new Date('2020-01-15'),
+    isActive: true,
+    minScore: 0,
+    maxScore: 100,
+    passingScore: 60,
+    color: '#fd7e14',
+    order: 8,
+    testsCount: 3,
+    ridersCount: 22,
+    requirements: [
+      'Flying changes every 2nd stride',
+      'Confirmed piaffe and passage',
+      'Canter pirouettes',
+      'Extended movements',
+      'Zig-zag half-pass'
+    ],
+    notes: 'Intermediate FEI level'
+  },
+  {
+    id: 9,
+    name: 'Intermediate II',
+    code: 'INT2',
+    level: 'Intermediate II',
+    description: 'Advanced FEI preparation',
+    status: 'Active',
+    dateCreated: new Date('2020-01-15'),
+    isActive: true,
+    minScore: 0,
+    maxScore: 100,
+    passingScore: 60,
+    color: '#dc3545',
+    order: 9,
+    testsCount: 3,
+    ridersCount: 18,
+    requirements: [
+      'Flying changes every stride',
+      'Advanced piaffe and passage',
+      'Double pirouettes',
+      'Extended movements',
+      'Complex zig-zag patterns'
+    ],
+    notes: 'Preparation for Grand Prix'
+  },
+  {
+    id: 10,
+    name: 'Grand Prix',
+    code: 'GP',
+    level: 'Grand Prix',
+    description: 'Highest level of dressage',
+    status: 'Active',
+    dateCreated: new Date('2020-01-15'),
+    isActive: true,
+    minScore: 0,
+    maxScore: 100,
+    passingScore: 60,
+    color: '#ffc107',
+    order: 10,
+    testsCount: 2,
+    ridersCount: 12,
+    requirements: [
+      'Tempi changes (every stride)',
+      'Piaffe and passage transitions',
+      'Canter pirouettes',
+      'Extended movements',
+      'Maximum collection and extension'
+    ],
+    notes: 'Olympic and World Championship level'
+  },
+  {
+    id: 11,
+    name: 'Grand Prix Special',
+    code: 'GPS',
+    level: 'Grand Prix',
+    description: 'Shortened Grand Prix test with higher difficulty',
+    status: 'Active',
+    dateCreated: new Date('2020-01-15'),
+    isActive: true,
+    minScore: 0,
+    maxScore: 100,
+    passingScore: 60,
+    color: '#f39c12',
+    order: 11,
+    testsCount: 1,
+    ridersCount: 10,
+    requirements: [
+      'All Grand Prix movements',
+      'Higher coefficient movements',
+      'Maximum precision',
+      'Artistic presentation'
+    ],
+    notes: 'Championship deciding test'
+  },
+  {
+    id: 12,
+    name: 'Grand Prix Freestyle',
+    code: 'GPF',
+    level: 'Grand Prix',
+    description: 'Artistic interpretation with music',
+    status: 'Active',
+    dateCreated: new Date('2020-01-15'),
+    isActive: true,
+    minScore: 0,
+    maxScore: 100,
+    passingScore: 60,
+    color: '#e74c3c',
+    order: 12,
+    testsCount: 1,
+    ridersCount: 8,
+    requirements: [
+      'All Grand Prix movements',
+      'Choreography to music',
+      'Artistic interpretation',
+      'Technical and artistic marks'
+    ],
+    notes: 'Kür - Freestyle to music'
+  },
+  {
+    id: 13,
+    name: 'Young Horse 4 Year Old',
+    code: 'YH4',
+    level: 'Preliminary',
+    description: 'Assessment for 4-year-old horses',
+    status: 'Active',
+    dateCreated: new Date('2021-03-10'),
+    isActive: true,
+    minScore: 0,
+    maxScore: 100,
+    passingScore: 70,
+    color: '#3498db',
+    order: 13,
+    testsCount: 2,
+    ridersCount: 15,
+    requirements: [
+      'Walk, trot, canter',
+      'Basic balance',
+      'Submission',
+      'Potential assessment'
+    ],
+    notes: 'Young horse development program'
+  },
+  {
+    id: 14,
+    name: 'Young Horse 5 Year Old',
+    code: 'YH5',
+    level: 'Novice',
+    description: 'Assessment for 5-year-old horses',
+    status: 'Active',
+    dateCreated: new Date('2021-03-10'),
+    isActive: true,
+    minScore: 0,
+    maxScore: 100,
+    passingScore: 70,
+    color: '#2ecc71',
+    order: 14,
+    testsCount: 2,
+    ridersCount: 18,
+    requirements: [
+      'Developing collection',
+      'Lengthened strides',
+      'Simple changes',
+      'Potential assessment'
+    ],
+    notes: 'Young horse development program'
+  },
+  {
+    id: 15,
+    name: 'Para Equestrian Grade I',
+    code: 'PARA1',
+    level: 'Elementary',
+    description: 'Para-equestrian dressage grade I',
+    status: 'Inactive',
+    dateCreated: new Date('2022-06-20'),
+    isActive: false,
+    minScore: 0,
+    maxScore: 100,
+    passingScore: 60,
+    color: '#95a5a6',
+    order: 15,
+    testsCount: 3,
+    ridersCount: 5,
+    requirements: [
+      'Walk and trot work',
+      'Adapted movements',
+      'Classification specific'
+    ],
+    notes: 'Currently under review for 2026 season'
+  }
+];
+

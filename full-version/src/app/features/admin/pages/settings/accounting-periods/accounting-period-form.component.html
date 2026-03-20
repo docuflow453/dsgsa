@@ -1,0 +1,227 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card [cardTitle]="isEditMode ? 'Edit Accounting Period' : 'Add Accounting Period'">
+      @if (loading && isEditMode) {
+        <div class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      } @else {
+        <form [formGroup]="periodForm" (ngSubmit)="onSubmit()">
+          <!-- Basic Information -->
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-primary mb-3">Basic Information</h5>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="name" class="form-label">Period Name <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  formControlName="name"
+                  placeholder="e.g., January 2026"
+                  [class.is-invalid]="submitted && f['name'].errors"
+                />
+                @if (submitted && f['name'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['name'].errors['required']) {
+                      <div>Period name is required</div>
+                    }
+                    @if (f['name'].errors['minlength']) {
+                      <div>Period name must be at least 3 characters</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="code" class="form-label">Period Code <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="code"
+                  formControlName="code"
+                  placeholder="e.g., JAN2026"
+                  [class.is-invalid]="submitted && f['code'].errors"
+                />
+                @if (submitted && f['code'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['code'].errors['required']) {
+                      <div>Period code is required</div>
+                    }
+                    @if (f['code'].errors['minlength'] || f['code'].errors['maxlength']) {
+                      <div>Period code must be 3-10 characters</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="fiscalYear" class="form-label">Fiscal Year <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="fiscalYear"
+                  formControlName="fiscalYear"
+                  placeholder="e.g., 2026"
+                  maxlength="4"
+                  [class.is-invalid]="submitted && f['fiscalYear'].errors"
+                />
+                @if (submitted && f['fiscalYear'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['fiscalYear'].errors['required']) {
+                      <div>Fiscal year is required</div>
+                    }
+                    @if (f['fiscalYear'].errors['pattern']) {
+                      <div>Fiscal year must be a 4-digit year</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="quarter" class="form-label">Quarter (Optional)</label>
+                <select class="form-select" id="quarter" formControlName="quarter">
+                  <option value="">Select Quarter</option>
+                  @for (quarter of quarters; track quarter) {
+                    <option [value]="quarter">{{ quarter }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+                <select
+                  class="form-select"
+                  id="status"
+                  formControlName="status"
+                  [class.is-invalid]="submitted && f['status'].errors"
+                >
+                  @for (status of statuses; track status) {
+                    <option [value]="status">{{ status }}</option>
+                  }
+                </select>
+                @if (submitted && f['status'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Status is required</div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea
+                  class="form-control"
+                  id="description"
+                  formControlName="description"
+                  rows="3"
+                  placeholder="Enter period description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <!-- Period Dates -->
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-primary mb-3">Period Dates</h5>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="startDate" class="form-label">Start Date <span class="text-danger">*</span></label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="startDate"
+                  formControlName="startDate"
+                  [class.is-invalid]="submitted && f['startDate'].errors"
+                />
+                @if (submitted && f['startDate'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Start date is required</div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="endDate" class="form-label">End Date <span class="text-danger">*</span></label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="endDate"
+                  formControlName="endDate"
+                  [class.is-invalid]="submitted && f['endDate'].errors"
+                />
+                @if (submitted && f['endDate'].errors) {
+                  <div class="invalid-feedback">
+                    <div>End date is required</div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <!-- Additional Information -->
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-primary mb-3">Additional Information</h5>
+            </div>
+
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="notes" class="form-label">Notes</label>
+                <textarea
+                  class="form-control"
+                  id="notes"
+                  formControlName="notes"
+                  rows="4"
+                  placeholder="Enter any additional notes or comments"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <!-- Form Actions -->
+          <div class="row">
+            <div class="col-12">
+              <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-outline-secondary" (click)="onCancel()" [disabled]="loading">
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="loading">
+                  @if (loading) {
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  }
+                  {{ isEditMode ? 'Update Period' : 'Create Period' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      }
+    </app-card>
+  </div>
+</div>

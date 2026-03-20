@@ -1,0 +1,30 @@
+/**
+ * Accounting Period Form Component Styles
+ */
+
+// Section headers
+h5.text-primary {
+  font-weight: 600;
+}
+
+// Form labels
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+// Required field indicator
+.text-danger {
+  font-weight: 600;
+}
+
+// Form actions
+.gap-2 {
+  gap: 0.5rem !important;
+}
+
+// Date inputs
+input[type="date"] {
+  cursor: pointer;
+}
+

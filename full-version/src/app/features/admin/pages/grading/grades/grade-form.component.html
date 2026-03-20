@@ -1,0 +1,336 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card [cardTitle]="isEditMode ? 'Edit Grade' : 'Add New Grade'">
+      @if (loading) {
+        <div class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      } @else {
+        <form [formGroup]="gradeForm" (ngSubmit)="onSubmit()">
+          <!-- Basic Information -->
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-primary mb-3">Basic Information</h5>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="name" class="form-label">Grade Name <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  formControlName="name"
+                  placeholder="Enter grade name"
+                  [class.is-invalid]="submitted && f['name'].errors"
+                />
+                @if (submitted && f['name'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['name'].errors['required']) {
+                      <div>Grade name is required</div>
+                    }
+                    @if (f['name'].errors['minlength']) {
+                      <div>Grade name must be at least 2 characters</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="code" class="form-label">Grade Code <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="code"
+                  formControlName="code"
+                  placeholder="Enter grade code (e.g., PRELIM, NOV)"
+                  [class.is-invalid]="submitted && f['code'].errors"
+                />
+                @if (submitted && f['code'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['code'].errors['required']) {
+                      <div>Grade code is required</div>
+                    }
+                    @if (f['code'].errors['minlength']) {
+                      <div>Code must be at least 2 characters</div>
+                    }
+                    @if (f['code'].errors['maxlength']) {
+                      <div>Code must not exceed 10 characters</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="level" class="form-label">Level <span class="text-danger">*</span></label>
+                <select
+                  class="form-select"
+                  id="level"
+                  formControlName="level"
+                  [class.is-invalid]="submitted && f['level'].errors"
+                >
+                  <option value="">Select level</option>
+                  @for (level of levels; track level) {
+                    <option [value]="level">{{ level }}</option>
+                  }
+                </select>
+                @if (submitted && f['level'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Level is required</div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+                <select
+                  class="form-select"
+                  id="status"
+                  formControlName="status"
+                  [class.is-invalid]="submitted && f['status'].errors"
+                >
+                  @for (status of statuses; track status) {
+                    <option [value]="status">{{ status }}</option>
+                  }
+                </select>
+                @if (submitted && f['status'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Status is required</div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="order" class="form-label">Display Order <span class="text-danger">*</span></label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="order"
+                  formControlName="order"
+                  placeholder="Enter display order"
+                  [class.is-invalid]="submitted && f['order'].errors"
+                />
+                @if (submitted && f['order'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['order'].errors['required']) {
+                      <div>Display order is required</div>
+                    }
+                    @if (f['order'].errors['min']) {
+                      <div>Order must be at least 1</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="color" class="form-label">Badge Color</label>
+                <input
+                  type="color"
+                  class="form-control form-control-color"
+                  id="color"
+                  formControlName="color"
+                  title="Choose badge color"
+                />
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea
+                  class="form-control"
+                  id="description"
+                  formControlName="description"
+                  rows="3"
+                  placeholder="Enter grade description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <!-- Scoring Information -->
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-primary mb-3">Scoring Information</h5>
+            </div>
+
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="minScore" class="form-label">Minimum Score <span class="text-danger">*</span></label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="minScore"
+                  formControlName="minScore"
+                  placeholder="0"
+                  [class.is-invalid]="submitted && f['minScore'].errors"
+                />
+                @if (submitted && f['minScore'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['minScore'].errors['required']) {
+                      <div>Minimum score is required</div>
+                    }
+                    @if (f['minScore'].errors['min'] || f['minScore'].errors['max']) {
+                      <div>Score must be between 0 and 100</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="maxScore" class="form-label">Maximum Score <span class="text-danger">*</span></label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="maxScore"
+                  formControlName="maxScore"
+                  placeholder="100"
+                  [class.is-invalid]="submitted && f['maxScore'].errors"
+                />
+                @if (submitted && f['maxScore'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['maxScore'].errors['required']) {
+                      <div>Maximum score is required</div>
+                    }
+                    @if (f['maxScore'].errors['min'] || f['maxScore'].errors['max']) {
+                      <div>Score must be between 0 and 100</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="passingScore" class="form-label">Passing Score <span class="text-danger">*</span></label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="passingScore"
+                  formControlName="passingScore"
+                  placeholder="60"
+                  [class.is-invalid]="submitted && f['passingScore'].errors"
+                />
+                @if (submitted && f['passingScore'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['passingScore'].errors['required']) {
+                      <div>Passing score is required</div>
+                    }
+                    @if (f['passingScore'].errors['min'] || f['passingScore'].errors['max']) {
+                      <div>Score must be between 0 and 100</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <!-- Statistics -->
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-primary mb-3">Statistics</h5>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="testsCount" class="form-label">Number of Tests</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="testsCount"
+                  formControlName="testsCount"
+                  placeholder="0"
+                  [class.is-invalid]="submitted && f['testsCount'].errors"
+                />
+                @if (submitted && f['testsCount'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Tests count must be 0 or greater</div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="ridersCount" class="form-label">Number of Riders</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="ridersCount"
+                  formControlName="ridersCount"
+                  placeholder="0"
+                  [class.is-invalid]="submitted && f['ridersCount'].errors"
+                />
+                @if (submitted && f['ridersCount'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Riders count must be 0 or greater</div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <!-- Additional Information -->
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-primary mb-3">Additional Information</h5>
+            </div>
+
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="notes" class="form-label">Notes</label>
+                <textarea
+                  class="form-control"
+                  id="notes"
+                  formControlName="notes"
+                  rows="4"
+                  placeholder="Enter any additional notes or comments"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <!-- Form Actions -->
+          <div class="row">
+            <div class="col-12">
+              <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-outline-secondary" (click)="onCancel()" [disabled]="loading">
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="loading">
+                  @if (loading) {
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  }
+                  {{ isEditMode ? 'Update Grade' : 'Create Grade' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      }
+    </app-card>
+  </div>
+</div>
+

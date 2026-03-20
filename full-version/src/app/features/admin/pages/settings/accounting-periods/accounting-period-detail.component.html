@@ -1,0 +1,172 @@
+<div class="row">
+  <div class="col-sm-12">
+    @if (loading) {
+      <div class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    } @else if (period) {
+      <app-card cardTitle="Accounting Period Details">
+        <div card-header class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Accounting Period Details</h5>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-secondary" (click)="goBack()">
+              <i class="ti ti-arrow-left"></i> Back
+            </button>
+            <button type="button" class="btn btn-primary" (click)="editPeriod()">
+              <i class="ti ti-edit"></i> Edit
+            </button>
+            <button type="button" class="btn btn-danger" (click)="openDeleteModal(deleteModal)">
+              <i class="ti ti-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Basic Information -->
+          <div class="col-md-6">
+            <h5 class="text-primary mb-3">Basic Information</h5>
+            <div class="mb-3">
+              <label class="form-label text-muted">Period Name</label>
+              <p class="fw-semibold">{{ period.name }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted">Period Code</label>
+              <p><span class="badge bg-light-primary">{{ period.code }}</span></p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted">Fiscal Year</label>
+              <p><span class="badge bg-light-info">{{ period.fiscalYear }}</span></p>
+            </div>
+            @if (period.quarter) {
+              <div class="mb-3">
+                <label class="form-label text-muted">Quarter</label>
+                <p><span class="badge bg-light-warning">{{ period.quarter }}</span></p>
+              </div>
+            }
+            <div class="mb-3">
+              <label class="form-label text-muted">Status</label>
+              <p><span [ngClass]="getStatusClass(period.status)">{{ period.status }}</span></p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted">Date Created</label>
+              <p>{{ period.dateCreated | date: 'dd MMMM yyyy' }}</p>
+            </div>
+            @if (period.description) {
+              <div class="mb-3">
+                <label class="form-label text-muted">Description</label>
+                <p>{{ period.description }}</p>
+              </div>
+            }
+          </div>
+
+          <!-- Period Dates -->
+          <div class="col-md-6">
+            <h5 class="text-primary mb-3">Period Dates</h5>
+            <div class="mb-3">
+              <label class="form-label text-muted">Start Date</label>
+              <p class="fw-semibold">{{ period.startDate | date: 'dd MMMM yyyy' }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted">End Date</label>
+              <p class="fw-semibold">{{ period.endDate | date: 'dd MMMM yyyy' }}</p>
+            </div>
+            @if (period.isClosed) {
+              <div class="mb-3">
+                <label class="form-label text-muted">Closed By</label>
+                <p>{{ period.closedBy }}</p>
+              </div>
+              <div class="mb-3">
+                <label class="form-label text-muted">Closed Date</label>
+                <p>{{ period.closedDate | date: 'dd MMMM yyyy' }}</p>
+              </div>
+            }
+          </div>
+        </div>
+
+        <hr class="my-4" />
+
+        <div class="row">
+          <!-- Financial Summary -->
+          <div class="col-md-12">
+            <h5 class="text-primary mb-3">Financial Summary</h5>
+          </div>
+
+          <div class="col-md-3">
+            <div class="card bg-light-primary mb-3">
+              <div class="card-body">
+                <label class="form-label text-muted mb-2">Total Transactions</label>
+                <h3 class="mb-0">{{ period.transactionsCount || 0 }}</h3>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="card bg-light-success mb-3">
+              <div class="card-body">
+                <label class="form-label text-muted mb-2">Total Revenue</label>
+                <h3 class="mb-0 text-success">{{ period.totalRevenue | currency: 'ZAR':'symbol-narrow':'1.0-0' }}</h3>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="card bg-light-danger mb-3">
+              <div class="card-body">
+                <label class="form-label text-muted mb-2">Total Expenses</label>
+                <h3 class="mb-0 text-danger">{{ period.totalExpenses | currency: 'ZAR':'symbol-narrow':'1.0-0' }}</h3>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="card bg-light-info mb-3">
+              <div class="card-body">
+                <label class="form-label text-muted mb-2">Net Income</label>
+                <h3 class="mb-0" [class.text-success]="getNetIncome() >= 0" [class.text-danger]="getNetIncome() < 0">
+                  {{ getNetIncome() | currency: 'ZAR':'symbol-narrow':'1.0-0' }}
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        @if (period.notes) {
+          <hr class="my-4" />
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-primary mb-3">Notes</h5>
+              <p>{{ period.notes }}</p>
+            </div>
+          </div>
+        }
+      </app-card>
+    } @else {
+      <app-card>
+        <div class="text-center py-5">
+          <i class="ti ti-alert-circle text-danger" style="font-size: 3rem"></i>
+          <p class="mt-3">Accounting period not found</p>
+          <button type="button" class="btn btn-primary" (click)="goBack()">Go Back</button>
+        </div>
+      </app-card>
+    }
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Confirm Delete</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete the accounting period <strong>{{ period?.name }}</strong>?</p>
+    <p class="text-muted">This action cannot be undone.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deletePeriod()">Delete</button>
+  </div>
+</ng-template>
+

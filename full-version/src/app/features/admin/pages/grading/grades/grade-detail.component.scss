@@ -1,0 +1,37 @@
+/**
+ * Grade Detail Component Styles
+ */
+
+// Section headers
+h5.text-primary {
+  font-weight: 600;
+}
+
+// Form labels
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+// Statistics cards
+.card.bg-light-info,
+.card.bg-light-warning {
+  border: none;
+}
+
+// Requirements list
+.list-group-item {
+  border-left: none;
+  border-right: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.list-group-item:first-child {
+  border-top: none;
+}
+
+.list-group-item:last-child {
+  border-bottom: none;
+}
+

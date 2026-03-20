@@ -358,6 +358,109 @@ export const ADMIN_ROUTES: Routes = [
       roles: [Role.Admin]
     }
   },
+  // Accounting Periods routes
+  {
+    path: 'settings/accounting-periods',
+    loadComponent: () =>
+      import('./pages/settings/accounting-periods/accounting-periods-list.component').then((c) => c.AccountingPeriodsListComponent),
+    data: {
+      title: 'Accounting Periods',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'settings/accounting-periods/create',
+    loadComponent: () =>
+      import('./pages/settings/accounting-periods/accounting-period-form.component').then((c) => c.AccountingPeriodFormComponent),
+    data: {
+      title: 'Add Accounting Period',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'settings/accounting-periods/:id',
+    loadComponent: () =>
+      import('./pages/settings/accounting-periods/accounting-period-detail.component').then((c) => c.AccountingPeriodDetailComponent),
+    data: {
+      title: 'Accounting Period Details',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'settings/accounting-periods/:id/edit',
+    loadComponent: () =>
+      import('./pages/settings/accounting-periods/accounting-period-form.component').then((c) => c.AccountingPeriodFormComponent),
+    data: {
+      title: 'Edit Accounting Period',
+      roles: [Role.Admin]
+    }
+  },
+  // Grading and Tests - Grades routes
+  {
+    path: 'grading/grades',
+    loadComponent: () => import('./pages/grading/grades/grades-list.component').then((c) => c.GradesListComponent),
+    data: {
+      title: 'Grades',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'grading/grades/create',
+    loadComponent: () => import('./pages/grading/grades/grade-form.component').then((c) => c.GradeFormComponent),
+    data: {
+      title: 'Add Grade',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'grading/grades/:id',
+    loadComponent: () => import('./pages/grading/grades/grade-detail.component').then((c) => c.GradeDetailComponent),
+    data: {
+      title: 'Grade Details',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'grading/grades/:id/edit',
+    loadComponent: () => import('./pages/grading/grades/grade-form.component').then((c) => c.GradeFormComponent),
+    data: {
+      title: 'Edit Grade',
+      roles: [Role.Admin]
+    }
+  },
+  // Grading and Tests - Class Types routes
+  {
+    path: 'grading/class-types',
+    loadComponent: () => import('./pages/grading/class-types/class-types-list.component').then((c) => c.ClassTypesListComponent),
+    data: {
+      title: 'Class Types',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'grading/class-types/create',
+    loadComponent: () => import('./pages/grading/class-types/class-type-form.component').then((c) => c.ClassTypeFormComponent),
+    data: {
+      title: 'Add Class Type',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'grading/class-types/:id',
+    loadComponent: () => import('./pages/grading/class-types/class-type-detail.component').then((c) => c.ClassTypeDetailComponent),
+    data: {
+      title: 'Class Type Details',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'grading/class-types/:id/edit',
+    loadComponent: () => import('./pages/grading/class-types/class-type-form.component').then((c) => c.ClassTypeFormComponent),
+    data: {
+      title: 'Edit Class Type',
+      roles: [Role.Admin]
+    }
+  },
   // Membership Types routes (new location under settings)
   {
     path: 'settings/membership-types',

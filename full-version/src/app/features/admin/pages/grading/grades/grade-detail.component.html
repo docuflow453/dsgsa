@@ -1,0 +1,208 @@
+<div class="row">
+  <div class="col-sm-12">
+    @if (grade) {
+      <!-- Header Card -->
+      <app-card cardTitle="Grade Details">
+        <div class="d-flex justify-content-between align-items-start mb-4">
+          <div>
+            <h3 class="mb-2">{{ grade.name }}</h3>
+            <p class="text-muted mb-0">{{ grade.description }}</p>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary" (click)="goBack()">
+              <i class="ti ti-arrow-left"></i> Back
+            </button>
+            <button type="button" class="btn btn-primary" (click)="editGrade()">
+              <i class="ti ti-edit"></i> Edit
+            </button>
+            <button type="button" class="btn btn-outline-danger" (click)="openDeleteModal(deleteModal)">
+              <i class="ti ti-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+
+        <hr class="my-4" />
+
+        <!-- Basic Information -->
+        <div class="row">
+          <div class="col-12">
+            <h5 class="text-primary mb-3">Basic Information</h5>
+          </div>
+
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label text-muted">Grade Code</label>
+              <p class="mb-0">
+                <span class="badge bg-light-primary fs-6">{{ grade.code }}</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label text-muted">Level</label>
+              <p class="mb-0">
+                <span [ngStyle]="getLevelBadgeStyle(grade)">{{ grade.level }}</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label text-muted">Order</label>
+              <p class="mb-0 fw-semibold">{{ grade.order }}</p>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label text-muted">Status</label>
+              <p class="mb-0">
+                <span [ngClass]="getStatusClass(grade.status)">{{ grade.status }}</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label text-muted">Date Created</label>
+              <p class="mb-0">{{ grade.dateCreated | date: 'dd MMM yyyy' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-4" />
+
+        <!-- Scoring Information -->
+        <div class="row">
+          <div class="col-12">
+            <h5 class="text-primary mb-3">Scoring Information</h5>
+          </div>
+
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label class="form-label text-muted">Minimum Score</label>
+              <p class="mb-0 fw-semibold">{{ grade.minScore }}%</p>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label class="form-label text-muted">Maximum Score</label>
+              <p class="mb-0 fw-semibold">{{ grade.maxScore }}%</p>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label class="form-label text-muted">Passing Score</label>
+              <p class="mb-0 fw-semibold text-success">{{ grade.passingScore }}%</p>
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-4" />
+
+        <!-- Statistics -->
+        <div class="row">
+          <div class="col-12">
+            <h5 class="text-primary mb-3">Statistics</h5>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card bg-light-info mb-3">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0">
+                    <i class="ti ti-file-text text-info" style="font-size: 2.5rem"></i>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <h6 class="mb-0 text-muted">Total Tests</h6>
+                    <h3 class="mb-0 text-info">{{ grade.testsCount }}</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card bg-light-warning mb-3">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0">
+                    <i class="ti ti-users text-warning" style="font-size: 2.5rem"></i>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <h6 class="mb-0 text-muted">Total Riders</h6>
+                    <h3 class="mb-0 text-warning">{{ grade.ridersCount }}</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-4" />
+
+        <!-- Requirements -->
+        @if (grade.requirements && grade.requirements.length > 0) {
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-primary mb-3">Requirements</h5>
+              <ul class="list-group list-group-flush">
+                @for (requirement of grade.requirements; track requirement) {
+                  <li class="list-group-item">
+                    <i class="ti ti-check text-success me-2"></i>
+                    {{ requirement }}
+                  </li>
+                }
+              </ul>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+        }
+
+        <!-- Notes -->
+        @if (grade.notes) {
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-primary mb-3">Notes</h5>
+              <p class="text-muted">{{ grade.notes }}</p>
+            </div>
+          </div>
+        }
+      </app-card>
+    } @else {
+      <app-card cardTitle="Grade Not Found">
+        <div class="text-center py-5">
+          <i class="ti ti-alert-circle text-danger" style="font-size: 4rem"></i>
+          <h4 class="mt-3">Grade Not Found</h4>
+          <p class="text-muted">The grade you are looking for does not exist.</p>
+          <button type="button" class="btn btn-primary mt-3" (click)="goBack()">
+            <i class="ti ti-arrow-left"></i> Back to List
+          </button>
+        </div>
+      </app-card>
+    }
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Confirm Delete</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    @if (grade) {
+      <p>Are you sure you want to delete the grade <strong>{{ grade.name }}</strong>?</p>
+      <p class="text-muted mb-0">This action cannot be undone.</p>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteGrade()">Delete</button>
+  </div>
+</ng-template>
+

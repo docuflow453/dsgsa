@@ -1,0 +1,44 @@
+/**
+ * Grades List Component Styles
+ */
+
+// Table hover effect
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+  cursor: pointer;
+}
+
+// Action buttons
+.btn-group-sm .btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+// Badge styles
+.badge {
+  font-weight: 500;
+  padding: 0.35rem 0.65rem;
+}
+
+// Empty state
+.text-muted i {
+  opacity: 0.5;
+}
+
+// Search input
+.dataTable-search input {
+  border-radius: 0.25rem;
+}
+
+// Pagination
+.dataTable-bottom {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #dee2e6;
+}
+
+// Loading spinner
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+

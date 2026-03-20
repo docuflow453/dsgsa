@@ -1,0 +1,259 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardClass="table-card" [padding]="0">
+      <div class="card-header" card-header>
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <h5 class="mb-0">Accounting Periods List</h5>
+          <button type="button" class="btn btn-primary" (click)="createPeriod()">
+            <i class="ti ti-plus"></i> Add Accounting Period
+          </button>
+        </div>
+      </div>
+
+      <form class="dt-responsive">
+        <!-- Top Controls: Page Size, Filters, and Search -->
+        <div class="dataTable-top">
+          <div class="row g-3 align-items-center">
+            <!-- Page Size Selector -->
+            <div class="col-auto">
+              <select
+                class="form-select"
+                title="select item per page"
+                style="width: auto"
+                name="pageSize"
+                [(ngModel)]="service.pageSize"
+              >
+                <option [ngValue]="5">5 items per page</option>
+                <option [ngValue]="10">10 items per page</option>
+                <option [ngValue]="15">15 items per page</option>
+                <option [ngValue]="25">25 items per page</option>
+                <option [ngValue]="50">50 items per page</option>
+              </select>
+            </div>
+
+            <!-- Status Filter -->
+            <div class="col-auto">
+              <select class="form-select" name="statusFilter" [(ngModel)]="service.statusFilter" style="width: auto">
+                <option value="">All Statuses</option>
+                @for (status of statuses; track status) {
+                  <option [value]="status">{{ status }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Fiscal Year Filter -->
+            <div class="col-auto">
+              <select class="form-select" name="fiscalYearFilter" [(ngModel)]="service.fiscalYearFilter" style="width: auto">
+                <option value="">All Fiscal Years</option>
+                @for (year of fiscalYears; track year) {
+                  <option [value]="year">{{ year }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Reset Filters Button -->
+            <div class="col-auto">
+              <button type="button" class="btn btn-outline-secondary" (click)="resetFilters()">
+                <i class="ti ti-refresh"></i> Reset
+              </button>
+            </div>
+
+            <!-- Search Box -->
+            <div class="col-auto ms-auto">
+              <div class="dataTable-search d-flex align-items-center">
+                <input
+                  id="table-complete-search"
+                  type="text"
+                  class="form-control"
+                  name="searchTerm"
+                  [(ngModel)]="service.searchTerm"
+                  placeholder="Search by name, code, year..."
+                  style="min-width: 300px"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive dt-responsive">
+          @if (loading$ | async) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          } @else {
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col" sortable="name" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    PERIOD NAME
+                  </th>
+                  <th scope="col" sortable="code" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    CODE
+                  </th>
+                  <th scope="col" sortable="startDate" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    START DATE
+                  </th>
+                  <th scope="col" sortable="endDate" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    END DATE
+                  </th>
+                  <th scope="col" sortable="fiscalYear" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    FISCAL YEAR
+                  </th>
+                  <th scope="col" sortable="transactionsCount" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    TRANSACTIONS
+                  </th>
+                  <th scope="col" sortable="totalRevenue" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    REVENUE
+                  </th>
+                  <th scope="col" sortable="status" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    STATUS
+                  </th>
+                  <th scope="col" class="text-center">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (period of periods$ | async; track period.id) {
+                  <tr>
+                    <!-- Period Name -->
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                          <h6 class="mb-0">
+                            <ngb-highlight [result]="period.name" [term]="service.searchTerm"></ngb-highlight>
+                          </h6>
+                          @if (period.quarter) {
+                            <p class="text-muted f-12 mb-0">
+                              <ngb-highlight [result]="period.quarter" [term]="service.searchTerm"></ngb-highlight>
+                            </p>
+                          }
+                        </div>
+                      </div>
+                    </td>
+
+                    <!-- Code -->
+                    <td>
+                      <span class="badge bg-light-primary">
+                        <ngb-highlight [result]="period.code" [term]="service.searchTerm"></ngb-highlight>
+                      </span>
+                    </td>
+
+                    <!-- Start Date -->
+                    <td>{{ period.startDate | date: 'dd MMM yyyy' }}</td>
+
+                    <!-- End Date -->
+                    <td>{{ period.endDate | date: 'dd MMM yyyy' }}</td>
+
+                    <!-- Fiscal Year -->
+                    <td>
+                      <span class="badge bg-light-info">
+                        <ngb-highlight [result]="period.fiscalYear" [term]="service.searchTerm"></ngb-highlight>
+                      </span>
+                    </td>
+
+                    <!-- Transactions Count -->
+                    <td class="text-center">
+                      <span class="badge bg-light-warning">{{ period.transactionsCount || 0 }}</span>
+                    </td>
+
+                    <!-- Revenue -->
+                    <td>
+                      <span class="text-success fw-semibold">{{ formatCurrency(period.totalRevenue) }}</span>
+                    </td>
+
+                    <!-- Status -->
+                    <td>
+                      <span [ngClass]="getStatusClass(period.status)">{{ period.status }}</span>
+                    </td>
+
+                    <!-- Actions -->
+                    <td class="text-center">
+                      <div class="btn-group btn-group-sm" role="group">
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary"
+                          (click)="viewPeriod(period)"
+                          title="View Details"
+                        >
+                          <i class="ti ti-eye"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-outline-primary"
+                          (click)="editPeriod(period)"
+                          title="Edit Period"
+                        >
+                          <i class="ti ti-edit"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-outline-danger"
+                          (click)="openDeleteModal(deleteModal, period)"
+                          title="Delete Period"
+                        >
+                          <i class="ti ti-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="9" class="text-center py-5">
+                      <div class="text-muted">
+                        <i class="ti ti-calendar-off" style="font-size: 3rem"></i>
+                        <p class="mt-2">No accounting periods found</p>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+
+        <!-- Pagination -->
+        <div class="dataTable-bottom">
+          <div class="row align-items-center">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTable-info">
+                Showing {{ (service.page - 1) * service.pageSize + 1 }} to
+                {{ (service.page - 1) * service.pageSize + (periods$ | async)!.length }} of {{ total$ | async }} entries
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-7">
+              <div class="dataTable-pagination">
+                <ngb-pagination
+                  [collectionSize]="(total$ | async)!"
+                  [(page)]="service.page"
+                  [pageSize]="service.pageSize"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [boundaryLinks]="true"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </app-card>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Confirm Delete</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete the accounting period <strong>{{ selectedPeriod?.name }}</strong>?</p>
+    <p class="text-muted">This action cannot be undone.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deletePeriod()">Delete</button>
+  </div>
+</ng-template>
+

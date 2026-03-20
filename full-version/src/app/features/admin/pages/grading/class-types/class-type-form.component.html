@@ -1,0 +1,420 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card [cardTitle]="isEditMode ? 'Edit Class Type' : 'Add New Class Type'">
+      @if (loading) {
+        <div class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      } @else {
+        <form [formGroup]="classTypeForm" (ngSubmit)="onSubmit()">
+          <!-- Basic Information -->
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-primary mb-3">Basic Information</h5>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="name" class="form-label">Class Name <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  formControlName="name"
+                  placeholder="Enter class name"
+                  [class.is-invalid]="submitted && f['name'].errors"
+                />
+                @if (submitted && f['name'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['name'].errors['required']) {
+                      <div>Class name is required</div>
+                    }
+                    @if (f['name'].errors['minlength']) {
+                      <div>Class name must be at least 2 characters</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="code" class="form-label">Class Code <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="code"
+                  formControlName="code"
+                  placeholder="Enter class code (e.g., PRELIM-DR)"
+                  [class.is-invalid]="submitted && f['code'].errors"
+                />
+                @if (submitted && f['code'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['code'].errors['required']) {
+                      <div>Class code is required</div>
+                    }
+                    @if (f['code'].errors['minlength']) {
+                      <div>Code must be at least 2 characters</div>
+                    }
+                    @if (f['code'].errors['maxlength']) {
+                      <div>Code must not exceed 15 characters</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="category" class="form-label">Category <span class="text-danger">*</span></label>
+                <select
+                  class="form-select"
+                  id="category"
+                  formControlName="category"
+                  [class.is-invalid]="submitted && f['category'].errors"
+                >
+                  <option value="">Select category</option>
+                  @for (category of categories; track category) {
+                    <option [value]="category">{{ category }}</option>
+                  }
+                </select>
+                @if (submitted && f['category'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Category is required</div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+                <select
+                  class="form-select"
+                  id="status"
+                  formControlName="status"
+                  [class.is-invalid]="submitted && f['status'].errors"
+                >
+                  @for (status of statuses; track status) {
+                    <option [value]="status">{{ status }}</option>
+                  }
+                </select>
+                @if (submitted && f['status'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Status is required</div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="order" class="form-label">Display Order <span class="text-danger">*</span></label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="order"
+                  formControlName="order"
+                  placeholder="Enter display order"
+                  [class.is-invalid]="submitted && f['order'].errors"
+                />
+                @if (submitted && f['order'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['order'].errors['required']) {
+                      <div>Display order is required</div>
+                    }
+                    @if (f['order'].errors['min']) {
+                      <div>Order must be at least 1</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="color" class="form-label">Badge Color</label>
+                <input
+                  type="color"
+                  class="form-control form-control-color"
+                  id="color"
+                  formControlName="color"
+                  title="Choose badge color"
+                />
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea
+                  class="form-control"
+                  id="description"
+                  formControlName="description"
+                  rows="3"
+                  placeholder="Enter class description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <!-- Class Details -->
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-primary mb-3">Class Details</h5>
+            </div>
+
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="duration" class="form-label">Duration (minutes) <span class="text-danger">*</span></label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="duration"
+                  formControlName="duration"
+                  placeholder="5"
+                  [class.is-invalid]="submitted && f['duration'].errors"
+                />
+                @if (submitted && f['duration'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['duration'].errors['required']) {
+                      <div>Duration is required</div>
+                    }
+                    @if (f['duration'].errors['min']) {
+                      <div>Duration must be at least 1 minute</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="judgesRequired" class="form-label">Judges Required <span class="text-danger">*</span></label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="judgesRequired"
+                  formControlName="judgesRequired"
+                  placeholder="1"
+                  [class.is-invalid]="submitted && f['judgesRequired'].errors"
+                />
+                @if (submitted && f['judgesRequired'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['judgesRequired'].errors['required']) {
+                      <div>Judges required is required</div>
+                    }
+                    @if (f['judgesRequired'].errors['min']) {
+                      <div>At least 1 judge required</div>
+                    }
+                    @if (f['judgesRequired'].errors['max']) {
+                      <div>Maximum 10 judges allowed</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="entryFee" class="form-label">Entry Fee (ZAR) <span class="text-danger">*</span></label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="entryFee"
+                  formControlName="entryFee"
+                  placeholder="150"
+                  [class.is-invalid]="submitted && f['entryFee'].errors"
+                />
+                @if (submitted && f['entryFee'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['entryFee'].errors['required']) {
+                      <div>Entry fee is required</div>
+                    }
+                    @if (f['entryFee'].errors['min']) {
+                      <div>Entry fee must be 0 or greater</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="maxEntries" class="form-label">Maximum Entries <span class="text-danger">*</span></label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="maxEntries"
+                  formControlName="maxEntries"
+                  placeholder="30"
+                  [class.is-invalid]="submitted && f['maxEntries'].errors"
+                />
+                @if (submitted && f['maxEntries'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['maxEntries'].errors['required']) {
+                      <div>Maximum entries is required</div>
+                    }
+                    @if (f['maxEntries'].errors['min']) {
+                      <div>At least 1 entry must be allowed</div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="minAge" class="form-label">Minimum Age</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="minAge"
+                  formControlName="minAge"
+                  placeholder="0"
+                  [class.is-invalid]="submitted && f['minAge'].errors"
+                />
+                @if (submitted && f['minAge'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Age must be 0 or greater</div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="maxAge" class="form-label">Maximum Age</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="maxAge"
+                  formControlName="maxAge"
+                  placeholder="100"
+                  [class.is-invalid]="submitted && f['maxAge'].errors"
+                />
+                @if (submitted && f['maxAge'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Age must be 0 or greater</div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="minHeight" class="form-label">Minimum Height (cm)</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="minHeight"
+                  formControlName="minHeight"
+                  placeholder="Optional"
+                  [class.is-invalid]="submitted && f['minHeight'].errors"
+                />
+                @if (submitted && f['minHeight'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Height must be 0 or greater</div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="maxHeight" class="form-label">Maximum Height (cm)</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="maxHeight"
+                  formControlName="maxHeight"
+                  placeholder="Optional"
+                  [class.is-invalid]="submitted && f['maxHeight'].errors"
+                />
+                @if (submitted && f['maxHeight'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Height must be 0 or greater</div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <!-- Statistics -->
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-primary mb-3">Statistics</h5>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="entriesCount" class="form-label">Current Entries Count</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="entriesCount"
+                  formControlName="entriesCount"
+                  placeholder="0"
+                  [class.is-invalid]="submitted && f['entriesCount'].errors"
+                />
+                @if (submitted && f['entriesCount'].errors) {
+                  <div class="invalid-feedback">
+                    <div>Entries count must be 0 or greater</div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <!-- Additional Information -->
+          <div class="row">
+            <div class="col-12">
+              <h5 class="text-primary mb-3">Additional Information</h5>
+            </div>
+
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="notes" class="form-label">Notes</label>
+                <textarea
+                  class="form-control"
+                  id="notes"
+                  formControlName="notes"
+                  rows="4"
+                  placeholder="Enter any additional notes or comments"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <!-- Form Actions -->
+          <div class="row">
+            <div class="col-12">
+              <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-outline-secondary" (click)="onCancel()" [disabled]="loading">
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="loading">
+                  @if (loading) {
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  }
+                  {{ isEditMode ? 'Update Class Type' : 'Create Class Type' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      }
+    </app-card>
+  </div>
+</div>
+
