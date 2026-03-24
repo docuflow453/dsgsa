@@ -3,8 +3,13 @@
   <!-- Page Header -->
   <div class="page-header mb-4 d-flex justify-content-between align-items-center">
     <div>
-      <h2>{{ isEditMode ? 'Edit Horse' : 'Add New Horse' }}</h2>
-      <p class="text-muted">{{ isEditMode ? 'Update horse information' : 'Register a new horse' }}</p>
+      <div class="d-flex align-items-center gap-2 mb-2">
+        <button *ngIf="isEditMode" type="button" class="btn btn-sm btn-outline-secondary" [routerLink]="['/my/horses', horseId]">
+          <i class="ti ti-arrow-left me-1"></i>Back
+        </button>
+        <h2 class="mb-0">{{ isEditMode ? 'Edit Horse' : 'Add New Horse' }}</h2>
+      </div>
+      <p class="text-muted mb-0">{{ isEditMode ? 'Update horse information' : 'Register a new horse' }}</p>
     </div>
   </div>
 
@@ -30,16 +35,16 @@
   <!-- Horse Form -->
   <div *ngIf="!loading" class="card">
     <div class="card-body">
-      <!-- Tab Navigation - Only show multiple tabs in Edit Mode -->
+      <!-- Tab Navigation - Show all 5 tabs in Edit Mode, only Tab 1 in Add Mode -->
       <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
           <a class="nav-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)" role="button">
-            <i class="ti ti-info-circle me-2"></i>Basic Information
+            <i class="ti ti-info-circle me-2"></i>Profile Information
           </a>
         </li>
         <li class="nav-item" *ngIf="isEditMode">
           <a class="nav-link" [class.active]="activeTab === 2" (click)="setActiveTab(2)" role="button">
-            <i class="ti ti-users me-2"></i>Pedigree & Ownership
+            <i class="ti ti-building me-2"></i>Affiliations
           </a>
         </li>
         <li class="nav-item" *ngIf="isEditMode">
@@ -52,12 +57,18 @@
             <i class="ti ti-file-text me-2"></i>Documents
           </a>
         </li>
+        <li class="nav-item" *ngIf="isEditMode">
+          <a class="nav-link" [class.active]="activeTab === 5" (click)="setActiveTab(5)" role="button">
+            <i class="ti ti-user-check me-2"></i>Ownership
+          </a>
+        </li>
       </ul>
 
     <div class="card-body">
       <form [formGroup]="horseForm" (ngSubmit)="onSubmit()">
-        <!-- Tab 1: Basic Information -->
+        <!-- Tab 1: Profile Information -->
         <div *ngIf="activeTab === 1" class="tab-content">
+          <h5 class="mb-4">Basic Details</h5>
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
@@ -96,6 +107,10 @@
                 Date of birth is required
               </div>
             </div>
+          </div>
+
+          <h5 class="mb-3 mt-4">Physical Attributes</h5>
+          <div class="row">
             <div class="col-md-6 mb-3">
               <label for="color" class="form-label">Color</label>
               <input type="text" class="form-control" id="color" formControlName="color" placeholder="e.g., Black, Bay, Chestnut">
@@ -104,6 +119,14 @@
               <label for="height" class="form-label">Height (hands)</label>
               <input type="number" step="0.1" class="form-control" id="height" formControlName="height" placeholder="e.g., 16.2">
             </div>
+            <div class="col-md-12 mb-3">
+              <label for="markings" class="form-label">Markings</label>
+              <textarea class="form-control" id="markings" formControlName="markings" rows="2" placeholder="Describe any distinctive markings"></textarea>
+            </div>
+          </div>
+
+          <h5 class="mb-3 mt-4">Identification</h5>
+          <div class="row">
             <div class="col-md-6 mb-3">
               <label for="microchip" class="form-label">Microchip Number <span class="text-danger">*</span></label>
               <input type="text" class="form-control" id="microchip" formControlName="microchip" placeholder="15-digit number">
@@ -118,6 +141,14 @@
                 Passport number is required
               </div>
             </div>
+            <div class="col-md-6 mb-3">
+              <label for="feiNumber" class="form-label">FEI Number</label>
+              <input type="text" class="form-control" id="feiNumber" formControlName="feiNumber" placeholder="FEI registration number">
+            </div>
+          </div>
+
+          <h5 class="mb-3 mt-4">Status & Grade</h5>
+          <div class="row">
             <div class="col-md-6 mb-3">
               <label for="grade" class="form-label">Grade <span class="text-danger">*</span></label>
               <select class="form-select" id="grade" formControlName="grade">
@@ -137,35 +168,95 @@
           </div>
         </div>
 
-        <!-- Tab 2: Pedigree & Ownership (Only in Edit Mode) -->
+        <!-- Tab 2: Affiliations (Only in Edit Mode) -->
         <div *ngIf="activeTab === 2 && isEditMode" class="tab-content">
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="sire" class="form-label">Sire</label>
-              <input type="text" class="form-control" id="sire" formControlName="sire" placeholder="Father's name">
-            </div>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Organization Affiliations</h5>
+            <button type="button" class="btn btn-primary btn-sm" (click)="toggleAddAffiliation()">
+              <i class="ti ti-plus me-2"></i>Add Affiliation
+            </button>
+          </div>
 
-
-            <div class="col-md-6 mb-3">
-              <label for="dam" class="form-label">Dam</label>
-              <input type="text" class="form-control" id="dam" formControlName="dam" placeholder="Mother's name">
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="breeder" class="form-label">Breeder</label>
-              <input type="text" class="form-control" id="breeder" formControlName="breeder" placeholder="Breeder name">
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="owner" class="form-label">Owner</label>
-              <input type="text" class="form-control" id="owner" formControlName="owner" placeholder="Owner name">
+          <!-- Add Affiliation Form -->
+          <div *ngIf="showAddAffiliation" class="card mb-3 bg-light">
+            <div class="card-body">
+              <h6 class="mb-3">New Affiliation</h6>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Organization Name <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" [(ngModel)]="newAffiliation.organizationName" [ngModelOptions]="{standalone: true}" placeholder="e.g., Dressage South Africa">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Registration Number <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" [(ngModel)]="newAffiliation.registrationNumber" [ngModelOptions]="{standalone: true}" placeholder="Registration number">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Registration Date <span class="text-danger">*</span></label>
+                  <input type="date" class="form-control" [(ngModel)]="newAffiliation.registrationDate" [ngModelOptions]="{standalone: true}">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Expiry Date</label>
+                  <input type="date" class="form-control" [(ngModel)]="newAffiliation.expiryDate" [ngModelOptions]="{standalone: true}">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Status</label>
+                  <select class="form-select" [(ngModel)]="newAffiliation.status" [ngModelOptions]="{standalone: true}">
+                    <option value="Active">Active</option>
+                    <option value="Expired">Expired</option>
+                    <option value="Pending">Pending</option>
+                  </select>
+                </div>
+              </div>
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-success btn-sm" (click)="addAffiliation()">
+                  <i class="ti ti-check me-2"></i>Save Affiliation
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" (click)="toggleAddAffiliation()">
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
 
-          <h5 class="mb-3 mt-4">Additional Notes</h5>
-          <div class="row">
-            <div class="col-12 mb-3">
-              <label for="notes" class="form-label">Notes</label>
-              <textarea class="form-control" id="notes" formControlName="notes" rows="4" placeholder="Any additional information about the horse"></textarea>
-            </div>
+          <!-- Affiliations Table -->
+          <div *ngIf="affiliations.length > 0" class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Organization</th>
+                  <th>Registration Number</th>
+                  <th>Registration Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let affiliation of affiliations">
+                  <td>{{ affiliation.organizationName }}</td>
+                  <td>{{ affiliation.registrationNumber }}</td>
+                  <td>{{ formatDate(affiliation.registrationDate) }}</td>
+                  <td>
+                    <span class="badge" [class.bg-success]="affiliation.status === 'Active'"
+                          [class.bg-warning]="affiliation.status === 'Pending'"
+                          [class.bg-danger]="affiliation.status === 'Expired'">
+                      {{ affiliation.status }}
+                    </span>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-sm btn-outline-danger" (click)="deleteAffiliation(affiliation.id)">
+                      <i class="ti ti-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="affiliations.length === 0 && !showAddAffiliation" class="text-center py-5 text-muted">
+            <i class="ti ti-building" style="font-size: 3rem; opacity: 0.3;"></i>
+            <p class="mt-2">No affiliations yet</p>
+            <p class="small">Click "Add Affiliation" to register this horse with an organization</p>
           </div>
         </div>
 
@@ -290,8 +381,8 @@
                   <input type="text" class="form-control" [(ngModel)]="newDocument.fileName" [ngModelOptions]="{standalone: true}" placeholder="e.g., passport.pdf">
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">File Size (bytes)</label>
-                  <input type="number" class="form-control" [(ngModel)]="newDocument.fileSize" [ngModelOptions]="{standalone: true}" placeholder="File size">
+                  <label class="form-label">Notes</label>
+                  <input type="text" class="form-control" [(ngModel)]="newDocument.notes" [ngModelOptions]="{standalone: true}" placeholder="Additional notes">
                 </div>
               </div>
               <div class="d-flex gap-2">
@@ -314,7 +405,7 @@
                   <th>Title</th>
                   <th>File Name</th>
                   <th>Upload Date</th>
-                  <th>File Size</th>
+                  <th>Notes</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -324,7 +415,7 @@
                   <td>{{ document.title }}</td>
                   <td>{{ document.fileName }}</td>
                   <td>{{ formatDate(document.uploadDate) }}</td>
-                  <td>{{ formatFileSize(document.fileSize) }}</td>
+                  <td>{{ document.notes || 'N/A' }}</td>
                   <td>
                     <button type="button" class="btn btn-sm btn-outline-primary me-1" (click)="downloadDocument(document)">
                       <i class="ti ti-download"></i>
@@ -342,6 +433,145 @@
           <div *ngIf="documents.length === 0 && !showAddDocument" class="text-center py-5 text-muted">
             <i class="ti ti-file-text" style="font-size: 3rem; opacity: 0.3;"></i>
             <p class="mt-2">No documents uploaded yet</p>
+          </div>
+        </div>
+
+        <!-- Tab 5: Ownership (Only in Edit Mode) -->
+        <div *ngIf="activeTab === 5 && isEditMode" class="tab-content">
+          <!-- Current Owner Section -->
+          <div class="mb-4">
+            <h5 class="mb-3">Current Owner</h5>
+            <div *ngIf="getCurrentOwner() as currentOwner" class="card bg-light">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <p class="mb-2"><strong>Name:</strong> {{ currentOwner.ownerName }}</p>
+                    <p class="mb-2" *ngIf="currentOwner.ownerEmail"><strong>Email:</strong> {{ currentOwner.ownerEmail }}</p>
+                    <p class="mb-0" *ngIf="currentOwner.ownerPhone"><strong>Phone:</strong> {{ currentOwner.ownerPhone }}</p>
+                  </div>
+                  <div class="col-md-6">
+                    <p class="mb-2"><strong>Ownership Since:</strong> {{ formatDate(currentOwner.ownershipStartDate) }}</p>
+                    <p class="mb-0" *ngIf="currentOwner.notes"><strong>Notes:</strong> {{ currentOwner.notes }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!getCurrentOwner()" class="alert alert-info">
+              <i class="ti ti-info-circle me-2"></i>No current owner information available
+            </div>
+          </div>
+
+          <!-- Breeder Information -->
+          <div class="mb-4">
+            <h5 class="mb-3">Breeder Information</h5>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="breeder" class="form-label">Breeder</label>
+                <input type="text" class="form-control" id="breeder" formControlName="breeder" placeholder="Breeder name">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="sire" class="form-label">Sire (Father)</label>
+                <input type="text" class="form-control" id="sire" formControlName="sire" placeholder="Father's name">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="dam" class="form-label">Dam (Mother)</label>
+                <input type="text" class="form-control" id="dam" formControlName="dam" placeholder="Mother's name">
+              </div>
+            </div>
+          </div>
+
+          <!-- Transfer Ownership Section -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mb-0">Transfer Ownership</h5>
+              <button type="button" class="btn btn-warning btn-sm" (click)="toggleTransferOwnership()">
+                <i class="ti ti-transfer me-2"></i>Transfer Ownership
+              </button>
+            </div>
+
+            <!-- Transfer Ownership Form -->
+            <div *ngIf="showTransferOwnership" class="card mb-3 bg-light border-warning">
+              <div class="card-body">
+                <h6 class="mb-3 text-warning"><i class="ti ti-alert-triangle me-2"></i>Transfer Horse Ownership</h6>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">New Owner Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" [(ngModel)]="newOwnership.ownerName" [ngModelOptions]="{standalone: true}" placeholder="Full name">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" [(ngModel)]="newOwnership.ownerEmail" [ngModelOptions]="{standalone: true}" placeholder="email@example.com">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Phone</label>
+                    <input type="tel" class="form-control" [(ngModel)]="newOwnership.ownerPhone" [ngModelOptions]="{standalone: true}" placeholder="Phone number">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Transfer Reason</label>
+                    <input type="text" class="form-control" [(ngModel)]="newOwnership.transferReason" [ngModelOptions]="{standalone: true}" placeholder="e.g., Sale, Gift">
+                  </div>
+                  <div class="col-md-12 mb-3">
+                    <label class="form-label">Notes</label>
+                    <textarea class="form-control" [(ngModel)]="newOwnership.notes" [ngModelOptions]="{standalone: true}" rows="2" placeholder="Additional notes about the transfer"></textarea>
+                  </div>
+                </div>
+                <div class="d-flex gap-2">
+                  <button type="button" class="btn btn-warning btn-sm" (click)="transferOwnership()">
+                    <i class="ti ti-check me-2"></i>Complete Transfer
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary btn-sm" (click)="toggleTransferOwnership()">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ownership History -->
+          <div class="mb-4">
+            <h5 class="mb-3">Ownership History</h5>
+            <div *ngIf="getPreviousOwners().length > 0" class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Owner Name</th>
+                    <th>Contact</th>
+                    <th>Ownership Period</th>
+                    <th>Transfer Reason</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let ownership of getPreviousOwners()">
+                    <td>{{ ownership.ownerName }}</td>
+                    <td>
+                      <div *ngIf="ownership.ownerEmail" class="small">{{ ownership.ownerEmail }}</div>
+                      <div *ngIf="ownership.ownerPhone" class="small text-muted">{{ ownership.ownerPhone }}</div>
+                    </td>
+                    <td>
+                      {{ formatDate(ownership.ownershipStartDate) }} - {{ formatDate(ownership.ownershipEndDate) }}
+                    </td>
+                    <td>{{ ownership.transferReason || 'N/A' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Empty State -->
+            <div *ngIf="getPreviousOwners().length === 0" class="text-center py-4 text-muted">
+              <i class="ti ti-history" style="font-size: 2.5rem; opacity: 0.3;"></i>
+              <p class="mt-2 mb-0">No previous ownership records</p>
+            </div>
+          </div>
+
+          <!-- Additional Notes -->
+          <div class="mb-4">
+            <h5 class="mb-3">Additional Notes</h5>
+            <div class="row">
+              <div class="col-12 mb-3">
+                <label for="notes" class="form-label">Notes</label>
+                <textarea class="form-control" id="notes" formControlName="notes" rows="4" placeholder="Any additional information about the horse"></textarea>
+              </div>
+            </div>
           </div>
         </div>
 

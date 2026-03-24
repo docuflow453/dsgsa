@@ -12,13 +12,6 @@ import { Role } from 'src/app/theme/shared/components/_helpers/role';
 import { IconService } from '@ant-design/icons-angular';
 import { EyeInvisibleOutline, EyeOutline } from '@ant-design/icons-angular/icons';
 
-interface Roles {
-  name: string;
-  email: string;
-  password: string;
-  role: string;
-}
-
 interface LoginData {
   email: string;
   password: string;
@@ -52,23 +45,6 @@ export class AuthLoginComponent implements OnInit {
   // Create the signal form based on loginData signal
   loginForm = form(this.loginData);
 
-  // Roles and selection logic unchanged here...
-  roles: Roles[] = [
-    { name: 'Admin', email: 'admin@gmail.com', password: 'Admin@123', role: 'Admin' },
-    { name: 'SHB', email: 'admin@gmail.com', password: 'Admin@123', role: 'ShowHoldingBody' },
-    { name: 'Club', email: 'admin@gmail.com', password: 'Admin@123', role: 'Club' },
-    { name: 'Province', email: 'admin@gmail.com', password: 'Admin@123', role: 'Province' },
-    { name: 'Rider', email: 'admin@gmail.com', password: 'Admin@123', role: 'Rider' }
-  ];
-
-  selectedRole = this.roles[0];
-
-  onSelectRole(role: (typeof this.roles)[0]) {
-    this.selectedRole = role;
-    // Update loginForm signal values when role changes
-    this.loginData.set({ email: role.email, password: role.password });
-  }
-
   constructor() {
     this.iconService.addIcon(...[EyeOutline, EyeInvisibleOutline]);
 
@@ -84,8 +60,6 @@ export class AuthLoginComponent implements OnInit {
 
   ngOnInit() {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-    // Initially set form values to selectedRole
-    this.loginData.set({ email: this.selectedRole.email, password: this.selectedRole.password });
   }
 
   togglePasswordVisibility() {
@@ -103,10 +77,9 @@ export class AuthLoginComponent implements OnInit {
    * Redirects users to their appropriate dashboard based on their role
    */
   private getRoleDashboardPath(role: Role): string {
-    // Map role to dashboard path
-    console.log(role)
-    const _role = this.selectedRole.role;
-    switch (_role) {
+    // Map role to dashboard path based on actual user role from API
+    console.log('Getting dashboard path for role:', role);
+    switch (role) {
       case Role.Admin:
         return '/admin/dashboard';
       case Role.SAEF:
@@ -139,15 +112,12 @@ export class AuthLoginComponent implements OnInit {
 
     const { email, password } = this.loginForm().value();
 
-    // Pass the selected role to the authentication service for test persona
-    const selectedRoleEnum = this.selectedRole.role as Role;
-
-    this.authenticationService.login(email, password, selectedRoleEnum).subscribe({
+    // Login with real API - no role selection needed
+    this.authenticationService.login(email, password).subscribe({
       next: () => {
         // Get the current user and redirect to their role-specific dashboard
         const user = this.authenticationService.currentUserValue;
         console.log('✅ Login successful, user:', user);
-        console.log('🎯 Selected role:', this.selectedRole);
         if (user && user.user && user.user.role) {
           console.log('📍 User role:', user.user.role);
           const dashboardPath = this.getRoleDashboardPath(user.user.role);
@@ -155,9 +125,8 @@ export class AuthLoginComponent implements OnInit {
           this.router.navigate([dashboardPath]);
         } else {
           // Fallback to default dashboard if user or role not available
-          const dashboardPath = this.getRoleDashboardPath({} as Role);
-          // this.router.navigate([DASHBOARD_PATH]);
-          this.router.navigate([dashboardPath]);
+          console.warn('⚠️ User role not available, redirecting to default dashboard');
+          this.router.navigate([DASHBOARD_PATH]);
         }
       },
       error: (error) => {
@@ -167,10 +136,4 @@ export class AuthLoginComponent implements OnInit {
       }
     });
   }
-
-  socialMedia = [
-    { name: 'Google', logo: 'google.svg' },
-    { name: 'Twitter', logo: 'twitter.svg' },
-    { name: 'Facebook', logo: 'facebook.svg' }
-  ];
 }

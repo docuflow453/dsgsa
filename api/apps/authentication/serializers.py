@@ -7,22 +7,28 @@ User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for User model."""
-    
-    full_name = serializers.SerializerMethodField()
-    
+
+    name = serializers.SerializerMethodField()
+    firstName = serializers.CharField(source='first_name', read_only=True)
+    lastName = serializers.CharField(source='last_name', read_only=True)
+
     class Meta:
         model = User
         fields = [
-            'id', 'email', 'title', 'first_name', 'maiden_name', 'last_name',
-            'role', 'is_active', 'email_confirmed_at', 'banned_at', 
-            'activated_at', 'created_at', 'updated_at', 'full_name'
+            'id', 'email', 'title', 'firstName', 'first_name', 'maiden_name',
+            'lastName', 'last_name', 'name', 'role', 'is_active',
+            'email_confirmed_at', 'banned_at', 'activated_at',
+            'created_at', 'updated_at'
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at', 'full_name']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'name', 'firstName', 'lastName']
         extra_kwargs = {
-            'password': {'write_only': True}
+            'password': {'write_only': True},
+            'first_name': {'write_only': True},
+            'last_name': {'write_only': True}
         }
-    
-    def get_full_name(self, obj):
+
+    def get_name(self, obj):
+        """Return full name."""
         return obj.get_full_name()
 
 

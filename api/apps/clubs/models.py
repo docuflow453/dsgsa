@@ -92,19 +92,22 @@ class ShowHoldingBody(models.Model):
 
 class PaymentMethod(models.Model):
     """Payment method model."""
-    
+
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=50, unique=True)
     description = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
-    
+    processing_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, help_text="Processing fee (percentage or fixed amount)")
+    allow_for_entries = models.BooleanField(default=True, help_text="Allow this payment method for competition entries")
+    allow_for_renewals = models.BooleanField(default=True, help_text="Allow this payment method for membership renewals")
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         db_table = 'payment_methods'
         ordering = ['name']
-    
+
     def __str__(self):
         return self.name
 

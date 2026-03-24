@@ -1,0 +1,164 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardClass="table-card" [padding]="0">
+      <!-- Custom Header with Title and Add Button -->
+      <div class="card-header" card-header>
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <h5 class="mb-0">
+            <i class="ti ti-credit-card me-2"></i>Payment Methods
+          </h5>
+          <button type="button" class="btn btn-primary" (click)="createPaymentMethod()">
+            <i class="ti ti-plus"></i> Add Payment Method
+          </button>
+        </div>
+      </div>
+
+      <!-- Search and Filter Section -->
+      <div class="card-body border-bottom">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-group">
+              <span class="input-group-text"><i class="ti ti-search"></i></span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search payment methods..."
+                [(ngModel)]="searchText"
+                (ngModelChange)="filterPaymentMethods()"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Methods Table -->
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Payment Method</th>
+              <th>Description</th>
+              <th>Processing Fee</th>
+              <th>Status</th>
+              <th class="text-center">For Entries</th>
+              <th class="text-center">For Renewals</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="!loading && filteredPaymentMethods.length > 0">
+              <tr *ngFor="let method of filteredPaymentMethods" (click)="viewPaymentMethod(method)" style="cursor: pointer">
+                <td>
+                  <div>
+                    <strong>{{ method.name }}</strong>
+                    <div class="text-muted small">{{ method.code }}</div>
+                  </div>
+                </td>
+                <td>
+                  <span class="text-muted">{{ method.description || 'N/A' }}</span>
+                </td>
+                <td>
+                  <span *ngIf="method.processingFee > 0">{{ method.processingFee }}%</span>
+                  <span *ngIf="method.processingFee === 0" class="text-muted">Free</span>
+                </td>
+                <td>
+                  <div class="form-check form-switch" (click)="$event.stopPropagation()">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      [checked]="method.isActive"
+                      (change)="toggleActiveStatus(method, $event)"
+                      [id]="'status-' + method.id"
+                    />
+                    <label class="form-check-label" [for]="'status-' + method.id">
+                      <span class="badge" [ngClass]="getStatusClass(method.status)">
+                        {{ method.status }}
+                      </span>
+                    </label>
+                  </div>
+                </td>
+                <td class="text-center">
+                  <i *ngIf="method.allowForEntries" class="ti ti-check text-success" style="font-size: 1.2rem;"></i>
+                  <i *ngIf="!method.allowForEntries" class="ti ti-x text-danger" style="font-size: 1.2rem;"></i>
+                </td>
+                <td class="text-center">
+                  <i *ngIf="method.allowForRenewals" class="ti ti-check text-success" style="font-size: 1.2rem;"></i>
+                  <i *ngIf="!method.allowForRenewals" class="ti ti-x text-danger" style="font-size: 1.2rem;"></i>
+                </td>
+                <td class="text-end" (click)="$event.stopPropagation()">
+                  <div class="btn-group" role="group">
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-secondary"
+                      (click)="viewPaymentMethod(method)"
+                      title="View Details"
+                    >
+                      <i class="ti ti-eye"></i>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-primary"
+                      (click)="editPaymentMethod(method)"
+                      title="Edit"
+                    >
+                      <i class="ti ti-edit"></i>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-danger"
+                      (click)="openDeleteModal(deleteModal, method)"
+                      title="Delete"
+                    >
+                      <i class="ti ti-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+
+            <!-- Loading State -->
+            <tr *ngIf="loading">
+              <td colspan="7" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Empty State -->
+            <tr *ngIf="!loading && filteredPaymentMethods.length === 0">
+              <td colspan="7" class="text-center py-5">
+                <div class="text-muted">
+                  <i class="ti ti-credit-card f-40 d-block mb-2"></i>
+                  <p class="mb-0">No payment methods found</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Delete Payment Method</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="selectedPaymentMethod" class="alert alert-warning">
+      <i class="ti ti-alert-triangle me-2"></i>
+      Are you sure you want to delete <strong>{{ selectedPaymentMethod.name }}</strong>?
+      This action cannot be undone.
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deletePaymentMethod()">
+      <i class="ti ti-trash me-2"></i>Delete
+    </button>
+  </div>
+</ng-template>
+

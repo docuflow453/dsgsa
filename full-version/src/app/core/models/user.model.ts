@@ -38,8 +38,15 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  user: User;
-  tokens: AuthTokens;
+  token: string;
+  user: {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    name: string;
+    role: string;
+  };
 }
 
 export interface RegisterRequest {

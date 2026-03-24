@@ -1,0 +1,153 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card>
+      <div class="card-header" card-header>
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <h5 class="mb-0">
+            <i class="ti ti-horse me-2"></i>Breed Details
+          </h5>
+          <div class="btn-group" *ngIf="breed">
+            <button type="button" class="btn btn-outline-secondary" (click)="goBack()">
+              <i class="ti ti-arrow-left me-2"></i>Back
+            </button>
+            <button type="button" class="btn btn-primary" (click)="editBreed()">
+              <i class="ti ti-edit me-2"></i>Edit
+            </button>
+            <button type="button" class="btn btn-outline-danger" (click)="openDeleteModal(deleteModal)">
+              <i class="ti ti-trash me-2"></i>Delete
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <!-- Loading State -->
+        <div *ngIf="loading" class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+
+        <!-- Breed Details -->
+        <div *ngIf="!loading && breed">
+          <!-- Basic Information -->
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <h6 class="mb-3 text-muted">Basic Information</h6>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Breed Name</label>
+              <p class="fw-bold">{{ breed.name }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Code</label>
+              <p><span class="badge bg-light-primary">{{ breed.code }}</span></p>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label class="form-label text-muted">Description</label>
+              <p>{{ breed.description }}</p>
+            </div>
+          </div>
+
+          <hr />
+
+          <!-- Breed Characteristics -->
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <h6 class="mb-3 text-muted">Breed Characteristics</h6>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Origin</label>
+              <p>{{ breed.origin || 'N/A' }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Average Height</label>
+              <p>{{ breed.averageHeight || 'N/A' }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Temperament</label>
+              <p>{{ breed.temperament || 'N/A' }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Display Order</label>
+              <p>{{ breed.displayOrder }}</p>
+            </div>
+            <div class="col-md-12 mb-3" *ngIf="breed.characteristics">
+              <label class="form-label text-muted">Characteristics</label>
+              <p>{{ breed.characteristics }}</p>
+            </div>
+          </div>
+
+          <hr />
+
+          <!-- Status & Dates -->
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <h6 class="mb-3 text-muted">Status & Dates</h6>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label text-muted">Status</label>
+              <p>
+                <span class="badge" [ngClass]="getStatusClass(breed.status)">
+                  {{ breed.status }}
+                </span>
+              </p>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label text-muted">Date Created</label>
+              <p>{{ formatDate(breed.dateCreated) }}</p>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label text-muted">Last Updated</label>
+              <p>{{ formatDate(breed.dateUpdated) }}</p>
+            </div>
+          </div>
+
+          <hr />
+
+          <!-- Additional Information -->
+          <div class="row mb-4" *ngIf="breed.notes">
+            <div class="col-md-12">
+              <h6 class="mb-3 text-muted">Additional Information</h6>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label class="form-label text-muted">Notes</label>
+              <p>{{ breed.notes }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Not Found State -->
+        <div *ngIf="!loading && !breed" class="text-center py-5">
+          <i class="ti ti-horse f-40 d-block mb-2 text-muted"></i>
+          <p class="text-muted">Breed not found</p>
+          <button type="button" class="btn btn-primary" (click)="goBack()">
+            <i class="ti ti-arrow-left me-2"></i>Back to List
+          </button>
+        </div>
+      </div>
+    </app-card>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Delete Breed</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="breed" class="alert alert-warning">
+      <i class="ti ti-alert-triangle me-2"></i>
+      Are you sure you want to delete <strong>{{ breed.name }}</strong>?
+      This action cannot be undone.
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteBreed()">
+      <i class="ti ti-trash me-2"></i>Delete
+    </button>
+  </div>
+</ng-template>
+

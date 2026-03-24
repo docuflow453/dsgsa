@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RiderService } from '../../../services/rider.service';
-import { Horse, HorseVaccination, HorseDocument } from '../../../models/rider.model';
+import { Horse, HorseVaccination, HorseDocument, HorseAffiliation, HorseOwnership } from '../../../models/rider.model';
 
 @Component({
   selector: 'app-horse-form',
@@ -22,13 +22,23 @@ export class HorseFormComponent implements OnInit {
   errorMessage = '';
   activeTab = 1;
 
-  // Vaccination and Document management
+  // Tab data management
   vaccinations: HorseVaccination[] = [];
   documents: HorseDocument[] = [];
+  affiliations: HorseAffiliation[] = [];
+  ownershipHistory: HorseOwnership[] = [];
+
+  // Form state for adding new records
   newVaccination: Partial<HorseVaccination> = {};
   newDocument: Partial<HorseDocument> = {};
+  newAffiliation: Partial<HorseAffiliation> = {};
+  newOwnership: Partial<HorseOwnership> = {};
+
+  // Toggle states for inline forms
   showAddVaccination = false;
   showAddDocument = false;
+  showAddAffiliation = false;
+  showTransferOwnership = false;
 
   breeds = [
     'Hanoverian',
@@ -77,8 +87,10 @@ export class HorseFormComponent implements OnInit {
       dateOfBirth: ['', Validators.required],
       color: [''],
       height: [''],
+      markings: [''],
       microchip: ['', Validators.required],
       passportNumber: ['', Validators.required],
+      feiNumber: [''],
       grade: ['', Validators.required],
       status: ['Active', Validators.required],
       sire: [''],
@@ -96,6 +108,8 @@ export class HorseFormComponent implements OnInit {
         this.populateForm(horse);
         this.vaccinations = horse.vaccinations || [];
         this.documents = horse.documents || [];
+        this.affiliations = horse.affiliations || [];
+        this.ownershipHistory = horse.ownershipHistory || [];
         this.loading = false;
       },
       error: (error) => {
@@ -114,8 +128,10 @@ export class HorseFormComponent implements OnInit {
       dateOfBirth: this.formatDateForInput(horse.dateOfBirth),
       color: horse.color || '',
       height: horse.height || '',
+      markings: horse.markings || '',
       microchip: horse.microchip,
       passportNumber: horse.passportNumber,
+      feiNumber: horse.feiNumber || '',
       grade: horse.grade,
       status: horse.status,
       sire: horse.sire || '',
@@ -240,9 +256,9 @@ export class HorseFormComponent implements OnInit {
         documentType: this.newDocument.documentType as any,
         title: this.newDocument.title,
         fileName: this.newDocument.fileName,
-        fileSize: this.newDocument.fileSize || 0,
+        fileUrl: this.newDocument.fileName, // Placeholder URL
         uploadDate: new Date(),
-        uploadedBy: 'Current User'
+        notes: this.newDocument.notes
       };
       this.documents.push(document);
       this.newDocument = {};
@@ -259,6 +275,83 @@ export class HorseFormComponent implements OnInit {
     console.log('Downloading document:', document.fileName);
   }
 
+  // Affiliation Management Methods
+  toggleAddAffiliation(): void {
+    this.showAddAffiliation = !this.showAddAffiliation;
+    if (!this.showAddAffiliation) {
+      this.newAffiliation = {};
+    }
+  }
+
+  addAffiliation(): void {
+    if (this.newAffiliation.organizationName && this.newAffiliation.registrationNumber) {
+      const affiliation: HorseAffiliation = {
+        id: this.generateId(),
+        horseId: this.horseId || '',
+        organizationName: this.newAffiliation.organizationName,
+        registrationNumber: this.newAffiliation.registrationNumber,
+        registrationDate: this.newAffiliation.registrationDate || new Date(),
+        expiryDate: this.newAffiliation.expiryDate,
+        status: (this.newAffiliation.status as any) || 'Active'
+      };
+      this.affiliations.push(affiliation);
+      this.newAffiliation = {};
+      this.showAddAffiliation = false;
+    }
+  }
+
+  deleteAffiliation(id: string): void {
+    this.affiliations = this.affiliations.filter(a => a.id !== id);
+  }
+
+  // Ownership Management Methods
+  toggleTransferOwnership(): void {
+    this.showTransferOwnership = !this.showTransferOwnership;
+    if (!this.showTransferOwnership) {
+      this.newOwnership = {};
+    }
+  }
+
+  transferOwnership(): void {
+    if (this.newOwnership.ownerName) {
+      // Mark current ownership as ended
+      this.ownershipHistory.forEach(o => {
+        if (o.isCurrent) {
+          o.isCurrent = false;
+          o.ownershipEndDate = new Date();
+        }
+      });
+
+      // Add new ownership record
+      const ownership: HorseOwnership = {
+        id: this.generateId(),
+        horseId: this.horseId || '',
+        ownerName: this.newOwnership.ownerName,
+        ownerEmail: this.newOwnership.ownerEmail,
+        ownerPhone: this.newOwnership.ownerPhone,
+        ownershipStartDate: new Date(),
+        isCurrent: true,
+        transferReason: this.newOwnership.transferReason,
+        notes: this.newOwnership.notes
+      };
+      this.ownershipHistory.unshift(ownership);
+
+      // Update current owner in form
+      this.horseForm.patchValue({ owner: this.newOwnership.ownerName });
+
+      this.newOwnership = {};
+      this.showTransferOwnership = false;
+    }
+  }
+
+  getCurrentOwner(): HorseOwnership | undefined {
+    return this.ownershipHistory.find(o => o.isCurrent);
+  }
+
+  getPreviousOwners(): HorseOwnership[] {
+    return this.ownershipHistory.filter(o => !o.isCurrent);
+  }
+
   private generateId(): string {
     return 'temp_' + Math.random().toString(36).substr(2, 9);
   }
@@ -266,14 +359,6 @@ export class HorseFormComponent implements OnInit {
   formatDate(date: Date | undefined): string {
     if (!date) return 'N/A';
     return new Date(date).toLocaleDateString('en-ZA', { day: '2-digit', month: 'short', year: 'numeric' });
-  }
-
-  formatFileSize(bytes: number): string {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
   }
 }
 

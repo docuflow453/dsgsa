@@ -19,7 +19,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-class-types-list',
   standalone: true,
-  imports: [SharedModule, RouterModule, DatePipe, CurrencyPipe],
+  imports: [SharedModule, RouterModule, CurrencyPipe],
   templateUrl: './class-types-list.component.html',
   styleUrl: './class-types-list.component.scss',
   providers: [ClassTypesListService, DecimalPipe]

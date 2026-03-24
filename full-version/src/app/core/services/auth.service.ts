@@ -16,6 +16,7 @@ import {
   ChangePasswordRequest
 } from '../models/user.model';
 import { ApiResponse } from '../models/api-response.model';
+import { environment } from '../../../environments/environment';
 
 /**
  * Authentication Service - Handles all authentication operations
@@ -24,7 +25,7 @@ import { ApiResponse } from '../models/api-response.model';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_URL = '/api/auth'; // TODO: Move to environment
+  private readonly API_URL = `${environment.apiUrl}/api/users`;
   private currentUserSubject: BehaviorSubject<User | null>;
   public currentUser$: Observable<User | null>;
   private isAuthenticatedSubject: BehaviorSubject<boolean>;
@@ -55,30 +56,93 @@ export class AuthService {
    * Login user
    */
   login(credentials: LoginRequest): Observable<LoginResponse> {
-    // TODO: Replace with actual API call
-    return this.mockLogin(credentials).pipe(
+    return this.http.post<LoginResponse>(`${this.API_URL}/login/`, {
+      email: credentials.email,
+      password: credentials.password
+    }).pipe(
       tap(response => {
-        this.handleAuthSuccess(response, credentials.rememberMe);
+        // Map the API response to our User model
+        const user: User = {
+          id: response.user.id,
+          email: response.user.email,
+          firstName: response.user.firstName,
+          lastName: response.user.lastName,
+          roles: [this.mapRoleToUserRole(response.user.role)],
+          isActive: true,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        };
+
+        // Store token and user data
+        this.storage.setToken(response.token, credentials.rememberMe);
+        this.storage.setUser(user, credentials.rememberMe);
+        this.storage.setRememberMe(credentials.rememberMe || false);
+
+        // Update subjects
+        this.currentUserSubject.next(user);
+        this.isAuthenticatedSubject.next(true);
       }),
       catchError(error => {
         console.error('Login error:', error);
-        return throwError(() => error);
+        const errorMessage = error.error?.error || 'Login failed. Please check your credentials.';
+        return throwError(() => new Error(errorMessage));
       })
     );
+  }
+
+  /**
+   * Map API role string to UserRole enum
+   */
+  private mapRoleToUserRole(role: string): UserRole {
+    const roleMap: { [key: string]: UserRole } = {
+      'Admin': UserRole.ADMIN,
+      'Rider': UserRole.RIDER,
+      'Club': UserRole.CLUB,
+      'Provincial': UserRole.PROVINCIAL,
+      'SAEF': UserRole.SAEF,
+      'ShowHoldingBody': UserRole.SHOW_HOLDING_BODY,
+      'Official': UserRole.ADMIN  // Map to ADMIN for now
+    };
+    return roleMap[role] || UserRole.RIDER;
   }
 
   /**
    * Register new user
    */
   register(data: RegisterRequest): Observable<RegisterResponse> {
-    // TODO: Replace with actual API call
-    return this.mockRegister(data).pipe(
+    return this.http.post<any>(`${this.API_URL}/register/`, {
+      email: data.email,
+      first_name: data.firstName,
+      last_name: data.surname,
+      password: data.password,
+      password_confirm: data.password,
+      role: 'Rider'
+    }).pipe(
       tap(response => {
-        this.handleAuthSuccess(response, false);
+        // Map the API response to our User model
+        const user: User = {
+          id: response.user.id,
+          email: response.user.email,
+          firstName: response.user.firstName || response.user.first_name,
+          lastName: response.user.lastName || response.user.last_name,
+          roles: [this.mapRoleToUserRole(response.user.role)],
+          isActive: true,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        };
+
+        // Store token and user data
+        this.storage.setToken(response.token, false);
+        this.storage.setUser(user, false);
+
+        // Update subjects
+        this.currentUserSubject.next(user);
+        this.isAuthenticatedSubject.next(true);
       }),
       catchError(error => {
         console.error('Registration error:', error);
-        return throwError(() => error);
+        const errorMessage = error.error?.error || 'Registration failed. Please try again.';
+        return throwError(() => new Error(errorMessage));
       })
     );
   }
@@ -153,64 +217,5 @@ export class AuthService {
     return user ? roles.some(role => user.roles.includes(role)) : false;
   }
 
-  /**
-   * Handle successful authentication
-   */
-  private handleAuthSuccess(response: LoginResponse | RegisterResponse, rememberMe: boolean = false): void {
-    this.storage.setToken(response.tokens.accessToken, rememberMe);
-    this.storage.setRefreshToken(response.tokens.refreshToken, rememberMe);
-    this.storage.setUser(response.user, rememberMe);
-    this.storage.setRememberMe(rememberMe);
-    this.currentUserSubject.next(response.user);
-    this.isAuthenticatedSubject.next(true);
-  }
-
-  /**
-   * Mock login - Replace with actual API call
-   */
-  private mockLogin(credentials: LoginRequest): Observable<LoginResponse> {
-    return of({
-      user: {
-        id: '1',
-        email: credentials.email,
-        firstName: 'Sarah',
-        lastName: 'Parker',
-        roles: [UserRole.RIDER],
-        isActive: true,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      tokens: {
-        accessToken: 'mock_access_token_' + Date.now(),
-        refreshToken: 'mock_refresh_token_' + Date.now(),
-        expiresIn: 3600
-      }
-    }).pipe(delay(500)); // Simulate network delay
-  }
-
-  /**
-   * Mock register - Replace with actual API call
-   */
-  private mockRegister(data: RegisterRequest): Observable<RegisterResponse> {
-    return of({
-      user: {
-        id: '2',
-        email: data.email,
-        firstName: data.firstName,
-        lastName: data.surname, // Using surname from new model
-        roles: [UserRole.RIDER],
-        phone: data.mobileNumber, // Using mobileNumber from new model
-        isActive: true,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      tokens: {
-        accessToken: 'mock_access_token_' + Date.now(),
-        refreshToken: 'mock_refresh_token_' + Date.now(),
-        expiresIn: 3600
-      },
-      message: 'Registration successful! Please check your email to verify your account.'
-    }).pipe(delay(500));
-  }
 }
 

@@ -32,12 +32,13 @@
 
   <!-- Horse Details Content -->
   <div *ngIf="!loading && horse" class="card">
-    <!-- Tabs Navigation -->
-    <div class="card-header bg-white">
-      <ul class="nav nav-tabs card-header-tabs">
+
+    <div class="card-body">
+              <!-- Tab Navigation - Show all 5 tabs in Edit Mode, only Tab 1 in Add Mode -->
+      <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
           <a class="nav-link" [class.active]="activeTab === 1" (click)="setActiveTab(1)" role="button">
-            <i class="ti ti-horse me-2"></i>Profile
+            <i class="ti ti-info-circle me-2"></i>Profile Information
           </a>
         </li>
         <li class="nav-item">
@@ -55,10 +56,10 @@
             <i class="ti ti-file-text me-2"></i>Documents
           </a>
         </li>
-      </ul>
-    </div>
 
-    <div class="card-body">
+      </ul>
+
+
       <!-- Tab 1: Profile -->
       <div *ngIf="activeTab === 1" class="tab-content">
         <div class="row">

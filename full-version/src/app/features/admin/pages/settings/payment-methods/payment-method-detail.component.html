@@ -1,0 +1,160 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card>
+      <div class="card-header" card-header>
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <h5 class="mb-0">
+            <i class="ti ti-credit-card me-2"></i>Payment Method Details
+          </h5>
+          <div class="btn-group" *ngIf="paymentMethod">
+            <button type="button" class="btn btn-outline-secondary" (click)="goBack()">
+              <i class="ti ti-arrow-left me-2"></i>Back
+            </button>
+            <button type="button" class="btn btn-primary" (click)="editPaymentMethod()">
+              <i class="ti ti-edit me-2"></i>Edit
+            </button>
+            <button type="button" class="btn btn-outline-danger" (click)="openDeleteModal(deleteModal)">
+              <i class="ti ti-trash me-2"></i>Delete
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <!-- Loading State -->
+        <div *ngIf="loading" class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+
+        <!-- Payment Method Details -->
+        <div *ngIf="!loading && paymentMethod">
+          <!-- Basic Information -->
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <h6 class="mb-3 text-muted">Basic Information</h6>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Payment Method Name</label>
+              <p class="fw-bold">{{ paymentMethod.name }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Code</label>
+              <p class="fw-bold">{{ paymentMethod.code }}</p>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label class="form-label text-muted">Description</label>
+              <p>{{ paymentMethod.description || 'No description provided' }}</p>
+            </div>
+          </div>
+
+          <hr />
+
+          <!-- Configuration -->
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <h6 class="mb-3 text-muted">Configuration</h6>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Processing Fee</label>
+              <p class="fw-bold">
+                <span *ngIf="paymentMethod.processingFee > 0">{{ paymentMethod.processingFee }}%</span>
+                <span *ngIf="paymentMethod.processingFee === 0" class="text-success">Free (0%)</span>
+              </p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Status</label>
+              <p>
+                <span class="badge" [ngClass]="getStatusClass(paymentMethod.status)">
+                  {{ paymentMethod.status }}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <hr />
+
+          <!-- Availability -->
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <h6 class="mb-3 text-muted">Availability</h6>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Allow for Entry Transactions</label>
+              <p>
+                <i *ngIf="paymentMethod.allowForEntries" class="ti ti-check text-success me-2" style="font-size: 1.2rem;"></i>
+                <i *ngIf="!paymentMethod.allowForEntries" class="ti ti-x text-danger me-2" style="font-size: 1.2rem;"></i>
+                <span *ngIf="paymentMethod.allowForEntries" class="text-success">Enabled</span>
+                <span *ngIf="!paymentMethod.allowForEntries" class="text-danger">Disabled</span>
+              </p>
+              <small class="text-muted">Show Holding Bodies can use this for competition entries</small>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Allow for Membership Renewals</label>
+              <p>
+                <i *ngIf="paymentMethod.allowForRenewals" class="ti ti-check text-success me-2" style="font-size: 1.2rem;"></i>
+                <i *ngIf="!paymentMethod.allowForRenewals" class="ti ti-x text-danger me-2" style="font-size: 1.2rem;"></i>
+                <span *ngIf="paymentMethod.allowForRenewals" class="text-success">Enabled</span>
+                <span *ngIf="!paymentMethod.allowForRenewals" class="text-danger">Disabled</span>
+              </p>
+              <small class="text-muted">Riders can use this for membership renewals</small>
+            </div>
+          </div>
+
+          <hr />
+
+          <!-- Additional Information -->
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <h6 class="mb-3 text-muted">Additional Information</h6>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Date Created</label>
+              <p>{{ formatDate(paymentMethod.dateCreated) }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Last Updated</label>
+              <p>{{ formatDate(paymentMethod.dateUpdated) }}</p>
+            </div>
+            <div class="col-md-12 mb-3" *ngIf="paymentMethod.notes">
+              <label class="form-label text-muted">Notes</label>
+              <p>{{ paymentMethod.notes }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Not Found State -->
+        <div *ngIf="!loading && !paymentMethod" class="text-center py-5">
+          <i class="ti ti-credit-card f-40 d-block mb-2 text-muted"></i>
+          <p class="text-muted">Payment method not found</p>
+          <button type="button" class="btn btn-primary" (click)="goBack()">
+            <i class="ti ti-arrow-left me-2"></i>Back to List
+          </button>
+        </div>
+      </div>
+    </app-card>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Delete Payment Method</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="paymentMethod" class="alert alert-warning">
+      <i class="ti ti-alert-triangle me-2"></i>
+      Are you sure you want to delete <strong>{{ paymentMethod.name }}</strong>?
+      This action cannot be undone.
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deletePaymentMethod()">
+      <i class="ti ti-trash me-2"></i>Delete
+    </button>
+  </div>
+</ng-template>
+

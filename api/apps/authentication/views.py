@@ -46,25 +46,40 @@ class UserViewSet(viewsets.ModelViewSet):
         """Authenticate user and return token."""
         email = request.data.get('email')
         password = request.data.get('password')
-        
+
         if not email or not password:
             return Response(
                 {'error': 'Please provide both email and password'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
         user = authenticate(username=email, password=password)
-        
+
         if not user:
             return Response(
                 {'error': 'Invalid credentials'},
                 status=status.HTTP_401_UNAUTHORIZED
             )
-        
+
+        if not user.is_active:
+            return Response(
+                {'error': 'Account is inactive'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
         token, created = Token.objects.get_or_create(user=user)
+
+        # Return response in the format expected by frontend
         return Response({
-            'user': UserSerializer(user).data,
-            'token': token.key
+            'token': token.key,
+            'user': {
+                'id': str(user.id),  # Convert UUID to string
+                'email': user.email,
+                'firstName': user.first_name,
+                'lastName': user.last_name,
+                'name': user.get_full_name(),
+                'role': user.role
+            }
         })
 
 

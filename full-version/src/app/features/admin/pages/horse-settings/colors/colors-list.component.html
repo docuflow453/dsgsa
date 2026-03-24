@@ -1,0 +1,251 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="Horse Colors" cardClass="table-card" [padding]="0">
+      <form class="dt-responsive">
+        <!-- Top Controls: Page Size, Filters, and Search -->
+        <div class="dataTable-top">
+          <div class="row g-3 align-items-center">
+            <!-- Page Size Selector -->
+            <div class="col-auto">
+              <select
+                class="form-select"
+                title="select item per page"
+                style="width: auto"
+                name="pageSize"
+                [(ngModel)]="service.pageSize"
+              >
+                <option [ngValue]="5">5 items per page</option>
+                <option [ngValue]="10">10 items per page</option>
+                <option [ngValue]="15">15 items per page</option>
+                <option [ngValue]="25">25 items per page</option>
+                <option [ngValue]="50">50 items per page</option>
+              </select>
+            </div>
+
+            <!-- Status Filter -->
+            <div class="col-auto">
+              <select class="form-select" name="statusFilter" [(ngModel)]="service.statusFilter" style="width: auto">
+                <option value="">All Statuses</option>
+                @for (status of uniqueStatuses; track status) {
+                  <option [value]="status">{{ status }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Reset Filters Button -->
+            <div class="col-auto">
+              <button type="button" class="btn btn-outline-secondary" (click)="resetFilters()">
+                <i class="ti ti-refresh"></i> Reset
+              </button>
+            </div>
+
+            <!-- Search Box -->
+            <div class="col-auto ms-auto">
+              <div class="dataTable-search d-flex align-items-center">
+                <input
+                  id="table-complete-search"
+                  type="text"
+                  class="form-control"
+                  name="searchTerm"
+                  [(ngModel)]="service.searchTerm"
+                  placeholder="Search by name, code, category..."
+                  style="min-width: 300px"
+                />
+              </div>
+            </div>
+
+            <!-- Add Color Button -->
+            <div class="col-auto">
+              <button type="button" class="btn btn-primary" [routerLink]="['/admin/horse-settings/colors/create']">
+                <i class="ti ti-plus"></i> Add Color
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive dt-responsive">
+          @if (loading$ | async) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          } @else {
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col" sortable="name" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    NAME
+                  </th>
+                  <th scope="col" sortable="code" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    CODE
+                  </th>
+                  <th scope="col">COLOR PREVIEW</th>
+                  <th scope="col">DESCRIPTION</th>
+                  <th scope="col" sortable="category" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    CATEGORY
+                  </th>
+                  <th scope="col" sortable="isCommon" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    COMMON
+                  </th>
+                  <th scope="col" sortable="status" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    STATUS
+                  </th>
+                  <th scope="col" sortable="dateCreated" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    DATE CREATED
+                  </th>
+                  <th scope="col" class="text-center">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (color of colors$ | async; track color.id) {
+                  <tr>
+                    <!-- Name -->
+                    <td>
+                      <h6 class="mb-0">
+                        <ngb-highlight [result]="color.name" [term]="service.searchTerm"></ngb-highlight>
+                      </h6>
+                    </td>
+
+                    <!-- Code -->
+                    <td>
+                      <span class="badge bg-light-primary">
+                        <ngb-highlight [result]="color.code" [term]="service.searchTerm"></ngb-highlight>
+                      </span>
+                    </td>
+
+                    <!-- Color Preview -->
+                    <td>
+                      @if (color.hexCode) {
+                        <div class="d-flex align-items-center">
+                          <div class="color-preview" [style.background-color]="color.hexCode"></div>
+                          <span class="ms-2 text-muted">{{ color.hexCode }}</span>
+                        </div>
+                      } @else {
+                        <span class="text-muted">-</span>
+                      }
+                    </td>
+
+                    <!-- Description -->
+                    <td>
+                      <span class="text-muted">
+                        <ngb-highlight [result]="color.description" [term]="service.searchTerm"></ngb-highlight>
+                      </span>
+                    </td>
+
+                    <!-- Category -->
+                    <td>
+                      @if (color.category) {
+                        <span class="badge bg-light-info">
+                          <ngb-highlight [result]="color.category" [term]="service.searchTerm"></ngb-highlight>
+                        </span>
+                      } @else {
+                        <span class="text-muted">-</span>
+                      }
+                    </td>
+
+                    <!-- Common -->
+                    <td>
+                      @if (color.isCommon) {
+                        <span class="badge bg-light-success">Yes</span>
+                      } @else {
+                        <span class="badge bg-light-secondary">No</span>
+                      }
+                    </td>
+
+                    <!-- Status -->
+                    <td>
+                      <span [ngClass]="getStatusClass(color.status)">{{ color.status }}</span>
+                    </td>
+
+                    <!-- Date Created -->
+                    <td>{{ formatDate(color.dateCreated) }}</td>
+
+                    <!-- Actions -->
+                    <td class="text-center">
+                      <div class="btn-group" role="group">
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-outline-secondary"
+                          [routerLink]="['/admin/horse-settings/colors', color.id]"
+                          title="View Details"
+                        >
+                          <i class="ti ti-eye"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-outline-primary"
+                          [routerLink]="['/admin/horse-settings/colors', color.id, 'edit']"
+                          title="Edit"
+                        >
+                          <i class="ti ti-edit"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-outline-danger"
+                          (click)="openDeleteModal(deleteModal, color)"
+                          title="Delete"
+                        >
+                          <i class="ti ti-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="9" class="text-center py-5">
+                      <div class="text-muted">
+                        <i class="ti ti-palette f-40 d-block mb-2"></i>
+                        <p class="mb-0">No colors found</p>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+
+        <!-- Pagination -->
+        <div class="datatable-bottom">
+          <div class="datatable-info">
+            Showing {{ (service.page - 1) * service.pageSize + 1 }} to
+            {{ service.page * service.pageSize > (total$ | async)! ? (total$ | async)! : service.page * service.pageSize }} of
+            {{ total$ | async }} entries
+          </div>
+          <ngb-pagination
+            [collectionSize]="(total$ | async)!"
+            [(page)]="service.page"
+            [pageSize]="service.pageSize"
+            class="table-pagination"
+          ></ngb-pagination>
+        </div>
+      </form>
+    </app-card>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Delete Color</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    @if (selectedColor) {
+      <div class="alert alert-warning">
+        <i class="ti ti-alert-triangle me-2"></i>
+        Are you sure you want to delete <strong>{{ selectedColor.name }}</strong>?
+        This action cannot be undone.
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteColor()">
+      <i class="ti ti-trash me-2"></i>Delete
+    </button>
+  </div>
+</ng-template>
+

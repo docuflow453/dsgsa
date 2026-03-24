@@ -19,76 +19,7 @@ export class AuthenticationService {
   private loadingSignal = signal<boolean>(false);
   isLogin: boolean = false;
 
-  /**
-   * Hardcoded test personas for development/demo purposes
-   * These personas are used to simulate different user roles without needing multiple database accounts
-   */
-  private readonly testPersonas: Record<Role, Omit<User['user'], 'password'>> = {
-    [Role.Admin]: {
-      id: 'admin-001',
-      email: 'admin@shyft.com',
-      firstName: 'Sarah',
-      lastName: 'Mitchell',
-      name: 'Sarah Mitchell',
-      role: Role.Admin
-    },
-    [Role.ShowHoldingBody]: {
-      id: 'shb-001',
-      email: 'shb.manager@byteorbit.com',
-      firstName: 'Michael',
-      lastName: 'Thompson',
-      name: 'Michael Thompson',
-      role: Role.ShowHoldingBody
-    },
-    [Role.Club]: {
-      id: 'club-001',
-      email: 'club.admin@shyft.com',
-      firstName: 'Jennifer',
-      lastName: 'Parker',
-      name: 'Jennifer Parker',
-      role: Role.Club
-    },
-    [Role.Provincial]: {
-      id: 'province-001',
-      email: 'provincial.coordinator@byteorbit.com',
-      firstName: 'David',
-      lastName: 'Anderson',
-      name: 'David Anderson',
-      role: Role.Provincial
-    },
-    [Role.Rider]: {
-      id: 'rider-001',
-      email: 'rider@shyft.com',
-      firstName: 'Emma',
-      lastName: 'Williams',
-      name: 'Emma Williams',
-      role: Role.Rider
-    },
-    [Role.SAEF]: {
-      id: 'saef-001',
-      email: 'saef.official@byteorbit.com',
-      firstName: 'Robert',
-      lastName: 'Johnson',
-      name: 'Robert Johnson',
-      role: Role.SAEF
-    },
-    [Role.Official]: {
-      id: 'official-001',
-      email: 'official@shyft.com',
-      firstName: 'Lisa',
-      lastName: 'Martinez',
-      name: 'Lisa Martinez',
-      role: Role.Official
-    },
-    [Role.User]: {
-      id: 'user-001',
-      email: 'user@shyft.com',
-      firstName: 'John',
-      lastName: 'Doe',
-      name: 'John Doe',
-      role: Role.User
-    }
-  };
+
 
   constructor() {
     // On initialization, check if we have a stored token and fetch user data
@@ -96,30 +27,17 @@ export class AuthenticationService {
     if (storedUser) {
       try {
         const userData = JSON.parse(storedUser);
-        // If we have a serviceToken, check if it's a test persona or real user
+        // If we have a serviceToken, fetch user data from API
         if (userData.serviceToken) {
-          // Check if this is a test persona (has full user object stored)
-          if (userData.user && userData.user.role) {
-            // This is a test persona - restore it directly
-            const personaUser: User = {
-              serviceToken: userData.serviceToken,
-              user: userData.user
-            };
-            this.currentUserSignal.set(personaUser);
-            this.isLogin = true;
-            console.log('🎭 Restored test persona from localStorage', personaUser);
-          } else {
-            // This is a real user - fetch from API
-            this.fetchCurrentUser().subscribe({
-              next: () => {
-                this.isLogin = true;
-              },
-              error: () => {
-                // If API call fails, clear stored data and logout
-                this.logout();
-              }
-            });
-          }
+          this.fetchCurrentUser().subscribe({
+            next: () => {
+              this.isLogin = true;
+            },
+            error: () => {
+              // If API call fails, clear stored data and logout
+              this.logout();
+            }
+          });
         }
       } catch (error) {
         console.error('Error parsing stored user data:', error);
@@ -168,68 +86,41 @@ export class AuthenticationService {
   }
 
   /**
-   * Login method with support for test personas
+   * Login method - authenticates user with API
    * @param email - User email
    * @param password - User password
-   * @param selectedRole - Optional role to use for test persona (for development/demo)
    */
-  login(email: string, password: string, selectedRole?: Role) {
+  login(email: string, password: string) {
     return this.http.post<User>(`${environment.apiUrl}/api/account/login`, { email, password }).pipe(
       tap((data: User) => {
-        // Get the serviceToken from the API response
-        const serviceToken = data.serviceToken;
-
-        // If selectedRole is provided, use the test persona for that role
-        // Otherwise, use the actual user data from the API
-        let userData: User;
-
-        if (selectedRole && this.testPersonas[selectedRole]) {
-          // Use hardcoded test persona with the real token
-          const persona = this.testPersonas[selectedRole];
-          userData = {
-            serviceToken: serviceToken,
-            user: {
-              ...persona,
-              password: '' // Don't store password
-            }
-          };
-          console.log(`🎭 Using test persona for role: ${selectedRole}`, userData);
-        } else {
-          // Use actual API response data
-          userData = data;
-          console.log('✅ Using actual user data from API', userData);
-        }
+        // Use actual API response data
+        const userData = data;
+        console.log('✅ Using actual user data from API', userData);
 
         // Store user data in localStorage (with token)
         const userDetails = {
           id: userData.user.id,
           email: userData.user.email,
-          serviceToken: userData.serviceToken,
-          // Store the full user object for test personas
-          ...(selectedRole && { user: userData.user })
+          serviceToken: userData.serviceToken
         };
         localStorage.setItem('currentUser', JSON.stringify(userDetails));
 
-        // Update the signal with the user data (persona or real)
+        // Update the signal with the user data
         this.currentUserSignal.set(userData);
         this.isLogin = true;
 
-        // If using test persona, skip the fetchCurrentUser call
-        // since we already have all the data we need
-        if (!selectedRole) {
-          // Fetch full user data from API (including role) and update signal
-          this.fetchCurrentUser().subscribe({
-            next: () => {
-              this.isLogin = true;
-            },
-            error: (error) => {
-              console.error('Error fetching user data after login:', error);
-              // Even if fetch fails, we can still set the login state
-              // The user data will be fetched on next page load
-              this.isLogin = true;
-            }
-          });
-        }
+        // Fetch full user data from API (including role) and update signal
+        this.fetchCurrentUser().subscribe({
+          next: () => {
+            this.isLogin = true;
+          },
+          error: (error) => {
+            console.error('Error fetching user data after login:', error);
+            // Even if fetch fails, we can still set the login state
+            // The user data will be fetched on next page load
+            this.isLogin = true;
+          }
+        });
       })
     );
   }

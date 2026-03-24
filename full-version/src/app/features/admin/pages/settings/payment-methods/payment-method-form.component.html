@@ -1,0 +1,158 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card>
+      <div class="card-header" card-header>
+        <h5 class="mb-0">
+          <i class="ti ti-credit-card me-2"></i>{{ pageTitle }}
+        </h5>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="paymentMethodForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <!-- Name -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Payment Method Name <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="name"
+                placeholder="e.g., Credit Card, EFT, PayFast"
+                [class.is-invalid]="submitted && paymentMethodForm.get('name')?.invalid"
+              />
+              <div class="invalid-feedback" *ngIf="submitted && paymentMethodForm.get('name')?.invalid">
+                Payment method name is required
+              </div>
+            </div>
+
+            <!-- Code -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Code <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="code"
+                placeholder="e.g., CREDIT_CARD, EFT, PAYFAST"
+                [class.is-invalid]="submitted && paymentMethodForm.get('code')?.invalid"
+              />
+              <div class="invalid-feedback" *ngIf="submitted && paymentMethodForm.get('code')?.invalid">
+                Code is required
+              </div>
+              <small class="form-text text-muted">Unique identifier (uppercase, underscores allowed)</small>
+            </div>
+
+            <!-- Description -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Description</label>
+              <textarea
+                class="form-control"
+                formControlName="description"
+                rows="2"
+                placeholder="Enter description of the payment method"
+              ></textarea>
+            </div>
+
+            <!-- Processing Fee -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Processing Fee (%) <span class="text-danger">*</span></label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="processingFee"
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+                max="100"
+                [class.is-invalid]="submitted && paymentMethodForm.get('processingFee')?.invalid"
+              />
+              <div class="invalid-feedback" *ngIf="submitted && paymentMethodForm.get('processingFee')?.invalid">
+                Processing fee must be between 0 and 100
+              </div>
+              <small class="form-text text-muted">Enter 0 for no processing fee</small>
+            </div>
+
+            <!-- Status -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Status <span class="text-danger">*</span></label>
+              <select class="form-select" formControlName="status">
+                <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+              </select>
+            </div>
+
+            <!-- Active Toggle -->
+            <div class="col-md-12 mb-3">
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  formControlName="isActive"
+                  id="isActive"
+                  (change)="onActiveChange()"
+                />
+                <label class="form-check-label" for="isActive">
+                  <strong>Active</strong>
+                  <small class="d-block text-muted">Only active payment methods are available for selection</small>
+                </label>
+              </div>
+            </div>
+
+            <!-- Allow for Entries -->
+            <div class="col-md-6 mb-3">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  formControlName="allowForEntries"
+                  id="allowForEntries"
+                />
+                <label class="form-check-label" for="allowForEntries">
+                  <strong>Allow for Entry Transactions</strong>
+                  <small class="d-block text-muted">Show Holding Bodies can use this for competition entries</small>
+                </label>
+              </div>
+            </div>
+
+            <!-- Allow for Renewals -->
+            <div class="col-md-6 mb-3">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  formControlName="allowForRenewals"
+                  id="allowForRenewals"
+                />
+                <label class="form-check-label" for="allowForRenewals">
+                  <strong>Allow for Membership Renewals</strong>
+                  <small class="d-block text-muted">Riders can use this for membership renewals</small>
+                </label>
+              </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Notes</label>
+              <textarea
+                class="form-control"
+                formControlName="notes"
+                rows="3"
+                placeholder="Additional notes or instructions"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="d-flex justify-content-end gap-2 mt-4">
+            <button type="button" class="btn btn-outline-secondary" (click)="cancel()" [disabled]="saving">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary" [disabled]="saving">
+              <span *ngIf="saving" class="spinner-border spinner-border-sm me-2" role="status"></span>
+              <i *ngIf="!saving" class="ti ti-check me-2"></i>
+              {{ isEditMode ? 'Update Payment Method' : 'Create Payment Method' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </app-card>
+  </div>
+</div>
+

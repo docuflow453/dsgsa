@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
+import uuid
 
 
 class UserManager(BaseUserManager):
@@ -32,16 +33,17 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     """Custom User model based on ERD specifications."""
-    
+
     ROLE_CHOICES = [
-        ('admin', 'Administrator'),
-        ('rider', 'Rider'),
-        ('club', 'Club'),
-        ('show_holding_body', 'Show Holding Body'),
-        ('saef_admin', 'SAEF Administrator'),
-        ('official', 'Official'),
+        ('Admin', 'Administrator'),
+        ('Rider', 'Rider'),
+        ('Club', 'Club'),
+        ('ShowHoldingBody', 'Show Holding Body'),
+        ('SAEF', 'SAEF Administrator'),
+        ('Provincial', 'Provincial'),
+        ('Official', 'Official'),
     ]
-    
+
     TITLE_CHOICES = [
         ('mr', 'Mr'),
         ('mrs', 'Mrs'),
@@ -49,13 +51,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('dr', 'Dr'),
         ('prof', 'Prof'),
     ]
-    
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True, db_index=True)
     title = models.CharField(max_length=10, choices=TITLE_CHOICES, blank=True)
     first_name = models.CharField(max_length=150)
     maiden_name = models.CharField(max_length=150, blank=True)
     last_name = models.CharField(max_length=150)
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='rider')
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='Rider')
     
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

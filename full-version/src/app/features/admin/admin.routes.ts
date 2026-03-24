@@ -535,6 +535,138 @@ export const ADMIN_ROUTES: Routes = [
       title: 'Edit VAT Code',
       roles: [Role.Admin]
     }
+  },
+  // Payment Methods routes
+  {
+    path: 'settings/payment-methods',
+    loadComponent: () => import('./pages/settings/payment-methods/payment-methods-list.component').then((c) => c.PaymentMethodsListComponent),
+    data: {
+      title: 'Payment Methods',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'settings/payment-methods/create',
+    loadComponent: () => import('./pages/settings/payment-methods/payment-method-form.component').then((c) => c.PaymentMethodFormComponent),
+    data: {
+      title: 'Add Payment Method',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'settings/payment-methods/:id',
+    loadComponent: () => import('./pages/settings/payment-methods/payment-method-detail.component').then((c) => c.PaymentMethodDetailComponent),
+    data: {
+      title: 'Payment Method Details',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'settings/payment-methods/:id/edit',
+    loadComponent: () => import('./pages/settings/payment-methods/payment-method-form.component').then((c) => c.PaymentMethodFormComponent),
+    data: {
+      title: 'Edit Payment Method',
+      roles: [Role.Admin]
+    }
+  },
+  // Horse Settings - Grades routes
+  {
+    path: 'horse-settings/grades',
+    loadComponent: () => import('./pages/horse-settings/grades/grades-list.component').then((c) => c.GradesListComponent),
+    data: {
+      title: 'Horse Grades',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'horse-settings/grades/create',
+    loadComponent: () => import('./pages/horse-settings/grades/grade-form.component').then((c) => c.GradeFormComponent),
+    data: {
+      title: 'Add Grade',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'horse-settings/grades/:id',
+    loadComponent: () => import('./pages/horse-settings/grades/grade-detail.component').then((c) => c.GradeDetailComponent),
+    data: {
+      title: 'Grade Details',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'horse-settings/grades/:id/edit',
+    loadComponent: () => import('./pages/horse-settings/grades/grade-form.component').then((c) => c.GradeFormComponent),
+    data: {
+      title: 'Edit Grade',
+      roles: [Role.Admin]
+    }
+  },
+  // Horse Settings - Breeds routes
+  {
+    path: 'horse-settings/breeds',
+    loadComponent: () => import('./pages/horse-settings/breeds/breeds-list.component').then((c) => c.BreedsListComponent),
+    data: {
+      title: 'Horse Breeds',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'horse-settings/breeds/create',
+    loadComponent: () => import('./pages/horse-settings/breeds/breed-form.component').then((c) => c.BreedFormComponent),
+    data: {
+      title: 'Add Breed',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'horse-settings/breeds/:id',
+    loadComponent: () => import('./pages/horse-settings/breeds/breed-detail.component').then((c) => c.BreedDetailComponent),
+    data: {
+      title: 'Breed Details',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'horse-settings/breeds/:id/edit',
+    loadComponent: () => import('./pages/horse-settings/breeds/breed-form.component').then((c) => c.BreedFormComponent),
+    data: {
+      title: 'Edit Breed',
+      roles: [Role.Admin]
+    }
+  },
+  // Horse Settings - Colors routes
+  {
+    path: 'horse-settings/colors',
+    loadComponent: () => import('./pages/horse-settings/colors/colors-list.component').then((c) => c.ColorsListComponent),
+    data: {
+      title: 'Horse Colors',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'horse-settings/colors/create',
+    loadComponent: () => import('./pages/horse-settings/colors/color-form.component').then((c) => c.ColorFormComponent),
+    data: {
+      title: 'Add Color',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'horse-settings/colors/:id',
+    loadComponent: () => import('./pages/horse-settings/colors/color-detail.component').then((c) => c.ColorDetailComponent),
+    data: {
+      title: 'Color Details',
+      roles: [Role.Admin]
+    }
+  },
+  {
+    path: 'horse-settings/colors/:id/edit',
+    loadComponent: () => import('./pages/horse-settings/colors/color-form.component').then((c) => c.ColorFormComponent),
+    data: {
+      title: 'Edit Color',
+      roles: [Role.Admin]
+    }
   }
 ];
 

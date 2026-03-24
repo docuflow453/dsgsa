@@ -21,7 +21,7 @@ import { BulkEmail, EmailType, RecipientGroup, EmailStatus } from './email-list-
 @Component({
   selector: 'app-email-list',
   standalone: true,
-  imports: [CommonModule, SharedModule, RouterModule, NgbPaginationModule, FormsModule, NgbHighlight, DatePipe, NgbdSortableHeaderDirective],
+  imports: [CommonModule, SharedModule, RouterModule, NgbPaginationModule, FormsModule, NgbHighlight, DatePipe],
   templateUrl: './email-list.component.html',
   styleUrl: './email-list.component.scss',
   providers: [EmailListService]

@@ -1,0 +1,181 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card>
+      <div class="card-header" card-header>
+        <h5 class="mb-0">
+          <i class="ti ti-palette me-2"></i>{{ pageTitle }}
+        </h5>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="colorForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <!-- Name -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Color Name <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="name"
+                placeholder="e.g., Bay, Chestnut, Black"
+                [class.is-invalid]="submitted && colorForm.get('name')?.invalid"
+              />
+              <div class="invalid-feedback" *ngIf="submitted && colorForm.get('name')?.invalid">
+                Color name is required
+              </div>
+            </div>
+
+            <!-- Code -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Code <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="code"
+                placeholder="e.g., BAY, CHEST, BLACK"
+                [class.is-invalid]="submitted && colorForm.get('code')?.invalid"
+              />
+              <div class="invalid-feedback" *ngIf="submitted && colorForm.get('code')?.invalid">
+                Code is required
+              </div>
+              <small class="form-text text-muted">Unique identifier (uppercase recommended)</small>
+            </div>
+
+            <!-- Description -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Description <span class="text-danger">*</span></label>
+              <textarea
+                class="form-control"
+                formControlName="description"
+                rows="2"
+                placeholder="Enter description of the color"
+                [class.is-invalid]="submitted && colorForm.get('description')?.invalid"
+              ></textarea>
+              <div class="invalid-feedback" *ngIf="submitted && colorForm.get('description')?.invalid">
+                Description is required
+              </div>
+            </div>
+
+            <!-- Hex Code -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Hex Code</label>
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="hexCode"
+                  placeholder="#8B4513"
+                  [class.is-invalid]="submitted && colorForm.get('hexCode')?.invalid"
+                />
+                <input
+                  type="color"
+                  class="form-control form-control-color"
+                  formControlName="hexCode"
+                  title="Choose color"
+                />
+              </div>
+              <div class="invalid-feedback" *ngIf="submitted && colorForm.get('hexCode')?.invalid">
+                Must be a valid hex code (e.g., #8B4513)
+              </div>
+              <small class="form-text text-muted">Color representation in hex format</small>
+            </div>
+
+            <!-- Category -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Category</label>
+              <select class="form-select" formControlName="category">
+                <option value="">Select Category</option>
+                <option value="Base Color">Base Color</option>
+                <option value="Dilution">Dilution</option>
+                <option value="Pattern">Pattern</option>
+                <option value="Modifier">Modifier</option>
+              </select>
+              <small class="form-text text-muted">Color classification category</small>
+            </div>
+
+            <!-- Display Order -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Display Order <span class="text-danger">*</span></label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="displayOrder"
+                placeholder="0"
+                min="0"
+                [class.is-invalid]="submitted && colorForm.get('displayOrder')?.invalid"
+              />
+              <div class="invalid-feedback" *ngIf="submitted && colorForm.get('displayOrder')?.invalid">
+                Display order is required
+              </div>
+              <small class="form-text text-muted">Order in which colors are displayed (lower numbers first)</small>
+            </div>
+
+            <!-- Status -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Status <span class="text-danger">*</span></label>
+              <select class="form-select" formControlName="status">
+                <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+              </select>
+            </div>
+
+            <!-- Common Color Toggle -->
+            <div class="col-md-12 mb-3">
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  formControlName="isCommon"
+                  id="isCommon"
+                />
+                <label class="form-check-label" for="isCommon">
+                  <strong>Common Color</strong>
+                  <small class="d-block text-muted">Mark this color as commonly occurring in horses</small>
+                </label>
+              </div>
+            </div>
+
+            <!-- Active Toggle -->
+            <div class="col-md-12 mb-3">
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  formControlName="isActive"
+                  id="isActive"
+                  (change)="onActiveChange()"
+                />
+                <label class="form-check-label" for="isActive">
+                  <strong>Active</strong>
+                  <small class="d-block text-muted">Only active colors are available for selection</small>
+                </label>
+              </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Notes</label>
+              <textarea
+                class="form-control"
+                formControlName="notes"
+                rows="3"
+                placeholder="Additional notes or instructions"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="d-flex justify-content-end gap-2 mt-4">
+            <button type="button" class="btn btn-outline-secondary" (click)="cancel()" [disabled]="saving">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary" [disabled]="saving">
+              <span *ngIf="saving" class="spinner-border spinner-border-sm me-2" role="status"></span>
+              <i *ngIf="!saving" class="ti ti-check me-2"></i>
+              {{ isEditMode ? 'Update Color' : 'Create Color' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </app-card>
+  </div>
+</div>
+

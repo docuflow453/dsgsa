@@ -5,19 +5,6 @@
         <a href="javascript:"><img src="assets/images/logo-dark.svg" alt="theme logo" /></a>
       </div>
       <div class="my-5">
-        <ul class="nav nav-tabs admin-role d-block">
-          <div class="row g-2">
-            @for (role of roles; track role.role) {
-              <div class="col-sm-2">
-                <li class="nav-item">
-                  <a href="javascript:" class="nav-link" [class.active]="selectedRole === role" (click)="onSelectRole(role)">
-                    {{ role.name }}
-                  </a>
-                </li>
-              </div>
-            }
-          </div>
-        </ul>
         <div class="card">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-end mb-4">
@@ -60,15 +47,13 @@
                   />
                 }
 
-                @if (selectedRole.password) {
-                  <i
-                    antIcon
-                    theme="outline"
-                    type="{{ showPassword ? 'eye' : 'eye-invisible' }}"
-                    id="togglePassword"
-                    (click)="togglePasswordVisibility()"
-                  ></i>
-                }
+                <i
+                  antIcon
+                  theme="outline"
+                  type="{{ showPassword ? 'eye' : 'eye-invisible' }}"
+                  id="togglePassword"
+                  (click)="togglePasswordVisibility()"
+                ></i>
 
                 @if (submitted && loginForm.password().errors()) {
                   <div class="invalid-feedback">
@@ -97,21 +82,6 @@
                 <div class="alert alert-danger mt-3 mb-0">{{ error }}</div>
               }
             </form>
-            <div class="saprator mt-3">
-              <span>Login with</span>
-            </div>
-            <div class="row">
-              @for (platform of socialMedia; track platform) {
-                <div class="col-4">
-                  <div class="d-grid">
-                    <button type="button" class="btn mt-2 btn-light-primary bg-light social-button">
-                      <img [src]="'assets/images/authentication/' + platform.logo" [alt]="platform.name + ' logo'" />
-                      <span class="d-none d-sm-inline-block">{{ platform.name }}</span>
-                    </button>
-                  </div>
-                </div>
-              }
-            </div>
           </div>
         </div>
       </div>

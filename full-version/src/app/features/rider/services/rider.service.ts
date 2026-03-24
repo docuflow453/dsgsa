@@ -766,7 +766,7 @@ export class RiderService {
         notes: 'Consistent performer, reliable in competitions'
       }
     ];
-    return of(horses).pipe(delay(300));
+    return of(horses).pipe(delay(100));
   }
 
   private mockEntries(): Observable<Entry[]> {

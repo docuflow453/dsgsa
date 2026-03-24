@@ -1,0 +1,162 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card>
+      <div class="card-header" card-header>
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <h5 class="mb-0">
+            <i class="ti ti-palette me-2"></i>Color Details
+          </h5>
+          <div class="btn-group" *ngIf="color">
+            <button type="button" class="btn btn-outline-secondary" (click)="goBack()">
+              <i class="ti ti-arrow-left me-2"></i>Back
+            </button>
+            <button type="button" class="btn btn-primary" (click)="editColor()">
+              <i class="ti ti-edit me-2"></i>Edit
+            </button>
+            <button type="button" class="btn btn-outline-danger" (click)="openDeleteModal(deleteModal)">
+              <i class="ti ti-trash me-2"></i>Delete
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <!-- Loading State -->
+        <div *ngIf="loading" class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+
+        <!-- Color Details -->
+        <div *ngIf="!loading && color">
+          <!-- Basic Information -->
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <h6 class="mb-3 text-muted">Basic Information</h6>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Color Name</label>
+              <p class="fw-bold">{{ color.name }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Code</label>
+              <p><span class="badge bg-light-primary">{{ color.code }}</span></p>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label class="form-label text-muted">Description</label>
+              <p>{{ color.description }}</p>
+            </div>
+          </div>
+
+          <hr />
+
+          <!-- Color Characteristics -->
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <h6 class="mb-3 text-muted">Color Characteristics</h6>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Hex Code</label>
+              @if (color.hexCode) {
+                <div class="d-flex align-items-center">
+                  <div class="color-preview-large" [style.background-color]="color.hexCode"></div>
+                  <span class="ms-3">{{ color.hexCode }}</span>
+                </div>
+              } @else {
+                <p>N/A</p>
+              }
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Category</label>
+              <p>{{ color.category || 'N/A' }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Common Color</label>
+              <p>
+                @if (color.isCommon) {
+                  <span class="badge bg-success">Yes</span>
+                } @else {
+                  <span class="badge bg-secondary">No</span>
+                }
+              </p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label text-muted">Display Order</label>
+              <p>{{ color.displayOrder }}</p>
+            </div>
+          </div>
+
+          <hr />
+
+          <!-- Status & Dates -->
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <h6 class="mb-3 text-muted">Status & Dates</h6>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label text-muted">Status</label>
+              <p>
+                <span class="badge" [ngClass]="getStatusClass(color.status)">
+                  {{ color.status }}
+                </span>
+              </p>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label text-muted">Date Created</label>
+              <p>{{ formatDate(color.dateCreated) }}</p>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label text-muted">Last Updated</label>
+              <p>{{ formatDate(color.dateUpdated) }}</p>
+            </div>
+          </div>
+
+          <hr />
+
+          <!-- Additional Information -->
+          <div class="row mb-4" *ngIf="color.notes">
+            <div class="col-md-12">
+              <h6 class="mb-3 text-muted">Additional Information</h6>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label class="form-label text-muted">Notes</label>
+              <p>{{ color.notes }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Not Found State -->
+        <div *ngIf="!loading && !color" class="text-center py-5">
+          <i class="ti ti-palette f-40 d-block mb-2 text-muted"></i>
+          <p class="text-muted">Color not found</p>
+          <button type="button" class="btn btn-primary" (click)="goBack()">
+            <i class="ti ti-arrow-left me-2"></i>Back to List
+          </button>
+        </div>
+      </div>
+    </app-card>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Delete Color</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="color" class="alert alert-warning">
+      <i class="ti ti-alert-triangle me-2"></i>
+      Are you sure you want to delete <strong>{{ color.name }}</strong>?
+      This action cannot be undone.
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteColor()">
+      <i class="ti ti-trash me-2"></i>Delete
+    </button>
+  </div>
+</ng-template>
+

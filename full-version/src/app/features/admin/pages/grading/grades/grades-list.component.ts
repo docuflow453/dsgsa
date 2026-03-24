@@ -19,7 +19,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-grades-list',
   standalone: true,
-  imports: [SharedModule, RouterModule, DatePipe],
+  imports: [SharedModule, RouterModule],
   templateUrl: './grades-list.component.html',
   styleUrl: './grades-list.component.scss',
   providers: [GradesListService, DecimalPipe]

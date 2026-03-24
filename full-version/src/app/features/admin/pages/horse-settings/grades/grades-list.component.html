@@ -1,0 +1,232 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="Horse Grades" cardClass="table-card" [padding]="0">
+      <form class="dt-responsive">
+        <!-- Top Controls: Page Size, Filters, and Search -->
+        <div class="dataTable-top">
+          <div class="row g-3 align-items-center">
+            <!-- Page Size Selector -->
+            <div class="col-auto">
+              <select
+                class="form-select"
+                title="select item per page"
+                style="width: auto"
+                name="pageSize"
+                [(ngModel)]="service.pageSize"
+              >
+                <option [ngValue]="5">5 items per page</option>
+                <option [ngValue]="10">10 items per page</option>
+                <option [ngValue]="15">15 items per page</option>
+                <option [ngValue]="25">25 items per page</option>
+                <option [ngValue]="50">50 items per page</option>
+              </select>
+            </div>
+
+            <!-- Status Filter -->
+            <div class="col-auto">
+              <select class="form-select" name="statusFilter" [(ngModel)]="service.statusFilter" style="width: auto">
+                <option value="">All Statuses</option>
+                @for (status of uniqueStatuses; track status) {
+                  <option [value]="status">{{ status }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Reset Filters Button -->
+            <div class="col-auto">
+              <button type="button" class="btn btn-outline-secondary" (click)="resetFilters()">
+                <i class="ti ti-refresh"></i> Reset
+              </button>
+            </div>
+
+            <!-- Search Box -->
+            <div class="col-auto ms-auto">
+              <div class="dataTable-search d-flex align-items-center">
+                <input
+                  id="table-complete-search"
+                  type="text"
+                  class="form-control"
+                  name="searchTerm"
+                  [(ngModel)]="service.searchTerm"
+                  placeholder="Search by name, code, description..."
+                  style="min-width: 300px"
+                />
+              </div>
+            </div>
+
+            <!-- Add Grade Button -->
+            <div class="col-auto">
+              <button type="button" class="btn btn-primary" [routerLink]="['/admin/horse-settings/grades/create']">
+                <i class="ti ti-plus"></i> Add Grade
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive dt-responsive">
+          @if (loading$ | async) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          } @else {
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col" sortable="name" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    NAME
+                  </th>
+                  <th scope="col" sortable="code" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    CODE
+                  </th>
+                  <th scope="col">DESCRIPTION</th>
+                  <th scope="col" sortable="level" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    LEVEL
+                  </th>
+                  <th scope="col">SCORE RANGE</th>
+                  <th scope="col" sortable="status" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    STATUS
+                  </th>
+                  <th scope="col" sortable="dateCreated" (sort)="service.sortColumn = $event.column; service.sortDirection = $event.direction">
+                    DATE CREATED
+                  </th>
+                  <th scope="col" class="text-center">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (grade of grades$ | async; track grade.id) {
+                  <tr>
+                    <!-- Name -->
+                    <td>
+                      <h6 class="mb-0">
+                        <ngb-highlight [result]="grade.name" [term]="service.searchTerm"></ngb-highlight>
+                      </h6>
+                    </td>
+
+                    <!-- Code -->
+                    <td>
+                      <span class="badge bg-light-primary">
+                        <ngb-highlight [result]="grade.code" [term]="service.searchTerm"></ngb-highlight>
+                      </span>
+                    </td>
+
+                    <!-- Description -->
+                    <td>
+                      <span class="text-muted">
+                        <ngb-highlight [result]="grade.description" [term]="service.searchTerm"></ngb-highlight>
+                      </span>
+                    </td>
+
+                    <!-- Level -->
+                    <td>
+                      <span class="badge bg-light-info">Level {{ grade.level }}</span>
+                    </td>
+
+                    <!-- Score Range -->
+                    <td>
+                      @if (grade.minScore !== undefined && grade.maxScore !== undefined) {
+                        <span class="text-muted">{{ grade.minScore }}% - {{ grade.maxScore }}%</span>
+                      } @else if (grade.minScore !== undefined) {
+                        <span class="text-muted">{{ grade.minScore }}%+</span>
+                      } @else {
+                        <span class="text-muted">-</span>
+                      }
+                    </td>
+
+                    <!-- Status -->
+                    <td>
+                      <span [ngClass]="getStatusClass(grade.status)">{{ grade.status }}</span>
+                    </td>
+
+                    <!-- Date Created -->
+                    <td>{{ formatDate(grade.dateCreated) }}</td>
+
+                    <!-- Actions -->
+                    <td class="text-center">
+                      <div class="btn-group" role="group">
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-outline-secondary"
+                          [routerLink]="['/admin/horse-settings/grades', grade.id]"
+                          title="View Details"
+                        >
+                          <i class="ti ti-eye"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-outline-primary"
+                          [routerLink]="['/admin/horse-settings/grades', grade.id, 'edit']"
+                          title="Edit"
+                        >
+                          <i class="ti ti-edit"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-outline-danger"
+                          (click)="openDeleteModal(deleteModal, grade)"
+                          title="Delete"
+                        >
+                          <i class="ti ti-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="8" class="text-center py-5">
+                      <div class="text-muted">
+                        <i class="ti ti-trophy f-40 d-block mb-2"></i>
+                        <p class="mb-0">No grades found</p>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+
+        <!-- Pagination -->
+        <div class="datatable-bottom">
+          <div class="datatable-info">
+            Showing {{ (service.page - 1) * service.pageSize + 1 }} to
+            {{ service.page * service.pageSize > (total$ | async)! ? (total$ | async)! : service.page * service.pageSize }} of
+            {{ total$ | async }} entries
+          </div>
+          <ngb-pagination
+            [collectionSize]="(total$ | async)!"
+            [(page)]="service.page"
+            [pageSize]="service.pageSize"
+            class="table-pagination"
+          ></ngb-pagination>
+        </div>
+      </form>
+    </app-card>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Delete Grade</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    @if (selectedGrade) {
+      <div class="alert alert-warning">
+        <i class="ti ti-alert-triangle me-2"></i>
+        Are you sure you want to delete <strong>{{ selectedGrade.name }}</strong>?
+        This action cannot be undone.
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteGrade()">
+      <i class="ti ti-trash me-2"></i>Delete
+    </button>
+  </div>
+</ng-template>
+

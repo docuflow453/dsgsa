@@ -77,6 +77,19 @@ export interface HorseAffiliation {
   status: 'Active' | 'Expired' | 'Pending';
 }
 
+export interface HorseOwnership {
+  id: string;
+  horseId: string;
+  ownerName: string;
+  ownerEmail?: string;
+  ownerPhone?: string;
+  ownershipStartDate: Date;
+  ownershipEndDate?: Date;
+  isCurrent: boolean;
+  transferReason?: string;
+  notes?: string;
+}
+
 export interface Horse {
   id: string;
   riderId: string;
@@ -88,13 +101,16 @@ export interface Horse {
   gender: 'Gelding' | 'Mare' | 'Stallion';
   color?: string;
   height?: number;
+  markings?: string;
   microchip: string;
   passportNumber: string;
+  feiNumber?: string;
   grade: string;
   status: 'Active' | 'Inactive' | 'Retired';
   vaccinations?: HorseVaccination[];
   documents?: HorseDocument[];
   affiliations?: HorseAffiliation[];
+  ownershipHistory?: HorseOwnership[];
   imageUrl?: string;
   sire?: string;
   dam?: string;

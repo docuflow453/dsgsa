@@ -1,0 +1,28 @@
+/**
+ * Payment Methods List Component Styles
+ */
+
+.table {
+  tbody tr {
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+  }
+}
+
+.form-check-input {
+  cursor: pointer;
+}
+
+.btn-group {
+  .btn {
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+  }
+}
+

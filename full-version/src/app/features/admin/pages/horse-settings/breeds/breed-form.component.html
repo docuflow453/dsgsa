@@ -1,0 +1,176 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card>
+      <div class="card-header" card-header>
+        <h5 class="mb-0">
+          <i class="ti ti-horse me-2"></i>{{ pageTitle }}
+        </h5>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="breedForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <!-- Name -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Breed Name <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="name"
+                placeholder="e.g., Warmblood, Hanoverian, Andalusian"
+                [class.is-invalid]="submitted && breedForm.get('name')?.invalid"
+              />
+              <div class="invalid-feedback" *ngIf="submitted && breedForm.get('name')?.invalid">
+                Breed name is required
+              </div>
+            </div>
+
+            <!-- Code -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Code <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="code"
+                placeholder="e.g., WARM, HANN, AND"
+                [class.is-invalid]="submitted && breedForm.get('code')?.invalid"
+              />
+              <div class="invalid-feedback" *ngIf="submitted && breedForm.get('code')?.invalid">
+                Code is required
+              </div>
+              <small class="form-text text-muted">Unique identifier (uppercase recommended)</small>
+            </div>
+
+            <!-- Description -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Description <span class="text-danger">*</span></label>
+              <textarea
+                class="form-control"
+                formControlName="description"
+                rows="2"
+                placeholder="Enter description of the breed"
+                [class.is-invalid]="submitted && breedForm.get('description')?.invalid"
+              ></textarea>
+              <div class="invalid-feedback" *ngIf="submitted && breedForm.get('description')?.invalid">
+                Description is required
+              </div>
+            </div>
+
+            <!-- Origin -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Origin</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="origin"
+                placeholder="e.g., Germany, Netherlands, Spain"
+              />
+              <small class="form-text text-muted">Country or region of origin</small>
+            </div>
+
+            <!-- Average Height -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Average Height</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="averageHeight"
+                placeholder="e.g., 16-17 hands"
+              />
+              <small class="form-text text-muted">Typical height range in hands</small>
+            </div>
+
+            <!-- Temperament -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Temperament</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="temperament"
+                placeholder="e.g., Calm, willing, intelligent"
+              />
+              <small class="form-text text-muted">Typical temperament characteristics</small>
+            </div>
+
+            <!-- Display Order -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Display Order <span class="text-danger">*</span></label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="displayOrder"
+                placeholder="0"
+                min="0"
+                [class.is-invalid]="submitted && breedForm.get('displayOrder')?.invalid"
+              />
+              <div class="invalid-feedback" *ngIf="submitted && breedForm.get('displayOrder')?.invalid">
+                Display order is required
+              </div>
+              <small class="form-text text-muted">Order in which breeds are displayed (lower numbers first)</small>
+            </div>
+
+            <!-- Characteristics -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Characteristics</label>
+              <textarea
+                class="form-control"
+                formControlName="characteristics"
+                rows="2"
+                placeholder="Physical and performance characteristics"
+              ></textarea>
+              <small class="form-text text-muted">Physical traits and performance characteristics</small>
+            </div>
+
+            <!-- Status -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Status <span class="text-danger">*</span></label>
+              <select class="form-select" formControlName="status">
+                <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+              </select>
+            </div>
+
+            <!-- Active Toggle -->
+            <div class="col-md-12 mb-3">
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  formControlName="isActive"
+                  id="isActive"
+                  (change)="onActiveChange()"
+                />
+                <label class="form-check-label" for="isActive">
+                  <strong>Active</strong>
+                  <small class="d-block text-muted">Only active breeds are available for selection</small>
+                </label>
+              </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Notes</label>
+              <textarea
+                class="form-control"
+                formControlName="notes"
+                rows="3"
+                placeholder="Additional notes or instructions"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="d-flex justify-content-end gap-2 mt-4">
+            <button type="button" class="btn btn-outline-secondary" (click)="cancel()" [disabled]="saving">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary" [disabled]="saving">
+              <span *ngIf="saving" class="spinner-border spinner-border-sm me-2" role="status"></span>
+              <i *ngIf="!saving" class="ti ti-check me-2"></i>
+              {{ isEditMode ? 'Update Breed' : 'Create Breed' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </app-card>
+  </div>
+</div>
+

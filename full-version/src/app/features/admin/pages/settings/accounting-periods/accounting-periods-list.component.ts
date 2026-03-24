@@ -19,7 +19,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-accounting-periods-list',
   standalone: true,
-  imports: [SharedModule, RouterModule, DatePipe, CurrencyPipe],
+  imports: [SharedModule, RouterModule, DatePipe],
   templateUrl: './accounting-periods-list.component.html',
   styleUrl: './accounting-periods-list.component.scss',
   providers: [AccountingPeriodsListService, DecimalPipe]
