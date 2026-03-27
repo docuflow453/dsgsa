@@ -4,6 +4,8 @@ Django==5.2
 # API Framework - Django Shinobi (fork of Django Ninja)
 django-shinobi ==1.4.2
 
+pydantic[email]
+
 # Database Driver
 psycopg2-binary==2.9.9
 

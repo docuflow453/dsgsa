@@ -1,4 +1,4 @@
-from shinobi import Router
+from ninja import Router
 from django.http import HttpRequest
 from typing import Optional
 
@@ -196,7 +196,7 @@ def reset_password(request: HttpRequest, payload: ResetPasswordRequestSchema):
 
 @router.get(
     "/auth/validate-reset-token/{token}",
-    response={200: dict, 400: ErrorResponseSchema},
+    response={200: dict, 400: dict},
     summary="Validate Reset Token",
     description="Check if a password reset token is valid"
 )
@@ -215,8 +215,7 @@ def validate_reset_token(request: HttpRequest, token: str):
 
     if not is_valid:
         return 400, {
-            "error": "Invalid token",
-            "detail": error_message
+            "message": error_message
         }
 
     return 200, {
