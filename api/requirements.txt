@@ -1,19 +1,19 @@
 # Django and REST Framework
-Django==6.0.3
-djangorestframework==3.14.0
-djangorestframework-simplejwt==5.3.0
+Django==5.2
+djangorestframework==3.15.2
+djangorestframework-simplejwt==5.3.1
 
 # CORS handling
-django-cors-headers==4.3.1
+django-cors-headers==4.4.0
 
 # Filtering and search
-django-filter==23.5
+django-filter==24.3
 
 # Database
 psycopg2-binary==2.9.9
 
 # File handling
-Pillow==10.2.0
+Pillow>=10.0.0
 
 # Date utilities
 python-dateutil==2.8.2
@@ -25,21 +25,21 @@ python-decouple==3.8
 drf-yasg==1.21.7
 
 # Testing
-pytest==7.4.4
-pytest-django==4.7.0
+pytest==8.3.3
+pytest-django==4.9.0
 
 # Code quality
-flake8==7.0.0
-black==24.1.1
+flake8==7.1.1
+black==24.8.0
 
 # Background tasks (optional)
-celery==5.3.6
-redis==5.0.1
+celery==5.4.0
+redis==5.1.1
 django-redis==5.4.0
 
 # Production server
-gunicorn==21.2.0
+gunicorn==23.0.0
 
 # Monitoring (optional)
-sentry-sdk==1.40.0
+sentry-sdk==2.14.0
 

@@ -1,0 +1,282 @@
+<!-- Competition Detail Page -->
+<div class="competition-detail-page">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text-muted mt-3">Loading competition details...</p>
+  </div>
+
+  <!-- Competition Detail Content -->
+  <div *ngIf="!loading && competition">
+    <!-- Back Button -->
+    <button class="btn btn-link text-muted p-0 mb-3" (click)="backToCalendar()">
+      <i class="ti ti-arrow-left me-2"></i>Back to Calendar
+    </button>
+
+    <!-- Header with Enter Online Button -->
+    <div class="card mb-4 competition-header">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <h2 class="mb-2">{{ competition.name }}</h2>
+            <div class="competition-meta">
+              <span class="meta-item">
+                <i class="ti ti-calendar text-primary"></i>
+                {{ formatDate(competition.startDate) }}
+                <span *ngIf="competition.startDate !== competition.endDate">
+                  - {{ formatDate(competition.endDate) }}
+                </span>
+              </span>
+              <span class="meta-item">
+                <i class="ti ti-map-pin text-primary"></i>
+                {{ competition.venue }}, {{ competition.city }}
+              </span>
+              <span class="meta-item">
+                <i class="ti ti-clock text-primary"></i>
+                Closes: {{ formatDate(competition.closingDate) }}
+              </span>
+            </div>
+          </div>
+          <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <button
+              class="btn btn-primary btn-lg w-100 w-md-auto enter-online-btn"
+              (click)="enterOnline()"
+              [disabled]="isClosed(competition.closingDate)"
+            >
+              <i class="ti ti-edit me-2"></i>Enter Online
+            </button>
+            <div *ngIf="isClosingSoon(competition.closingDate) && !isClosed(competition.closingDate)" class="alert alert-warning mt-2 mb-0 py-2 px-3">
+              <i class="ti ti-alert-triangle me-2"></i>
+              <small>Closes in {{ getDaysUntilClosing(competition.closingDate) }} day(s)</small>
+            </div>
+            <div *ngIf="isClosed(competition.closingDate)" class="alert alert-secondary mt-2 mb-0 py-2 px-3">
+              <i class="ti ti-lock me-2"></i>
+              <small>Entries Closed</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-tabs mb-4">
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="activeTab === 'overview'" (click)="setActiveTab('overview')">
+          <i class="ti ti-info-circle me-2"></i>Overview
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="activeTab === 'classes'" (click)="setActiveTab('classes')">
+          <i class="ti ti-list me-2"></i>Classes ({{ competitionClasses.length }})
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="activeTab === 'extras'" (click)="setActiveTab('extras')">
+          <i class="ti ti-plus-circle me-2"></i>Extras ({{ competitionExtras.length }})
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="activeTab === 'contact'" (click)="setActiveTab('contact')">
+          <i class="ti ti-phone me-2"></i>Contact
+        </a>
+      </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content">
+      <!-- Overview Tab -->
+      <div *ngIf="activeTab === 'overview'" class="card">
+        <div class="card-body">
+          <h4 class="mb-4">Competition Information</h4>
+
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <div class="info-group">
+                <label>Competition Type</label>
+                <p>{{ competition.competitionType | titlecase }}</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info-group">
+                <label>Status</label>
+                <p>
+                  <span class="badge bg-success" *ngIf="!isClosed(competition.closingDate)">Open for Entries</span>
+                  <span class="badge bg-secondary" *ngIf="isClosed(competition.closingDate)">Entries Closed</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <div class="info-group">
+                <label>Venue</label>
+                <p>{{ competition.venue }}</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info-group">
+                <label>Location</label>
+                <p>{{ competition.city }}, {{ competition.province }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <div class="info-group">
+                <label>Competition Dates</label>
+                <p>
+                  {{ formatDate(competition.startDate) }}
+                  <span *ngIf="competition.startDate !== competition.endDate">
+                    - {{ formatDate(competition.endDate) }}
+                  </span>
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info-group">
+                <label>Closing Date</label>
+                <p>{{ formatDate(competition.closingDate) }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <div class="info-group">
+                <label>Total Classes</label>
+                <p>{{ competition.totalClasses }}</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info-group">
+                <label>Current Entries</label>
+                <p>{{ competition.totalEntries }} / {{ competition.maxEntries }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-group" *ngIf="competition.description">
+            <label>Description</label>
+            <p>{{ competition.description }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Classes Tab -->
+      <div *ngIf="activeTab === 'classes'" class="card">
+        <div class="card-body">
+          <h4 class="mb-4">Competition Classes</h4>
+
+          <div *ngIf="competitionClasses.length === 0" class="text-center text-muted py-4">
+            <i class="ti ti-list-off" style="font-size: 3rem; opacity: 0.3;"></i>
+            <p class="mt-3">No classes available yet</p>
+          </div>
+
+          <div *ngIf="competitionClasses.length > 0" class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Class Name</th>
+                  <th>Grade</th>
+                  <th>Test</th>
+                  <th class="text-end">Entry Fee</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let class of competitionClasses">
+                  <td><strong>{{ class.name }}</strong></td>
+                  <td><span class="badge bg-info">{{ getGradeLabel(class.grade) }}</span></td>
+                  <td>{{ class.test }}</td>
+                  <td class="text-end">{{ formatCurrency(class.entryFee) }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Extras Tab -->
+      <div *ngIf="activeTab === 'extras'" class="card">
+        <div class="card-body">
+          <h4 class="mb-4">Competition Extras</h4>
+
+          <div *ngIf="competitionExtras.length === 0" class="text-center text-muted py-4">
+            <i class="ti ti-plus-circle-off" style="font-size: 3rem; opacity: 0.3;"></i>
+            <p class="mt-3">No extras available for this competition</p>
+          </div>
+
+          <div *ngIf="competitionExtras.length > 0" class="row">
+            <div *ngFor="let extra of competitionExtras" class="col-md-6 mb-3">
+              <div class="extra-card">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h6 class="mb-1">{{ extra.name }}</h6>
+                    <p class="text-muted small mb-2">{{ extra.description }}</p>
+                  </div>
+                  <span class="badge bg-primary">{{ formatCurrency(extra.price) }}</span>
+                </div>
+                <div class="text-muted small">
+                  <i class="ti ti-info-circle me-1"></i>
+                  <span *ngIf="extra.isPerDay">Per day</span>
+                  <span *ngIf="!extra.isPerDay">Per competition</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Tab -->
+      <div *ngIf="activeTab === 'contact'" class="card">
+        <div class="card-body">
+          <h4 class="mb-4">Contact Information</h4>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="contact-item">
+                <i class="ti ti-mail text-primary"></i>
+                <div>
+                  <label>Email</label>
+                  <p><a [href]="'mailto:' + competition.contactEmail">{{ competition.contactEmail }}</a></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <div class="contact-item">
+                <i class="ti ti-phone text-primary"></i>
+                <div>
+                  <label>Phone</label>
+                  <p><a [href]="'tel:' + competition.contactPhone">{{ competition.contactPhone }}</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-info mt-4">
+            <i class="ti ti-info-circle me-2"></i>
+            For any queries regarding this competition, please contact the organizers using the details above.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Enter Button (Mobile Friendly) -->
+    <div class="card mt-4 d-md-none">
+      <div class="card-body text-center">
+        <button
+          class="btn btn-primary btn-lg w-100"
+          (click)="enterOnline()"
+          [disabled]="isClosed(competition.closingDate)"
+        >
+          <i class="ti ti-edit me-2"></i>Enter Online
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

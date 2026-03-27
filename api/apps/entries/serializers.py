@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Entry, EntryClass, Transaction, TransactionExtra, RidingOrder
+from .models import Entry, EntryClass, Transaction, EntryExtra, RidingOrder
 
 
 class EntryClassSerializer(serializers.ModelSerializer):
@@ -14,19 +14,19 @@ class EntryClassSerializer(serializers.ModelSerializer):
         return f"{obj.competition_class.grade.name if obj.competition_class.grade else 'No Grade'}"
 
 
-class TransactionExtraSerializer(serializers.ModelSerializer):
+class EntryExtraSerializer(serializers.ModelSerializer):
     extra_name = serializers.CharField(source='competition_extra.name', read_only=True)
-    
+
     class Meta:
-        model = TransactionExtra
-        fields = ['id', 'transaction', 'competition_extra', 'extra_name', 'quantity', 'price', 'created_at', 'updated_at']
+        model = EntryExtra
+        fields = ['id', 'entry', 'competition_extra', 'extra_name', 'quantity', 'price', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
 
 
 class TransactionSerializer(serializers.ModelSerializer):
     entry_details = serializers.SerializerMethodField()
     approved_by_name = serializers.CharField(source='approved_by.get_full_name', read_only=True)
-    extras = TransactionExtraSerializer(source='transaction_extras', many=True, read_only=True)
+    extras = EntryExtraSerializer(source='entry.entry_extras', many=True, read_only=True)
     
     class Meta:
         model = Transaction

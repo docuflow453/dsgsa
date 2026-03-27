@@ -1,0 +1,28 @@
+"""
+Pytest configuration file for the backend project.
+"""
+import pytest
+from django.conf import settings
+
+
+@pytest.fixture(scope='session')
+def django_db_setup():
+    """Configure test database."""
+    settings.DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:',
+    }
+
+
+@pytest.fixture(autouse=True)
+def enable_db_access_for_all_tests(db):
+    """Enable database access for all tests."""
+    pass
+
+
+@pytest.fixture(autouse=True)
+def clear_mail_outbox():
+    """Clear Django mail outbox before each test."""
+    from django.core import mail
+    mail.outbox = []
+

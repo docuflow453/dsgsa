@@ -28,18 +28,18 @@ urlpatterns = [
     path('ready/', readiness_check, name='readiness-check'),
     path('alive/', liveness_check, name='liveness-check'),
 
-    # API endpoints
-    path('api/', include('apps.authentication.urls')),
-    path('api/', include('apps.clubs.urls')),
-    path('api/', include('apps.horses.urls')),
-    path('api/', include('apps.riders.urls')),
-    path('api/', include('apps.accounting.urls')),
-    path('api/', include('apps.competitions.urls')),
-    path('api/', include('apps.entries.urls')),
-    path('api/', include('apps.disciplines.urls')),
-    path('api/', include('apps.payments.urls')),
-    path('api/', include('apps.subscriptions.urls')),
-    path('api/', include('apps.arenas.urls')),
+    # API endpoints - each app gets its own namespace to avoid router conflicts
+    path('api/auth/', include('apps.authentication.urls')),
+    path('api/clubs/', include('apps.clubs.urls')),
+    path('api/horses/', include('apps.horses.urls')),
+    path('api/riders/', include('apps.riders.urls')),
+    path('api/accounting/', include('apps.accounting.urls')),
+    path('api/competitions/', include('apps.competitions.urls')),
+    path('api/entries/', include('apps.entries.urls')),
+    path('api/disciplines/', include('apps.disciplines.urls')),
+    path('api/payments/', include('apps.payments.urls')),
+    path('api/subscriptions/', include('apps.subscriptions.urls')),
+    path('api/arenas/', include('apps.arenas.urls')),
 ]
 
 # Serve media files in development

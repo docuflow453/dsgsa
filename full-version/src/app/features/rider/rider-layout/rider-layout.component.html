@@ -22,7 +22,7 @@
         <!-- Right Side: Utility Items & User Menu -->
         <div class="navbar-nav ms-auto d-flex align-items-center">
           <!-- Calendar -->
-          <a class="nav-link" [routerLink]="['./entries']" title="Calendar" ngbTooltip="View Calendar">
+          <a class="nav-link" [routerLink]="['./calendar']" title="Calendar" ngbTooltip="Competition Calendar">
             <i class="ti ti-calendar"></i>
           </a>
 
@@ -44,6 +44,9 @@
             <div class="dropdown-menu dropdown-menu-end user-dropdown" ngbDropdownMenu>
               <a class="dropdown-item" [routerLink]="['./profile']">
                 <i class="ti ti-user me-2"></i>Account
+              </a>
+              <a class="dropdown-item" [routerLink]="['./calendar']">
+                <i class="ti ti-calendar-event me-2"></i>Calendar
               </a>
               <a class="dropdown-item" [routerLink]="['./clubs']">
                 <i class="ti ti-building me-2"></i>Clubs
@@ -125,6 +128,10 @@
             <!-- ENTRIES Section -->
             <div class="sidebar-section">
               <h6 class="sidebar-section-title text-uppercase text-muted px-3 py-2 mb-0">Entries</h6>
+              <a [routerLink]="['./calendar']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="sidebar-link">
+                <i class="ti ti-calendar-event"></i>
+                <span>Calendar</span>
+              </a>
               <a [routerLink]="['./entries']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="sidebar-link">
                 <i class="ti ti-calendar"></i>
                 <span>Upcoming</span>

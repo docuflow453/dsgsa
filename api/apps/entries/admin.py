@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Entry, EntryClass, Transaction, TransactionExtra, RidingOrder
+from .models import Entry, EntryClass, Transaction, EntryExtra, RidingOrder
 
 
 @admin.register(Entry)
@@ -27,9 +27,9 @@ class TransactionAdmin(admin.ModelAdmin):
     ordering = ['-created_at']
 
 
-@admin.register(TransactionExtra)
-class TransactionExtraAdmin(admin.ModelAdmin):
-    list_display = ['transaction', 'competition_extra', 'quantity', 'price', 'created_at']
+@admin.register(EntryExtra)
+class EntryExtraAdmin(admin.ModelAdmin):
+    list_display = ['entry', 'competition_extra', 'quantity', 'price', 'created_at']
     list_filter = ['competition_extra', 'created_at']
 
 

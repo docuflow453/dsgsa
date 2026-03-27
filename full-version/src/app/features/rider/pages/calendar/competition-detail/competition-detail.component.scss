@@ -1,0 +1,175 @@
+.competition-detail-page {
+  .competition-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border: 1px solid rgba(107, 33, 168, 0.1);
+
+    h2 {
+      color: #1a1d24;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .competition-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+
+      .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #4b5563;
+        font-size: 0.95rem;
+
+        i {
+          font-size: 1.1rem;
+        }
+      }
+    }
+
+    .enter-online-btn {
+      font-weight: 600;
+      padding: 0.75rem 2rem;
+      box-shadow: 0 4px 12px rgba(107, 33, 168, 0.2);
+      transition: all 0.3s ease;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(107, 33, 168, 0.3);
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+    }
+  }
+
+  .nav-tabs {
+    border-bottom: 2px solid #e5e7eb;
+
+    .nav-link {
+      color: #6b7280;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      cursor: pointer;
+
+      i {
+        opacity: 0.7;
+      }
+
+      &:hover {
+        color: #6B21A8;
+        background-color: rgba(107, 33, 168, 0.05);
+      }
+
+      &.active {
+        color: #6B21A8;
+        background-color: transparent;
+        border-bottom: 3px solid #6B21A8;
+        font-weight: 600;
+
+        i {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  .info-group {
+    margin-bottom: 1.5rem;
+
+    label {
+      font-weight: 600;
+      color: #374151;
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    p {
+      color: #4b5563;
+      margin-bottom: 0;
+      font-size: 0.95rem;
+    }
+  }
+
+  .table {
+    th {
+      background-color: #f9fafb;
+      color: #374151;
+      font-weight: 600;
+      border-bottom: 2px solid #e5e7eb;
+      padding: 0.75rem;
+    }
+
+    td {
+      padding: 0.75rem;
+      vertical-align: middle;
+    }
+
+    tbody tr {
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: rgba(107, 33, 168, 0.03);
+      }
+    }
+  }
+
+  .extra-card {
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    background-color: #f9fafb;
+    transition: all 0.2s ease;
+
+    &:hover {
+      border-color: #6B21A8;
+      background-color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    h6 {
+      color: #1a1d24;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+  }
+
+  .contact-item {
+    display: flex;
+    gap: 1rem;
+    align-items: start;
+
+    i {
+      font-size: 1.5rem;
+      margin-top: 0.25rem;
+    }
+
+    label {
+      font-weight: 600;
+      color: #374151;
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 0.85rem;
+    }
+
+    p {
+      margin-bottom: 0;
+      font-size: 0.95rem;
+
+      a {
+        color: #6B21A8;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+

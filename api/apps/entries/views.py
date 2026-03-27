@@ -1,10 +1,10 @@
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Entry, EntryClass, Transaction, TransactionExtra, RidingOrder
+from .models import Entry, EntryClass, Transaction, EntryExtra, RidingOrder
 from .serializers import (
     EntrySerializer, EntryDetailSerializer, EntryClassSerializer,
-    TransactionSerializer, TransactionExtraSerializer, RidingOrderSerializer
+    TransactionSerializer, EntryExtraSerializer, RidingOrderSerializer
 )
 
 
@@ -62,11 +62,11 @@ class TransactionViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class TransactionExtraViewSet(viewsets.ModelViewSet):
-    queryset = TransactionExtra.objects.select_related('transaction', 'competition_extra')
-    serializer_class = TransactionExtraSerializer
+class EntryExtraViewSet(viewsets.ModelViewSet):
+    queryset = EntryExtra.objects.select_related('entry', 'competition_extra')
+    serializer_class = EntryExtraSerializer
     permission_classes = [permissions.IsAuthenticated]
-    filterset_fields = ['transaction', 'competition_extra']
+    filterset_fields = ['entry', 'competition_extra']
 
 
 class RidingOrderViewSet(viewsets.ModelViewSet):

@@ -105,6 +105,16 @@ export const RIDER_ROUTES: Routes = [
         path: 'invoices',
         loadComponent: () => import('./pages/invoices/invoices.component').then(m => m.InvoicesComponent),
         title: 'Invoices - DSRiding'
+      },
+      {
+        path: 'calendar',
+        loadComponent: () => import('./pages/calendar/calendar.component').then(m => m.CalendarComponent),
+        title: 'Competition Calendar - DSRiding'
+      },
+      {
+        path: 'calendar/:id',
+        loadComponent: () => import('./pages/calendar/competition-detail/competition-detail.component').then(m => m.CompetitionDetailComponent),
+        title: 'Competition Details - DSRiding'
       }
     ]
   }

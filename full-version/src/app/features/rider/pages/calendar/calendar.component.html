@@ -1,0 +1,149 @@
+<!-- Competition Calendar Page -->
+<div class="calendar-page">
+  <!-- Page Header -->
+  <div class="page-header mb-4">
+    <h2><i class="ti ti-calendar me-2"></i>Competition Calendar</h2>
+    <p class="text-muted">Browse and enter upcoming dressage competitions</p>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row g-3">
+        <!-- Search -->
+        <div class="col-md-4">
+          <label class="form-label">Search</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search competitions..."
+            [(ngModel)]="searchQuery"
+            (ngModelChange)="applyFilters()"
+          />
+        </div>
+
+        <!-- Province Filter -->
+        <div class="col-md-4">
+          <label class="form-label">Province</label>
+          <select class="form-select" [(ngModel)]="selectedProvince" (ngModelChange)="applyFilters()">
+            <option value="all">All Provinces</option>
+            <option *ngFor="let province of provinces" [value]="province">{{ province }}</option>
+          </select>
+        </div>
+
+        <!-- Month Filter -->
+        <div class="col-md-4">
+          <label class="form-label">Month</label>
+          <select class="form-select" [(ngModel)]="selectedMonth" (ngModelChange)="applyFilters()">
+            <option value="all">All Months</option>
+            <option *ngFor="let month of months" [value]="month.value">{{ month.label }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text-muted mt-3">Loading competitions...</p>
+  </div>
+
+  <!-- Competitions List -->
+  <div *ngIf="!loading">
+    <!-- Empty State -->
+    <div *ngIf="filteredCompetitions.length === 0" class="card">
+      <div class="card-body text-center py-5">
+        <i class="ti ti-calendar-off" style="font-size: 4rem; opacity: 0.3;"></i>
+        <p class="text-muted mt-3 mb-0">
+          <span *ngIf="searchQuery || selectedProvince !== 'all' || selectedMonth !== 'all'">
+            No competitions found matching your filters
+          </span>
+          <span *ngIf="!searchQuery && selectedProvince === 'all' && selectedMonth === 'all'">
+            No competitions available at the moment
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Competitions Grid -->
+    <div *ngIf="filteredCompetitions.length > 0" class="row">
+      <div *ngFor="let competition of filteredCompetitions" class="col-md-6 col-lg-4 mb-4">
+        <div class="card competition-card h-100" (click)="viewCompetition(competition)">
+          <div class="card-body">
+            <!-- Status Badge -->
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <span class="badge" [ngClass]="getStatusBadgeClass(competition)">
+                {{ getStatusText(competition) }}
+              </span>
+              <span class="text-muted small">
+                <i class="ti ti-users me-1"></i>{{ competition.totalEntries }}/{{ competition.maxEntries }}
+              </span>
+            </div>
+
+            <!-- Competition Name -->
+            <h5 class="card-title mb-3">{{ competition.name }}</h5>
+
+            <!-- Competition Details -->
+            <div class="competition-details">
+              <div class="detail-item">
+                <i class="ti ti-calendar text-primary"></i>
+                <span>{{ formatDate(competition.startDate) }}
+                  <span *ngIf="competition.startDate !== competition.endDate">
+                    - {{ formatDate(competition.endDate) }}
+                  </span>
+                </span>
+              </div>
+
+              <div class="detail-item">
+                <i class="ti ti-map-pin text-primary"></i>
+                <span>{{ competition.venue }}</span>
+              </div>
+
+              <div class="detail-item">
+                <i class="ti ti-location text-primary"></i>
+                <span>{{ competition.city }}, {{ competition.province }}</span>
+              </div>
+
+              <div class="detail-item">
+                <i class="ti ti-clock text-primary"></i>
+                <span>Closes: {{ formatDate(competition.closingDate) }}</span>
+              </div>
+
+              <div class="detail-item">
+                <i class="ti ti-list text-primary"></i>
+                <span>{{ competition.totalClasses }} Classes</span>
+              </div>
+            </div>
+
+            <!-- Closing Warning -->
+            <div *ngIf="isClosingSoon(competition.closingDate) && !isClosed(competition.closingDate)" class="alert alert-warning mt-3 mb-0 py-2 px-3">
+              <i class="ti ti-alert-triangle me-2"></i>
+              <small>Closes in {{ getDaysUntilClosing(competition.closingDate) }} day(s)</small>
+            </div>
+
+            <div *ngIf="isClosingToday(competition.closingDate)" class="alert alert-danger mt-3 mb-0 py-2 px-3">
+              <i class="ti ti-alert-circle me-2"></i>
+              <small><strong>Closing Today!</strong></small>
+            </div>
+
+            <div *ngIf="isClosed(competition.closingDate)" class="alert alert-secondary mt-3 mb-0 py-2 px-3">
+              <i class="ti ti-lock me-2"></i>
+              <small>Entries Closed</small>
+            </div>
+          </div>
+
+          <!-- Card Footer -->
+          <div class="card-footer bg-transparent">
+            <button class="btn btn-primary btn-sm w-100" [disabled]="isClosed(competition.closingDate)">
+              <i class="ti ti-eye me-2"></i>View Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
