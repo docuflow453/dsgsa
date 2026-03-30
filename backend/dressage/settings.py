@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     # Local apps (inside apps/ folder)
     'users',  # Custom user authentication app
     'authentication',  # Authentication module (JWT, password reset)
+    'years',  # Competition years management
+    'membership',  # Membership types management
 ]
 
 MIDDLEWARE = [

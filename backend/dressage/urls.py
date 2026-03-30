@@ -20,17 +20,21 @@ from ninja import NinjaAPI
 
 from users.api import router as users_router
 from authentication.api import router as auth_router
+from years.api import router as years_router
+from membership.api import router as membership_router
 
 # Initialize Shinobi API
 api = NinjaAPI(
     title="Dressage API",
     version="1.0.0",
-    description="Dressage Riding System API - User Management & Authentication"
+    description="Dressage Riding System API - User Management, Authentication, Competition Years & Memberships"
 )
 
 # Register routers
 api.add_router("", users_router)
 api.add_router("", auth_router)
+api.add_router("", years_router)
+api.add_router("", membership_router)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
