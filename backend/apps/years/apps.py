@@ -3,6 +3,6 @@ from django.apps import AppConfig
 
 class YearsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'years'
+    name = 'backend.apps.years'
     verbose_name = 'Competition Years'
 
