@@ -18,25 +18,19 @@ from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI
 
-from users.api import router as users_router
-from authentication.api import router as auth_router
-from years.api import router as years_router
-from membership.api import router as membership_router
+from apps.users.api import router as users_router
+from apps.authentication.api import router as auth_router
 
-# Initialize Shinobi API
 api = NinjaAPI(
     title="Dressage API",
     version="1.0.0",
-    description="Dressage Riding System API - User Management, Authentication, Competition Years & Memberships"
+    description="Dressage Riding System API - User Management, Authentication, Competition, Years, Memberships, Riders & Horses"
 )
 
-# Register routers
-api.add_router("", users_router)
-api.add_router("", auth_router)
-api.add_router("", years_router)
-api.add_router("", membership_router)
+api.add_router("auth", auth_router)
+api.add_router("users", users_router)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', api.urls),  # API endpoints
+    path('api/', api.urls),
 ]
