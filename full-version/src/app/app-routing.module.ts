@@ -10,31 +10,35 @@ import { SimpleLayouts } from './theme/layout/simple-layout/simple-layout.compon
 import { Role } from './theme/shared/components/_helpers/role';
 
 const routes: Routes = [
-  // Default route - redirect to login
+  // Default route - redirect to auth/login
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'auth/login',
     pathMatch: 'full'
   },
-  // Primary login route
+  // Legacy login route - redirect to auth/login
   {
     path: 'login',
-    loadComponent: () => import('./demo/pages/authentication/auth-login/auth-login.component').then((c) => c.AuthLoginComponent)
+    redirectTo: 'auth/login',
+    pathMatch: 'full'
   },
   // Authentication routes (public - no auth required)
+  // All auth routes use AuthLayoutComponent for consistent centered design
   {
     path: 'auth',
     loadChildren: () => import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES)
   },
+  // Legacy register route - redirect to auth/register
   {
     path: 'register',
-    loadComponent: () =>
-      import('./demo/pages/authentication/auth-register/auth-register.component').then((c) => c.AuthRegisterComponent)
+    redirectTo: 'auth/register',
+    pathMatch: 'full'
   },
+  // Legacy forgot-password route - redirect to auth/forgot-password
   {
     path: 'forgot-password',
-    loadComponent: () =>
-      import('./demo/pages/authentication/forgot-password/forgot-password.component').then((c) => c.ForgotPasswordComponent)
+    redirectTo: 'auth/forgot-password',
+    pathMatch: 'full'
   },
   // All protected routes use AdminLayout
   {

@@ -8,8 +8,9 @@ export enum UserRole {
   CLUB = 'CLUB',
   PROVINCIAL = 'PROVINCIAL',
   SAEF = 'SAEF',
-  SHOW_HOLDING_BODY = 'SHB',
-  ADMIN = 'ADMIN'
+  SHOW_HOLDING_BODY = 'SHOW_HOLDING_BODY',
+  ADMIN = 'ADMIN',
+  OFFICIAL = 'OFFICIAL',
 }
 
 export interface User {

@@ -20,7 +20,7 @@ from .schemas import (
 router = Router(tags=["Users"])
 
 
-@router.get("/users/roles", response=List[UserRoleSchema], summary="Get available user roles")
+@router.get("roles", response=List[UserRoleSchema], summary="Get available user roles")
 def list_roles(request):
     """
     Retrieve all available user roles.
@@ -34,7 +34,7 @@ def list_roles(request):
     return roles
 
 
-@router.get("/users", response={200: UserListResponseSchema, 400: dict}, summary="List all users")
+@router.get("", response={200: UserListResponseSchema, 400: dict}, summary="List all users")
 def list_users(request, filters: UserFilterSchema = Query(...)):
     """
     Retrieve a paginated list of users with optional filtering.
@@ -67,7 +67,7 @@ def list_users(request, filters: UserFilterSchema = Query(...)):
     }
 
 
-@router.get("/users/{user_id}", response=UserResponseSchema, summary="Get user by ID")
+@router.get("/{user_id}", response=UserResponseSchema, summary="Get user by ID")
 def get_user(request, user_id: int):
     """
     Retrieve a specific user by their ID.
@@ -78,7 +78,7 @@ def get_user(request, user_id: int):
     return user
 
 
-@router.post("/users", response={201: UserResponseSchema, 400: dict}, summary="Create a new user")
+@router.post("", response={201: UserResponseSchema, 400: dict}, summary="Create a new user")
 def create_user(request, payload: UserCreateSchema):
     """
     Create a new user account.
@@ -117,7 +117,7 @@ def create_user(request, payload: UserCreateSchema):
 
 
 
-@router.put("/users/{user_id}", response={200: UserResponseSchema, 400: dict}, summary="Update user information")
+@router.put("/{user_id}", response={200: UserResponseSchema, 400: dict}, summary="Update user information")
 def update_user(request, user_id: int, payload: UserUpdateSchema):
     """
     Update an existing user's information.
@@ -155,7 +155,7 @@ def update_user(request, user_id: int, payload: UserUpdateSchema):
     return 200, user
 
 
-@router.patch("/users/{user_id}/password", response={200: MessageResponseSchema, 400: dict}, summary="Update user password")
+@router.patch("/{user_id}/password", response={200: MessageResponseSchema, 400: dict}, summary="Update user password")
 def update_password(request, user_id: int, payload: UserPasswordUpdateSchema):
     """
     Update a user's password.
@@ -177,7 +177,7 @@ def update_password(request, user_id: int, payload: UserPasswordUpdateSchema):
     return 200, {"message": "Password updated successfully"}
 
 
-@router.delete("/users/{user_id}", response=MessageResponseSchema, summary="Delete a user")
+@router.delete("/{user_id}", response=MessageResponseSchema, summary="Delete a user")
 def delete_user(request, user_id: int):
     """
     Delete a user account.
@@ -191,7 +191,7 @@ def delete_user(request, user_id: int):
     return {"message": f"User '{username}' deleted successfully"}
 
 
-@router.post("/users/{user_id}/ban", response={200: UserResponseSchema, 400: dict}, summary="Ban a user")
+@router.post("/{user_id}/ban", response={200: UserResponseSchema, 400: dict}, summary="Ban a user")
 def ban_user(request, user_id: int):
     """
     Ban a user account by setting the banned_at timestamp.
@@ -212,7 +212,7 @@ def ban_user(request, user_id: int):
     return 200, user
 
 
-@router.post("/users/{user_id}/unban", response={200: UserResponseSchema, 400: dict}, summary="Unban a user")
+@router.post("/{user_id}/unban", response={200: UserResponseSchema, 400: dict}, summary="Unban a user")
 def unban_user(request, user_id: int):
     """
     Unban a user account by clearing the banned_at timestamp.
@@ -231,7 +231,7 @@ def unban_user(request, user_id: int):
     return 200, user
 
 
-@router.post("/users/{user_id}/activate", response={200: UserResponseSchema, 400: dict}, summary="Activate a user account")
+@router.post("/{user_id}/activate", response={200: UserResponseSchema, 400: dict}, summary="Activate a user account")
 def activate_user(request, user_id: int):
     """
     Activate a user account by setting the activated_at timestamp.
@@ -252,7 +252,7 @@ def activate_user(request, user_id: int):
     return 200, user
 
 
-@router.post("/users/{user_id}/verify-email", response={200: UserResponseSchema, 400: dict}, summary="Verify user email")
+@router.post("/{user_id}/verify-email", response={200: UserResponseSchema, 400: dict}, summary="Verify user email")
 def verify_email(request, user_id: int):
     """
     Mark a user's email as verified by setting the email_verified_at timestamp.

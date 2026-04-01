@@ -91,7 +91,7 @@ export class AuthenticationService {
    * @param password - User password
    */
   login(email: string, password: string) {
-    return this.http.post<User>(`${environment.apiUrl}/api/account/login`, { email, password }).pipe(
+    return this.http.post<User>(`${environment.apiUrl}/api/auth/login`, { email, password }).pipe(
       tap((data: User) => {
         // Use actual API response data
         const userData = data;
@@ -101,7 +101,15 @@ export class AuthenticationService {
         const userDetails = {
           id: userData.user.id,
           email: userData.user.email,
-          serviceToken: userData.serviceToken
+          serviceToken: userData.serviceToken,
+          user: {
+            id: userData.user.id,
+            email: userData.user.email,
+            name: `${userData.user.firstName} ${userData.user.lastName}`,
+            role: userData.user.role,
+            firstName: userData.user.firstName,
+            lastName: userData.user.lastName
+          }
         };
         localStorage.setItem('currentUser', JSON.stringify(userDetails));
 
@@ -110,17 +118,17 @@ export class AuthenticationService {
         this.isLogin = true;
 
         // Fetch full user data from API (including role) and update signal
-        this.fetchCurrentUser().subscribe({
-          next: () => {
-            this.isLogin = true;
-          },
-          error: (error) => {
-            console.error('Error fetching user data after login:', error);
-            // Even if fetch fails, we can still set the login state
-            // The user data will be fetched on next page load
-            this.isLogin = true;
-          }
-        });
+        // this.fetchCurrentUser().subscribe({
+        //   next: () => {
+        //     this.isLogin = true;
+        //   },
+        //   error: (error) => {
+        //     console.error('Error fetching user data after login:', error);
+        //     // Even if fetch fails, we can still set the login state
+        //     // The user data will be fetched on next page load
+        //     this.isLogin = true;
+        //   }
+        // });
       })
     );
   }

@@ -79,20 +79,22 @@ export class AuthLoginComponent implements OnInit {
   private getRoleDashboardPath(role: Role): string {
     // Map role to dashboard path based on actual user role from API
     console.log('Getting dashboard path for role:', role);
-    switch (role) {
-      case Role.Admin:
+    console.log('Rider role', Role.Rider);
+    const roleToLower = role.toLowerCase();
+    switch (roleToLower) {
+      case Role.Admin.toLowerCase():
         return '/admin/dashboard';
-      case Role.SAEF:
+      case Role.SAEF.toLowerCase():
         return '/saef/dashboard';
-      case Role.Provincial:
+      case Role.Provincial.toLowerCase():
         return '/provincial/dashboard';
-      case Role.Club:
+      case Role.Club.toLowerCase():
         return '/clubs/dashboard';
-      case Role.ShowHoldingBody:
+      case Role.ShowHoldingBody.toLowerCase():
         return '/shb/dashboard';
-      case Role.Rider:
+      case Role.Rider.toLowerCase():
         return '/my/dashboard';
-      case Role.Official:
+      case Role.Official.toLowerCase():
         return '/official/dashboard';
       default:
         // Default fallback

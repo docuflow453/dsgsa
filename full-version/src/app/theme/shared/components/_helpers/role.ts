@@ -1,10 +1,10 @@
 export enum Role {
-  User = 'User',
-  Admin = 'Admin',
-  Rider = 'Rider',
-  Club = 'Club',
-  Provincial = 'Provincial',
+  User = 'USER',
+  Admin = 'ADMIN',
+  Rider = 'RIDER',
+  Club = 'CLUB',
+  Provincial = 'PROVINCIAL',
   SAEF = 'SAEF',
-  Official = 'Official',
-  ShowHoldingBody = 'ShowHoldingBody'
+  Official = 'OFFICIAL',
+  ShowHoldingBody = 'SHOW_HOLDING_BODY'
 }
