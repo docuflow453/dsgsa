@@ -43,9 +43,14 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'django_celery_beat',
+    'django_countries',
 
     'apps.users',
     'apps.authentication',
+    'apps.horse',
+    'apps.years',
+    'apps.memberships',
+    'apps.riders',
 ]
 
 MIDDLEWARE = [

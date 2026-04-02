@@ -20,6 +20,10 @@ from ninja import NinjaAPI
 
 from apps.users.api import router as users_router
 from apps.authentication.api import router as auth_router
+from apps.horse.api import router as horse_router
+from apps.years.api import router as years_router
+from apps.memberships.api import router as memberships_router
+from apps.riders.api import router as riders_router
 
 api = NinjaAPI(
     title="Dressage API",
@@ -29,6 +33,10 @@ api = NinjaAPI(
 
 api.add_router("auth", auth_router)
 api.add_router("users", users_router)
+api.add_router("", horse_router)
+api.add_router("", years_router)
+api.add_router("", memberships_router)
+api.add_router("", riders_router)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
