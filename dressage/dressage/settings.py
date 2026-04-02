@@ -43,9 +43,14 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'django_celery_beat',
+    'django_countries',
 
     'apps.users',
     'apps.authentication',
+    'apps.horse',
+    'apps.years',
+    'apps.memberships',
+    'apps.riders',
 ]
 
 MIDDLEWARE = [
@@ -134,6 +139,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Custom User Model
+# https://docs.djangoproject.com/en/5.2/topics/auth/customizing/#substituting-a-custom-user-model
+
+AUTH_USER_MODEL = 'users.User'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",

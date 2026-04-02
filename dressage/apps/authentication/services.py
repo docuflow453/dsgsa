@@ -34,7 +34,7 @@ class AuthService:
         Authenticate user and generate JWT tokens.
 
         Args:
-            email: Email address
+            email: Email address (username)
             password: User's password
             remember_me: Whether to extend refresh token lifetime
             ip_address: IP address of the requester
@@ -42,14 +42,11 @@ class AuthService:
         Returns:
             Dictionary containing user info and tokens, or None if authentication fails
         """
-        # Find user by username or email
+        # Find user by email
         try:
-            user = User.objects.get(username=email)
+            user = User.objects.get(email=email)
         except User.DoesNotExist:
-            try:
-                user = User.objects.get(email=email)
-            except User.DoesNotExist:
-                return None
+            return None
 
         # Verify password
         if not check_password(password, user.password):
@@ -87,8 +84,7 @@ class AuthService:
         """Generate JWT access token."""
         now = datetime.utcnow()
         payload = {
-            'user_id': user.id,
-            'username': user.username,
+            'user_id': str(user.id),  # Convert UUID to string
             'email': user.email,
             'role': user.role,
             'exp': now + cls.ACCESS_TOKEN_LIFETIME,
@@ -109,7 +105,7 @@ class AuthService:
         expires_at = timezone.now() + lifetime
 
         payload = {
-            'user_id': user.id,
+            'user_id': str(user.id),  # Convert UUID to string
             'exp': now + lifetime,
             'iat': now,
             'type': 'refresh',

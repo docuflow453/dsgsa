@@ -6,15 +6,14 @@ from pydantic import BaseModel, EmailStr, Field, field_validator
 
 class LoginRequestSchema(BaseModel):
     """Schema for user login request."""
-    email: str = Field(..., min_length=1, description="Username or email address")
+    email: EmailStr = Field(..., description="Email address")
     password: str = Field(..., min_length=1, description="User password")
     remember_me: bool = Field(default=False, description="Extended session (30 days instead of 7)")
 
 
 class UserResponseSchema(BaseModel):
     """Schema for user information in responses."""
-    id: int
-    username: str
+    id: str  # UUID as string
     email: str
     first_name: str
     last_name: str

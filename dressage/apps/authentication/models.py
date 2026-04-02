@@ -72,7 +72,7 @@ class RefreshToken(models.Model):
         ]
 
     def __str__(self):
-        return f"Refresh token for {self.user.username} (expires {self.expires_at})"
+        return f"Refresh token for {self.user.email} (expires {self.expires_at})"
 
     @property
     def is_expired(self):
