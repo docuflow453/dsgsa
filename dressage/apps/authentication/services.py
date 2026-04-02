@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import check_password
 from django.utils import timezone
 from django.db import transaction
+from django.core.exceptions import ValidationError
 
 from .models import RefreshToken
 
@@ -243,3 +244,154 @@ class AuthService:
         count = expired_tokens.count()
         expired_tokens.delete()
         return count
+
+    @classmethod
+    def register_user(
+        cls,
+        email: str,
+        password: str,
+        first_name: str,
+        last_name: str,
+        role: str,
+        title: Optional[str] = None,
+        maiden_name: Optional[str] = None,
+        date_of_birth: Optional[str] = None,
+        gender: Optional[str] = None,
+        nationality: Optional[str] = None,
+        id_number: Optional[str] = None,
+        passport_number: Optional[str] = None,
+        ethnicity: Optional[str] = None,
+        address_line_1: Optional[str] = None,
+        address_line_2: Optional[str] = None,
+        suburb: Optional[str] = None,
+        city: Optional[str] = None,
+        province: Optional[str] = None,
+        postal_code: Optional[str] = None,
+        country: Optional[str] = None,
+        ip_address: Optional[str] = None
+    ) -> Tuple[bool, Optional[Dict], Optional[str]]:
+        """
+        Register a new user and create associated profile (Rider or Official).
+
+        Args:
+            email: User's email address (unique)
+            password: User's password
+            first_name: User's first name
+            last_name: User's last name
+            role: User role (RIDER, OFFICIAL, CLUB, etc.)
+            title: User title (optional)
+            maiden_name: Maiden name (optional)
+            date_of_birth: Date of birth (required for RIDER and OFFICIAL)
+            gender: Gender (required for RIDER and OFFICIAL)
+            nationality: Nationality (required for RIDER and OFFICIAL)
+            id_number: SA ID number (optional)
+            passport_number: Passport number (optional)
+            ethnicity: Ethnicity (optional)
+            address_line_1: Address line 1 (optional)
+            address_line_2: Address line 2 (optional)
+            suburb: Suburb (optional)
+            city: City (optional)
+            province: Province (optional)
+            postal_code: Postal code (optional)
+            country: Country (optional)
+            ip_address: IP address of requester (optional)
+
+        Returns:
+            Tuple of (success, result_dict, error_message)
+            - success: Boolean indicating if registration was successful
+            - result_dict: Contains user, tokens if successful
+            - error_message: Error description if failed
+        """
+        try:
+            with transaction.atomic():
+                # Check if email already exists
+                if User.objects.filter(email=email).exists():
+                    return False, None, "Email address is already registered"
+
+                # Validate role-specific requirements
+                if role in ['RIDER', 'OFFICIAL']:
+                    if not date_of_birth:
+                        return False, None, f"Date of birth is required for {role} role"
+                    if not gender:
+                        return False, None, f"Gender is required for {role} role"
+                    if not nationality:
+                        return False, None, f"Nationality is required for {role} role"
+                    if not id_number and not passport_number:
+                        return False, None, "Either ID number or passport number must be provided"
+
+                # Create user
+                user = User.objects.create_user(
+                    email=email,
+                    password=password,
+                    first_name=first_name,
+                    last_name=last_name,
+                    role=role,
+                    title=title,
+                    maiden_name=maiden_name,
+                    is_active=True
+                )
+
+                # Set activation timestamp
+                user.activated_at = timezone.now()
+                user.save()
+
+                # Create Rider profile if role is RIDER or OFFICIAL
+                if role in ['RIDER', 'OFFICIAL']:
+                    from apps.riders.models import Rider
+
+                    rider_data = {
+                        'user': user,
+                        'date_of_birth': date_of_birth,
+                        'gender': gender,
+                        'nationality': nationality,
+                    }
+
+                    # Add optional fields if provided
+                    if id_number:
+                        rider_data['id_number'] = id_number
+                    if passport_number:
+                        rider_data['passport_number'] = passport_number
+                    if ethnicity:
+                        rider_data['ethnicity'] = ethnicity
+                    if address_line_1:
+                        rider_data['address_line_1'] = address_line_1
+                    if address_line_2:
+                        rider_data['address_line_2'] = address_line_2
+                    if suburb:
+                        rider_data['suburb'] = suburb
+                    if city:
+                        rider_data['city'] = city
+                    if province:
+                        rider_data['province'] = province
+                    if postal_code:
+                        rider_data['postal_code'] = postal_code
+                    if country:
+                        rider_data['country'] = country
+
+                    # Create Rider instance
+                    rider = Rider.objects.create(**rider_data)
+
+                # Generate tokens for automatic login after registration
+                access_token = cls._generate_access_token(user)
+                refresh_token_str = cls._generate_refresh_token(
+                    user,
+                    cls.REFRESH_TOKEN_LIFETIME_NORMAL,
+                    ip_address
+                )
+
+                return True, {
+                    'user': user,
+                    'access_token': access_token,
+                    'refresh_token': refresh_token_str,
+                    'expires_in': int(cls.ACCESS_TOKEN_LIFETIME.total_seconds()),
+                }, None
+
+        except ValidationError as e:
+            # Handle Django model validation errors
+            if hasattr(e, 'message_dict'):
+                error_msg = "; ".join([f"{k}: {', '.join(v)}" for k, v in e.message_dict.items()])
+                return False, None, f"Validation error: {error_msg}"
+            else:
+                return False, None, f"Validation error: {str(e)}"
+        except Exception as e:
+            return False, None, f"Registration failed: {str(e)}"

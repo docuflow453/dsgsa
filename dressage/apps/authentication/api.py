@@ -10,6 +10,8 @@ from .schemas import (
     LogoutRequestSchema,
     LogoutResponseSchema,
     ErrorResponseSchema,
+    RegistrationRequestSchema,
+    RegistrationResponseSchema,
 )
 from .services import AuthService
 
@@ -128,4 +130,65 @@ def logout(request: HttpRequest, payload: LogoutRequestSchema):
 
     return 200, {
         "message": "Logout successful"
+    }
+
+
+@router.post(
+    "/register",
+    response={201: RegistrationResponseSchema, 400: dict},
+    summary="User Registration",
+    description="Register a new user account (riders, officials, clubs, etc.)"
+)
+def register(request: HttpRequest, payload: RegistrationRequestSchema):
+    """
+    Register a new user and create associated profile.
+
+    **Request Body:**
+    - email: Email address (unique)
+    - password: Password (minimum 8 characters)
+    - first_name: First name (required)
+    - last_name: Last name (required)
+    - role: User role - RIDER, OFFICIAL, CLUB, PROVINCIAL, SHOW_HOLDING_BODY, PUBLIC
+    - title: User title (optional) - MR, MRS, MS, MISS, DR, PROF
+    - maiden_name: Maiden name (optional)
+
+    **For RIDER and OFFICIAL roles (required):**
+    - date_of_birth: Date of birth
+    - gender: Gender (MALE, FEMALE, OTHER)
+    - nationality: Nationality (ISO 3166-1 alpha-2 code)
+    - id_number OR passport_number: At least one must be provided
+
+    **Optional fields:**
+    - ethnicity: Ethnicity
+    - address_line_1, address_line_2, suburb, city, province, postal_code, country
+
+    **Response:**
+    - 201: Registration successful with user info and JWT tokens
+    - 400: Validation error or email already exists
+
+    **Note:** Upon successful registration, the user is automatically logged in
+    and receives access and refresh tokens.
+    """
+    ip_address = get_client_ip(request)
+
+    # Convert payload to dict for the service
+    payload_dict = payload.dict(exclude_none=True)
+
+    success, result, error = AuthService.register_user(
+        ip_address=ip_address,
+        **payload_dict
+    )
+
+    if not success:
+        return 400, {
+            "message": error
+        }
+
+    return 201, {
+        "user": result['user'],
+        "access_token": result['access_token'],
+        "refresh_token": result['refresh_token'],
+        "token_type": "Bearer",
+        "expires_in": result['expires_in'],
+        "message": "Registration successful"
     }

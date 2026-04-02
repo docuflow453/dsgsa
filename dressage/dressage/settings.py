@@ -51,6 +51,9 @@ INSTALLED_APPS = [
     'apps.years',
     'apps.memberships',
     'apps.riders',
+    'apps.common',
+    'apps.showholdingbody',
+    'apps.clubs',
 ]
 
 MIDDLEWARE = [

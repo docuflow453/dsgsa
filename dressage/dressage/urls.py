@@ -24,11 +24,14 @@ from apps.horse.api import router as horse_router
 from apps.years.api import router as years_router
 from apps.memberships.api import router as memberships_router
 from apps.riders.api import router as riders_router
+from apps.common.api import router as common_router
+from apps.showholdingbody.api import router as showholdingbody_router
+from apps.clubs.api import router as clubs_router
 
 api = NinjaAPI(
     title="Dressage API",
     version="1.0.0",
-    description="Dressage Riding System API - User Management, Authentication, Competition, Years, Memberships, Riders & Horses"
+    description="Dressage Riding System API - User Management, Authentication, Competition, Years, Memberships, Riders, Horses, Common & Show Holding Bodies"
 )
 
 api.add_router("auth", auth_router)
@@ -37,6 +40,9 @@ api.add_router("", horse_router)
 api.add_router("", years_router)
 api.add_router("", memberships_router)
 api.add_router("", riders_router)
+api.add_router("", common_router)
+api.add_router("", showholdingbody_router)
+api.add_router("", clubs_router)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -25,7 +25,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_URL = `${environment.apiUrl}/api/users`;
+  private readonly API_URL = `${environment.apiUrl}/api/auth`;
   private currentUserSubject: BehaviorSubject<User | null>;
   public currentUser$: Observable<User | null>;
   private isAuthenticatedSubject: BehaviorSubject<boolean>;
