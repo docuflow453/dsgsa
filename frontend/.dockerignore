@@ -1,0 +1,48 @@
+# Dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Build output
+dist
+.angular
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Documentation
+*.md
+!README.md
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Test files
+coverage
+*.spec.ts
+karma.conf.js
+tsconfig.spec.json
+
+# Logs
+logs
+*.log
+
+# Temporary files
+tmp
+temp
+.cache
+
