@@ -4,6 +4,7 @@ API endpoints for Riders using Django Ninja.
 from uuid import UUID
 from ninja import Router
 from typing import List
+from django.http import HttpRequest
 
 from apps.riders.schemas import (
     RiderSchema, RiderCreateSchema, RiderUpdateSchema, RiderFilterSchema, RiderListResponseSchema,
@@ -14,9 +15,84 @@ from apps.riders.schemas import (
 from apps.riders.services import (
     RiderService, RiderAccountService, RiderRegistrationService, SaefMembershipService
 )
+from apps.authentication.auth import jwt_auth
 
 
 router = Router()
+
+
+# ========== Authenticated Rider Profile Endpoints ==========
+
+@router.get("/riders/profile", response={200: RiderSchema, 404: dict}, auth=jwt_auth, tags=["Rider Profile"])
+def get_rider_profile(request: HttpRequest):
+    """
+    Get the authenticated rider's profile.
+
+    Requires:
+    - Valid JWT access token in Authorization header
+    - User must have a rider profile
+
+    Response:
+    - 200: Rider profile data
+    - 401: Unauthorized (invalid or missing token)
+    - 404: Rider profile not found
+    """
+    user = request.auth
+
+    # Get rider profile for the authenticated user
+    try:
+        from apps.riders.models import Rider
+        rider = Rider.objects.select_related('user').get(user=user)
+
+        # Convert to RiderSchema
+        success, rider_schema, error = RiderService.get_rider(rider.id)
+
+        if not success:
+            return 404, {"message": error}
+
+        return 200, rider_schema
+
+    except Rider.DoesNotExist:
+        return 404, {"message": "Rider profile not found for this user"}
+
+
+@router.patch("/riders/profile", response={200: RiderSchema, 400: dict, 404: dict}, auth=jwt_auth, tags=["Rider Profile"])
+def update_rider_profile(request: HttpRequest, data: RiderUpdateSchema):
+    """
+    Update the authenticated rider's profile.
+
+    Requires:
+    - Valid JWT access token in Authorization header
+    - User must have a rider profile
+
+    Request Body: (all fields optional)
+    - Personal information (id_number, passport_number, date_of_birth, gender, ethnicity, nationality)
+    - Address fields (address_line_1, address_line_2, suburb, city, province, postal_code, country)
+    - Banking details (account_type, account_name, bank_name)
+
+    Response:
+    - 200: Updated rider profile
+    - 400: Validation error
+    - 401: Unauthorized (invalid or missing token)
+    - 404: Rider profile not found
+    """
+    user = request.auth
+
+    # Get rider profile for the authenticated user
+    try:
+        from apps.riders.models import Rider
+        rider = Rider.objects.get(user=user)
+
+        # Update rider profile
+        success, updated_rider, error = RiderService.update_rider(rider.id, data.dict(exclude_none=True))
+
+        if not success:
+            return 400, {"message": error}
+
+        return 200, updated_rider
+
+    except Rider.DoesNotExist:
+        return 404, {"message": "Rider profile not found for this user"}
 
 
 # ========== Rider Endpoints ==========
@@ -27,12 +103,12 @@ def list_riders(request, filters: RiderFilterSchema = None):
     filters_dict = filters.dict(exclude_none=True) if filters else {}
     limit = filters_dict.pop('limit', 100)
     offset = filters_dict.pop('offset', 0)
-    
+
     success, result, error = RiderService.get_riders(filters_dict, limit, offset)
-    
+
     if not success:
         return 500, {"message": error}
-    
+
     return {
         'total': result['total'],
         'limit': limit,

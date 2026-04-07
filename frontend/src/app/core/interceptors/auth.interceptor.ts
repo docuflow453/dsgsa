@@ -20,13 +20,18 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   // Clone request and add authorization header if token exists
+  console.log('Token:', token)
   if (token) {
+    console.log('Adding token ....')
+    console.log(`Bearer ${token}`)
     req = req.clone({
       setHeaders: {
-        Authorization: `Token ${token}`  // Django Token Authentication format
+        Authorization: `Bearer ${token}`  // JWT Bearer Token format
       }
     });
   }
+  console.log('Token added')
+  console.log(req)
 
   return next(req);
 };

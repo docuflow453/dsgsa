@@ -39,15 +39,19 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  token: string;
   user: {
     id: string;
     email: string;
-    firstName: string;
-    lastName: string;
-    name: string;
+    first_name: string;
+    last_name: string;
     role: string;
+    is_active: boolean;
   };
+  access_token: string;
+  refresh_token: string;
+  token_type: string;
+  expires_in: number;
+  message: string;
 }
 
 export interface RegisterRequest {

@@ -246,3 +246,268 @@ class TestAuthService:
 
         assert count >= 1
         assert not RefreshToken.objects.filter(id=expired_token.id).exists()
+
+
+
+@pytest.mark.django_db
+class TestUserRegistration:
+    """Test cases for user registration."""
+
+    def test_register_rider_success(self):
+        """Test successful rider registration."""
+        success, result, error = AuthService.register_user(
+            email='new.rider@shyft.com',
+            password='SecurePass123!',
+            first_name='Emma',
+            last_name='Davis',
+            role='RIDER',
+            date_of_birth='1995-05-15',
+            gender='FEMALE',
+            nationality='ZA',
+            id_number='9505155009087',
+            city='Cape Town',
+            province='Western Cape',
+        )
+
+        assert success is True
+        assert error is None
+        assert result is not None
+        assert 'user' in result
+        assert 'access_token' in result
+        assert 'refresh_token' in result
+
+        # Verify user was created
+        user = result['user']
+        assert user.email == 'new.rider@shyft.com'
+        assert user.first_name == 'Emma'
+        assert user.last_name == 'Davis'
+        assert user.role == 'RIDER'
+        assert user.is_active is True
+
+        # Verify rider profile was created
+        from apps.riders.models import Rider
+        rider = Rider.objects.get(user=user)
+        assert rider.date_of_birth.strftime('%Y-%m-%d') == '1995-05-15'
+        assert rider.gender == 'FEMALE'
+        assert rider.nationality == 'ZA'
+        assert rider.id_number == '9505155009087'
+
+    def test_register_official_with_passport(self):
+        """Test successful official registration with passport number."""
+        success, result, error = AuthService.register_user(
+            email='official@shyft.com',
+            password='SecurePass123!',
+            first_name='Michael',
+            last_name='Chen',
+            role='OFFICIAL',
+            date_of_birth='1988-03-20',
+            gender='MALE',
+            nationality='GB',
+            passport_number='GB123456789',
+            address_line_1='123 Official Street',
+            city='London',
+            country='GB',
+        )
+
+        assert success is True
+        assert error is None
+
+        # Verify rider profile with passport
+        from apps.riders.models import Rider
+        user = result['user']
+        rider = Rider.objects.get(user=user)
+        assert rider.passport_number == 'GB123456789'
+        assert rider.id_number is None
+
+    def test_register_duplicate_email(self):
+        """Test registration with duplicate email."""
+        # Create first user
+        User.objects.create_user(
+            email='existing@shyft.com',
+            password='Pass123!',
+            first_name='Existing',
+            last_name='User'
+        )
+
+        # Try to register with same email
+        success, result, error = AuthService.register_user(
+            email='existing@shyft.com',
+            password='SecurePass123!',
+            first_name='New',
+            last_name='User',
+            role='PUBLIC',
+        )
+
+        assert success is False
+        assert result is None
+        assert 'already registered' in error.lower()
+
+    def test_register_rider_missing_dob(self):
+        """Test rider registration without date of birth."""
+        success, result, error = AuthService.register_user(
+            email='missing.dob@shyft.com',
+            password='SecurePass123!',
+            first_name='Missing',
+            last_name='DOB',
+            role='RIDER',
+            gender='MALE',
+            nationality='ZA',
+            id_number='9001015009087',
+        )
+
+        assert success is False
+        assert result is None
+        assert 'date of birth' in error.lower()
+
+    def test_register_rider_missing_gender(self):
+        """Test rider registration without gender."""
+        success, result, error = AuthService.register_user(
+            email='missing.gender@shyft.com',
+            password='SecurePass123!',
+            first_name='Missing',
+            last_name='Gender',
+            role='RIDER',
+            date_of_birth='1990-01-01',
+            nationality='ZA',
+            id_number='9001015009087',
+        )
+
+        assert success is False
+        assert result is None
+        assert 'gender' in error.lower()
+
+    def test_register_rider_missing_nationality(self):
+        """Test rider registration without nationality."""
+        success, result, error = AuthService.register_user(
+            email='missing.nationality@shyft.com',
+            password='SecurePass123!',
+            first_name='Missing',
+            last_name='Nationality',
+            role='RIDER',
+            date_of_birth='1990-01-01',
+            gender='MALE',
+            id_number='9001015009087',
+        )
+
+        assert success is False
+        assert result is None
+        assert 'nationality' in error.lower()
+
+    def test_register_rider_missing_id_and_passport(self):
+        """Test rider registration without ID or passport."""
+        success, result, error = AuthService.register_user(
+            email='missing.id@shyft.com',
+            password='SecurePass123!',
+            first_name='Missing',
+            last_name='ID',
+            role='RIDER',
+            date_of_birth='1990-01-01',
+            gender='MALE',
+            nationality='ZA',
+        )
+
+        assert success is False
+        assert result is None
+        assert 'id number' in error.lower() or 'passport' in error.lower()
+
+    def test_register_public_user(self):
+        """Test registration of public user (no profile needed)."""
+        success, result, error = AuthService.register_user(
+            email='public@shyft.com',
+            password='SecurePass123!',
+            first_name='Public',
+            last_name='User',
+            role='PUBLIC',
+        )
+
+        assert success is True
+        assert error is None
+        user = result['user']
+        assert user.role == 'PUBLIC'
+
+        # Verify no rider profile was created
+        from apps.riders.models import Rider
+        assert not Rider.objects.filter(user=user).exists()
+
+    def test_register_with_full_address(self):
+        """Test registration with complete address information."""
+        success, result, error = AuthService.register_user(
+            email='full.address@shyft.com',
+            password='SecurePass123!',
+            first_name='Full',
+            last_name='Address',
+            role='RIDER',
+            date_of_birth='1992-08-12',
+            gender='FEMALE',
+            nationality='ZA',
+            id_number='9208125009087',
+            address_line_1='456 Full Street',
+            address_line_2='Apt 10',
+            suburb='Suburb Name',
+            city='Johannesburg',
+            province='Gauteng',
+            postal_code='2000',
+            country='ZA',
+        )
+
+        assert success is True
+        from apps.riders.models import Rider
+        user = result['user']
+        rider = Rider.objects.get(user=user)
+        assert rider.address_line_1 == '456 Full Street'
+        assert rider.address_line_2 == 'Apt 10'
+        assert rider.suburb == 'Suburb Name'
+        assert rider.city == 'Johannesburg'
+        assert rider.province == 'Gauteng'
+        assert rider.postal_code == '2000'
+        assert rider.country == 'ZA'
+
+    def test_register_with_title_and_maiden_name(self):
+        """Test registration with optional title and maiden name."""
+        success, result, error = AuthService.register_user(
+            email='titled@shyft.com',
+            password='SecurePass123!',
+            title='DR',
+            first_name='Jane',
+            maiden_name='Smith',
+            last_name='Williams',
+            role='RIDER',
+            date_of_birth='1990-01-01',
+            gender='FEMALE',
+            nationality='ZA',
+            id_number='9001015009087',
+        )
+
+        assert success is True
+        user = result['user']
+        assert user.title == 'DR'
+        assert user.maiden_name == 'Smith'
+
+    def test_register_generates_tokens(self):
+        """Test that registration generates valid tokens."""
+        success, result, error = AuthService.register_user(
+            email='token.test@shyft.com',
+            password='SecurePass123!',
+            first_name='Token',
+            last_name='Test',
+            role='PUBLIC',
+        )
+
+        assert success is True
+        assert 'access_token' in result
+        assert 'refresh_token' in result
+        assert 'expires_in' in result
+
+        # Verify access token is valid JWT
+        access_token = result['access_token']
+        payload = jwt.decode(
+            access_token,
+            settings.SECRET_KEY,
+            algorithms=['HS256']
+        )
+        assert payload['email'] == 'token.test@shyft.com'
+        assert payload['type'] == 'access'
+
+        # Verify refresh token is stored in database
+        refresh_token = result['refresh_token']
+        assert RefreshToken.objects.filter(token=refresh_token).exists()

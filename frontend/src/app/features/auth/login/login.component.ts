@@ -1,57 +1,69 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { form, Field } from '@angular/forms/signals';
+import { required, email } from '@angular/forms/signals';
 import { AuthService } from '../../../core/services/auth.service';
 import { AuthenticationService } from '../../../theme/shared/service/authentication.service';
 import { UserRole } from '../../../core/models/user.model';
 import { of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 
+import { SharedModule } from '../../../theme/shared/shared.module';
+import { IconService } from '@ant-design/icons-angular';
+import { EyeInvisibleOutline, EyeOutline } from '@ant-design/icons-angular/icons';
+
+interface LoginData {
+  email: string;
+  password: string;
+}
+
 /**
  * Login Component - User authentication
- * Now uses both AuthService (core) and AuthenticationService (theme)
- * to ensure proper state synchronization across the application
+ * Uses Angular Signals-based forms with dual auth service synchronization
+ * Ensures proper state synchronization across the application
  */
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, Field, SharedModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  loginForm!: FormGroup;
-  loading = false;
-  errorMessage = '';
-  error = '';
-  submitted = false;
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private authService = inject(AuthService);
+  authenticationService = inject(AuthenticationService);
+  private iconService = inject(IconService);
+  private cd = inject(ChangeDetectorRef);
+
   showPassword = false;
+  submitted = false;
+  error = '';
+  loading = false;
   returnUrl = '/dashboard';
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    public authenticationService: AuthenticationService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+  // Signal holding the form data
+  private readonly loginData = signal<LoginData>({
+    email: '',
+    password: ''
+  });
+
+  // Create the signal form with validators
+  loginForm = form(this.loginData, (schemaPath) => {
+    required(schemaPath.email, { message: 'Email is required' });
+    email(schemaPath.email, { message: 'Please enter a valid email address' });
+    required(schemaPath.password, { message: 'Password is required' });
+  });
+
+  constructor() {
+    this.iconService.addIcon(...[EyeOutline, EyeInvisibleOutline]);
+  }
 
   ngOnInit(): void {
     // Get return URL from route parameters or default to '/dashboard'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
-
-    // Initialize login form
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-      rememberMe: [false]
-    });
-  }
-
-  // Convenience getter for form controls
-  get f() {
-    return this.loginForm.controls;
   }
 
   togglePasswordVisibility() {
@@ -60,7 +72,8 @@ export class LoginComponent implements OnInit {
 
   // Helper to check form validity (both fields required)
   get isFormValid() {
-    return this.loginForm.valid;
+    const val = this.loginForm().value();
+    return val.email.trim() !== '' && val.password.trim() !== '';
   }
 
   /**
@@ -98,9 +111,8 @@ export class LoginComponent implements OnInit {
 
     this.loading = true;
     this.error = '';
-    this.errorMessage = '';
 
-    const { email, password, rememberMe } = this.loginForm.value;
+    const { email, password } = this.loginForm().value();
 
     // Use AuthenticationService (theme service) for login
     // This ensures the sidebar navigation and theme components update correctly
@@ -108,7 +120,7 @@ export class LoginComponent implements OnInit {
       switchMap(() => {
         // After theme service login, also sync with core AuthService
         // This ensures both services are in sync
-        return this.authService.login({ email, password, rememberMe }).pipe(
+        return this.authService.login({ email, password, rememberMe: false }).pipe(
           catchError(error => {
             // If core service fails, still proceed (theme service already succeeded)
             console.warn('Core AuthService sync failed, but theme service succeeded:', error);
@@ -123,26 +135,30 @@ export class LoginComponent implements OnInit {
         const themeUser = this.authenticationService.currentUserValue;
         const coreUser = this.authService.currentUserValue;
 
+        console.log('✅ Login successful');
         console.log('Theme user:', themeUser);
         console.log('Core user:', coreUser);
         if (themeUser && themeUser.user && themeUser.user.role) {
           // Map theme user role to core UserRole for consistency
           const roles = this.mapThemeRoleToUserRoles(themeUser.user.role);
           const dashboardPath = this.getRoleDashboardPath(roles);
+          console.log('🚀 Navigating to:', dashboardPath);
           this.router.navigate([dashboardPath]);
         } else if (coreUser && coreUser.roles && coreUser.roles.length > 0) {
           const dashboardPath = this.getRoleDashboardPath(coreUser.roles);
+          console.log('🚀 Navigating to:', dashboardPath);
           this.router.navigate([dashboardPath]);
         } else {
           // Fallback to return URL or default dashboard
+          console.log('🚀 Navigating to returnUrl:', this.returnUrl);
           this.router.navigate([this.returnUrl]);
         }
       },
       error: (error) => {
         // Error - display message
         this.error = error.message || error || 'Login failed. Please check your credentials.';
-        this.errorMessage = this.error;
         this.loading = false;
+        this.cd.detectChanges();
       }
     });
   }
@@ -165,12 +181,6 @@ export class LoginComponent implements OnInit {
 
     const roleName = typeof role === 'string' ? role : role.toString();
     return [roleMap[roleName] || UserRole.RIDER];
-  }
-
-  // Helper method to check if field has error
-  hasError(fieldName: string, errorType: string): boolean {
-    const field = this.loginForm.get(fieldName);
-    return !!(field && field.hasError(errorType) && (field.dirty || field.touched));
   }
 }
 

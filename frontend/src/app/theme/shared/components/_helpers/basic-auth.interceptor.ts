@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
+import {StorageService} from "../../../../core";
 
 @Injectable()
 export class BasicAuthInterceptor implements HttpInterceptor {
@@ -16,16 +17,23 @@ export class BasicAuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<string>, next: HttpHandler): Observable<HttpEvent<string>> {
     // Add auth header with JWT token if user is logged in and request is to the api url
     // Get token directly from localStorage to avoid circular dependency with AuthenticationService
-    const token = this.getTokenFromStorage();
-    const isApiUrl = request.url.startsWith(environment.apiUrl);
+  const storage = inject(StorageService);
+  const token = storage.getToken();
+  const isApiUrl = request.url.startsWith(environment.apiUrl);
 
+    console.log('BasicAuthInterceptor')
+    console.log('Token:', token)
+    console.log('isApiUrl:', isApiUrl)
     if (token && isApiUrl) {
+      console.log('Adding token ....')
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`
         }
       });
     }
+    console.log('Token added')
+    console.log(request)
 
     return next.handle(request);
   }

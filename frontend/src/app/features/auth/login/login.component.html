@@ -2,112 +2,118 @@
 <div class="auth-card">
   <!-- Header -->
   <div class="auth-card-header">
-    <h2>Welcome Back</h2>
-    <p>Sign in to your Dressage.co.za account</p>
-  </div>
-
-  <!-- Error Alert -->
-  <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
-    <i class="ti ti-alert-circle me-2"></i>
-    {{ error }}
-    <button type="button" class="btn-close" (click)="error = ''" aria-label="Close"></button>
+    <div class="d-flex justify-content-between align-items-end mb-4">
+      <div>
+        <h2 class="mb-0">Welcome Back</h2>
+        <p class="text-muted mb-0">Sign in to your Dressage account</p>
+      </div>
+      <a [routerLink]="['/auth/register']" class="text-primary text-decoration-none">
+        Don't have an account?
+      </a>
+    </div>
   </div>
 
   <!-- Login Form -->
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-card-body">
+  <form (ngSubmit)="onSubmit()" class="auth-card-body">
     <!-- Email Field -->
-    <div class="mb-3">
-      <label for="email" class="form-label">Email Address</label>
-      <div class="input-group">
-        <span class="input-group-text">
-          <i class="ti ti-mail"></i>
-        </span>
-        <input
-          type="email"
-          class="form-control"
-          id="email"
-          formControlName="email"
-          placeholder="your.email@example.com"
-          [class.is-invalid]="submitted && f['email'].errors"
-        />
-      </div>
-      <div class="invalid-feedback d-block" *ngIf="submitted && f['email'].errors?.['required']">
-        Email is required
-      </div>
-      <div class="invalid-feedback d-block" *ngIf="submitted && f['email'].errors?.['email']">
-        Please enter a valid email address
-      </div>
+    <div class="form-group mb-3">
+      <label class="form-label" for="email">Email address / Username</label>
+      <input
+        type="email"
+        id="email"
+        class="form-control"
+        placeholder="Enter email"
+        [field]="loginForm.email"
+        [class.is-invalid]="submitted && loginForm.email().errors()"
+      />
+      @if (submitted && loginForm.email().errors()) {
+        <div class="invalid-feedback d-block">
+          @if (loginForm.email().errors().required) {
+            <div>Email is required</div>
+          }
+          @if (loginForm.email().errors().email) {
+            <div>Please enter a valid email address</div>
+          }
+        </div>
+      }
     </div>
 
     <!-- Password Field -->
-    <div class="mb-3">
-      <label for="password" class="form-label">Password</label>
-      <div class="input-group">
-        <span class="input-group-text">
-          <i class="ti ti-lock"></i>
-        </span>
+    <div class="form-group mb-3 position-relative">
+      <label class="form-label" for="password">Password</label>
+      @if (!showPassword) {
         <input
-          [type]="showPassword ? 'text' : 'password'"
-          class="form-control"
+          type="password"
           id="password"
-          formControlName="password"
-          placeholder="Enter your password"
-          [class.is-invalid]="submitted && f['password'].errors"
+          class="form-control"
+          [field]="loginForm.password"
+          [class.is-invalid]="submitted && loginForm.password().errors()"
+          placeholder="Enter password"
         />
-        <button
-          class="btn btn-outline-secondary"
-          type="button"
-          (click)="togglePasswordVisibility()"
-          [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
-        >
-          <i [class]="showPassword ? 'ti ti-eye-off' : 'ti ti-eye'"></i>
-        </button>
-      </div>
-      <div class="invalid-feedback d-block" *ngIf="submitted && f['password'].errors?.['required']">
-        Password is required
-      </div>
+      } @else {
+        <input
+          type="text"
+          id="password"
+          class="form-control"
+          [field]="loginForm.password"
+          [class.is-invalid]="submitted && loginForm.password().errors()"
+          placeholder="Enter password"
+        />
+      }
+
+      <i
+        antIcon
+        theme="outline"
+        type="{{ showPassword ? 'eye' : 'eye-invisible' }}"
+        id="togglePassword"
+        (click)="togglePasswordVisibility()"
+      ></i>
+
+      @if (submitted && loginForm.password().errors()) {
+        <div class="invalid-feedback d-block">
+          @if (loginForm.password().errors().required) {
+            <div>Password is required</div>
+          }
+        </div>
+      }
     </div>
 
     <!-- Remember Me & Forgot Password -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex mt-1 justify-content-between mb-3">
       <div class="form-check">
-        <input
-          type="checkbox"
-          class="form-check-input"
-          id="rememberMe"
-          formControlName="rememberMe"
-        />
-        <label class="form-check-label" for="rememberMe">
-          Remember me
-        </label>
+        <input class="form-check-input input-primary" type="checkbox" id="customCheckc1" checked />
+        <label class="form-check-label text-muted" for="customCheckc1">Keep me sign in</label>
       </div>
       <a [routerLink]="['/auth/forgot-password']" class="text-primary">
-        Forgot password?
+        Forgot Password?
       </a>
     </div>
 
     <!-- Submit Button -->
-    <button
-      type="submit"
-      class="btn btn-primary w-100 btn-lg"
-      [disabled]="loading"
-    >
-      <span *ngIf="!loading">
-        <i class="ti ti-login me-2"></i>Sign In
-      </span>
-      <span *ngIf="loading">
-        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-        Signing in...
-      </span>
-    </button>
+    <div class="d-grid mt-4">
+      <button class="btn btn-primary" type="submit" [disabled]="loading">
+        @if (!loading) {
+          <span>Login</span>
+        } @else {
+          <span>
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Signing in...
+          </span>
+        }
+      </button>
+    </div>
+
+    <!-- Error Alert -->
+    @if (error) {
+      <div class="alert alert-danger mt-3 mb-0">{{ error }}</div>
+    }
   </form>
 
   <!-- Footer -->
   <div class="auth-card-footer">
-    <p>
-      Don't have an account?
-      <a [routerLink]="['/auth/register']">Create account</a>
+    <p class="text-muted text-center mb-0">
+      New to Dressage?
+      <a [routerLink]="['/auth/register']" class="text-primary">Create an account</a>
     </p>
   </div>
 </div>
-

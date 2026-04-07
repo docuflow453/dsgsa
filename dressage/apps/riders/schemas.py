@@ -2,7 +2,7 @@
 Pydantic schemas for Rider API endpoints.
 """
 from datetime import date, datetime
-from typing import Optional
+from typing import Optional, Dict
 from uuid import UUID
 from pydantic import BaseModel, Field, field_validator
 
@@ -19,8 +19,8 @@ class RiderSchema(BaseModel):
     date_of_birth: date
     gender: str
     ethnicity: Optional[str] = None
-    nationality: str
-    
+    nationality: Optional[str] = None
+
     # Address fields
     address_line_1: Optional[str] = None
     address_line_2: Optional[str] = None
@@ -29,28 +29,47 @@ class RiderSchema(BaseModel):
     province: Optional[str] = None
     postal_code: Optional[str] = None
     country: Optional[str] = None
-    
+
     # Banking details
     account_type: Optional[str] = None
     account_name: Optional[str] = None
     bank_name: Optional[str] = None
-    
+
     # Status fields
     is_active: bool
     is_test: bool
-    
+
     # Computed properties
     full_name: str
     age: int
     full_address: str
     status: str
-    
+
     # Audit fields
     created_at: datetime
     updated_at: datetime
-    
+
     class Config:
         from_attributes = True
+
+    @field_validator('nationality', 'country', mode='before')
+    @classmethod
+    def convert_country_field(cls, v):
+        """
+        Convert django_countries.Country object to string (ISO 3166-1 alpha-2 code).
+
+        Django's CountryField returns a Country object with .code and .name attributes.
+        We need to extract just the code string for JSON serialization.
+        """
+        if v is None:
+            return None
+        # If it's a Country object, get the code
+        if hasattr(v, 'code'):
+            return v.code if v.code else None
+        # If it's already a string, return as is
+        if isinstance(v, str):
+            return v
+        return str(v)
 
 
 class RiderCreateSchema(BaseModel):
@@ -105,7 +124,7 @@ class RiderUpdateSchema(BaseModel):
     gender: Optional[str] = Field(None, pattern="^(MALE|FEMALE|OTHER)$")
     ethnicity: Optional[str] = Field(None, pattern="^(BLACK_AFRICAN|COLOURED|INDIAN|WHITE|OTHER)$")
     nationality: Optional[str] = None
-    
+
     # Address fields
     address_line_1: Optional[str] = None
     address_line_2: Optional[str] = None
@@ -114,12 +133,31 @@ class RiderUpdateSchema(BaseModel):
     province: Optional[str] = None
     postal_code: Optional[str] = None
     country: Optional[str] = None
-    
+
     # Banking details
     account_type: Optional[str] = Field(None, pattern="^(SAVINGS|CURRENT|CHEQUE)$")
     account_name: Optional[str] = None
     bank_name: Optional[str] = None
-    
+
+    @field_validator('nationality', 'country', mode='before')
+    @classmethod
+    def convert_country_field(cls, v):
+        """
+        Convert django_countries.Country object to string (ISO 3166-1 alpha-2 code).
+
+        Django's CountryField returns a Country object with .code and .name attributes.
+        We need to extract just the code string for JSON serialization.
+        """
+        if v is None:
+            return None
+        # If it's a Country object, get the code
+        if hasattr(v, 'code'):
+            return v.code if v.code else None
+        # If it's already a string, return as is
+        if isinstance(v, str):
+            return v
+        return str(v)
+
     @field_validator('id_number')
     @classmethod
     def validate_id_number(cls, v):

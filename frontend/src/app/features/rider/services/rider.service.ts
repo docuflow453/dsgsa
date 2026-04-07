@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 import {
   Rider,
   Horse,
@@ -26,7 +27,7 @@ import {
   providedIn: 'root'
 })
 export class RiderService {
-  private readonly API_URL = '/api/rider';
+  private readonly API_URL = `${environment.apiUrl}/api`;
 
   constructor(private http: HttpClient) {}
 
@@ -39,18 +40,17 @@ export class RiderService {
   }
 
   /**
-   * Get rider profile
+   * Get authenticated rider's profile
    */
   getProfile(): Observable<Rider> {
-    // TODO: Replace with actual API call
-    return this.mockRiderProfile();
+    return this.http.get<Rider>(`${this.API_URL}/riders/profile`);
   }
 
   /**
-   * Update rider profile
+   * Update authenticated rider's profile
    */
   updateProfile(data: Partial<Rider>): Observable<Rider> {
-    return this.http.put<Rider>(`${this.API_URL}/profile`, data);
+    return this.http.patch<Rider>(`${this.API_URL}/riders/profile`, data);
   }
 
   /**

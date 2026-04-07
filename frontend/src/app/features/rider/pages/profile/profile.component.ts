@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
@@ -73,7 +73,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private riderService: RiderService
+    private riderService: RiderService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -133,62 +134,72 @@ export class ProfileComponent implements OnInit {
       next: (profile) => {
         this.riderProfile = profile;
         this.populateForms(profile);
-        this.loading = false;
+        // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
+        setTimeout(() => {
+          this.loading = false;
+        }, 0);
       },
       error: (error) => {
         this.errorMessage = 'Failed to load profile';
-        this.loading = false;
+        // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
+        setTimeout(() => {
+          this.loading = false;
+        }, 0);
       }
     });
   }
 
-  populateForms(profile: Rider): void {
+  populateForms(profile: any): void {
+    // Note: Backend returns snake_case, but we'll map to our form's camelCase
+
     // Personal Information
     this.personalInfoForm.patchValue({
-      firstName: profile.firstName,
-      lastName: profile.lastName,
-      idNumber: profile.idNumber,
-      dateOfBirth: this.formatDate(profile.dateOfBirth),
-      gender: 'Male',
-      ethnicity: 'African',
-      saefNumber: 'SAEF-2024-001234',
-      passportNumber: '',
+      firstName: profile.full_name?.split(' ')[0] || '',
+      lastName: profile.full_name?.split(' ').slice(1).join(' ') || '',
+      idNumber: profile.id_number || '',
+      dateOfBirth: profile.date_of_birth ? this.formatDate(new Date(profile.date_of_birth)) : '',
+      gender: profile.gender || '',
+      ethnicity: profile.ethnicity || '',
+      saefNumber: profile.saef_number || '',
+      passportNumber: profile.passport_number || '',
       passportExpiry: '',
-      nationality: 'South Africa'
+      nationality: profile.nationality || 'South Africa'
     });
 
     // Address
     this.addressForm.patchValue({
-      addressLine1: profile.address.street,
-      addressLine2: '',
-      suburb: '',
-      city: profile.address.city,
-      province: profile.address.province,
-      postalCode: profile.address.postalCode,
-      country: profile.address.country
+      addressLine1: profile.address_line_1 || '',
+      addressLine2: profile.address_line_2 || '',
+      suburb: profile.suburb || '',
+      city: profile.city || '',
+      province: profile.province || '',
+      postalCode: profile.postal_code || '',
+      country: profile.country || 'South Africa'
     });
 
-    // Contact Information
+    // Contact Information (from user object - will need to fetch separately if available)
     this.contactForm.patchValue({
-      email: profile.email,
-      mobileNumber: profile.phone,
+      email: '', // Not in rider schema, comes from user
+      mobileNumber: '',
       alternativePhone: '',
-      emergencyContactName: 'John Smith',
-      emergencyContactNumber: '082 555 1234'
+      emergencyContactName: '',
+      emergencyContactNumber: ''
     });
 
-    // Notification Preferences
+    // Notification Preferences (not in current backend schema)
     this.notificationForm.patchValue({
-      emailUpcomingEntries: profile.preferences.emailUpcomingEntries,
-      smsResults: profile.preferences.smsResults,
-      monthlyNewsletter: profile.preferences.monthlyNewsletter,
-      marketingCommunications: profile.preferences.marketingCommunications,
+      emailUpcomingEntries: true,
+      smsResults: true,
+      monthlyNewsletter: false,
+      marketingCommunications: false,
       emailResults: true,
       smsUpcomingEvents: false
     });
 
     // Set profile picture
-    this.profilePictureUrl = 'https://ui-avatars.com/api/?name=' + profile.firstName + '+' + profile.lastName;
+    const firstName = profile.full_name?.split(' ')[0] || 'User';
+    const lastName = profile.full_name?.split(' ').slice(1).join(' ') || '';
+    this.profilePictureUrl = 'https://ui-avatars.com/api/?name=' + firstName + '+' + lastName;
   }
 
   // Submit handlers for each tab
@@ -197,7 +208,20 @@ export class ProfileComponent implements OnInit {
       this.markFormGroupTouched(this.personalInfoForm);
       return;
     }
-    this.saveFormData('Personal information', this.personalInfoForm.value);
+
+    // Map form data to backend snake_case format
+    const formData = this.personalInfoForm.value;
+    const backendData = {
+      id_number: formData.idNumber,
+      passport_number: formData.passportNumber,
+      date_of_birth: formData.dateOfBirth,
+      gender: formData.gender,
+      ethnicity: formData.ethnicity,
+      nationality: formData.nationality,
+      saef_number: formData.saefNumber
+    };
+
+    this.saveFormData('Personal information', backendData);
   }
 
   onSubmitAddress(): void {
@@ -205,7 +229,20 @@ export class ProfileComponent implements OnInit {
       this.markFormGroupTouched(this.addressForm);
       return;
     }
-    this.saveFormData('Address details', this.addressForm.value);
+
+    // Map form data to backend snake_case format
+    const formData = this.addressForm.value;
+    const backendData = {
+      address_line_1: formData.addressLine1,
+      address_line_2: formData.addressLine2,
+      suburb: formData.suburb,
+      city: formData.city,
+      province: formData.province,
+      postal_code: formData.postalCode,
+      country: formData.country
+    };
+
+    this.saveFormData('Address details', backendData);
   }
 
   onSubmitContact(): void {
@@ -213,7 +250,10 @@ export class ProfileComponent implements OnInit {
       this.markFormGroupTouched(this.contactForm);
       return;
     }
-    this.saveFormData('Contact information', this.contactForm.value);
+
+    // Contact info will be saved when backend supports it
+    this.successMessage = 'Contact information saved (pending backend implementation)';
+    setTimeout(() => this.successMessage = '', 5000);
   }
 
   onSubmitNotifications(): void {
@@ -221,7 +261,10 @@ export class ProfileComponent implements OnInit {
       this.markFormGroupTouched(this.notificationForm);
       return;
     }
-    this.saveFormData('Notification preferences', this.notificationForm.value);
+
+    // Notification preferences will be saved when backend supports it
+    this.successMessage = 'Notification preferences saved (pending backend implementation)';
+    setTimeout(() => this.successMessage = '', 5000);
   }
 
   private saveFormData(section: string, data: any): void {
@@ -232,12 +275,18 @@ export class ProfileComponent implements OnInit {
     this.riderService.updateProfile(data).subscribe({
       next: () => {
         this.successMessage = `${section} updated successfully!`;
-        this.saving = false;
+        // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
+        setTimeout(() => {
+          this.saving = false;
+        }, 0);
         setTimeout(() => this.successMessage = '', 5000);
       },
       error: (error) => {
         this.errorMessage = `Failed to update ${section}. Please try again.`;
-        this.saving = false;
+        // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
+        setTimeout(() => {
+          this.saving = false;
+        }, 0);
       }
     });
   }
@@ -317,12 +366,18 @@ export class ProfileComponent implements OnInit {
         this.imagePreview = null;
         this.selectedFile = null;
         this.successMessage = 'Profile picture updated successfully!';
-        this.saving = false;
+        // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
+        setTimeout(() => {
+          this.saving = false;
+        }, 0);
         setTimeout(() => this.successMessage = '', 5000);
       },
       error: (error) => {
         this.errorMessage = 'Failed to upload profile picture. Please try again.';
-        this.saving = false;
+        // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
+        setTimeout(() => {
+          this.saving = false;
+        }, 0);
       }
     });
   }
@@ -334,12 +389,18 @@ export class ProfileComponent implements OnInit {
         next: () => {
           this.profilePictureUrl = null;
           this.successMessage = 'Profile picture removed successfully!';
-          this.saving = false;
+          // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
+          setTimeout(() => {
+            this.saving = false;
+          }, 0);
           setTimeout(() => this.successMessage = '', 5000);
         },
         error: (error) => {
           this.errorMessage = 'Failed to remove profile picture.';
-          this.saving = false;
+          // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
+          setTimeout(() => {
+            this.saving = false;
+          }, 0);
         }
       });
     }

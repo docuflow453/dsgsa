@@ -1,187 +1,53 @@
-// Register Component Styles - Multi-step Wizard
+// Register Component Styles
 
-// Step Indicators
-.step-indicators {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+// Separator for social login
+.separator {
   position: relative;
-  padding: 0 2rem;
+  display: flex;
+  align-self: center;
+  justify-content: center;
 
-  &::before {
+  &::after {
     content: '';
     position: absolute;
-    top: 20px;
-    left: 2rem;
-    right: 2rem;
-    height: 2px;
-    background: #e5e7eb;
-    z-index: 0;
-  }
-
-  .step-indicator {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--bs-border-color);
     z-index: 1;
-    cursor: pointer;
-    flex: 1;
-
-    .step-number {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: #e5e7eb;
-      color: #6b7280;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      transition: all 0.3s ease;
-      border: 2px solid #e5e7eb;
-
-      i {
-        font-size: 1.25rem;
-      }
-    }
-
-    .step-label {
-      font-size: 0.75rem;
-      color: #6b7280;
-      font-weight: 500;
-      text-align: center;
-      transition: color 0.3s ease;
-    }
-
-    &.active {
-      .step-number {
-        background: #2563eb;
-        color: white;
-        border-color: #2563eb;
-        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-      }
-
-      .step-label {
-        color: #2563eb;
-        font-weight: 600;
-      }
-    }
-
-    &.completed {
-      .step-number {
-        background: #10b981;
-        color: white;
-        border-color: #10b981;
-      }
-
-      .step-label {
-        color: #10b981;
-      }
-    }
-
-    &:hover:not(.active) {
-      .step-number {
-        border-color: #2563eb;
-      }
-    }
   }
 
-  @media (max-width: 576px) {
-    padding: 0 1rem;
-
-    &::before {
-      left: 1rem;
-      right: 1rem;
-    }
-
-    .step-indicator {
-      .step-label {
-        font-size: 0.65rem;
-      }
-
-      .step-number {
-        width: 32px;
-        height: 32px;
-        font-size: 0.875rem;
-
-        i {
-          font-size: 1rem;
-        }
-      }
-    }
-  }
-}
-
-// Form Sections
-h5 {
-  color: #1f2937;
-  font-weight: 600;
-  border-bottom: 2px solid #e5e7eb;
-  padding-bottom: 0.5rem;
-}
-
-.input-group-text {
-  background-color: #f3f4f6;
-  border-right: none;
-  color: #6b7280;
-
-  i {
-    font-size: 1.1rem;
-  }
-}
-
-.form-control {
-  &:not(.input-group .form-control) {
-    // Standalone form controls (not in input groups)
-  }
-
-  .input-group & {
-    border-left: none;
-  }
-
-  &:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
-  }
-
-  &.is-invalid {
-    border-color: #dc3545;
-  }
-}
-
-.form-check-input {
-  &:checked {
-    background-color: #2563eb;
-    border-color: #2563eb;
-  }
-
-  &:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
-  }
-
-  &.is-invalid {
-    border-color: #dc3545;
-  }
-}
-
-.form-check-label {
-  font-size: 0.9rem;
-  color: #4b5563;
-
-  a {
-    color: #2563eb;
-    text-decoration: none;
+  span {
+    font-size: 0.875rem;
+    padding: 8px 24px;
+    background: white;
+    z-index: 5;
+    text-transform: capitalize;
+    color: #374151;
     font-weight: 500;
-
-    &:hover {
-      text-decoration: underline;
-    }
   }
 }
 
+// Form Controls
+.form-control {
+  &:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+  }
+
+  &.is-invalid {
+    border-color: #dc3545;
+  }
+}
+
+.form-label {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+// Primary Button
 .btn-primary {
   background-color: #2563eb;
   border-color: #2563eb;
@@ -202,6 +68,25 @@ h5 {
   }
 }
 
+// Social Login Buttons
+.btn-light-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    background-color: #f3f4f6 !important;
+  }
+}
+
+// Alerts
 .alert {
   border-radius: 8px;
   margin-bottom: 1.5rem;
@@ -211,49 +96,28 @@ h5 {
   }
 }
 
-// Success Icon (Step 4)
-.success-icon {
-  i {
-    font-size: 5rem;
-    color: #10b981;
+// Links
+.text-primary {
+  color: #2563eb !important;
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
   }
+}
+
+// Text muted
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-muted {
+  color: #6b7280 !important;
 }
 
 // Required field indicator
 .text-danger {
   color: #dc3545 !important;
-}
-
-// Form Select
-.form-select {
-  &:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
-  }
-}
-
-// Radio buttons
-.form-check-input[type="radio"] {
-  &:checked {
-    background-color: #2563eb;
-    border-color: #2563eb;
-  }
-
-  &:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
-  }
-}
-
-// Wider card for multi-step form
-.register-wizard {
-  max-width: 950px; // Increased from 700px for better multi-step form layout
-  width: 100%;
-}
-
-// Password strength list
-ul {
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
 }
 

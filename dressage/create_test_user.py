@@ -69,6 +69,18 @@ def create_test_users():
             is_active=user_data['is_active'],
         )
 
+        if user_data['role'] == 'RIDER':
+            from apps.riders.models import (
+                Rider, RiderAccount, SaefMembership, RiderClub, RiderShowHoldingBody
+            )
+            Rider.objects.create(
+                user=user,
+                id_number='9001015009087',
+                date_of_birth='1990-01-01',
+                gender='MALE',
+                nationality='ZA'
+            )
+
         print(f"✓ Created user: {email}")
         print(f"  Role: {user_data['role']}")
         print(f"  Password: {user_data['password']}")

@@ -56,25 +56,27 @@ export class AuthService {
    * Login user
    */
   login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.API_URL}/login/`, {
+    return this.http.post<LoginResponse>(`${this.API_URL}/login`, {
       email: credentials.email,
-      password: credentials.password
+      password: credentials.password,
+      remember_me: credentials.rememberMe || false
     }).pipe(
       tap(response => {
         // Map the API response to our User model
         const user: User = {
           id: response.user.id,
           email: response.user.email,
-          firstName: response.user.firstName,
-          lastName: response.user.lastName,
+          firstName: response.user.first_name,
+          lastName: response.user.last_name,
           roles: [this.mapRoleToUserRole(response.user.role)],
           isActive: true,
           createdAt: new Date(),
           updatedAt: new Date()
         };
 
-        // Store token and user data
-        this.storage.setToken(response.token, credentials.rememberMe);
+        // Store access token, refresh token, and user data
+        this.storage.setToken(response.access_token, credentials.rememberMe);
+        this.storage.setRefreshToken(response.refresh_token, credentials.rememberMe);
         this.storage.setUser(user, credentials.rememberMe);
         this.storage.setRememberMe(credentials.rememberMe || false);
 
@@ -84,7 +86,7 @@ export class AuthService {
       }),
       catchError(error => {
         console.error('Login error:', error);
-        const errorMessage = error.error?.error || 'Login failed. Please check your credentials.';
+        const errorMessage = error.error?.message || 'Login failed. Please check your credentials.';
         return throwError(() => new Error(errorMessage));
       })
     );
