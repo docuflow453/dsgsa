@@ -3,17 +3,17 @@
  * Displays and manages competition years/seasons
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import Swal from 'sweetalert2';
 
 // Shared Module
 import { SharedModule } from '../../../../../theme/shared/shared.module';
 
-// Types and Data
+// Types and Service
 import { Year } from './years-list-type';
-import { YEARS } from './years-list-data';
 import { YearsListService } from './years-list.service';
 
 @Component({
@@ -28,11 +28,14 @@ export class YearsListComponent implements OnInit {
   filteredYears: Year[] = [];
   searchText = '';
   selectedYear: Year | null = null;
+  loading = false;
+  totalCount = 0;
 
   constructor(
     private router: Router,
     private modalService: NgbModal,
-    private yearsService: YearsListService
+    private yearsService: YearsListService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -40,13 +43,34 @@ export class YearsListComponent implements OnInit {
   }
 
   /**
-   * Load years data
+   * Load years data from backend API
    */
   loadYears() {
-    this.yearsService.getYears().subscribe((data) => {
-      this.years = data;
-      this.filteredYears = data;
-    });
+    // Defer loading state to avoid NG0100 when called from ngOnInit
+    setTimeout(() => {
+      this.loading = true;
+      this.cdr.detectChanges();
+
+      this.yearsService.getYears({ limit: 100, offset: 0 }).subscribe({
+        next: (response) => {
+          this.years = response.results;
+          this.filteredYears = response.results;
+          this.totalCount = response.count;
+          this.loading = false;
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          console.error('Error loading years:', error);
+          this.loading = false;
+          this.cdr.detectChanges();
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to load years. Please try again.'
+          });
+        }
+      });
+    }, 0);
   }
 
   /**
@@ -63,7 +87,7 @@ export class YearsListComponent implements OnInit {
       (year) =>
         year.year.toString().includes(searchLower) ||
         year.name.toLowerCase().includes(searchLower) ||
-        year.description.toLowerCase().includes(searchLower) ||
+        year.notes.toLowerCase().includes(searchLower) ||
         year.status.toLowerCase().includes(searchLower)
     );
   }
@@ -90,6 +114,33 @@ export class YearsListComponent implements OnInit {
   }
 
   /**
+   * Activate a year (deactivates all others)
+   */
+  activateYear(year: Year) {
+    Swal.fire({
+      title: 'Activate Year?',
+      text: `Are you sure you want to activate ${year.name}? This will deactivate all other years.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, activate it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.yearsService.activateYear(year.id).subscribe({
+          next: () => {
+            Swal.fire('Activated!', `${year.name} has been activated.`, 'success');
+            this.loadYears();
+          },
+          error: (error) => {
+            console.error('Error activating year:', error);
+            Swal.fire('Error', 'Failed to activate year. Please try again.', 'error');
+          }
+        });
+      }
+    });
+  }
+
+  /**
    * Open delete modal
    */
   openDeleteModal(content: any, year: Year) {
@@ -102,12 +153,18 @@ export class YearsListComponent implements OnInit {
    */
   deleteYear() {
     if (this.selectedYear) {
-      const index = YEARS.findIndex((y) => y.id === this.selectedYear!.id);
-      if (index > -1) {
-        YEARS.splice(index, 1);
-        this.loadYears();
-        this.modalService.dismissAll();
-      }
+      this.yearsService.deleteYear(this.selectedYear.id).subscribe({
+        next: () => {
+          Swal.fire('Deleted!', 'Year has been deleted successfully.', 'success');
+          this.loadYears();
+          this.modalService.dismissAll();
+        },
+        error: (error) => {
+          console.error('Error deleting year:', error);
+          Swal.fire('Error', 'Failed to delete year. Please try again.', 'error');
+          this.modalService.dismissAll();
+        }
+      });
     }
   }
 
@@ -116,15 +173,28 @@ export class YearsListComponent implements OnInit {
    */
   getStatusClass(status: string): string {
     switch (status) {
-      case 'Active':
+      case 'ACTIVE':
         return 'bg-light-success';
-      case 'Inactive':
+      case 'PENDING':
         return 'bg-light-warning';
-      case 'Archived':
+      case 'COMPLETE':
+        return 'bg-light-info';
+      case 'ARCHIVED':
         return 'bg-light-secondary';
       default:
         return 'bg-light-secondary';
     }
+  }
+
+  /**
+   * Format date for display
+   */
+  formatDate(dateString: string): string {
+    return new Date(dateString).toLocaleDateString('en-ZA', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
   }
 }
 

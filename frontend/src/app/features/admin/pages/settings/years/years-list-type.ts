@@ -4,28 +4,60 @@
  */
 
 /**
- * Year Status Types
+ * Year Status Types - matching Django backend
  */
-export type YearStatus = 'Active' | 'Inactive' | 'Archived';
+export type YearStatus = 'PENDING' | 'ACTIVE' | 'COMPLETE' | 'ARCHIVED';
 
 /**
  * Year Interface
  * Represents a competition year/season in the system
+ * Maps to Django Year model
  */
 export interface Year {
-  id: number;
-  year: number;
+  id: string; // UUID from backend
   name: string;
-  description: string;
-  startDate: Date;
-  endDate: Date;
+  year: number;
+  start_date: string; // ISO date string
+  end_date: string; // ISO date string
+  is_registration_open: boolean;
   status: YearStatus;
-  isActive: boolean;
-  isCurrent: boolean;
-  dateCreated: Date;
-  competitionsCount?: number;
-  membershipsCount?: number;
-  registrationOpen?: boolean;
+  notes: string;
+  is_active: boolean;
+  is_current: boolean;
+  days_remaining: number;
+  duration_days: number;
+  created_at: string; // ISO datetime string
+  updated_at: string; // ISO datetime string
+}
+
+/**
+ * Year Create/Update Payload
+ */
+export interface YearCreatePayload {
+  name: string;
+  year: number;
+  start_date: string;
+  end_date: string;
+  is_registration_open?: boolean;
+  status?: YearStatus;
   notes?: string;
+}
+
+export interface YearUpdatePayload {
+  name?: string;
+  year?: number;
+  start_date?: string;
+  end_date?: string;
+  is_registration_open?: boolean;
+  status?: YearStatus;
+  notes?: string;
+}
+
+/**
+ * Year List Response from API
+ */
+export interface YearListResponse {
+  count: number;
+  results: Year[];
 }
 

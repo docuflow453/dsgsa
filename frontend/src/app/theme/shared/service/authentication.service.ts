@@ -52,7 +52,7 @@ export class AuthenticationService {
    */
   fetchCurrentUser(): Observable<User> {
     this.loadingSignal.set(true);
-    return this.http.get<User>(`${environment.apiUrl}/api/account/me`).pipe(
+    return this.http.get<User>(`${environment.apiUrl}/account/me`).pipe(
       tap((data: User) => {
         // Update the signal with the full user data (including role)
         this.currentUserSignal.set(data);
@@ -91,7 +91,7 @@ export class AuthenticationService {
    * @param password - User password
    */
   login(email: string, password: string) {
-    return this.http.post<User>(`${environment.apiUrl}/api/auth/login`, { email, password }).pipe(
+    return this.http.post<User>(`${environment.apiUrl}/auth/login`, { email, password }).pipe(
       tap((data: User) => {
         // Use actual API response data
         const userData = data;
@@ -169,7 +169,7 @@ export class AuthenticationService {
 
     return this.http
 
-      .post<User[]>(`${environment.apiUrl}/api/account/register`, {
+      .post<User[]>(`${environment.apiUrl}/account/register`, {
         id,
         email,
         password,

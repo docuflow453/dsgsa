@@ -33,15 +33,24 @@
 
       <!-- Years Table -->
       <div class="table-responsive">
-        <table class="table table-hover mb-0">
+        <!-- Loading State -->
+        <div *ngIf="loading" class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-3">Loading years...</p>
+        </div>
+
+        <!-- Table -->
+        <table class="table table-hover mb-0" *ngIf="!loading">
           <thead>
             <tr>
               <th>Year</th>
               <th>Name</th>
               <th>Period</th>
+              <th>Duration</th>
               <th>Status</th>
-              <th>Competitions</th>
-              <th>Memberships</th>
+              <th>Registration</th>
               <th class="text-end">Actions</th>
             </tr>
           </thead>
@@ -49,21 +58,33 @@
             <tr *ngFor="let year of filteredYears" (click)="viewYear(year)" style="cursor: pointer">
               <td>
                 <strong>{{ year.year }}</strong>
-                <span *ngIf="year.isCurrent" class="badge bg-primary ms-2">Current</span>
+                <span *ngIf="year.is_current" class="badge bg-primary ms-2">Current</span>
+                <span *ngIf="year.is_active" class="badge bg-success ms-2">Active</span>
               </td>
-              <td>{{ year.name }}</td>
+              <td>
+                <div>{{ year.name }}</div>
+                <small class="text-muted" *ngIf="year.days_remaining > 0">
+                  <i class="ti ti-clock"></i> {{ year.days_remaining }} days remaining
+                </small>
+              </td>
               <td>
                 <small class="text-muted">
-                  {{ year.startDate | date: 'MMM d, y' }} - {{ year.endDate | date: 'MMM d, y' }}
+                  {{ formatDate(year.start_date) }} - {{ formatDate(year.end_date) }}
                 </small>
+              </td>
+              <td>
+                <small class="text-muted">{{ year.duration_days }} days</small>
               </td>
               <td>
                 <span class="badge" [ngClass]="getStatusClass(year.status)">
                   {{ year.status }}
                 </span>
               </td>
-              <td>{{ year.competitionsCount || 0 }}</td>
-              <td>{{ year.membershipsCount || 0 }}</td>
+              <td>
+                <span class="badge" [ngClass]="year.is_registration_open ? 'bg-success' : 'bg-secondary'">
+                  {{ year.is_registration_open ? 'Open' : 'Closed' }}
+                </span>
+              </td>
               <td class="text-end" (click)="$event.stopPropagation()">
                 <div class="btn-group" role="group">
                   <button
@@ -83,21 +104,33 @@
                     <i class="ti ti-edit"></i>
                   </button>
                   <button
+                    *ngIf="!year.is_active"
+                    type="button"
+                    class="btn btn-sm btn-outline-success"
+                    (click)="activateYear(year)"
+                    title="Activate"
+                  >
+                    <i class="ti ti-check"></i>
+                  </button>
+                  <button
                     type="button"
                     class="btn btn-sm btn-outline-danger"
                     (click)="openDeleteModal(deleteModal, year)"
                     title="Delete"
-                    [disabled]="year.isCurrent"
+                    [disabled]="year.is_active"
                   >
                     <i class="ti ti-trash"></i>
                   </button>
                 </div>
               </td>
             </tr>
-            <tr *ngIf="filteredYears.length === 0">
+            <tr *ngIf="filteredYears.length === 0 && !loading">
               <td colspan="7" class="text-center py-4">
                 <i class="ti ti-calendar-off" style="font-size: 3rem; opacity: 0.3;"></i>
                 <p class="text-muted mt-2">No years found</p>
+                <button class="btn btn-sm btn-primary" (click)="createYear()">
+                  <i class="ti ti-plus"></i> Create First Year
+                </button>
               </td>
             </tr>
           </tbody>

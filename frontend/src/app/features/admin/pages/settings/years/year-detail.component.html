@@ -1,4 +1,19 @@
-<div class="row" *ngIf="year">
+<!-- Loading State -->
+<div class="row" *ngIf="loading">
+  <div class="col-sm-12">
+    <app-card>
+      <div class="card-body text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3">Loading year details...</p>
+      </div>
+    </app-card>
+  </div>
+</div>
+
+<!-- Year Details -->
+<div class="row" *ngIf="year && !loading">
   <div class="col-sm-12">
     <app-card>
       <div class="card-header" card-header>
@@ -10,6 +25,14 @@
             <button type="button" class="btn btn-outline-secondary" (click)="goBack()">
               <i class="ti ti-arrow-left"></i> Back
             </button>
+            <button
+              type="button"
+              class="btn btn-success"
+              (click)="activateYear()"
+              *ngIf="!year.is_active"
+            >
+              <i class="ti ti-check"></i> Activate
+            </button>
             <button type="button" class="btn btn-primary" (click)="editYear()">
               <i class="ti ti-edit"></i> Edit
             </button>
@@ -17,7 +40,7 @@
               type="button"
               class="btn btn-outline-danger"
               (click)="openDeleteModal(deleteModal)"
-              [disabled]="year.isCurrent"
+              [disabled]="year.is_active"
             >
               <i class="ti ti-trash"></i> Delete
             </button>
@@ -26,66 +49,111 @@
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col-md-6 mb-3">
+          <!-- Year and Status -->
+          <div class="col-md-6 mb-4">
             <label class="text-muted d-block mb-1">Year</label>
             <h4 class="mb-0">
               {{ year.year }}
-              <span *ngIf="year.isCurrent" class="badge bg-primary ms-2">Current</span>
+              <span *ngIf="year.is_current" class="badge bg-primary ms-2">Current</span>
+              <span *ngIf="year.is_active" class="badge bg-success ms-2">Active</span>
             </h4>
           </div>
-          <div class="col-md-6 mb-3">
+          <div class="col-md-6 mb-4">
             <label class="text-muted d-block mb-1">Status</label>
-            <span class="badge" [ngClass]="getStatusClass(year.status)">
+            <span class="badge fs-6" [ngClass]="getStatusClass(year.status)">
               {{ year.status }}
             </span>
           </div>
 
-          <div class="col-md-12 mb-3">
+          <!-- Name -->
+          <div class="col-md-12 mb-4">
             <label class="text-muted d-block mb-1">Name</label>
-            <p class="mb-0">{{ year.name }}</p>
+            <p class="mb-0 fs-5">{{ year.name }}</p>
           </div>
 
-          <div class="col-md-12 mb-3">
-            <label class="text-muted d-block mb-1">Description</label>
-            <p class="mb-0">{{ year.description || 'No description provided' }}</p>
+          <!-- Dates -->
+          <div class="col-md-6 mb-4">
+            <label class="text-muted d-block mb-1">
+              <i class="ti ti-calendar-event me-1"></i>Start Date
+            </label>
+            <p class="mb-0">{{ formatDate(year.start_date) }}</p>
           </div>
 
-          <div class="col-md-6 mb-3">
-            <label class="text-muted d-block mb-1">Start Date</label>
-            <p class="mb-0">{{ year.startDate | date: 'MMMM d, y' }}</p>
+          <div class="col-md-6 mb-4">
+            <label class="text-muted d-block mb-1">
+              <i class="ti ti-calendar-event me-1"></i>End Date
+            </label>
+            <p class="mb-0">{{ formatDate(year.end_date) }}</p>
           </div>
 
-          <div class="col-md-6 mb-3">
-            <label class="text-muted d-block mb-1">End Date</label>
-            <p class="mb-0">{{ year.endDate | date: 'MMMM d, y' }}</p>
+          <!-- Duration and Days Remaining -->
+          <div class="col-md-6 mb-4">
+            <label class="text-muted d-block mb-1">
+              <i class="ti ti-clock me-1"></i>Duration
+            </label>
+            <p class="mb-0">{{ year.duration_days }} days</p>
           </div>
 
-          <div class="col-md-6 mb-3">
-            <label class="text-muted d-block mb-1">Competitions</label>
-            <p class="mb-0">{{ year.competitionsCount || 0 }}</p>
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="text-muted d-block mb-1">Memberships</label>
-            <p class="mb-0">{{ year.membershipsCount || 0 }}</p>
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="text-muted d-block mb-1">Registration Status</label>
+          <div class="col-md-6 mb-4">
+            <label class="text-muted d-block mb-1">
+              <i class="ti ti-hourglass me-1"></i>Days Remaining
+            </label>
             <p class="mb-0">
-              <span *ngIf="year.registrationOpen" class="badge bg-success">Open</span>
-              <span *ngIf="!year.registrationOpen" class="badge bg-secondary">Closed</span>
+              <span *ngIf="year.days_remaining > 0" class="text-success">
+                {{ year.days_remaining }} days
+              </span>
+              <span *ngIf="year.days_remaining <= 0" class="text-muted">
+                Completed
+              </span>
             </p>
           </div>
 
-          <div class="col-md-6 mb-3">
-            <label class="text-muted d-block mb-1">Date Created</label>
-            <p class="mb-0">{{ year.dateCreated | date: 'MMMM d, y' }}</p>
+          <!-- Registration Status -->
+          <div class="col-md-6 mb-4">
+            <label class="text-muted d-block mb-1">
+              <i class="ti ti-user-check me-1"></i>Registration Status
+            </label>
+            <p class="mb-0">
+              <span *ngIf="year.is_registration_open" class="badge bg-success">
+                <i class="ti ti-circle-check me-1"></i>Open
+              </span>
+              <span *ngIf="!year.is_registration_open" class="badge bg-secondary">
+                <i class="ti ti-circle-x me-1"></i>Closed
+              </span>
+            </p>
           </div>
 
+          <!-- Timestamps -->
+          <div class="col-md-6 mb-4">
+            <label class="text-muted d-block mb-1">
+              <i class="ti ti-calendar-plus me-1"></i>Created
+            </label>
+            <p class="mb-0">{{ formatDateTime(year.created_at) }}</p>
+          </div>
+
+          <div class="col-md-12 mb-4">
+            <label class="text-muted d-block mb-1">
+              <i class="ti ti-calendar-time me-1"></i>Last Updated
+            </label>
+            <p class="mb-0">{{ formatDateTime(year.updated_at) }}</p>
+          </div>
+
+          <!-- Notes -->
           <div class="col-md-12 mb-3" *ngIf="year.notes">
-            <label class="text-muted d-block mb-1">Notes</label>
-            <p class="mb-0">{{ year.notes }}</p>
+            <label class="text-muted d-block mb-2">
+              <i class="ti ti-notes me-1"></i>Notes
+            </label>
+            <div class="alert alert-light mb-0">
+              <p class="mb-0">{{ year.notes }}</p>
+            </div>
+          </div>
+
+          <!-- Empty Notes State -->
+          <div class="col-md-12 mb-3" *ngIf="!year.notes || year.notes === ''">
+            <label class="text-muted d-block mb-2">
+              <i class="ti ti-notes me-1"></i>Notes
+            </label>
+            <p class="text-muted mb-0 fst-italic">No notes provided</p>
           </div>
         </div>
       </div>

@@ -3,16 +3,17 @@
  * Handles both creating and editing years
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import Swal from 'sweetalert2';
 
 // Shared Module
 import { SharedModule } from '../../../../../theme/shared/shared.module';
 
-// Types and Data
-import { Year, YearStatus } from './years-list-type';
-import { YEARS } from './years-list-data';
+// Types and Service
+import { Year, YearStatus, YearCreatePayload, YearUpdatePayload } from './years-list-type';
+import { YearsListService } from './years-list.service';
 
 @Component({
   selector: 'app-year-form',
@@ -24,17 +25,21 @@ import { YEARS } from './years-list-data';
 export class YearFormComponent implements OnInit {
   yearForm!: FormGroup;
   isEditMode = false;
-  yearId: number = 0;
+  yearId: string = '';
   pageTitle = 'Add Year';
   submitted = false;
+  loading = false;
+  saving = false;
 
   // Dropdown options
-  statuses: YearStatus[] = ['Active', 'Inactive', 'Archived'];
+  statuses: YearStatus[] = ['PENDING', 'ACTIVE', 'COMPLETE', 'ARCHIVED'];
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private yearsService: YearsListService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -49,11 +54,10 @@ export class YearFormComponent implements OnInit {
     this.yearForm = this.fb.group({
       year: ['', [Validators.required, Validators.min(2020), Validators.max(2100)]],
       name: ['', Validators.required],
-      description: [''],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
-      status: ['Active', Validators.required],
-      registrationOpen: [false],
+      start_date: ['', Validators.required],
+      end_date: ['', Validators.required],
+      status: ['PENDING', Validators.required],
+      is_registration_open: [false],
       notes: ['']
     });
   }
@@ -65,29 +69,50 @@ export class YearFormComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditMode = true;
-      this.yearId = +id;
+      this.yearId = id;
       this.pageTitle = 'Edit Year';
       this.loadYearData();
     }
   }
 
   /**
-   * Load year data for editing
+   * Load year data for editing from backend
    */
   loadYearData() {
-    const year = YEARS.find((y) => y.id === this.yearId);
-    if (year) {
-      this.yearForm.patchValue({
-        year: year.year,
-        name: year.name,
-        description: year.description,
-        startDate: year.startDate,
-        endDate: year.endDate,
-        status: year.status,
-        registrationOpen: year.registrationOpen,
-        notes: year.notes
+    // Defer the loading state change to avoid NG0100 error
+    // This happens because we're in ngOnInit and the template has already been checked
+    setTimeout(() => {
+      this.loading = true;
+      this.cdr.detectChanges();
+
+      this.yearsService.getYearById(this.yearId).subscribe({
+        next: (year) => {
+          this.yearForm.patchValue({
+            year: year.year,
+            name: year.name,
+            start_date: year.start_date,
+            end_date: year.end_date,
+            status: year.status,
+            is_registration_open: year.is_registration_open,
+            notes: year.notes
+          });
+          this.loading = false;
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          console.error('Error loading year:', error);
+          this.loading = false;
+          this.cdr.detectChanges();
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to load year data. Please try again.'
+          }).then(() => {
+            this.router.navigate(['/admin/settings/years']);
+          });
+        }
       });
-    }
+    }, 0);
   }
 
   /**
@@ -95,9 +120,80 @@ export class YearFormComponent implements OnInit {
    */
   onSubmit() {
     this.submitted = true;
-    if (this.yearForm.valid) {
-      console.log('Form submitted:', this.yearForm.value);
-      this.router.navigate(['/admin/settings/years']);
+
+    if (this.yearForm.invalid) {
+      return;
+    }
+
+    this.saving = true;
+    const formValue = this.yearForm.value;
+
+    if (this.isEditMode) {
+      // Update existing year
+      const payload: YearUpdatePayload = {
+        name: formValue.name,
+        year: formValue.year,
+        start_date: formValue.start_date,
+        end_date: formValue.end_date,
+        status: formValue.status,
+        is_registration_open: formValue.is_registration_open,
+        notes: formValue.notes
+      };
+
+      this.yearsService.updateYear(this.yearId, payload).subscribe({
+        next: () => {
+          this.saving = false;
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Year updated successfully!'
+          }).then(() => {
+            this.router.navigate(['/admin/settings/years']);
+          });
+        },
+        error: (error) => {
+          console.error('Error updating year:', error);
+          this.saving = false;
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.error?.message || 'Failed to update year. Please try again.'
+          });
+        }
+      });
+    } else {
+      // Create new year
+      const payload: YearCreatePayload = {
+        name: formValue.name,
+        year: formValue.year,
+        start_date: formValue.start_date,
+        end_date: formValue.end_date,
+        status: formValue.status,
+        is_registration_open: formValue.is_registration_open,
+        notes: formValue.notes
+      };
+
+      this.yearsService.createYear(payload).subscribe({
+        next: () => {
+          this.saving = false;
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Year created successfully!'
+          }).then(() => {
+            this.router.navigate(['/admin/settings/years']);
+          });
+        },
+        error: (error) => {
+          console.error('Error creating year:', error);
+          this.saving = false;
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.error?.message || 'Failed to create year. Please try again.'
+          });
+        }
+      });
     }
   }
 
@@ -106,6 +202,18 @@ export class YearFormComponent implements OnInit {
    */
   cancel() {
     this.router.navigate(['/admin/settings/years']);
+  }
+
+  /**
+   * Validate that end date is after start date
+   */
+  validateDates() {
+    const startDate = this.yearForm.get('start_date')?.value;
+    const endDate = this.yearForm.get('end_date')?.value;
+
+    if (startDate && endDate && new Date(endDate) < new Date(startDate)) {
+      this.yearForm.get('end_date')?.setErrors({ invalidDate: true });
+    }
   }
 }
 
